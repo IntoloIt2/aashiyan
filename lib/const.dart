@@ -77,45 +77,6 @@ Color lightColor = HexColor("#c4edf4");
 Color color3 = HexColor("#d5e7ea");
 Color iconColor = HexColor("#757574");
 
-//                             api                                        //
-
-
-var baseUrl = 'http://sdplweb.com/sdpl/';
-var imageUrl = 'http://sdplweb.com/sdpl/storage/app/public/';
-var mainImage = "http://sdplweb.com/sdpl/api/get-bungalow-prestigious-recent-image";
-
-
-
-List<dynamic> dataPrestigiousList = [];
-List<dynamic> dataRecentList = [];
-  
-  Future<void> getPrestigious() async {
-    try {
-      var url = Uri.parse(mainImage);
-      var response = await http.get(url);
-      // print(response.body.toString());
-      if (response.statusCode == 200) {
-        
-        dataPrestigiousList = jsonDecode(response.body)["prestigious_image"];
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  Future<void> getRecent() async {
-    try {
-      var url = Uri.parse(mainImage);
-      var response = await http.get(url);
-      // print(response.body.toString());
-      if (response.statusCode == 200) {
-        
-        dataRecentList = jsonDecode(response.body)["recent_project_image"];
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
 
   SingleChildScrollView buildRow() {
     return SingleChildScrollView(
@@ -148,6 +109,73 @@ List<dynamic> dataRecentList = [];
                     ),
                   );
   }
+   SingleChildScrollView buildSteps() {
+    return SingleChildScrollView(
+                    padding: EdgeInsets.all(10),
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        buildContainer("step1"),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        buildContainer("step2"),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        buildContainer("step3"),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        buildContainer("step4"),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        buildContainer("step5"),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        buildContainer("step6"),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        buildContainer("step7"),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        buildContainer("step8"),
+
+                      ],
+                    ),
+                  );
+  }
+
+ BottomNavigationBar buildBottomNav() {
+    return BottomNavigationBar(
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: iconColor,
+            ),
+            label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add_circle_outline,
+              color: iconColor,
+            ),
+            label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person,
+              color: iconColor,
+            ),
+            label: ""),
+      ],
+    );
+  }
+
+
 
 
 Container buildContainer(String str) {

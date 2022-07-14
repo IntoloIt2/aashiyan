@@ -38,6 +38,7 @@ dependencies:
   xml: ^6.1.0
   carousel_slider: ^4.1.1
   http: ^0.13.4
+  localization: ^2.1.0
   
   
 dev_dependencies:

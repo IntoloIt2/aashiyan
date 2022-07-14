@@ -1,5 +1,5 @@
 import 'package:aashiyan/const.dart';
-import 'package:aashiyan/view/bunglow.dart';
+import 'package:aashiyan/view/residential/bunglow/bunglow.dart';
 import 'package:aashiyan/view/residential.dart';
 import 'package:flutter/material.dart';
 

@@ -1,9 +1,10 @@
 import 'package:aashiyan/const.dart';
-import 'package:aashiyan/controller/api_services.dart';
-import 'package:aashiyan/model/prestegious.dart' as wel;
+
 import 'package:aashiyan/view/residential.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+
+import '../controller/api_services.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class _HomePageState extends State<HomePage> {
           child: Scaffold(
               appBar: AppBar(
                 title: Container(
-                  margin: EdgeInsets.only(bottom: 10),
+                  margin: const EdgeInsets.only(bottom: 10),
                   child: Text(
                     'Aashiyan',
                     style: TextStyle(
@@ -76,10 +77,10 @@ class _HomePageState extends State<HomePage> {
                             //   painter: RPSCustomPainter(),
                             // ),
                             Positioned(
-                              top: MediaQuery.of(context).size.height * 0.3,
+                              top: MediaQuery.of(context).size.height * 0.28,
                               child: Text(
                                 "Residential",
-                                style: TextStyle(fontSize: 26),
+                                style: TextStyle(fontSize: height * 0.032),
                               ),
                             ),
                             Positioned(
@@ -139,14 +140,14 @@ class _HomePageState extends State<HomePage> {
                                     fontSize: 20,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
                                 Container(
                                   height: 100,
                                   width: width * 0.4,
                                   child: FutureBuilder(
-                                      future: getRecent(),
+                                      future: homeRecent(),
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
@@ -158,14 +159,14 @@ class _HomePageState extends State<HomePage> {
                                           );
                                         } else {
                                           return CarouselSlider.builder(
-                                            itemCount: dataRecentList.length,
+                                            itemCount: homeRecentList.length,
                                             itemBuilder: (context, i, id) {
                                               return Container(
                                                 height: 100,
                                                 width: width * 0.45,
                                                 child: Image.network(
                                                   imageUrl +
-                                                      dataRecentList[i]
+                                                      homeRecentList[i]
                                                           ["img_path"],
                                                   fit: BoxFit.fill,
                                                 ),
@@ -200,7 +201,7 @@ class _HomePageState extends State<HomePage> {
                                   height: 100,
                                   width: width * 0.4,
                                   child: FutureBuilder(
-                                      future: getPrestigious(),
+                                      future: homePrestigious(),
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
@@ -213,14 +214,14 @@ class _HomePageState extends State<HomePage> {
                                         } else {
                                           return CarouselSlider.builder(
                                             itemCount:
-                                                dataPrestigiousList.length,
+                                                homePrestigiousList.length,
                                             itemBuilder: (context, i, id) {
                                               return Container(
                                                 height: 100,
                                                 width: width * 0.45,
                                                 child: Image.network(
                                                   imageUrl +
-                                                      dataPrestigiousList[i]
+                                                      homePrestigiousList[i]
                                                           ["img_path"],
                                                   fit: BoxFit.fill,
                                                 ),
@@ -258,7 +259,6 @@ class _HomePageState extends State<HomePage> {
               bottomNavigationBar: customBottomNav()),
         ),
         Container(
-
           color: Colors.white,
           width: MediaQuery.of(context).size.width * 1,
           child: const DefaultTextStyle(
@@ -275,8 +275,6 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-
-  
 
   Stack polyContainer(BuildContext context, String text) {
     return Stack(
@@ -303,8 +301,6 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-
-  
 }
 
 // class RPSCustomPainter extends CustomPainter {

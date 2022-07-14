@@ -1,7 +1,9 @@
 import 'package:aashiyan/const.dart';
-import 'package:aashiyan/view/bunglow.dart';
+import 'package:aashiyan/view/residential/bunglow/bunglow.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+
+import '../controller/api_services.dart';
 
 class Residential extends StatelessWidget {
   const Residential({Key? key}) : super(key: key);
@@ -44,7 +46,7 @@ class Residential extends StatelessWidget {
                                   Image.asset("assets/images/ragrawalji.jpg")),
                         ),
                         Positioned(
-                          bottom: height * 0.215,
+                          bottom: height * 0.22,
                           child: Text(
                             "Bunglow",
                             style: TextStyle(
@@ -72,7 +74,7 @@ class Residential extends StatelessWidget {
                             child: Image.asset("assets/images/ragrawalji.jpg")),
                       ),
                       Positioned(
-                        bottom: height * 0.215,
+                        bottom: height * 0.22,
                         child: Text(
                           "Houses/Duplex",
                           style: TextStyle(
@@ -91,7 +93,7 @@ class Residential extends StatelessWidget {
               height: height * 0.04,
               margin: EdgeInsets.all(10),
               color: primaryColor,
-              child: Center(
+              child: const Center(
                   child: Text(
                 "Prestigious",
                 style: TextStyle(
@@ -104,7 +106,7 @@ class Residential extends StatelessWidget {
             Container(
               width: width * 1,
               child: FutureBuilder(
-                  future: getPrestigious(),
+                  future: residentialPrestigious(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Container(
@@ -114,14 +116,15 @@ class Residential extends StatelessWidget {
                       );
                     } else {
                       return CarouselSlider.builder(
-                        itemCount: dataPrestigiousList.length,
+                        itemCount: ResidentialPrestigiousList.length,
                         itemBuilder: (context, i, id) {
                           return Card(
                             child: SizedBox(
                               height: height * 0.4,
                               width: width * 0.9,
                               child: Image.network(
-                                imageUrl + dataPrestigiousList[i]["img_path"],
+                                imageUrl +
+                                    ResidentialPrestigiousList[i]["img_path"],
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -156,7 +159,7 @@ class Residential extends StatelessWidget {
             Container(
               width: width * 1,
               child: FutureBuilder(
-                  future: getRecent(),
+                  future: residentailRecent(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Container(
@@ -166,13 +169,14 @@ class Residential extends StatelessWidget {
                       );
                     } else {
                       return CarouselSlider.builder(
-                        itemCount: dataRecentList.length,
+                        itemCount: ResidentialdataRecentList.length,
                         itemBuilder: (context, i, id) {
                           return Container(
                             height: height * 0.4,
                             width: width * 0.9,
                             child: Image.network(
-                              imageUrl + dataRecentList[i]["img_path"],
+                              imageUrl +
+                                  ResidentialdataRecentList[i]["img_path"],
                               fit: BoxFit.fill,
                             ),
                           );
