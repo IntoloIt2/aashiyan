@@ -77,15 +77,19 @@ class _HomePageState extends State<HomePage> {
                             //   painter: RPSCustomPainter(),
                             // ),
                             Positioned(
-                              top: MediaQuery.of(context).size.height * 0.28,
+                              top: MediaQuery.of(context).size.height * 0.27,
                               child: Text(
                                 "Residential",
                                 style: TextStyle(fontSize: height * 0.032),
                               ),
                             ),
                             Positioned(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              child: Image.asset("assets/images/resident.jpg"),
+                              // top: height * 0.0,
+                              bottom: height * 0.060,
+                              height: height * 0.3,
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              child: Image.asset(
+                                  "assets/images/resident_resize.jpg"),
                             ),
                           ],
                         ),
