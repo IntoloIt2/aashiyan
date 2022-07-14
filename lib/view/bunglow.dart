@@ -1,0 +1,203 @@
+import 'package:aashiyan/const.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
+
+class Bunglow extends StatelessWidget {
+  const Bunglow({Key? key}) : super(key: key);
+  static const namedRoute = "/bunglow";
+  @override
+  Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+    return Scaffold(
+      appBar: buildAppbar("Bunglow"),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            buildRow(),
+            Column(
+              children: [
+                Card(
+                  child: ListTile(
+                    leading: Container(
+                      child: Image.asset("assets/images/existing.png"),
+                    ),
+                    title: Text(
+                      "Pre-existing",
+                      style: TextStyle(
+                        fontSize: height * 0.025,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+                Card(
+                  child: ListTile(
+                    leading: Image.asset("assets/images/gallery_icon.png"),
+                    title: Text(
+                      "Gallery",
+                      style: TextStyle(
+                        fontSize: height * 0.025,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+                Card(
+                  child: ListTile(
+                    leading: Image.asset("assets/images/pdf_icon.png"),
+                    title: Text(
+                      "sample Drawing book",
+                      style: TextStyle(
+                        fontSize: height * 0.025,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+                Card(
+                  child: ListTile(
+                    leading: Image.asset("assets/images/arrow.png"),
+                    title: Text(
+                      "Intrested-next",
+                      style: TextStyle(
+                        fontSize: height * 0.025,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Our pretigious Bunglow Projects",
+                              style: TextStyle(
+                                  fontSize: height * 0.022,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              "see more",
+                              style: TextStyle(
+                                  color: Colors.lightBlue,
+                                  fontSize: height * 0.022,
+                                  fontWeight: FontWeight.w900),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: width * 1,
+                        child: FutureBuilder(
+                            future: getPrestigious(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Container(
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              } else {
+                                return CarouselSlider.builder(
+                                  itemCount: dataPrestigiousList.length,
+                                  itemBuilder: (context, i, id) {
+                                    return Card(
+                                      child: SizedBox(
+                                        height: height * 0.4,
+                                        width: width * 0.9,
+                                        child: Image.network(
+                                          imageUrl +
+                                              dataPrestigiousList[i]
+                                                  ["img_path"],
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  options: CarouselOptions(
+                                    autoPlay: true,
+                                    enableInfiniteScroll: true,
+                                    autoPlayAnimationDuration:
+                                        Duration(milliseconds: 800),
+                                    viewportFraction: 1,
+                                  ),
+                                );
+                              }
+                            }),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Recent Bunglow Projects",
+                              style: TextStyle(
+                                  fontSize: height * 0.022,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              "see more",
+                              style: TextStyle(
+                                  color: Colors.lightBlue,
+                                  fontSize: height * 0.022,
+                                  fontWeight: FontWeight.w900),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: width * 1,
+                        child: FutureBuilder(
+                            future: getRecent(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Container(
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              } else {
+                                return CarouselSlider.builder(
+                                  itemCount: dataRecentList.length,
+                                  itemBuilder: (context, i, id) {
+                                    return Container(
+                                      height: height * 0.4,
+                                      width: width * 0.9,
+                                      child: Image.network(
+                                        imageUrl +
+                                            dataRecentList[i]["img_path"],
+                                        fit: BoxFit.fill,
+                                      ),
+                                    );
+                                  },
+                                  options: CarouselOptions(
+                                    autoPlay: true,
+                                    enableInfiniteScroll: true,
+                                    autoPlayAnimationDuration:
+                                        Duration(milliseconds: 800),
+                                    viewportFraction: 1,
+                                  ),
+                                );
+                              }
+                            }),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
