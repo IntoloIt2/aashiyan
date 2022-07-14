@@ -3,6 +3,8 @@ import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../controller/api_services.dart';
+
 class Bunglow extends StatelessWidget {
   const Bunglow({Key? key}) : super(key: key);
   static const namedRoute = "/bunglow";
@@ -56,14 +58,17 @@ class Bunglow extends StatelessWidget {
                     ),
                   ),
                 ),
-                Card(
-                  child: ListTile(
-                    leading: Image.asset("assets/images/arrow.png"),
-                    title: Text(
-                      "Intrested-next",
-                      style: TextStyle(
-                        fontSize: height * 0.025,
-                        fontWeight: FontWeight.w500,
+                GestureDetector(
+                  
+                  child: Card(
+                    child: ListTile(
+                      leading: Image.asset("assets/images/arrow.png"),
+                      title: Text(
+                        "Intrested-next",
+                        style: TextStyle(
+                          fontSize: height * 0.025,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
@@ -106,7 +111,7 @@ class Bunglow extends StatelessWidget {
                                 );
                               } else {
                                 return CarouselSlider.builder(
-                                  itemCount: dataPrestigiousList.length,
+                                  itemCount: bunglowPagePrestigiousList.length,
                                   itemBuilder: (context, i, id) {
                                     return Card(
                                       child: SizedBox(
@@ -114,7 +119,7 @@ class Bunglow extends StatelessWidget {
                                         width: width * 0.9,
                                         child: Image.network(
                                           imageUrl +
-                                              dataPrestigiousList[i]
+                                              bunglowPagePrestigiousList[i]
                                                   ["img_path"],
                                           fit: BoxFit.fill,
                                         ),
@@ -167,14 +172,14 @@ class Bunglow extends StatelessWidget {
                                 );
                               } else {
                                 return CarouselSlider.builder(
-                                  itemCount: dataRecentList.length,
+                                  itemCount: bunglowPageRecentList.length,
                                   itemBuilder: (context, i, id) {
                                     return Container(
                                       height: height * 0.4,
                                       width: width * 0.9,
                                       child: Image.network(
                                         imageUrl +
-                                            dataRecentList[i]["img_path"],
+                                            bunglowPageRecentList[i]["img_path"],
                                         fit: BoxFit.fill,
                                       ),
                                     );
@@ -198,6 +203,8 @@ class Bunglow extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: buildBottomNav(),
     );
   }
+
 }
