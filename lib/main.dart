@@ -1,6 +1,8 @@
 import 'package:aashiyan/const.dart';
+import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:aashiyan/view/residential/bunglow/bunglow.dart';
 import 'package:aashiyan/view/residential.dart';
+import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:flutter/material.dart';
 
 import 'view/homepage.dart';
@@ -19,17 +21,17 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'OpenSans',
-        
-        primaryColor: primaryColor,
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          primary: primaryColor,
-        )
-      ),    
-      home:  HomePage(),
+          fontFamily: 'OpenSans',
+          primaryColor: primaryColor,
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            primary: primaryColor,
+          )),
+      home: HomePage(),
       routes: {
-        Residential.namedRoute : (context) => Residential(),
-        Bunglow.namedRoute : (context) => Bunglow()
+        Residential.namedRoute: (context) => Residential(),
+        Bunglow.namedRoute: (context) => Bunglow(),
+        Requirement.namedRoute: (context) => Requirement(),
+        Entrance.namedRoute: (context) => Entrance(),
       },
     );
   }
