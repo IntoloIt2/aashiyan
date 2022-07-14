@@ -1,4 +1,5 @@
 import 'package:aashiyan/const.dart';
+import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,9 @@ class Bunglow extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  
+                  onTap: () {
+                    Navigator.of(context).pushNamed(Requirement.namedRoute);
+                  },
                   child: Card(
                     child: ListTile(
                       leading: Image.asset("assets/images/arrow.png"),
@@ -179,7 +182,8 @@ class Bunglow extends StatelessWidget {
                                       width: width * 0.9,
                                       child: Image.network(
                                         imageUrl +
-                                            bunglowPageRecentList[i]["img_path"],
+                                            bunglowPageRecentList[i]
+                                                ["img_path"],
                                         fit: BoxFit.fill,
                                       ),
                                     );
@@ -206,5 +210,4 @@ class Bunglow extends StatelessWidget {
       bottomNavigationBar: buildBottomNav(),
     );
   }
-
 }
