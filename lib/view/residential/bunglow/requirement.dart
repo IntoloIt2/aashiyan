@@ -29,27 +29,25 @@ class _RequirementState extends State<Requirement> {
             bungalowSteps(context),
             Row(
               children: [
-                Text("Name",
-                style: TextStyle(),
+                const Text(
+                  "Name",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 SizedBox(
                   width: height * 0.02,
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
+                Material(
+                  elevation: 5,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(5),
                   ),
-                  child: Material(
-                    elevation: 5,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      height: height * 0.05,
-                      width: width * 0.19,
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    height: height * 0.04,
+                    width: width * 0.19,
+                    child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                         value: selectedItems,
                         icon: const Icon(Icons.keyboard_arrow_down_sharp),
@@ -72,19 +70,19 @@ class _RequirementState extends State<Requirement> {
                 ),
                 Material(
                   elevation: 5,
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
                   child: SizedBox(
-                    height: height * 0.05,
+                    height: height * 0.04,
                     width: width * 0.25,
                     child: TextFormField(
-                      style: TextStyle(fontSize: height * 0.02),
+                      style: TextStyle(fontSize: height * 0.018),
                       decoration: InputDecoration(
                           hintText: "firstname",
-                          hintStyle: TextStyle(fontSize: height * 0.02),
-                          border: OutlineInputBorder(
+                          hintStyle: TextStyle(fontSize: height * 0.018),
+                          border: const OutlineInputBorder(
                             borderSide: BorderSide.none,
                           ),
-                          isDense: true, // Added this
+                          isDense: true,
                           contentPadding: EdgeInsets.all(8)
                           //fillColor: Colors.green
                           ),
@@ -96,15 +94,15 @@ class _RequirementState extends State<Requirement> {
                 ),
                 Material(
                   elevation: 5,
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.05,
+                    height: MediaQuery.of(context).size.height * 0.04,
                     width: MediaQuery.of(context).size.width * 0.25,
                     child: TextFormField(
-                      style: TextStyle(fontSize: 14),
+                      style: TextStyle(fontSize: height * 0.018),
                       decoration: InputDecoration(
                           hintText: "last name",
-                          hintStyle: TextStyle(fontSize: 14),
+                          hintStyle: TextStyle(fontSize: height * 0.018),
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
                           ),
@@ -116,7 +114,78 @@ class _RequirementState extends State<Requirement> {
                   ),
                 ),
               ],
-            )
+            ),
+            SizedBox(
+              height: height * 0.02,
+            ),
+            Row(
+              children: [
+                Text(
+                  "Email",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  width: width * 0.05,
+                ),
+                Material(
+                  elevation: 5,
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  child: SizedBox(
+                    height: height * 0.04,
+                    width: width * 0.6,
+                    child: TextFormField(
+                      style: TextStyle(fontSize: height * 0.018),
+                      decoration: InputDecoration(
+                          hintText: "Email",
+                          hintStyle: TextStyle(fontSize: height * 0.018),
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          isDense: true,
+                          contentPadding: EdgeInsets.all(8)
+                          //fillColor: Colors.green
+                          ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text(
+                  "project \n Address",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  width: width * 0.05,
+                ),
+                Material(
+                  elevation: 5,
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  child: SizedBox(
+                    height: height * 0.04,
+                    width: width * 0.6,
+                    child: TextFormField(
+                      style: TextStyle(fontSize: height * 0.018),
+                      decoration: InputDecoration(
+                          hintText: "Email",
+                          hintStyle: TextStyle(fontSize: height * 0.018),
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          isDense: true,
+                          contentPadding: EdgeInsets.all(8)
+                          //fillColor: Colors.green
+                          ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
