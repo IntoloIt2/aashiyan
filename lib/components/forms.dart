@@ -34,3 +34,37 @@ Material textField(BuildContext context) {
     ),
   );
 }
+
+Text requirementText(String txt) {
+  return Text(
+    txt,
+    style: TextStyle(
+      fontWeight: FontWeight.bold,
+    ),
+  );
+}
+
+Material requirementTextField(
+    double height, double width, double h, double w, String str) {
+  return Material(
+    elevation: 5,
+    borderRadius: const BorderRadius.all(Radius.circular(5)),
+    child: SizedBox(
+      height: height * h,
+      width: width * w,
+      child: TextFormField(
+        style: TextStyle(fontSize: 14),
+        decoration: InputDecoration(
+            hintText: str,
+            hintStyle: TextStyle(fontSize: 14),
+            border: const OutlineInputBorder(
+              borderSide: BorderSide.none,
+            ),
+            isDense: true,
+            contentPadding: EdgeInsets.all(8)
+            //fillColor: Colors.green
+            ),
+      ),
+    ),
+  );
+}
