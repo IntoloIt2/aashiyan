@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       routes: {
         Residential.namedRoute: (context) => const Residential(),
         Bunglow.namedRoute: (context) => const Bunglow(),
-        Requirement.namedRoute: (context) => const Requirement(),
+        Requirement.namedRoute: (context) => Requirement(),
         Entrance.namedRoute: (context) => const Entrance(),
       },
     );
