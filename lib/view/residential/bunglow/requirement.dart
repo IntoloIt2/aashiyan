@@ -1,6 +1,8 @@
+import 'package:aashiyan/constants/bungalow_steps.dart';
 import 'package:flutter/material.dart';
 
 import '../../../const.dart';
+import '../../../constants/app_bar.dart';
 
 class Requirement extends StatefulWidget {
   static const namedRoute = "/intrestedNext";
@@ -19,12 +21,12 @@ class _RequirementState extends State<Requirement> {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: requirementColor,
-      appBar: buildAppbar("Requirement"),
+      appBar: appBar("Requirement"),
       body: Container(
         margin: EdgeInsets.all(10),
         child: Column(
           children: [
-            buildSteps(context),
+            bungalowSteps(context),
             Row(
               children: [
                 Text("Name",
