@@ -16,6 +16,7 @@ class _RequirementState extends State<Requirement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: lightColor,
       appBar: buildAppbar("Requirement"),
       body: Container(
         margin: EdgeInsets.all(10),
@@ -52,6 +53,7 @@ class _RequirementState extends State<Requirement> {
                   width: 20,
                 ),
                 Container(
+                  
                   height: MediaQuery.of(context).size.height * 0.05,
                   width: MediaQuery.of(context).size.width * 0.3,
                   child: Center(
@@ -60,9 +62,10 @@ class _RequirementState extends State<Requirement> {
                         labelText: "Enter Email",
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
                           borderRadius: BorderRadius.circular(25.0),
-                          borderSide: BorderSide(),
                         ),
+
                         //fillColor: Colors.green
                       ),
                     ),
