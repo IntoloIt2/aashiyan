@@ -26,12 +26,12 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSwatch().copyWith(
             primary: primaryColor,
           )),
-      home: HomePage(),
+      home: const HomePage(),
       routes: {
-        Residential.namedRoute: (context) => Residential(),
-        Bunglow.namedRoute: (context) => Bunglow(),
-        Requirement.namedRoute: (context) => Requirement(),
-        Entrance.namedRoute: (context) => Entrance(),
+        Residential.namedRoute: (context) => const Residential(),
+        Bunglow.namedRoute: (context) => const Bunglow(),
+        Requirement.namedRoute: (context) => const Requirement(),
+        Entrance.namedRoute: (context) => const Entrance(),
       },
     );
   }

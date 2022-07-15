@@ -1,8 +1,4 @@
-import 'dart:convert';
-
-import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 BottomNavigationBar customBottomNav() {
   return BottomNavigationBar(
@@ -41,24 +37,24 @@ BottomNavigationBar customBottomNav() {
   );
 }
 
-AppBar buildAppbar(String str) {
-  return AppBar(
-    title: Text(
-      str,
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-  );
-}
+// AppBar buildAppbar(String str) {
+//   return AppBar(
+//     title: Text(
+//       str,
+//       style: const TextStyle(
+//         fontWeight: FontWeight.bold,
+//       ),
+//     ),
+//   );
+// }
 
-//                            color
+//color
 
 class HexColor extends Color {
   static int _getColorFromHex(String hexColor) {
     hexColor = hexColor.toUpperCase().replaceAll("#", "");
     if (hexColor.length == 6) {
-      hexColor = "FF" + hexColor;
+      hexColor = "FF$hexColor";
     }
     return int.parse(hexColor, radix: 16);
   }
@@ -73,82 +69,82 @@ Color lightColor = HexColor("#c4edf4");
 Color color3 = HexColor("#d5e7ea");
 Color iconColor = HexColor("#757574");
 
-SingleChildScrollView buildRow() {
-  return SingleChildScrollView(
-    padding: EdgeInsets.all(10),
-    scrollDirection: Axis.horizontal,
-    child: Row(
-      children: [
-        buildContainer("Hotels"),
-        const SizedBox(
-          width: 5,
-        ),
-        buildContainer("residental"),
-        const SizedBox(
-          width: 5,
-        ),
-        buildContainer("Multiplex/mall"),
-        const SizedBox(
-          width: 5,
-        ),
-        buildContainer("Interior Design"),
-        const SizedBox(
-          width: 5,
-        ),
-        buildContainer("Commercial Showroom/Offices"),
-        const SizedBox(
-          width: 5,
-        ),
-        buildContainer("Mix Use Buildings"),
-      ],
-    ),
-  );
-}
+// SingleChildScrollView buildRow() {
+//   return SingleChildScrollView(
+//     padding: EdgeInsets.all(10),
+//     scrollDirection: Axis.horizontal,
+//     child: Row(
+//       children: [
+//         buildContainer("Hotels"),
+//         const SizedBox(
+//           width: 5,
+//         ),
+//         buildContainer("residental"),
+//         const SizedBox(
+//           width: 5,
+//         ),
+//         buildContainer("Multiplex/mall"),
+//         const SizedBox(
+//           width: 5,
+//         ),
+//         buildContainer("Interior Design"),
+//         const SizedBox(
+//           width: 5,
+//         ),
+//         buildContainer("Commercial Showroom/Offices"),
+//         const SizedBox(
+//           width: 5,
+//         ),
+//         buildContainer("Mix Use Buildings"),
+//       ],
+//     ),
+//   );
+// }
 
-SingleChildScrollView buildSteps(BuildContext context) {
-  return SingleChildScrollView(
-    padding: EdgeInsets.all(10),
-    scrollDirection: Axis.horizontal,
-    child: Row(
-      children: [
-        InkWell(onTap: () {}, child: buildContainer("Step 1")),
-        const SizedBox(
-          width: 10,
-        ),
-        InkWell(
-          onTap: () {
-            Navigator.of(context).pushNamed(Entrance.namedRoute);
-          },
-          child: buildContainer("Step 2"),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        buildContainer("Step 3"),
-        const SizedBox(
-          width: 10,
-        ),
-        buildContainer("step4"),
-        const SizedBox(
-          width: 10,
-        ),
-        buildContainer("step5"),
-        const SizedBox(
-          width: 10,
-        ),
-        buildContainer("step6"),
-        const SizedBox(
-          width: 10,
-        ),
-        buildContainer("step7"),
-        const SizedBox(
-          width: 10,
-        ),
-        buildContainer("step8"),
-      ],
-    ),
-  );
-}
+// SingleChildScrollView buildSteps(BuildContext context) {
+//   return SingleChildScrollView(
+//     padding: EdgeInsets.all(10),
+//     scrollDirection: Axis.horizontal,
+//     child: Row(
+//       children: [
+//         InkWell(onTap: () {}, child: buildContainer("Step 1")),
+//         const SizedBox(
+//           width: 10,
+//         ),
+//         InkWell(
+//           onTap: () {
+//             Navigator.of(context).pushNamed(Entrance.namedRoute);
+//           },
+//           child: buildContainer("Step 2"),
+//         ),
+//         const SizedBox(
+//           width: 10,
+//         ),
+//         buildContainer("Step 3"),
+//         const SizedBox(
+//           width: 10,
+//         ),
+//         buildContainer("step4"),
+//         const SizedBox(
+//           width: 10,
+//         ),
+//         buildContainer("step5"),
+//         const SizedBox(
+//           width: 10,
+//         ),
+//         buildContainer("step6"),
+//         const SizedBox(
+//           width: 10,
+//         ),
+//         buildContainer("step7"),
+//         const SizedBox(
+//           width: 10,
+//         ),
+//         buildContainer("step8"),
+//       ],
+//     ),
+//   );
+// }
 
 BottomNavigationBar buildBottomNav() {
   return BottomNavigationBar(
@@ -175,22 +171,22 @@ BottomNavigationBar buildBottomNav() {
   );
 }
 
-Container buildContainer(String str) {
-  return Container(
-    padding: EdgeInsets.only(left: 5, bottom: 4, top: 3, right: 5),
-    // padding: const EdgeInsets.all(5),
+// Container buildContainer(String str) {
+//   return Container(
+//     padding: EdgeInsets.only(left: 5, bottom: 4, top: 3, right: 5),
+//     // padding: const EdgeInsets.all(5),
 
-    decoration: BoxDecoration(
-      border: Border.all(width: 1.0),
-      borderRadius: const BorderRadius.all(
-          Radius.circular(5) //         <--- border radius here
-          ),
-    ),
-    child: Text(
-      str,
-      style: const TextStyle(
-        fontSize: 14,
-      ),
-    ),
-  );
-}
+//     decoration: BoxDecoration(
+//       border: Border.all(width: 1.0),
+//       borderRadius: const BorderRadius.all(
+//           Radius.circular(5) //         <--- border radius here
+//           ),
+//     ),
+//     child: Text(
+//       str,
+//       style: const TextStyle(
+//         fontSize: 14,
+//       ),
+//     ),
+//   );
+// }
