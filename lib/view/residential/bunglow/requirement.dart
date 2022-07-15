@@ -27,9 +27,11 @@ class _RequirementState extends State<Requirement> {
             buildSteps(context),
             Row(
               children: [
-                Text("Name"),
+                Text("Name",
+                style: TextStyle(),
+                ),
                 SizedBox(
-                  width: 10,
+                  width: height * 0.02,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -39,11 +41,13 @@ class _RequirementState extends State<Requirement> {
                   ),
                   child: Material(
                     elevation: 5,
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
+                    ),
                     child: Container(
                       padding: EdgeInsets.all(5),
                       height: height * 0.05,
-                      width: width * 0.15,
+                      width: width * 0.19,
                       child: DropdownButton<String>(
                         value: selectedItems,
                         icon: const Icon(Icons.keyboard_arrow_down_sharp),
@@ -69,7 +73,7 @@ class _RequirementState extends State<Requirement> {
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                   child: SizedBox(
                     height: height * 0.05,
-                    width: width * 0.3,
+                    width: width * 0.25,
                     child: TextFormField(
                       style: TextStyle(fontSize: height * 0.02),
                       decoration: InputDecoration(
