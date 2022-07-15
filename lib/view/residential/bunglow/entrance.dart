@@ -1,8 +1,9 @@
-import 'package:aashiyan/constants/bungalow_steps.dart';
+import 'package:aashiyan/components/bungalow_steps.dart';
+import 'package:aashiyan/components/forms.dart';
 import 'package:flutter/material.dart';
 
 import '../../../const.dart';
-import '../../../constants/app_bar.dart';
+import '../../../components/app_bar.dart';
 
 class Entrance extends StatelessWidget {
   const Entrance({Key? key}) : super(key: key);
@@ -12,9 +13,7 @@ class Entrance extends StatelessWidget {
     return Scaffold(
       appBar: appBar("Entrance"),
       body: Column(
-        children: [
-          bungalowSteps(context),
-        ],
+        children: [bungalowSteps(context), lableText("Name")],
       ),
       bottomNavigationBar: buildBottomNav(),
     );

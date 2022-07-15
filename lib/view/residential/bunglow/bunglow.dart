@@ -1,11 +1,11 @@
 import 'package:aashiyan/const.dart';
-import 'package:aashiyan/constants/project_category.dart';
+import 'package:aashiyan/components/project_category.dart';
 import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 // import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants/app_bar.dart';
+import '../../../components/app_bar.dart';
 import '../../../controller/api_services.dart';
 
 class Bunglow extends StatelessWidget {
