@@ -70,6 +70,7 @@ Color textColor2 = HexColor("#735a10");
 Color textColor = HexColor("#7e7e7e");
 Color primaryColor = HexColor("#58A7CA");
 Color lightColor = HexColor("#c4edf4");
+Color requirementColor = HexColor("#dfeaea");
 Color color3 = HexColor("#d5e7ea");
 Color iconColor = HexColor("#757574");
 

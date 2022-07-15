@@ -16,7 +16,7 @@ class _RequirementState extends State<Requirement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: lightColor,
+      backgroundColor: requirementColor,
       appBar: buildAppbar("Requirement"),
       body: Container(
         margin: EdgeInsets.all(10),
@@ -52,18 +52,18 @@ class _RequirementState extends State<Requirement> {
                 SizedBox(
                   width: 20,
                 ),
-                Container(
-                  
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  child: Center(
+                Material(
+                  elevation: 5,
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    width: MediaQuery.of(context).size.width * 0.3,
                     child: TextFormField(
                       decoration: InputDecoration(
-                        labelText: "Enter Email",
+                        labelText: "firstname",
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(25.0),
                         ),
 
                         //fillColor: Colors.green
