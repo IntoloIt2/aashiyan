@@ -3,6 +3,8 @@ import 'package:aashiyan/view/residential/bunglow/bunglow.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/app_bar.dart';
+import '../constants/project_category.dart';
 import '../controller/api_services.dart';
 
 class Residential extends StatelessWidget {
@@ -14,11 +16,11 @@ class Residential extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: buildAppbar("Residential"),
+      appBar: appBar("Residential"),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            buildRow(),
+            projectCategory(),
             Container(
               width: width * 1,
               height: height * 0.3,
@@ -33,7 +35,7 @@ class Residential extends StatelessWidget {
                       alignment: Alignment.center,
                       children: [
                         Container(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           height: height * 1,
                           width: width * 0.5,
                           child: Image.asset("assets/images/Screen.png"),
@@ -62,7 +64,7 @@ class Residential extends StatelessWidget {
                     alignment: Alignment.center,
                     children: [
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         height: height * 1,
                         width: width * 0.5,
                         child: Image.asset("assets/images/Screen.png"),
@@ -91,7 +93,7 @@ class Residential extends StatelessWidget {
             Container(
               width: width * 1,
               height: height * 0.04,
-              margin: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
               color: primaryColor,
               child: const Center(
                   child: Text(
@@ -110,7 +112,7 @@ class Residential extends StatelessWidget {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Container(
-                        child: Center(
+                        child: const Center(
                           child: CircularProgressIndicator(),
                         ),
                       );
@@ -134,7 +136,7 @@ class Residential extends StatelessWidget {
                           autoPlay: true,
                           enableInfiniteScroll: true,
                           autoPlayAnimationDuration:
-                              Duration(milliseconds: 800),
+                              const Duration(milliseconds: 800),
                           viewportFraction: 1,
                         ),
                       );
@@ -144,9 +146,9 @@ class Residential extends StatelessWidget {
             Container(
               width: width * 1,
               height: height * 0.04,
-              margin: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
               color: primaryColor,
-              child: Center(
+              child: const Center(
                   child: Text(
                 "Recents",
                 style: TextStyle(
@@ -163,7 +165,7 @@ class Residential extends StatelessWidget {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Container(
-                        child: Center(
+                        child: const Center(
                           child: CircularProgressIndicator(),
                         ),
                       );
@@ -185,7 +187,7 @@ class Residential extends StatelessWidget {
                           autoPlay: true,
                           enableInfiniteScroll: true,
                           autoPlayAnimationDuration:
-                              Duration(milliseconds: 800),
+                              const Duration(milliseconds: 800),
                           viewportFraction: 1,
                         ),
                       );

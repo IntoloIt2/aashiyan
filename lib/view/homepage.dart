@@ -4,9 +4,12 @@ import 'package:aashiyan/view/residential.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/project_category.dart';
 import '../controller/api_services.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -35,7 +38,7 @@ class _HomePageState extends State<HomePage> {
                 centerTitle: true,
                 bottom: PreferredSize(
                   child: Container(
-                    margin: EdgeInsets.only(bottom: 10),
+                    margin: const EdgeInsets.only(bottom: 10),
                     child: Text(
                       "Premium Architecture Engineering",
                       style: TextStyle(
@@ -50,7 +53,7 @@ class _HomePageState extends State<HomePage> {
               body: SingleChildScrollView(
                 child: Column(
                   children: [
-                    buildRow(),
+                    projectCategory(),
                     InkWell(
                       onTap: (() {
                         Navigator.of(context).pushNamed(Residential.namedRoute);
@@ -108,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: const [
@@ -155,11 +158,8 @@ class _HomePageState extends State<HomePage> {
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
-                                          return Container(
-                                            child: Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            ),
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
                                           );
                                         } else {
                                           return CarouselSlider.builder(
@@ -180,7 +180,8 @@ class _HomePageState extends State<HomePage> {
                                               autoPlay: true,
                                               enableInfiniteScroll: true,
                                               autoPlayAnimationDuration:
-                                                  Duration(milliseconds: 800),
+                                                  const Duration(
+                                                      milliseconds: 800),
                                               viewportFraction: 1,
                                             ),
                                           );
@@ -198,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                                     fontSize: 20,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
                                 Container(
@@ -210,7 +211,7 @@ class _HomePageState extends State<HomePage> {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
                                           return Container(
-                                            child: Center(
+                                            child: const Center(
                                               child:
                                                   CircularProgressIndicator(),
                                             ),
@@ -235,7 +236,8 @@ class _HomePageState extends State<HomePage> {
                                               autoPlay: true,
                                               enableInfiniteScroll: true,
                                               autoPlayAnimationDuration:
-                                                  Duration(milliseconds: 800),
+                                                  const Duration(
+                                                      milliseconds: 800),
                                               viewportFraction: 1,
                                             ),
                                           );

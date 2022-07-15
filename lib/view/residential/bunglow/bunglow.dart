@@ -1,9 +1,11 @@
 import 'package:aashiyan/const.dart';
+import 'package:aashiyan/constants/project_category.dart';
 import 'package:aashiyan/view/residential/bunglow/requirement.dart';
-import 'package:carousel_slider/carousel_options.dart';
+// import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import '../../../constants/app_bar.dart';
 import '../../../controller/api_services.dart';
 
 class Bunglow extends StatelessWidget {
@@ -14,11 +16,11 @@ class Bunglow extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: buildAppbar("Bunglow"),
+      appBar: appBar("Bunglow"),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            buildRow(),
+            projectCategory(),
             Column(
               children: [
                 Card(
@@ -80,7 +82,7 @@ class Bunglow extends StatelessWidget {
                   child: Column(
                     children: [
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -108,7 +110,7 @@ class Bunglow extends StatelessWidget {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
                                 return Container(
-                                  child: Center(
+                                  child: const Center(
                                     child: CircularProgressIndicator(),
                                   ),
                                 );
@@ -133,7 +135,7 @@ class Bunglow extends StatelessWidget {
                                     autoPlay: true,
                                     enableInfiniteScroll: true,
                                     autoPlayAnimationDuration:
-                                        Duration(milliseconds: 800),
+                                        const Duration(milliseconds: 800),
                                     viewportFraction: 1,
                                   ),
                                 );
@@ -141,7 +143,7 @@ class Bunglow extends StatelessWidget {
                             }),
                       ),
                       Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -169,7 +171,7 @@ class Bunglow extends StatelessWidget {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
                                 return Container(
-                                  child: Center(
+                                  child: const Center(
                                     child: CircularProgressIndicator(),
                                   ),
                                 );
@@ -192,7 +194,7 @@ class Bunglow extends StatelessWidget {
                                     autoPlay: true,
                                     enableInfiniteScroll: true,
                                     autoPlayAnimationDuration:
-                                        Duration(milliseconds: 800),
+                                        const Duration(milliseconds: 800),
                                     viewportFraction: 1,
                                   ),
                                 );
