@@ -3,8 +3,8 @@ import 'package:aashiyan/view/residential/bunglow/bunglow.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import '../constants/app_bar.dart';
-import '../constants/project_category.dart';
+import '../components/app_bar.dart';
+import '../components/project_category.dart';
 import '../controller/api_services.dart';
 
 class Residential extends StatelessWidget {

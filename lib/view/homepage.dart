@@ -4,7 +4,7 @@ import 'package:aashiyan/view/residential.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import '../constants/project_category.dart';
+import '../components/project_category.dart';
 import '../controller/api_services.dart';
 
 class HomePage extends StatefulWidget {

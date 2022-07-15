@@ -62,6 +62,7 @@ class HexColor extends Color {
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
 
+Color checkColor = HexColor("#48494b");
 Color textColor2 = HexColor("#735a10");
 Color textColor = HexColor("#7e7e7e");
 Color primaryColor = HexColor("#58A7CA");

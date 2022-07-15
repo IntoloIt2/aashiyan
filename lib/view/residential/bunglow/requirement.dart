@@ -1,8 +1,10 @@
-import 'package:aashiyan/constants/bungalow_steps.dart';
+import 'package:aashiyan/components/bungalow_steps.dart';
+import 'package:aashiyan/components/forms.dart' as Forms;
+import 'package:aashiyan/components/forms.dart';
 import 'package:flutter/material.dart';
 
 import '../../../const.dart';
-import '../../../constants/app_bar.dart';
+import '../../../components/app_bar.dart';
 
 class Requirement extends StatefulWidget {
   static const namedRoute = "/intrestedNext";
@@ -12,8 +14,48 @@ class Requirement extends StatefulWidget {
 }
 
 class _RequirementState extends State<Requirement> {
+  bool? regularPlotValue = false;
+  bool irregularPlotValue = false;
   List<String> items = ["select", "Mr", "Mrs", "Ms", "M/s"];
   String selectedItems = 'select';
+  List<String> countryItmes = ["India"];
+  String country = "India";
+  List<String> stateItems = [
+    "SELECT STATE",
+    "ARUNACHAL PRADESH",
+    "ASSAM",
+    "BIHAR",
+    "CHHATTISGARH",
+    "GOA",
+    "GUJRAT",
+    "HARYANA",
+    "HIMACHAL PRADESH",
+    "JHARKHAND",
+    "KARNATAK",
+    "KERALA",
+    "MADHYA PRADESH",
+    "MAHARASHTRA",
+    "MANIPUR",
+    "MEGHALAYA",
+    "MIZORAM",
+    "NAGALAND",
+    "ODISHA",
+    'PUNJAB',
+    'RAJASTHAN',
+    "SIKKIM",
+    "TAMIL NADU",
+    "TELENGA",
+    "TRIPURA",
+    "UTTAR PRADESH",
+    "UTTRAKHAND",
+    "WEST BENGAL",
+    "ANDHRA PRADESH"
+  ];
+  String selectedState = "SELECT STATE";
+
+  List<String> sizeitems = ["ft", "m"];
+
+  String size = "ft";
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +71,7 @@ class _RequirementState extends State<Requirement> {
             bungalowSteps(context),
             Row(
               children: [
-                const Text(
-                  "Name",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                requirementText("Name"),
                 SizedBox(
                   width: height * 0.02,
                 ),
@@ -68,48 +105,70 @@ class _RequirementState extends State<Requirement> {
                 const SizedBox(
                   width: 5,
                 ),
-                Material(
-                  elevation: 5,
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  child: SizedBox(
-                    height: height * 0.04,
-                    width: width * 0.25,
-                    child: TextFormField(
-                      style: TextStyle(fontSize: height * 0.018),
-                      decoration: InputDecoration(
-                          hintText: "firstname",
-                          hintStyle: TextStyle(fontSize: height * 0.018),
-                          border: const OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                          ),
-                          isDense: true,
-                          contentPadding: EdgeInsets.all(8)
-                          //fillColor: Colors.green
-                          ),
-                    ),
-                  ),
-                ),
+                requirementTextField(height, width, 0.04, 0.25, "firstname"),
                 SizedBox(
                   width: width * 0.01,
                 ),
+                requirementTextField(height, width, 0.04, 0.19, "lastname"),
+              ],
+            ),
+            SizedBox(
+              height: height * 0.02,
+            ),
+            Row(
+              children: [
+                requirementText("Email"),
+                SizedBox(
+                  width: width * 0.05,
+                ),
+                requirementTextField(height, width, 0.04, 0.6, "email"),
+              ],
+            ),
+            SizedBox(
+              height: height * 0.02,
+            ),
+            Row(
+              children: [
+                requirementText("project \nAddress"),
+                SizedBox(
+                  width: width * 0.017,
+                ),
+                requirementTextField(height, width, 0.06, 0.6, "Address"),
+              ],
+            ),
+            SizedBox(
+              height: height * 0.02,
+            ),
+            Row(
+              children: [
+                Forms.requirementText("country"),
+                SizedBox(
+                  width: width * 0.02,
+                ),
                 Material(
                   elevation: 5,
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.04,
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    child: TextFormField(
-                      style: TextStyle(fontSize: height * 0.018),
-                      decoration: InputDecoration(
-                          hintText: "last name",
-                          hintStyle: TextStyle(fontSize: height * 0.018),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                          ),
-                          isDense: true, // Added this
-                          contentPadding: EdgeInsets.all(8)
-                          //fillColor: Colors.green
-                          ),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(5),
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    height: height * 0.04,
+                    width: width * 0.6,
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: country,
+                        elevation: 16,
+                        items: countryItmes
+                            .map(
+                              (it) => DropdownMenuItem<String>(
+                                value: it,
+                                child: Text(it,
+                                    style: TextStyle(fontSize: height * 0.02)),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (it) => setState(() => country = it!),
+                      ),
                     ),
                   ),
                 ),
@@ -120,33 +179,75 @@ class _RequirementState extends State<Requirement> {
             ),
             Row(
               children: [
-                Text(
-                  "Email",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                Forms.requirementText("state"),
                 SizedBox(
-                  width: width * 0.05,
+                  width: width * 0.06,
                 ),
                 Material(
                   elevation: 5,
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  child: SizedBox(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(5),
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.all(5),
                     height: height * 0.04,
                     width: width * 0.6,
-                    child: TextFormField(
-                      style: TextStyle(fontSize: height * 0.018),
-                      decoration: InputDecoration(
-                          hintText: "Email",
-                          hintStyle: TextStyle(fontSize: height * 0.018),
-                          border: const OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                          ),
-                          isDense: true,
-                          contentPadding: EdgeInsets.all(8)
-                          //fillColor: Colors.green
-                          ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: selectedState,
+                        elevation: 16,
+                        items: stateItems
+                            .map(
+                              (it) => DropdownMenuItem<String>(
+                                value: it,
+                                child: Text(it,
+                                    style: TextStyle(fontSize: height * 0.02)),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (it) => setState(() => selectedState = it!),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: height * 0.02,
+            ),
+            Row(
+              children: [
+                const Text(
+                  "Property details",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  width: width * 0.23,
+                ),
+                Material(
+                  elevation: 5,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(5),
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    height: height * 0.04,
+                    width: width * 0.2,
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        value: size,
+                        elevation: 16,
+                        items: sizeitems
+                            .map((it) => DropdownMenuItem<String>(
+                                  value: it,
+                                  child: Text(
+                                    it,
+                                    style: TextStyle(fontSize: height * 0.02),
+                                  ),
+                                ))
+                            .toList(),
+                        onChanged: (it) => setState(() => size = it!),
+                      ),
                     ),
                   ),
                 ),
@@ -154,38 +255,103 @@ class _RequirementState extends State<Requirement> {
             ),
             Row(
               children: [
-                Text(
-                  "project \n Address",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                Checkbox(
+                  activeColor: checkColor,
+                  checkColor: Colors.white,
+                  value: regularPlotValue,
+                  onChanged: (val) {
+                    setState(() {
+                      regularPlotValue = val;
+                      irregularPlotValue = !irregularPlotValue;
+                    });
+                  },
                 ),
                 SizedBox(
-                  width: width * 0.05,
+                  width: width * 0.00,
                 ),
-                Material(
-                  elevation: 5,
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  child: SizedBox(
-                    height: height * 0.04,
-                    width: width * 0.6,
-                    child: TextFormField(
-                      style: TextStyle(fontSize: height * 0.018),
-                      decoration: InputDecoration(
-                          hintText: "Email",
-                          hintStyle: TextStyle(fontSize: height * 0.018),
-                          border: const OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                          ),
-                          isDense: true,
-                          contentPadding: EdgeInsets.all(8)
-                          //fillColor: Colors.green
-                          ),
-                    ),
-                  ),
+                requirementText("Regular plot"),
+                SizedBox(
+                  width: width * 0.1,
                 ),
+                Checkbox(
+                  activeColor: checkColor,
+                  checkColor: Colors.white,
+                  value: irregularPlotValue,
+                  onChanged: (val) {
+                    setState(() {
+                      irregularPlotValue = val!;
+                      regularPlotValue = !regularPlotValue!;
+                    });
+                  },
+                ),
+                requirementText("Irregular plot"),
               ],
             ),
+            Row(children: [
+              requirementText("length"),
+              SizedBox(
+                width: width * 0.04,
+              ),
+              requirementTextField(height, width, 0.04, 0.15, "length"),
+              Material(
+                borderRadius: BorderRadius.circular(5),
+                elevation: 1,
+                child: Container(
+                  width: width * 0.08,
+                  margin: EdgeInsets.all(7),
+                  decoration: BoxDecoration(color: Colors.white),
+                  child: Text(size),
+                ),
+              )
+            ]),
+            SizedBox(
+              height: height * 0.004,
+            ),
+            Row(children: [
+              requirementText("width"),
+              SizedBox(
+                width: width * 0.05,
+              ),
+              requirementTextField(height, width, 0.04, 0.15, "width"),
+              Material(
+                borderRadius: BorderRadius.circular(5),
+                elevation: 1,
+                child: Container(
+                  width: width * 0.08,
+                  margin: EdgeInsets.all(7),
+                  decoration: BoxDecoration(color: Colors.white),
+                  child: Text(size),
+                ),
+              )
+            ]),
+            SizedBox(
+              height: height * 0.004,
+            ),
+            Row(children: [
+              requirementText("plot size"),
+              SizedBox(
+                width: width * 0.05,
+              ),
+              requirementTextField(height, width, 0.04, 0.15, "00"),
+              SizedBox(
+                width: width * 0.015,
+              ),
+              Material(
+                borderRadius: BorderRadius.circular(5),
+                elevation: 1,
+                child: Container(
+                  padding: EdgeInsets.all(2),
+                  width: width * 0.05,
+                  margin: EdgeInsets.all(5),
+                  decoration: BoxDecoration(color: Colors.white),
+                  child: if(size == "ft"){
+                    n;
+                    }else{
+                    new Container();
+                      }
+                ),
+              )
+            ])
           ],
         ),
       ),
