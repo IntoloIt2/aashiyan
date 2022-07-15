@@ -15,6 +15,8 @@ class _RequirementState extends State<Requirement> {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: requirementColor,
       appBar: buildAppbar("Requirement"),
@@ -24,7 +26,6 @@ class _RequirementState extends State<Requirement> {
           children: [
             buildSteps(context),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text("Name"),
                 SizedBox(
@@ -36,38 +37,75 @@ class _RequirementState extends State<Requirement> {
                       Radius.circular(10),
                     ),
                   ),
-                  child: DropdownButton<String>(
-                    value: selectedItems,
-                    icon: const Icon(Icons.keyboard_arrow_down_sharp),
-                    elevation: 16,
-                    items: items
-                        .map((it) => DropdownMenuItem<String>(
-                              value: it,
-                              child: Text(it),
-                            ))
-                        .toList(),
-                    onChanged: (it) => setState(() => selectedItems = it!),
+                  child: Material(
+                    elevation: 5,
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      height: height * 0.05,
+                      width: width * 0.15,
+                      child: DropdownButton<String>(
+                        value: selectedItems,
+                        icon: const Icon(Icons.keyboard_arrow_down_sharp),
+                        elevation: 16,
+                        items: items
+                            .map((it) => DropdownMenuItem<String>(
+                                  value: it,
+                                  child: Text(it,
+                                      style:
+                                          TextStyle(fontSize: height * 0.02)),
+                                ))
+                            .toList(),
+                        onChanged: (it) => setState(() => selectedItems = it!),
+                      ),
+                    ),
                   ),
                 ),
-                SizedBox(
-                  width: 20,
+                const SizedBox(
+                  width: 5,
                 ),
                 Material(
                   elevation: 5,
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.05,
-                    width: MediaQuery.of(context).size.width * 0.3,
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  child: SizedBox(
+                    height: height * 0.05,
+                    width: width * 0.3,
                     child: TextFormField(
+                      style: TextStyle(fontSize: height * 0.02),
                       decoration: InputDecoration(
-                        labelText: "firstname",
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-
-                        //fillColor: Colors.green
-                      ),
+                          hintText: "firstname",
+                          hintStyle: TextStyle(fontSize: height * 0.02),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          isDense: true, // Added this
+                          contentPadding: EdgeInsets.all(8)
+                          //fillColor: Colors.green
+                          ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: width * 0.01,
+                ),
+                Material(
+                  elevation: 5,
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    child: TextFormField(
+                      style: TextStyle(fontSize: 14),
+                      decoration: InputDecoration(
+                          hintText: "last name",
+                          hintStyle: TextStyle(fontSize: 14),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          isDense: true, // Added this
+                          contentPadding: EdgeInsets.all(8)
+                          //fillColor: Colors.green
+                          ),
                     ),
                   ),
                 ),
