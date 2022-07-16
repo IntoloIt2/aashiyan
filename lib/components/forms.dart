@@ -35,6 +35,21 @@ Material textField(BuildContext context) {
   );
 }
 
+Material valueContainer(
+    double height, double width, String str, double h, double w) {
+  return Material(
+    borderRadius: BorderRadius.circular(5),
+    elevation: 1,
+    child: Container(
+      height: height * h,
+      width: width * w,
+      padding: EdgeInsets.all(5),
+      decoration: BoxDecoration(color: Colors.white),
+      child: Text(str),
+    ),
+  );
+}
+
 Text requirementText(String txt) {
   return Text(
     txt,

@@ -62,6 +62,7 @@ class HexColor extends Color {
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
 
+Color buttonColor = HexColor("#0369a1");
 Color checkColor = HexColor("#48494b");
 Color textColor2 = HexColor("#735a10");
 Color textColor = HexColor("#7e7e7e");
