@@ -67,9 +67,7 @@ class _RequirementState extends State<Requirement> {
   ];
   String selectedState = "SELECT STATE";
 
-  List<String> sizeitems = ["ft", "m"];
-
-  String size = "ft";
+  
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +86,7 @@ class _RequirementState extends State<Requirement> {
                 children: [
                   requirementText("Name"),
                   SizedBox(
-                    width: height * 0.02,
+                    width: width * 0.04,
                   ),
                   Material(
                     elevation: 5,
@@ -98,7 +96,6 @@ class _RequirementState extends State<Requirement> {
                     child: Container(
                       padding: EdgeInsets.all(5),
                       height: height * 0.04,
-                      width: width * 0.19,
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           value: selectedItems,
