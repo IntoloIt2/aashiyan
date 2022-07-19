@@ -18,39 +18,7 @@ Container lableText(String lable) {
   );
 }
 
-Row entranceContainer(double width, double w, String str, bool checked) {
-    return Row(
-      children: [
-        SizedBox(
-          width: width * w,
-        ),
-        Material(
-          borderRadius: BorderRadius.circular(5),
-          elevation: 5,
-          child: Container(
-            padding: EdgeInsets.only(right: 10),
-            child: Row(
-              children: [
-                StatefulBuilder(
-                    builder: (BuildContext context, StateSetter setState) {
-                  return Checkbox(
-                      activeColor: checkColor,
-                      checkColor: Colors.white,
-                      value: checked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          checked = value!;
-                        });
-                      });
-                }),
-                requirementText(str)
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+
 
 Material textField(BuildContext context) {
   return Material(

@@ -78,7 +78,7 @@ class _RequirementState extends State<Requirement> {
       appBar: appBar("Requirement"),
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
           child: Column(
             children: [
               bungalowSteps(context),
@@ -733,7 +733,7 @@ class _RequirementState extends State<Requirement> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: const Text(
-                  "ave and continue",
+                  "save and continue",
                   style: TextStyle(color: Colors.white, fontSize: 14),
                 ),
               )

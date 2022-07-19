@@ -18,8 +18,20 @@ class Entrance extends StatefulWidget {
 class _EntranceState extends State<Entrance> {
   List<String> floors = ["Select", "1(G)", "2(G+1)", "3(G+3)", "more"];
   String selectedFloor = "Select";
+
+  List<String> lobbyDesign = [
+    "Select",
+    "Hilighter/welcome wall",
+    "shoe rack space"
+  ];
+
+  String SelectedLobbyDesign = "Select";
+
   List<String> entranceGates = ["Select", "10", "12", "14", "more"];
   String entranceSelectedGates = "Select";
+
+  List<String> noOfCars = ["Select", "1", "2", "3", "4", "5", "more"];
+  String SelectedCar = "Select";
 
   List<String> carGate = ["Select", "10", "12", "14", "more"];
   String selectedCarGate = "Select";
@@ -36,7 +48,12 @@ class _EntranceState extends State<Entrance> {
 
   List<String> carParkingItems = ["Select", "1", "2", "3", "4", "5", "more"];
   String selectedCarParking = "Select";
-
+  bool? outSideOpen = false;
+  bool? outSideClosed = false;
+  bool? requiredVeranda = false;
+  bool? notReqiredVeranda = false;
+  bool? requiredWelcomeLobyy = false;
+  bool? notReqiredWelcomeLobby = false;
   bool? carparking = false;
   bool? visualNature = false;
   bool? securityRequired = false;
@@ -72,9 +89,11 @@ class _EntranceState extends State<Entrance> {
                     elevation: 5,
                     borderRadius: BorderRadius.circular(5),
                     child: Container(
-                      height: height * 0.045,
+                      height: height * 0.03,
                       width: width * 0.2,
-                      padding: const EdgeInsets.all(3),
+                      margin: EdgeInsets.all(
+                        3,
+                      ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                             icon: const Visibility(
@@ -88,8 +107,8 @@ class _EntranceState extends State<Entrance> {
                                     child: Text(
                                       it,
                                       style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: height * 0.02),
+                                        color: Colors.black,
+                                      ),
                                     )))
                                 .toList(),
                             onChanged: (it) =>
@@ -100,7 +119,7 @@ class _EntranceState extends State<Entrance> {
                 ],
               ),
               SizedBox(
-                height: height * 0.02,
+                height: height * 0.01,
               ),
               Row(
                 children: [
@@ -108,14 +127,75 @@ class _EntranceState extends State<Entrance> {
                   SizedBox(
                     width: width * 0.17,
                   ),
-                  entranceContainer(
-                      width, .035, "moderate consideration", moderate!)
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: width * 0.035,
+                      ),
+                      Material(
+                        borderRadius: BorderRadius.circular(5),
+                        elevation: 5,
+                        child: Container(
+                          margin: EdgeInsets.only(right: 10),
+                          height: height * 0.04,
+                          child: Row(
+                            children: [
+                              StatefulBuilder(builder:
+                                  (BuildContext context, StateSetter setState) {
+                                return Checkbox(
+                                    activeColor: checkColor,
+                                    checkColor: Colors.white,
+                                    value: moderate,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        moderate = value!;
+                                      });
+                                    });
+                              }),
+                              requirementText("moderate consideration")
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
               SizedBox(
                 height: height * 0.01,
               ),
-              entranceContainer(width, 0.29, "Consult", consult!),
+              Row(
+                children: [
+                  SizedBox(
+                    width: width * 0.29,
+                  ),
+                  Material(
+                    borderRadius: BorderRadius.circular(5),
+                    elevation: 5,
+                    child: Container(
+                      height: height * 0.04,
+                      margin: EdgeInsets.only(right: 10),
+                      child: Row(
+                        children: [
+                          StatefulBuilder(builder:
+                              (BuildContext context, StateSetter setState) {
+                            return Checkbox(
+                                activeColor: checkColor,
+                                checkColor: Colors.white,
+                                value: consult,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    consult = value!;
+                                  });
+                                });
+                          }),
+                          requirementText("consult")
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               SizedBox(
                 height: height * 0.01,
               ),
@@ -140,7 +220,8 @@ class _EntranceState extends State<Entrance> {
                         borderRadius: BorderRadius.circular(5),
                         elevation: 5,
                         child: Container(
-                          padding: EdgeInsets.only(right: 10),
+                          margin: EdgeInsets.only(right: 10),
+                          height: height * 0.04,
                           child: Row(
                             children: [
                               Checkbox(
@@ -171,7 +252,8 @@ class _EntranceState extends State<Entrance> {
                         borderRadius: BorderRadius.circular(5),
                         elevation: 5,
                         child: Container(
-                          padding: EdgeInsets.only(right: 10),
+                          margin: EdgeInsets.only(right: 10),
+                          height: height * 0.04,
                           child: Row(
                             children: [
                               Checkbox(
@@ -206,8 +288,8 @@ class _EntranceState extends State<Entrance> {
                       elevation: 5,
                       borderRadius: BorderRadius.circular(5),
                       child: Container(
-                        height: height * 0.045,
-                        width: width * 0.2,
+                        margin: EdgeInsets.only(right: 10),
+                        height: height * 0.04,
                         padding: const EdgeInsets.all(3),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
@@ -694,9 +776,6 @@ class _EntranceState extends State<Entrance> {
                 ),
                 Row(
                   children: [
-                    SizedBox(
-                      width: width * 0.05,
-                    ),
                     Material(
                       borderRadius: BorderRadius.circular(5),
                       elevation: 5,
@@ -723,10 +802,10 @@ class _EntranceState extends State<Entrance> {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
                 if (visualNature == true) ...[
-                  SizedBox(
-                    height: height * 0.01,
-                  ),
                   Align(
                     alignment: Alignment.topLeft,
                     child: Material(
@@ -807,32 +886,528 @@ class _EntranceState extends State<Entrance> {
                 SizedBox(
                   height: height * 0.02,
                 ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Material(
+                    borderRadius: BorderRadius.circular(5),
+                    elevation: 5,
+                    child: Container(
+                      width: width * 0.4,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: height * 0.04,
+                            child: Checkbox(
+                                activeColor: checkColor,
+                                checkColor: Colors.white,
+                                value: carparking,
+                                onChanged: (value) {
+                                  setState(() {
+                                    carparking = value;
+                                  });
+                                }),
+                          ),
+                          requirementText("car parking space"),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+              SizedBox(
+                height: height * 0.01,
+              ),
+              if (carparking == true) ...[
+                Row(
+                  children: [
+                    const Text("No. of Colors"),
+                    SizedBox(
+                      width: width * 0.04,
+                    ),
+                    Material(
+                      elevation: 5,
+                      borderRadius: BorderRadius.circular(5),
+                      child: Container(
+                        height: height * 0.035,
+                        width: width * 0.15,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                              icon: const Visibility(
+                                  visible: false,
+                                  child: Icon(Icons.arrow_downward)),
+                              value: SelectedCar,
+                              items: noOfCars
+                                  .map((e) => DropdownMenuItem<String>(
+                                        value: e,
+                                        child: Text(e),
+                                      ))
+                                  .toList(),
+                              onChanged: (e) => setState(() {
+                                    SelectedCar = e!;
+                                  })),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: width * 0.03,
+                    ),
+                    if (SelectedCar == "more") ...[
+                      requirementTextField(
+                          height, width, 0.035, 0.2, "no of cars"),
+                    ]
+                  ],
+                )
+              ],
+              SizedBox(
+                height: height * 0.01,
+              ),
+              if (porchRequired == true) ...[
+                Material(
+                  elevation: 10,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    color: Colors.white,
+                    child: SizedBox(
+                      width: width * 9,
+                      height: height * 0.3,
+                      child: FutureBuilder(
+                          future: getRecent(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Container(
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            } else {
+                              return CarouselSlider.builder(
+                                itemCount: bunglowPageRecentList.length,
+                                itemBuilder: (context, i, id) {
+                                  return Container(
+                                    height: height * 0.4,
+                                    width: width * 0.9,
+                                    child: Image.network(
+                                      imageUrl +
+                                          bunglowPageRecentList[i]["img_path"],
+                                      fit: BoxFit.fill,
+                                    ),
+                                  );
+                                },
+                                options: CarouselOptions(
+                                  autoPlay: true,
+                                  enableInfiniteScroll: true,
+                                  autoPlayAnimationDuration:
+                                      const Duration(milliseconds: 800),
+                                  viewportFraction: 1,
+                                ),
+                              );
+                            }
+                          }),
+                    ),
+                  ),
+                ),
+              ],
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: requirementText("Foyer/welcome lobby"),
+              ),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Material(
+                    borderRadius: BorderRadius.circular(5),
+                    elevation: 5,
+                    child: Container(
+                      width: width * 0.4,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: height * 0.04,
+                            child: Checkbox(
+                                activeColor: checkColor,
+                                checkColor: Colors.white,
+                                value: requiredWelcomeLobyy,
+                                onChanged: (value) {
+                                  setState(() {
+                                    requiredWelcomeLobyy = value;
+                                    notReqiredWelcomeLobby = false;
+                                  });
+                                }),
+                          ),
+                          requirementText("Required"),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: width * 0.02,
+                  ),
+                  Material(
+                    borderRadius: BorderRadius.circular(5),
+                    elevation: 5,
+                    child: Container(
+                      width: width * 0.4,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: height * 0.04,
+                            child: Checkbox(
+                                activeColor: checkColor,
+                                checkColor: Colors.white,
+                                value: notReqiredWelcomeLobby,
+                                onChanged: (value) {
+                                  setState(() {
+                                    notReqiredWelcomeLobby = value;
+                                    requiredWelcomeLobyy = false;
+                                  });
+                                }),
+                          ),
+                          requirementText("Not Required"),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              if (requiredWelcomeLobyy == true) ...[
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Row(
+                  children: [
+                    requirementText("Length"),
+                    SizedBox(
+                      width: width * 0.015,
+                    ),
+                    requirementTextField(height, width, 0.04, 0.15, "length"),
+                    valueContainer(height, width, size, 0.04, 0.05),
+                    SizedBox(
+                      width: width * 0.02,
+                    ),
+                    requirementText("Width"),
+                    SizedBox(
+                      width: width * 0.015,
+                    ),
+                    requirementTextField(height, width, 0.04, 0.15, "Width"),
+                    valueContainer(height, width, size, 0.04, 0.05),
+                    SizedBox(
+                      width: width * 0.01,
+                    ),
+                    requirementText("help ?")
+                  ],
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Row(
+                  children: [
+                    requirementText("Lobby Design"),
+                    SizedBox(
+                      width: width * 0.03,
+                    ),
+                    Material(
+                      elevation: 5,
+                      borderRadius: BorderRadius.circular(5),
+                      child: Container(
+                        margin: EdgeInsets.only(left: 10),
+                        height: height * 0.035,
+                        width: width * 0.45,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                              icon: const Visibility(
+                                  visible: false,
+                                  child: Icon(Icons.arrow_downward)),
+                              value: SelectedLobbyDesign,
+                              items: lobbyDesign
+                                  .map((e) => DropdownMenuItem<String>(
+                                        value: e,
+                                        child: Text(e),
+                                      ))
+                                  .toList(),
+                              onChanged: (e) => setState(() {
+                                    SelectedLobbyDesign = e!;
+                                  })),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Material(
+                  elevation: 10,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    color: Colors.white,
+                    child: SizedBox(
+                      width: width * 9,
+                      height: height * 0.3,
+                      child: FutureBuilder(
+                          future: getRecent(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Container(
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            } else {
+                              return CarouselSlider.builder(
+                                itemCount: bunglowPageRecentList.length,
+                                itemBuilder: (context, i, id) {
+                                  return Container(
+                                    height: height * 0.4,
+                                    width: width * 0.9,
+                                    child: Image.network(
+                                      imageUrl +
+                                          bunglowPageRecentList[i]["img_path"],
+                                      fit: BoxFit.fill,
+                                    ),
+                                  );
+                                },
+                                options: CarouselOptions(
+                                  autoPlay: true,
+                                  enableInfiniteScroll: true,
+                                  autoPlayAnimationDuration:
+                                      const Duration(milliseconds: 800),
+                                  viewportFraction: 1,
+                                ),
+                              );
+                            }
+                          }),
+                    ),
+                  ),
+                )
+              ],
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: requirementText("veranda"),
+              ),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Material(
+                    borderRadius: BorderRadius.circular(5),
+                    elevation: 5,
+                    child: Container(
+                      width: width * 0.4,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: height * 0.04,
+                            child: Checkbox(
+                                activeColor: checkColor,
+                                checkColor: Colors.white,
+                                value: requiredVeranda,
+                                onChanged: (value) {
+                                  setState(() {
+                                    requiredVeranda = value;
+                                    notReqiredVeranda = false;
+                                  });
+                                }),
+                          ),
+                          requirementText("Required"),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: width * 0.02,
+                  ),
+                  Material(
+                    borderRadius: BorderRadius.circular(5),
+                    elevation: 5,
+                    child: Container(
+                      width: width * 0.4,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: height * 0.04,
+                            child: Checkbox(
+                                activeColor: checkColor,
+                                checkColor: Colors.white,
+                                value: notReqiredVeranda,
+                                onChanged: (value) {
+                                  setState(() {
+                                    notReqiredVeranda = value;
+                                    requiredVeranda = false;
+                                  });
+                                }),
+                          ),
+                          requirementText("Not Required"),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              if (requiredVeranda == true) ...[
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Row(
+                  children: [
+                    requirementText("Length"),
+                    SizedBox(
+                      width: width * 0.015,
+                    ),
+                    requirementTextField(height, width, 0.04, 0.15, "length"),
+                    valueContainer(height, width, size, 0.04, 0.05),
+                    SizedBox(
+                      width: width * 0.02,
+                    ),
+                    requirementText("Width"),
+                    SizedBox(
+                      width: width * 0.015,
+                    ),
+                    requirementTextField(height, width, 0.04, 0.15, "Width"),
+                    valueContainer(height, width, size, 0.04, 0.05),
+                    SizedBox(
+                      width: width * 0.01,
+                    ),
+                    requirementText("help ?")
+                  ],
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Material(
+                    borderRadius: BorderRadius.circular(5),
+                    elevation: 5,
+                    child: Container(
+                      width: width * 0.4,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: height * 0.04,
+                            child: Checkbox(
+                                activeColor: checkColor,
+                                checkColor: Colors.white,
+                                value: outSideOpen,
+                                onChanged: (value) {
+                                  setState(() {
+                                    outSideOpen = value;
+                                    outSideClosed = false;
+                                  });
+                                }),
+                          ),
+                          requirementText("out side open"),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
                 Material(
                   borderRadius: BorderRadius.circular(5),
                   elevation: 5,
                   child: Container(
-                    padding: EdgeInsets.only(right: 10),
+                    width: width * 1,
                     child: Row(
                       children: [
                         SizedBox(
-                          
                           height: height * 0.04,
                           child: Checkbox(
                               activeColor: checkColor,
                               checkColor: Colors.white,
-                              value: carparking,
+                              value: outSideClosed,
                               onChanged: (value) {
                                 setState(() {
-                                  carparking = value;
+                                  outSideClosed = value;
+                                  outSideOpen = false;
                                 });
                               }),
                         ),
-                        requirementText("car parking space")
+                        requirementText("Out side closed with glass or grill"),
                       ],
                     ),
                   ),
                 ),
-              ]
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Material(
+                  elevation: 10,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    color: Colors.white,
+                    child: SizedBox(
+                      width: width * 9,
+                      height: height * 0.3,
+                      child: FutureBuilder(
+                          future: getRecent(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Container(
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            } else {
+                              return CarouselSlider.builder(
+                                itemCount: bunglowPageRecentList.length,
+                                itemBuilder: (context, i, id) {
+                                  return Container(
+                                    height: height * 0.4,
+                                    width: width * 0.9,
+                                    child: Image.network(
+                                      imageUrl +
+                                          bunglowPageRecentList[i]["img_path"],
+                                      fit: BoxFit.fill,
+                                    ),
+                                  );
+                                },
+                                options: CarouselOptions(
+                                  autoPlay: true,
+                                  enableInfiniteScroll: true,
+                                  autoPlayAnimationDuration:
+                                      const Duration(milliseconds: 800),
+                                  viewportFraction: 1,
+                                ),
+                              );
+                            }
+                          }),
+                    ),
+                  ),
+                ),
+              ],
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    color: buttonColor, borderRadius: BorderRadius.circular(4)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: const Text(
+                  "save and continue",
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+              )
             ],
           ),
         ),
