@@ -1,4 +1,6 @@
 import 'package:aashiyan/const.dart';
+import 'package:aashiyan/view/residential/bunglow/bedroom.dart';
+import 'package:aashiyan/view/residential/bunglow/floorstore.dart';
 import 'package:aashiyan/view/residential/bunglow/livinghall.dart';
 import 'package:aashiyan/view/residential/bunglow/pantrydetail.dart';
 import 'package:aashiyan/view/residential/bunglow/requirement.dart';
@@ -30,12 +32,16 @@ class MyApp extends StatelessWidget {
           )),
       home: const HomePage(),
       routes: {
+
+        
         Residential.namedRoute: (context) => const Residential(),
         Bunglow.namedRoute: (context) => const Bunglow(),
         Requirement.namedRoute: (context) => Requirement(),
         Entrance.namedRoute: (context) => const Entrance(),
         LivingHall.namedRoute : (context) =>  LivingHall(),
-        PantryDetail.namedRoute :(context) => PantryDetail()
+        PantryDetail.namedRoute :(context) => PantryDetail(),
+        FloorStore.namedRoute :(context) => FloorStore(),
+        BedRoom.namedRoute : (context) => BedRoom(), 
       },
     );
   }
