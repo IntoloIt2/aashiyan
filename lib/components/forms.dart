@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../const.dart';
+
+List<String> sizeitems = ["ft", "m"];
+ String size = "ft";
+
 Container lableText(String lable) {
   return Container(
     padding: EdgeInsets.only(right: 5),
@@ -12,6 +17,8 @@ Container lableText(String lable) {
     ),
   );
 }
+
+
 
 Material textField(BuildContext context) {
   return Material(
