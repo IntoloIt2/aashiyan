@@ -1,6 +1,5 @@
 import 'package:aashiyan/components/forms.dart';
-import 'package:aashiyan/view/residential/bunglow/entrance.dart';
-import 'package:aashiyan/view/residential/bunglow/selectmulti.dart';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
@@ -62,7 +61,7 @@ class _PantryDetailState extends State<PantryDetail> {
     return Scaffold(
       appBar: appBar("Pantry"),
       body: Container(
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,7 +79,7 @@ class _PantryDetailState extends State<PantryDetail> {
                         borderRadius: BorderRadius.circular(5),
                         elevation: 5,
                         child: Container(
-                          padding: EdgeInsets.only(right: 10),
+                          padding: const EdgeInsets.only(right: 10),
                           child: Row(
                             children: [
                               SizedBox(
@@ -114,7 +113,7 @@ class _PantryDetailState extends State<PantryDetail> {
                         borderRadius: BorderRadius.circular(5),
                         elevation: 5,
                         child: Container(
-                          padding: EdgeInsets.only(right: 10),
+                          padding: const EdgeInsets.only(right: 10),
                           child: Row(
                             children: [
                               SizedBox(
@@ -160,7 +159,7 @@ class _PantryDetailState extends State<PantryDetail> {
                         child: Container(
                           height: height * 0.03,
                           width: width * 0.25,
-                          margin: EdgeInsets.all(
+                          margin: const EdgeInsets.all(
                             3,
                           ),
                           child: DropdownButtonHideUnderline(
@@ -175,7 +174,7 @@ class _PantryDetailState extends State<PantryDetail> {
                                         value: it,
                                         child: Text(
                                           it,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.black,
                                           ),
                                         )))
@@ -256,7 +255,7 @@ class _PantryDetailState extends State<PantryDetail> {
                       child: Container(
                         height: height * 0.03,
                         width: width * 0.25,
-                        margin: EdgeInsets.all(
+                        margin: const EdgeInsets.all(
                           3,
                         ),
                         child: DropdownButtonHideUnderline(
@@ -271,7 +270,7 @@ class _PantryDetailState extends State<PantryDetail> {
                                       value: it,
                                       child: Text(
                                         it,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.black,
                                         ),
                                       )))
@@ -331,7 +330,7 @@ class _PantryDetailState extends State<PantryDetail> {
                     borderRadius: BorderRadius.circular(5),
                     child: Container(
                       height: height * 0.03,
-                      margin: EdgeInsets.all(
+                      margin: const EdgeInsets.all(
                         3,
                       ),
                       child: DropdownButtonHideUnderline(
@@ -346,7 +345,7 @@ class _PantryDetailState extends State<PantryDetail> {
                                     value: it,
                                     child: Text(
                                       it,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.black,
                                       ),
                                     )))
@@ -386,9 +385,9 @@ class _PantryDetailState extends State<PantryDetail> {
                         // dropdownTitleTileBorder:
                         //     Border.all(color: Colors.black, width: 1),
                         dropdownTitleTileBorderRadius: BorderRadius.circular(5),
-                        dropdownTitleTileMargin: EdgeInsets.all(1),
+                        dropdownTitleTileMargin: const EdgeInsets.all(1),
                         dropdownTitleTilePadding:
-                            EdgeInsets.symmetric(horizontal: 10),
+                            const EdgeInsets.symmetric(horizontal: 10),
                         expandedIcon: const Icon(
                           Icons.keyboard_arrow_down,
                           color: Colors.black54,
@@ -397,8 +396,8 @@ class _PantryDetailState extends State<PantryDetail> {
                           Icons.keyboard_arrow_up,
                           color: Colors.black54,
                         ),
-                        submitButton: Text('Submit'),
-                        cancelButton: Text('Cancel'),
+                        submitButton: const Text('Submit'),
+                        cancelButton: const Text('Cancel'),
                         dropdownTitleTileTextStyle: const TextStyle(
                           fontSize: 14,
                         ),
@@ -430,7 +429,7 @@ class _PantryDetailState extends State<PantryDetail> {
               Material(
                 elevation: 10,
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   color: Colors.white,
                   child: SizedBox(
                     width: width * 9,

@@ -2,6 +2,7 @@ import 'package:aashiyan/view/residential/bunglow/bedroom.dart';
 import 'package:aashiyan/view/residential/bunglow/floorstore.dart';
 import 'package:aashiyan/view/residential/bunglow/livinghall.dart';
 import 'package:aashiyan/view/residential/bunglow/pantrydetail.dart';
+import 'package:aashiyan/view/residential/bunglow/selectmulti.dart';
 import 'package:flutter/material.dart';
 import '../view/residential/bunglow/entrance.dart';
 import 'steps_container.dart';
@@ -52,9 +53,10 @@ SingleChildScrollView bungalowSteps(BuildContext context) {
         ),
         InkWell(
           onTap: () {
-           Navigator.of(context).pushNamed(BedRoom.namedRoute);
+            Navigator.of(context).pushNamed(BedroomPage.namedRoute);
           },
-          child: stepsContainer("step6"),),
+          child: stepsContainer("step6"),
+        ),
         const SizedBox(
           width: 10,
         ),
