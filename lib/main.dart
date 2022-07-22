@@ -1,6 +1,7 @@
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/view/residential/bunglow/bedroom.dart';
+import 'package:aashiyan/view/residential/bunglow/bedroompage.dart';
 import 'package:aashiyan/view/residential/bunglow/floorstore.dart';
 import 'package:aashiyan/view/residential/bunglow/livinghall.dart';
 import 'package:aashiyan/view/residential/bunglow/pantrydetail.dart';
@@ -8,10 +9,9 @@ import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:aashiyan/view/residential/bunglow/bunglow.dart';
 import 'package:aashiyan/view/residential.dart';
 import 'package:aashiyan/view/residential/bunglow/entrance.dart';
-import 'package:aashiyan/view/residential/bunglow/selectmulti.dart';
-import 'package:flutter/material.dart';
+import 'package:aashiyan/view/residential/bunglow/testing.dart';
 
-import 'view/homepage.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSwatch().copyWith(
             primary: primaryColor,
           )),
-      home: HomePage(),
+      home: BedroomPage(),
       routes: {
         Residential.namedRoute: (context) => const Residential(),
         Bunglow.namedRoute: (context) => const Bunglow(),

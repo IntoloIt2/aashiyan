@@ -3,9 +3,9 @@ import 'package:aashiyan/const.dart';
 import 'package:aashiyan/view/residential.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-
 import '../components/project_category.dart';
 import '../controller/api_services.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+    
     return Column(
       children: [
         Expanded(
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                 centerTitle: true,
                 bottom: PreferredSize(
                   child: Container(
-                    margin: const EdgeInsets.only(bottom: 10),
+                    margin:  EdgeInsets.only(bottom: 10),
                     child: Text(
                       "Premium Architecture Engineering",
                       style: TextStyle(

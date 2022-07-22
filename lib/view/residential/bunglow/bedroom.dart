@@ -2,51 +2,42 @@ import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/const.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-
 import '../../../controller/api_services.dart';
 
 class BedRoom extends StatelessWidget {
   static const namedRoute = "/namedRoute";
-  final int? index;
-  final Function? removeServiceCard;
 
-  BedRoom([this.index, this.removeServiceCard]);
+  int? index;
+  Function? removeServiceCard;
+  bool isExpanded;
+  BedRoom([this.index, this.removeServiceCard, this.isExpanded = false]);
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        Align(
-          alignment: Alignment.topRight,
-          child: IconButton(
-            icon: Icon(
-              Icons.remove_circle,
-            ),
-            onPressed: () {
-              removeServiceCard!(this);
-            },
-          ),
-        ),
-        bed()
-      ],
+      children: [bed()],
     );
   }
 }
 
-class bed extends StatefulWidget {
-  const bed({Key? key}) : super(key: key);
-
-  @override
-  State<bed> createState() => _bedState();
-}
-
-class _bedState extends State<bed> {
+class bed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     bool? requiredDress = false;
     bool? notRequiredDress = false;
+
+    String? selectedFloor = "select Floor";
+    List<String> floorItems = [
+      "select Floor",
+      "Ground Floor",
+      "1st Floor",
+      "2nd Floor",
+      "3rd Floor"
+          "other"
+    ];
+
     String? selectedBed = "select bed";
     List<String> bedItems = [
       "select bed",
@@ -67,7 +58,12 @@ class _bedState extends State<bed> {
               SizedBox(
                 height: height * 0.01,
               ),
-              requirementText("Bedroom Details"),
+              Row(
+                children: [
+                  requirementText("Bed Room"),
+                  DropDown(width, height, bedItems, selectedBed),
+                ],
+              ),
               SizedBox(
                 height: height * 0.01,
               ),
@@ -95,45 +91,12 @@ class _bedState extends State<bed> {
                 ],
               ),
               SizedBox(
-                height: height * 0.01,
+                height: height * .01,
               ),
               Row(
                 children: [
-                  requirementText("Bed Room"),
-                  SizedBox(
-                    width: width * 0.02,
-                  ),
-                  Material(
-                    elevation: 5,
-                    borderRadius: BorderRadius.circular(5),
-                    child: Container(
-                      height: height * 0.03,
-                      width: width * 0.25,
-                      margin: const EdgeInsets.all(
-                        3,
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                            icon: const Visibility(
-                                visible: false,
-                                child: Icon(Icons.arrow_downward)),
-                            value: selectedBed,
-                            elevation: 16,
-                            items: bedItems
-                                .map((it) => DropdownMenuItem<String>(
-                                    value: it,
-                                    child: Text(
-                                      it,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    )))
-                                .toList(),
-                            onChanged: (it) =>
-                                setState(() => selectedBed = it!)),
-                      ),
-                    ),
-                  ),
+                  requirementText("Floor"),
+                  DropDown(width, height, floorItems, selectedFloor),
                 ],
               ),
               SizedBox(
@@ -189,112 +152,10 @@ class _bedState extends State<bed> {
               SizedBox(
                 height: height * 0.01,
               ),
-              Row(
-                children: [
-                  Row(
-                    children: [
-                      Material(
-                        borderRadius: BorderRadius.circular(5),
-                        elevation: 5,
-                        child: Container(
-                          padding: EdgeInsets.only(right: 10),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                height: height * 0.04,
-                                child: Checkbox(
-                                    activeColor: checkColor,
-                                    checkColor: Colors.white,
-                                    value: requiredDress,
-                                    onChanged: (value) {
-                                      setState(
-                                        () {
-                                          requiredDress = value;
-                                          notRequiredDress = false;
-                                        },
-                                      );
-                                    }),
-                              ),
-                              requirementText("Required")
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: height * 0.01,
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: width * 0.05,
-                      ),
-                      Material(
-                        borderRadius: BorderRadius.circular(5),
-                        elevation: 5,
-                        child: Container(
-                          padding: EdgeInsets.only(right: 10),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                height: height * 0.04,
-                                child: Checkbox(
-                                    activeColor: checkColor,
-                                    checkColor: Colors.white,
-                                    value: notRequiredDress,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        notRequiredDress = value;
-                                        requiredDress = false;
-                                      });
-                                    }),
-                              ),
-                              requirementText("Not Required"),
-                              SizedBox(
-                                height: height * 0.01,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              RequiredMethod(height, width, requiredDress, notRequiredDress),
               SizedBox(
                 height: height * 0.01,
               ),
-              if (requiredDress == true) ...[
-                Row(
-                  children: [
-                    requirementText("Length"),
-                    SizedBox(
-                      width: width * 0.015,
-                    ),
-                    requirementTextField(height, width, 0.04, 0.15, "length"),
-                    valueContainer(height, width, size, 0.04, 0.05),
-                    SizedBox(
-                      width: width * 0.02,
-                    ),
-                    requirementText("Width"),
-                    SizedBox(
-                      width: width * 0.015,
-                    ),
-                    requirementTextField(height, width, 0.04, 0.15, "Width"),
-                    valueContainer(height, width, size, 0.04, 0.05),
-                    SizedBox(
-                      width: width * 0.03,
-                    ),
-                    requirementText("help?"),
-                  ],
-                ),
-                requirementText("Dress Facility"),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                requirementTextField(height, width, .04, .9, "more")
-              ],
               SizedBox(height: height * 0.01),
               Material(
                 elevation: 10,
@@ -442,6 +303,192 @@ class _bedState extends State<bed> {
                 ),
               ),
             ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class RequiredMethod extends StatefulWidget {
+  var width;
+  var height;
+  bool? required = false;
+  bool? notrequired = false;
+
+  RequiredMethod(this.height, this.width, this.required, this.notrequired);
+
+  @override
+  State<RequiredMethod> createState() => _RequiredMethodState();
+}
+
+class _RequiredMethodState extends State<RequiredMethod> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Row(
+              children: [
+                Material(
+                  borderRadius: BorderRadius.circular(5),
+                  elevation: 5,
+                  child: Container(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: widget.height * 0.04,
+                          child: Checkbox(
+                              activeColor: checkColor,
+                              checkColor: Colors.white,
+                              value: widget.required,
+                              onChanged: (value) {
+                                setState(
+                                  () {
+                                    widget.required = value;
+                                    widget.notrequired = false;
+                                  },
+                                );
+                              }),
+                        ),
+                        requirementText("Required")
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: widget.height * 0.01,
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: widget.width * 0.05,
+                ),
+                Material(
+                  borderRadius: BorderRadius.circular(5),
+                  elevation: 5,
+                  child: Container(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          height: widget.height * 0.04,
+                          child: Checkbox(
+                              activeColor: checkColor,
+                              checkColor: Colors.white,
+                              value: widget.notrequired,
+                              onChanged: (value) {
+                                setState(() {
+                                  widget.notrequired = value;
+                                  widget.required = false;
+                                });
+                              }),
+                        ),
+                        requirementText("Not Required"),
+                        SizedBox(
+                          height: widget.height * 0.01,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        SizedBox(
+          height: widget.height * 0.01,
+        ),
+        if (widget.required == true) ...[
+          Row(
+            children: [
+              requirementText("Length"),
+              SizedBox(
+                width: widget.width * 0.015,
+              ),
+              requirementTextField(
+                  widget.height, widget.width, 0.04, 0.15, "length"),
+              valueContainer(widget.height, widget.width, size, 0.04, 0.05),
+              SizedBox(
+                width: widget.width * 0.02,
+              ),
+              requirementText("Width"),
+              SizedBox(
+                width: widget.width * 0.015,
+              ),
+              requirementTextField(
+                  widget.height, widget.width, 0.04, 0.15, "Width"),
+              valueContainer(widget.height, widget.width, size, 0.04, 0.05),
+              SizedBox(
+                width: widget.width * 0.03,
+              ),
+              requirementText("help?"),
+            ],
+          ),
+          SizedBox(
+            height: widget.height * 0.01,
+          ),
+          Align(
+              alignment: Alignment.topLeft,
+              child: requirementText("Dress Facility")),
+          SizedBox(
+            height: widget.height * 0.01,
+          ),
+          requirementTextField(widget.height, widget.width, .04, .9, "more")
+        ]
+      ],
+    );
+  }
+}
+
+class DropDown extends StatefulWidget {
+  var width;
+  var height;
+  List<String>? drop;
+  String? selectedDrop;
+  DropDown(this.width, this.height, this.drop, this.selectedDrop);
+  @override
+  State<DropDown> createState() => _DropDownState();
+}
+
+class _DropDownState extends State<DropDown> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        SizedBox(
+          width: widget.width * 0.02,
+        ),
+        Material(
+          elevation: 5,
+          borderRadius: BorderRadius.circular(5),
+          child: Container(
+            height: widget.height * 0.03,
+            margin: const EdgeInsets.all(
+              3,
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                  icon: const Visibility(
+                      visible: false, child: Icon(Icons.arrow_downward)),
+                  value: widget.selectedDrop,
+                  elevation: 16,
+                  items: widget.drop
+                      ?.map((it) => DropdownMenuItem<String>(
+                          value: it,
+                          child: Text(
+                            it,
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          )))
+                      .toList(),
+                  onChanged: (it) => setState(() => widget.selectedDrop = it!)),
+            ),
           ),
         ),
       ],
