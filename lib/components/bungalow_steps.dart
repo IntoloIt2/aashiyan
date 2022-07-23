@@ -1,3 +1,4 @@
+import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:aashiyan/view/residential/bunglow/floorstore.dart';
 import 'package:aashiyan/view/residential/bunglow/livinghall.dart';
 import 'package:aashiyan/view/residential/bunglow/pantrydetail.dart';
@@ -59,7 +60,12 @@ SingleChildScrollView bungalowSteps(BuildContext context) {
         const SizedBox(
           width: 10,
         ),
-        stepsContainer("step7"),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).pushNamed(Basement.namedRoute);
+          },
+          child: Center(child: stepsContainer("step7")),
+        ),
         const SizedBox(
           width: 10,
         ),

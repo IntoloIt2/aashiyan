@@ -106,7 +106,7 @@ class _EntranceState extends State<Entrance> {
                                     value: it,
                                     child: Text(
                                       it,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.black,
                                       ),
                                     )))
