@@ -81,7 +81,7 @@ class _FloorStoreState extends State<FloorStore> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              bungalowSteps(context),
+             
               requirementText("floor store details"),
               SizedBox(
                 height: height * 0.01,

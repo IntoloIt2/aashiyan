@@ -24,8 +24,7 @@ class _BedroomPageState extends State<BedroomPage> {
 
   void addServiceCard() {
     setState(() {
-      bedroomList.add(
-        BedRoom(
+      bedroomList.add(BedRoom(
         bedroomList.length,
         removeServiceCard,
       ));
@@ -93,18 +92,16 @@ class _BedroomPageState extends State<BedroomPage> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: appBar("Bedrooms"),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            bungalowSteps(context),
             Container(
-              
               height: height * 0.06,
               margin: EdgeInsets.symmetric(horizontal: width * 0.3),
               child: OutlinedButton(
-                  onPressed: addServiceCard, child: Text("Add a bedroom"),
-                  ),
+                onPressed: addServiceCard,
+                child: Text("Add a bedroom"),
+              ),
             ),
             SizedBox(
               height: height * 0.01,
@@ -127,7 +124,6 @@ class _BedroomPageState extends State<BedroomPage> {
                 ),
               ),
             ),
-            
           ],
         ),
       ),

@@ -86,11 +86,14 @@ class _MultiSelectState extends State<MultiSelect> {
   final List<String> _selectedItems = [];
 
 // This function is triggered when a checkbox is checked or unchecked
-  void _itemChange(String itemValue, bool isSelected) {
+  void _itemChange(String itemValue, bool isSelected)
+  {
     setState(() {
       if (isSelected) {
+
         _selectedItems.add(itemValue);
       } else {
+
         _selectedItems.remove(itemValue);
       }
     });
@@ -98,29 +101,37 @@ class _MultiSelectState extends State<MultiSelect> {
 
   // this function is called when the Cancel button is pressed
   void _cancel() {
+
     Navigator.pop(context);
   }
 
 // this function is called when the Submit button is tapped
   void _submit() {
+
     Navigator.pop(context, _selectedItems);
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+
       title: const Text('Select Topics'),
       content: SingleChildScrollView(
-        child: ListBody(
-          children: widget.items
+
+      child: ListBody(
+
+      children: widget.items
+
               .map((item) => CheckboxListTile(
                     value: _selectedItems.contains(item),
                     title: Text(item),
                     controlAffinity: ListTileControlAffinity.leading,
-                    onChanged: (isChecked) => _itemChange(item, isChecked!),
+                    onChanged: (isChecked) => _itemChange(item,isChecked!),
                   ))
               .toList(),
+
         ),
+
       ),
       actions: [
         TextButton(
@@ -139,14 +150,12 @@ class _MultiSelectState extends State<MultiSelect> {
 // Implement a multi select on the Home screen
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
-
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   List<String> _selectedItems = [];
-
   void _showMultiSelect() async {
     // a list of selectable items
     // these items can be hard-coded or dynamically fetched from a database/API
@@ -156,30 +165,28 @@ class _HomeState extends State<Home> {
       'React Native',
       'Java',
       'Docker',
-      'MySQL'
+      'MySQL',
     ];
 
     final List<String>? results = await showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext context){
         return MultiSelect(items: _items);
       },
     );
 
     // Update UI
-    if (results != null) {
+    if(results != null) {
       setState(() {
         _selectedItems = results;
-      });
+        });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('KindaCode.com'),
-      ),
+      
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(

@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                               width: width * 0.9,
                               child: Image.asset(
                                 "assets/images/Screen.png",
-                                fit: BoxFit.fill,
+                                 fit: BoxFit.fill,
                               ),
                             ),
                             // CustomPaint(

@@ -1,5 +1,3 @@
-import 'package:aashiyan/view/residential/bunglow/requirement.dart';
-import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -73,6 +71,7 @@ class _LivingHallState extends State<LivingHall> {
   String DrawingSelected = "Select";
 
   List<String> selectedItem = [" ", "Double height", "powder toilet"];
+
   String selectedFeatures = " ";
 
   bool? attachedStore = false;
@@ -88,15 +87,16 @@ class _LivingHallState extends State<LivingHall> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+   
     return Scaffold(
-      appBar: appBar("Living hall"),
+      
       body: Container(
         padding: EdgeInsets.all(10),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              bungalowSteps(context),
+              
               SizedBox(
                 height: height * 0.01,
               ),
@@ -1052,7 +1052,8 @@ class _LivingHallState extends State<LivingHall> {
                     width: width * 0.01,
                   ),
                   requirementTextField(
-                      height, width, 0.04, 0.4, "Specific requirement")
+                      height, width, 0.04, 0.4, "Specific requirement",
+                      )
                 ],
               ),
               SizedBox(

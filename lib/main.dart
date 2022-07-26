@@ -1,3 +1,4 @@
+import 'package:aashiyan/components/bungalow_steps.dart';
 import 'package:aashiyan/const.dart';
 
 import 'package:aashiyan/view/homepage.dart';
@@ -34,18 +35,19 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSwatch().copyWith(
             primary: primaryColor,
           )),
-      home: HomePage(),
+      home: Basement(),
       routes: {
-        Residential.namedRoute: (context) =>  Residential(),
-        Bunglow.namedRoute: (context) =>  Bunglow(),
+        Residential.namedRoute: (context) => Residential(),
+        Bunglow.namedRoute: (context) => Bunglow(),
         Requirement.namedRoute: (context) => Requirement(),
-        Entrance.namedRoute: (context) =>  Entrance(),
+        Entrance.namedRoute: (context) => Entrance(),
         LivingHall.namedRoute: (context) => LivingHall(),
         PantryDetail.namedRoute: (context) => PantryDetail(),
         FloorStore.namedRoute: (context) => FloorStore(),
         BedRoom.namedRoute: (context) => BedRoom(),
         BedroomPage.namedRoute: (context) => BedroomPage(),
-        Basement.namedRoute :(context) => Basement()
+        Basement.namedRoute: (context) => Basement(),
+        StepPages.namedRoute: (context) => StepPages()
       },
     );
   }

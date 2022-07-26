@@ -72,13 +72,13 @@ class _EntranceState extends State<Entrance> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: appBar("Entrance"),
+      
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(10),
           child: Column(
             children: [
-              bungalowSteps(context),
+           
               Row(
                 children: [
                   requirementText("No. of\nFloors"),

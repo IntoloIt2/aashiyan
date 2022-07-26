@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../const.dart';
 
 List<String> sizeitems = ["ft", "m"];
- String size = "ft";
+String size = "ft";
 
 Container lableText(String lable) {
   return Container(
@@ -17,8 +17,6 @@ Container lableText(String lable) {
     ),
   );
 }
-
-
 
 Material textField(BuildContext context) {
   return Material(
