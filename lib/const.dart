@@ -1,3 +1,4 @@
+import 'package:aashiyan/components/forms.dart';
 import 'package:flutter/material.dart';
 
 BottomNavigationBar customBottomNav() {
@@ -62,6 +63,8 @@ class HexColor extends Color {
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
 
+Color buttonColor = HexColor("#0369a1");
+Color checkColor = HexColor("#48494b");
 Color textColor2 = HexColor("#735a10");
 Color textColor = HexColor("#7e7e7e");
 Color primaryColor = HexColor("#58A7CA");
@@ -191,3 +194,30 @@ BottomNavigationBar buildBottomNav() {
 //     ),
 //   );
 // }
+
+
+ Row living(var height , var width){
+  return   Row(
+                  children: [
+                    requirementText("Length"),
+                    SizedBox(
+                      width: width * 0.015,
+                    ),
+                    requirementTextField(height, width, 0.04, 0.15, "length"),
+                    valueContainer(height, width, size, 0.04, 0.05),
+                    SizedBox(
+                      width: width * 0.02,
+                    ),
+                    requirementText("Width"),
+                    SizedBox(
+                      width: width * 0.015,
+                    ),
+                    requirementTextField(height, width, 0.04, 0.15, "Width"),
+                    valueContainer(height, width, size, 0.04, 0.05),
+                    SizedBox(
+                      width: width * 0.01,
+                    ),
+                    requirementText("help ?")
+                  ],
+                );
+                }     
