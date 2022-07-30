@@ -1,3 +1,4 @@
+import 'package:aashiyan/components/bungalow_steps.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/components/project_category.dart';
 import 'package:aashiyan/view/residential/bunglow/requirement.dart';
@@ -63,7 +64,7 @@ class Bunglow extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pushNamed(Requirement.namedRoute);
+                    Navigator.of(context).pushNamed(StepPages.namedRoute);
                   },
                   child: Card(
                     child: ListTile(

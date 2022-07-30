@@ -8,7 +8,7 @@ import '../controller/api_services.dart';
 
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+   HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                               width: width * 0.9,
                               child: Image.asset(
                                 "assets/images/Screen.png",
-                                fit: BoxFit.fill,
+                                 fit: BoxFit.fill,
                               ),
                             ),
                             // CustomPaint(
