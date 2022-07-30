@@ -1,10 +1,11 @@
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/const.dart';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import '../../../controller/api_services.dart';
 
-class BedRoom extends StatelessWidget {
+class BedRoom extends StatefulWidget {
   static const namedRoute = "/namedRoute";
 
   int? index;
@@ -13,55 +14,52 @@ class BedRoom extends StatelessWidget {
   BedRoom([this.index, this.removeServiceCard, this.isExpanded = false]);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [bed()],
-    );
-  }
+  State<BedRoom> createState() => _BedRoomState();
 }
 
-class bed extends StatelessWidget {
+class _BedRoomState extends State<BedRoom> {
+  bool? requiredDress = false;
+
+  bool? notRequiredDress = false;
+
+  String? selectedFloor = "select Floor";
+
+  List<String> floorItems = [
+    "select Floor",
+    "Ground Floor",
+    "1st Floor",
+    "2nd Floor",
+    "3rd Floor"
+        "other"
+  ];
+
+  // String? selectedBed = "select bed";
+
+  // List<String> bedItems = ["select bed", "Bedroom 1", "Bedroom 2", "Bedroom 3"];
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    bool? requiredDress = false;
-    bool? notRequiredDress = false;
-
-    String? selectedFloor = "select Floor";
-    List<String> floorItems = [
-      "select Floor",
-      "Ground Floor",
-      "1st Floor",
-      "2nd Floor",
-      "3rd Floor"
-          "other"
-    ];
-
-    String? selectedBed = "select bed";
-    List<String> bedItems = [
-      "select bed",
-      "Bedroom 1",
-      "Bedroom 2",
-      "Bedroom 3"
-    ];
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(10),
           width: width * 1,
           color: color3,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              requirementText("select a bedroom Type"),
               SizedBox(
                 height: height * 0.01,
               ),
               Row(
                 children: [
-                  requirementText("Bed Room"),
-                  DropDown(width, height, bedItems, selectedBed),
+                  requirementText("Select Person bedroom"),
+                  SizedBox(
+                    width: width * 0.02,
+                  ),
+                  requirementTextField(
+                      height, width, .04, .5, "son's room , daughter room"),
                 ],
               ),
               SizedBox(
@@ -85,9 +83,21 @@ class bed extends StatelessWidget {
                   requirementTextField(height, width, 0.04, 0.15, "Width"),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
-                    width: width * 0.03,
+                    width: width * 0.15,
                   ),
-                  requirementText("help?"),
+                  Row(
+                    children: [
+                      requirementText("help"),
+                      IconButton(
+                          padding: EdgeInsets.all(5),
+                          constraints: BoxConstraints(),
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.help,
+                            size: height * 0.03,
+                          ))
+                    ],
+                  )
                 ],
               ),
               SizedBox(
@@ -96,19 +106,12 @@ class bed extends StatelessWidget {
               Row(
                 children: [
                   requirementText("Floor"),
-                  DropDown(width, height, floorItems, selectedFloor),
+                  DropDown(width, height, floorItems, selectedFloor, 0.6, 0.03),
                 ],
               ),
               SizedBox(
                 height: height * 0.01,
               ),
-              if (selectedBed == "other") ...[
-                requirementTextField(
-                    height, width, 0.04, 0.7, "Bedroom floor location"),
-                SizedBox(
-                  height: height * 0.01,
-                )
-              ],
               requirementText("Toilet details"),
               SizedBox(
                 height: height * 0.01,
@@ -131,9 +134,21 @@ class bed extends StatelessWidget {
                   requirementTextField(height, width, 0.04, 0.15, "Width"),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
-                    width: width * 0.03,
+                    width: width * 0.15,
                   ),
-                  requirementText("help?"),
+                  Row(
+                    children: [
+                      requirementText("help"),
+                      IconButton(
+                          padding: EdgeInsets.all(5),
+                          constraints: BoxConstraints(),
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.help,
+                            size: height * 0.03,
+                          ))
+                    ],
+                  )
                 ],
               ),
               SizedBox(
@@ -152,7 +167,134 @@ class bed extends StatelessWidget {
               SizedBox(
                 height: height * 0.01,
               ),
-              RequiredMethod(height, width, requiredDress, notRequiredDress),
+              Row(
+                children: [
+                  Row(
+                    children: [
+                      Material(
+                        borderRadius: BorderRadius.circular(5),
+                        elevation: 5,
+                        child: Container(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                height: height * 0.04,
+                                child: Checkbox(
+                                    activeColor: checkColor,
+                                    checkColor: Colors.white,
+                                    value: requiredDress,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          requiredDress = value;
+                                          notRequiredDress = false;
+                                        },
+                                      );
+                                    }),
+                              ),
+                              requirementText("Required")
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: width * 0.05,
+                      ),
+                      Material(
+                        borderRadius: BorderRadius.circular(5),
+                        elevation: 5,
+                        child: Container(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                height: height * 0.04,
+                                child: Checkbox(
+                                    activeColor: checkColor,
+                                    checkColor: Colors.white,
+                                    value: notRequiredDress,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        notRequiredDress = value;
+                                        requiredDress = false;
+                                      });
+                                    }),
+                              ),
+                              requirementText("Not Required"),
+                              SizedBox(
+                                height: height * 0.01,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              if (requiredDress == true) ...[
+                Row(
+                  children: [
+                    requirementText("Length"),
+                    SizedBox(
+                      width: width * 0.015,
+                    ),
+                    requirementTextField(height, width, 0.04, 0.15, "Length"),
+                    valueContainer(height, width, size, 0.04, 0.05),
+                    SizedBox(
+                      width: width * 0.02,
+                    ),
+                    requirementText("Width"),
+                    SizedBox(
+                      width: width * 0.015,
+                    ),
+                    requirementTextField(height, width, 0.04, 0.15, "Width"),
+                    valueContainer(height, width, size, 0.04, 0.05),
+                    SizedBox(
+                      width: width * 0.15,
+                    ),
+                    Row(
+                      children: [
+                        requirementText("help"),
+                        IconButton(
+                            padding: EdgeInsets.all(5),
+                            constraints: BoxConstraints(),
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.help,
+                              size: height * 0.03,
+                            ))
+                      ],
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: requirementText("Dress Facility"),
+                    ),
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
+                    requirementTextField(height, width, 0.04, 1, "more")
+                  ],
+                )
+              ],
               SizedBox(
                 height: height * 0.01,
               ),
@@ -310,147 +452,15 @@ class bed extends StatelessWidget {
   }
 }
 
-class RequiredMethod extends StatefulWidget {
-  var width;
-  var height;
-  bool? required = false;
-  bool? notrequired = false;
-
-  RequiredMethod(this.height, this.width, this.required, this.notrequired);
-
-  @override
-  State<RequiredMethod> createState() => _RequiredMethodState();
-}
-
-class _RequiredMethodState extends State<RequiredMethod> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Row(
-              children: [
-                Material(
-                  borderRadius: BorderRadius.circular(5),
-                  elevation: 5,
-                  child: Container(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          height: widget.height * 0.04,
-                          child: Checkbox(
-                              activeColor: checkColor,
-                              checkColor: Colors.white,
-                              value: widget.required,
-                              onChanged: (value) {
-                                setState(
-                                  () {
-                                    widget.required = value;
-                                    widget.notrequired = false;
-                                  },
-                                );
-                              }),
-                        ),
-                        requirementText("Required")
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: widget.height * 0.01,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: widget.width * 0.05,
-                ),
-                Material(
-                  borderRadius: BorderRadius.circular(5),
-                  elevation: 5,
-                  child: Container(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          height: widget.height * 0.04,
-                          child: Checkbox(
-                              activeColor: checkColor,
-                              checkColor: Colors.white,
-                              value: widget.notrequired,
-                              onChanged: (value) {
-                                setState(() {
-                                  widget.notrequired = value;
-                                  widget.required = false;
-                                });
-                              }),
-                        ),
-                        requirementText("Not Required"),
-                        SizedBox(
-                          height: widget.height * 0.01,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        SizedBox(
-          height: widget.height * 0.01,
-        ),
-        if (widget.required == true) ...[
-          Row(
-            children: [
-              requirementText("Length"),
-              SizedBox(
-                width: widget.width * 0.015,
-              ),
-              requirementTextField(
-                  widget.height, widget.width, 0.04, 0.15, "length"),
-              valueContainer(widget.height, widget.width, size, 0.04, 0.05),
-              SizedBox(
-                width: widget.width * 0.02,
-              ),
-              requirementText("Width"),
-              SizedBox(
-                width: widget.width * 0.015,
-              ),
-              requirementTextField(
-                  widget.height, widget.width, 0.04, 0.15, "Width"),
-              valueContainer(widget.height, widget.width, size, 0.04, 0.05),
-              SizedBox(
-                width: widget.width * 0.03,
-              ),
-              requirementText("help?"),
-            ],
-          ),
-          SizedBox(
-            height: widget.height * 0.01,
-          ),
-          Align(
-              alignment: Alignment.topLeft,
-              child: requirementText("Dress Facility")),
-          SizedBox(
-            height: widget.height * 0.01,
-          ),
-          requirementTextField(widget.height, widget.width, .04, .9, "more")
-        ]
-      ],
-    );
-  }
-}
-
 class DropDown extends StatefulWidget {
   var width;
   var height;
+  var w;
+  var h;
   List<String>? drop;
   String? selectedDrop;
-  DropDown(this.width, this.height, this.drop, this.selectedDrop);
+  DropDown(
+      this.width, this.height, this.drop, this.selectedDrop, this.w, this.h);
   @override
   State<DropDown> createState() => _DropDownState();
 }
@@ -467,7 +477,8 @@ class _DropDownState extends State<DropDown> {
           elevation: 5,
           borderRadius: BorderRadius.circular(5),
           child: Container(
-            height: widget.height * 0.03,
+            height: widget.height * widget.h,
+            width: widget.width * widget.w,
             margin: const EdgeInsets.all(
               3,
             ),

@@ -1,9 +1,12 @@
+
+
+import 'package:aashiyan/controller/api_services.dart';
 import 'package:flutter/material.dart';
 
 import '../const.dart';
 
 List<String> sizeitems = ["ft", "m"];
- String size = "ft";
+String size = "ft";
 
 Container lableText(String lable) {
   return Container(
@@ -17,8 +20,6 @@ Container lableText(String lable) {
     ),
   );
 }
-
-
 
 Material textField(BuildContext context) {
   return Material(
@@ -63,11 +64,12 @@ Text requirementText(String txt) {
     style: TextStyle(
       fontWeight: FontWeight.bold,
     ),
+
   );
 }
 
 Material requirementTextField(
-    double height, double width, double h, double w, String str) {
+    double height, double width, double h, double w, String str,  ) {
   return Material(
     elevation: 5,
     borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -75,6 +77,7 @@ Material requirementTextField(
       height: height * h,
       width: width * w,
       child: TextFormField(
+        
         style: TextStyle(fontSize: 14),
         decoration: InputDecoration(
             hintText: str,
@@ -86,7 +89,38 @@ Material requirementTextField(
             contentPadding: EdgeInsets.all(8)
             //fillColor: Colors.green
             ),
+           
       ),
     ),
   );
 }
+
+
+Material requirementTextFieldCont(
+    double height, double width, double h, double w, String str, TextEditingController txt, ) {
+  return Material(
+    elevation: 5,
+    borderRadius: const BorderRadius.all(Radius.circular(5)),
+    child: SizedBox(
+      height: height * h,
+      width: width * w,
+      child: TextFormField(
+        
+        controller: txt,
+        style: TextStyle(fontSize: 14),
+        decoration: InputDecoration(
+            hintText: str,
+            hintStyle: TextStyle(fontSize: 14),
+            border: const OutlineInputBorder(
+              borderSide: BorderSide.none,
+            ),
+            isDense: true,
+            contentPadding: EdgeInsets.all(8)
+            //fillColor: Colors.green
+            ),
+           
+      ),
+    ),
+  );
+}
+

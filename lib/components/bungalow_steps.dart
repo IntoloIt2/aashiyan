@@ -1,70 +1,280 @@
+import 'package:aashiyan/components/app_bar.dart';
+import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:aashiyan/view/residential/bunglow/floorstore.dart';
 import 'package:aashiyan/view/residential/bunglow/livinghall.dart';
 import 'package:aashiyan/view/residential/bunglow/pantrydetail.dart';
+import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:flutter/material.dart';
 import '../view/residential/bunglow/bedroompage.dart';
 import '../view/residential/bunglow/entrance.dart';
 import 'steps_container.dart';
 
-SingleChildScrollView bungalowSteps(BuildContext context) {
-  return SingleChildScrollView(
-    padding: const EdgeInsets.all(10),
-    scrollDirection: Axis.horizontal,
-    child: Row(
-      children: [
-        InkWell(onTap: () {}, child: stepsContainer("Step 1")),
-        const SizedBox(
-          width: 10,
+int? index = 0;
+String? st = "Requirement";
+
+class BunglowSteps extends StatefulWidget {
+  const BunglowSteps({Key? key}) : super(key: key);
+
+  @override
+  State<BunglowSteps> createState() => _BunglowStepsState();
+}
+
+class _BunglowStepsState extends State<BunglowSteps> {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    index = 0;
+                    st = "Requirement";
+                  });
+                },
+                child: stepsContainer("Step 1"),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    index = 1;
+                    st = "Entrance";
+                  });
+                },
+                child: stepsContainer("Step 2"),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      index = 2;
+                      st = "Living Hall";
+                    });
+                  },
+                  child: stepsContainer("Step 3")),
+              const SizedBox(
+                width: 10,
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    index = 3;
+                    st = "Pantry";
+                  });
+                },
+                child: stepsContainer("step4"),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      index = 4;
+                      st = "Floor Store";
+                    });
+                  },
+                  child: stepsContainer("step5")),
+              const SizedBox(
+                width: 10,
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    index = 5;
+                    st = "Bed Room";
+                  });
+                },
+                child: stepsContainer("step6"),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    index = 6;
+                    st = "Basement";
+                  });
+                },
+                child: Center(child: stepsContainer("step7")),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    index = 7;
+                    st = "Basement";
+                  });
+                },
+                child: stepsContainer("step8"),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+List Pages = [
+  Requirement(),
+  Entrance(),
+  LivingHall(),
+  PantryDetail(),
+  FloorStore(),
+  BedroomPage(),
+  Basement()
+];
+
+class StepPages extends StatefulWidget {
+  const StepPages({Key? key}) : super(key: key);
+  static const namedRoute = "/stepages";
+
+  @override
+  State<StepPages> createState() => _StepPagesState();
+}
+
+class _StepPagesState extends State<StepPages> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appBar(st!),
+      body: SingleChildScrollView(
+        // height: MediaQuery.of(context).size.height,
+        // width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              index = 0;
+                              st = "Requirement";
+                            });
+                          },
+                          child: stepsContainer("Step 1"),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              index = 1;
+                              st = "Entrance";
+                            });
+                          },
+                          child: stepsContainer("Step 2"),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                index = 2;
+                                st = "Living Hall";
+                              });
+                            },
+                            child: stepsContainer("Step 3")),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              index = 3;
+                              st = "Pantry";
+                            });
+                          },
+                          child: stepsContainer("step4"),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                index = 4;
+                                st = "Floor Store";
+                              });
+                            },
+                            child: stepsContainer("step5")),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              index = 5;
+                              st = "Bed Room";
+                            });
+                          },
+                          child: stepsContainer("step6"),
+                        ),
+
+                        const SizedBox(
+                          width: 10,
+                        ),
+
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              index = 6;
+                              st = "Basement";
+                            });
+                          },
+                          child: Center(child: stepsContainer("step7")),
+                        ),
+
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              index = 6;
+                              st = "Basement";
+                            });
+                          },
+                          child: stepsContainer("step8"),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+
+            SizedBox(
+              height: 10,
+            ),
+
+            Container(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: Pages[index!],
+            )
+          ],
         ),
-        InkWell(
-          onTap: () {
-            Navigator.of(context).pushNamed(Entrance.namedRoute);
-          },
-          child: stepsContainer("Step 2"),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        InkWell(
-            onTap: () {
-              Navigator.of(context).pushNamed(LivingHall.namedRoute);
-            },
-            child: stepsContainer("Step 3")),
-        const SizedBox(
-          width: 10,
-        ),
-        InkWell(
-          onTap: () {
-            Navigator.of(context).pushNamed(PantryDetail.namedRoute);
-          },
-          child: stepsContainer("step4"),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        InkWell(
-            onTap: () {
-              Navigator.of(context).pushNamed(FloorStore.namedRoute);
-            },
-            child: stepsContainer("step5")),
-        const SizedBox(
-          width: 10,
-        ),
-        InkWell(
-          onTap: () {
-            Navigator.of(context).pushNamed(BedroomPage.namedRoute);
-          },
-          child: stepsContainer("step6"),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        stepsContainer("step7"),
-        const SizedBox(
-          width: 10,
-        ),
-        stepsContainer("step8"),
-      ],
-    ),
-  );
+      ),
+    );
+  }
 }
