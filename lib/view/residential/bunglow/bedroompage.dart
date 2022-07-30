@@ -91,42 +91,37 @@ class _BedroomPageState extends State<BedroomPage> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: height * 0.06,
-              margin: EdgeInsets.symmetric(horizontal: width * 0.3),
-              child: OutlinedButton(
-                onPressed: addServiceCard,
-                child: Text("Add a bedroom"),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            _buildPanel(),
-            SizedBox(
-              height: height * 0.1,
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: height * 0.04,
-                decoration: BoxDecoration(
-                    color: buttonColor, borderRadius: BorderRadius.circular(4)),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: const Text(
-                  "save and continue ",
-                  style: TextStyle(color: Colors.white, fontSize: 14),
-                ),
-              ),
-            ),
-          ],
+    return Column(
+      children: [
+        Container(
+          height: height * 0.06,
+          margin: EdgeInsets.symmetric(horizontal: width * 0.3),
+          child: OutlinedButton(
+            onPressed: addServiceCard,
+            child: Text("Add a bedroom"),
+          ),
         ),
-      ),
+        SizedBox(
+          height: height * 0.01,
+        ),
+        _buildPanel(),
+        SizedBox(
+          height: height * 0.1,
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: height * 0.04,
+            decoration: BoxDecoration(
+                color: buttonColor, borderRadius: BorderRadius.circular(4)),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: const Text(
+              "save and continue ",
+              style: TextStyle(color: Colors.white, fontSize: 14),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

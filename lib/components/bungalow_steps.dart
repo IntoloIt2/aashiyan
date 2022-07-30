@@ -1,16 +1,16 @@
+import 'package:aashiyan/components/app_bar.dart';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:aashiyan/view/residential/bunglow/floorstore.dart';
 import 'package:aashiyan/view/residential/bunglow/livinghall.dart';
 import 'package:aashiyan/view/residential/bunglow/pantrydetail.dart';
 import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import '../view/residential/bunglow/bedroompage.dart';
 import '../view/residential/bunglow/entrance.dart';
 import 'steps_container.dart';
 
-int index = 1;
-String? st;
+int? index = 0;
+String? st = "Requirement";
 
 class BunglowSteps extends StatefulWidget {
   const BunglowSteps({Key? key}) : super(key: key);
@@ -28,10 +28,10 @@ class _BunglowStepsState extends State<BunglowSteps> {
         children: [
           Row(
             children: [
-              GestureDetector(
+              InkWell(
                 onTap: () {
                   setState(() {
-                    index = 1;
+                    index = 0;
                     st = "Requirement";
                   });
                 },
@@ -43,7 +43,7 @@ class _BunglowStepsState extends State<BunglowSteps> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    index = 2;
+                    index = 1;
                     st = "Entrance";
                   });
                 },
@@ -55,7 +55,7 @@ class _BunglowStepsState extends State<BunglowSteps> {
               GestureDetector(
                   onTap: () {
                     setState(() {
-                      index = 3;
+                      index = 2;
                       st = "Living Hall";
                     });
                   },
@@ -66,7 +66,7 @@ class _BunglowStepsState extends State<BunglowSteps> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    index = 4;
+                    index = 3;
                     st = "Pantry";
                   });
                 },
@@ -78,7 +78,7 @@ class _BunglowStepsState extends State<BunglowSteps> {
               GestureDetector(
                   onTap: () {
                     setState(() {
-                      index = 5;
+                      index = 4;
                       st = "Floor Store";
                     });
                   },
@@ -89,7 +89,7 @@ class _BunglowStepsState extends State<BunglowSteps> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    index = 6;
+                    index = 5;
                     st = "Bed Room";
                   });
                 },
@@ -101,7 +101,7 @@ class _BunglowStepsState extends State<BunglowSteps> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    index = 7;
+                    index = 6;
                     st = "Basement";
                   });
                 },
@@ -113,18 +113,14 @@ class _BunglowStepsState extends State<BunglowSteps> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    index = 8;
+                    index = 7;
                     st = "Basement";
                   });
                 },
                 child: stepsContainer("step8"),
               ),
             ],
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.01,
-          ),
-          Pages[index]
+          )
         ],
       ),
     );
@@ -141,17 +137,144 @@ List Pages = [
   Basement()
 ];
 
-class StepPages extends StatelessWidget {
+class StepPages extends StatefulWidget {
   const StepPages({Key? key}) : super(key: key);
   static const namedRoute = "/stepages";
+
+  @override
+  State<StepPages> createState() => _StepPagesState();
+}
+
+class _StepPagesState extends State<StepPages> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-    child: Column(
-      children: [
-        BunglowSteps()
-      ],
-     ),
+    return Scaffold(
+      appBar: appBar(st!),
+      body: SingleChildScrollView(
+        // height: MediaQuery.of(context).size.height,
+        // width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              index = 0;
+                              st = "Requirement";
+                            });
+                          },
+                          child: stepsContainer("Step 1"),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              index = 1;
+                              st = "Entrance";
+                            });
+                          },
+                          child: stepsContainer("Step 2"),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                index = 2;
+                                st = "Living Hall";
+                              });
+                            },
+                            child: stepsContainer("Step 3")),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              index = 3;
+                              st = "Pantry";
+                            });
+                          },
+                          child: stepsContainer("step4"),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                index = 4;
+                                st = "Floor Store";
+                              });
+                            },
+                            child: stepsContainer("step5")),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              index = 5;
+                              st = "Bed Room";
+                            });
+                          },
+                          child: stepsContainer("step6"),
+                        ),
+
+                        const SizedBox(
+                          width: 10,
+                        ),
+
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              index = 6;
+                              st = "Basement";
+                            });
+                          },
+                          child: Center(child: stepsContainer("step7")),
+                        ),
+
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              index = 6;
+                              st = "Basement";
+                            });
+                          },
+                          child: stepsContainer("step8"),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+
+            SizedBox(
+              height: 10,
+            ),
+
+            Container(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: Pages[index!],
+            )
+          ],
+        ),
+      ),
     );
   }
 }

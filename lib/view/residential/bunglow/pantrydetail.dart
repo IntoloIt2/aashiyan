@@ -58,10 +58,8 @@ class _PantryDetailState extends State<PantryDetail> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      
-      body: Container(
-        margin: const EdgeInsets.all(10),
+    return  Container(
+       
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -492,7 +490,6 @@ class _PantryDetailState extends State<PantryDetail> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }

@@ -40,6 +40,7 @@ dependencies:
   http: ^0.13.4
   localization: ^2.1.0
   getwidget: ^3.0.1
+  flutter_js: ^0.5.0+6
   
   
   

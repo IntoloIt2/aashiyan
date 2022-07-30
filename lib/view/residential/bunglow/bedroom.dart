@@ -1,7 +1,6 @@
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/const.dart';
 
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import '../../../controller/api_services.dart';
@@ -45,7 +44,6 @@ class _BedRoomState extends State<BedRoom> {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(10),
           width: width * 1,
           color: color3,
           child: Column(
@@ -508,5 +506,3 @@ class _DropDownState extends State<DropDown> {
     );
   }
 }
-
-

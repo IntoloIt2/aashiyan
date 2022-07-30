@@ -12,7 +12,6 @@ import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:aashiyan/view/residential/bunglow/bunglow.dart';
 import 'package:aashiyan/view/residential.dart';
 import 'package:aashiyan/view/residential/bunglow/entrance.dart';
-import 'package:aashiyan/view/residential/bunglow/testing.dart';
 
 import 'package:flutter/material.dart';
 
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSwatch().copyWith(
             primary: primaryColor,
           )),
-      home: Basement(),
+      home: HomePage(),
       routes: {
         Residential.namedRoute: (context) => Residential(),
         Bunglow.namedRoute: (context) => Bunglow(),

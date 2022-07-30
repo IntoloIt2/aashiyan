@@ -1,10 +1,17 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:aashiyan/components/bungalow_steps.dart';
 import 'package:aashiyan/components/forms.dart' as Forms;
 import 'package:aashiyan/components/forms.dart';
+import 'package:aashiyan/controller/api_services.dart';
+import 'package:aashiyan/model/citiesmodel.dart';
+import 'package:aashiyan/model/requirementmodel.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_js/flutter_js.dart';
 import '../../../const.dart';
-import '../../../components/app_bar.dart';
+
+import 'package:http/http.dart' as http;
 
 class Requirement extends StatefulWidget {
   static const namedRoute = "/intrestedNext";
@@ -14,11 +21,42 @@ class Requirement extends StatefulWidget {
 }
 
 class _RequirementState extends State<Requirement> {
+  final JavascriptRuntime jsRuntime = getJavascriptRuntime();
+
+  String plotlength = "1";
+  String plotWidth = "1";
+
+  late Future<RequirementModel> futureRequirement;
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController daigonal1Controller = TextEditingController();
+  TextEditingController diagonal2Controller = TextEditingController();
+  TextEditingController eastController = TextEditingController();
+  TextEditingController westController = TextEditingController();
+  TextEditingController northController = TextEditingController();
+  TextEditingController southController = TextEditingController();
+  TextEditingController levelController = TextEditingController();
+  var levelControllerDouble;
+
+  int isRegular = 0;
+  int isNotRegular = 0;
+  int isNorthOrientaion = 0;
+
+  String isEast = "0";
+  String isWest = "0";
+  String isNorth = "0";
+  String isSouth = "0";
+
   bool? northOriented = false;
-  bool? regularPlotValue = true;
+  bool? regularPlotValue = false;
   bool? irregularPlotValue = false;
   bool? surveyor = false;
   bool? notReqired = false;
+  int notReqiredInt = 0;
+
   bool? eastRoad = false;
   bool? westRoad = false;
   bool? nortRoad = false;
@@ -30,50 +68,90 @@ class _RequirementState extends State<Requirement> {
 
   List<String> levels = ["select", "Almost same level", "Up", "Down"];
   String selectedLevel = 'select';
+  int selectedLevelInt = 0;
+
   List<String> items = ["select", "Mr", "Mrs", "Ms", "M/s"];
   String selectedItems = 'select';
+  int selectedItemInt = 0;
+
   List<String> countryItmes = ["India"];
   String country = "India";
-  List<String> stateItems = [
-    "SELECT STATE",
-    "ARUNACHAL PRADESH",
-    "ASSAM",
-    "BIHAR",
-    "CHHATTISGARH",
-    "GOA",
-    "GUJRAT",
-    "HARYANA",
-    "HIMACHAL PRADESH",
-    "JHARKHAND",
-    "KARNATAK",
-    "KERALA",
-    "MADHYA PRADESH",
-    "MAHARASHTRA",
-    "MANIPUR",
-    "MEGHALAYA",
-    "MIZORAM",
-    "NAGALAND",
-    "ODISHA",
-    'PUNJAB',
-    'RAJASTHAN',
-    "SIKKIM",
-    "TAMIL NADU",
-    "TELENGA",
-    "TRIPURA",
-    "UTTAR PRADESH",
-    "UTTRAKHAND",
-    "WEST BENGAL",
-    "ANDHRA PRADESH"
-  ];
-  String selectedState = "SELECT STATE";
+
+  // String selectCity = "select";
+  String myState = "Select State";
+
+  int cityId = 0;
+
+  int stateId = 0;
+
+  int plotSize = 0;
+  String plotSizeStr = '';
+  String selectedState = "Select State";
+
+  List cityData = [];
+  List stateData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getCities();
+    getState();
+    print("getting data");
+  }
+
+  Future<void> getState() async {
+    try {
+      var client = http.Client();
+      var response =
+          await http.get(Uri.parse("https://sdplweb.com/sdpl/api/state/1"));
+      // print(response.body.toString());
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        final stateList = jsonResponse['states'] as List;
+        setState(() {
+          stateData = stateList;
+        });
+        // print(stateData);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<List?> getCities() async {
+    try {
+      var client = http.Client();
+      var response = await http
+          .get(Uri.parse("https://sdplweb.com/sdpl/api/city/$stateId"));
+      // print(response.body.toString());
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        final cityList = jsonResponse['cities'] as List;
+        setState(() {
+          cityData = cityList;
+        });
+        // print(cityData);
+        return cityList;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+    // for (var element in cityData!) {
+    //   print(element["city_name"]);
+    // }
+    // print(stateId);
+    // print(cityData);
+    // print(stateData);
+
     return Container(
-      margin: const EdgeInsets.all(10),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -101,7 +179,16 @@ class _RequirementState extends State<Requirement> {
                                     style: TextStyle(fontSize: height * 0.02)),
                               ))
                           .toList(),
-                      onChanged: (it) => setState(() => selectedItems = it!),
+                      onChanged: (it) => setState(() {
+                        if (it == "MR") {
+                          selectedItemInt = 1;
+                        } else if (it == "MRS") {
+                          selectedItemInt = 2;
+                        } else if (it == "MS") {
+                          selectedItemInt = 3;
+                        }
+                        selectedItems = it!;
+                      }),
                     ),
                   ),
                 ),
@@ -109,11 +196,25 @@ class _RequirementState extends State<Requirement> {
               const SizedBox(
                 width: 5,
               ),
-              requirementTextField(height, width, 0.04, 0.25, "Firstname"),
+              requirementTextFieldCont(
+                height,
+                width,
+                0.04,
+                0.25,
+                "Firstname",
+                nameController,
+              ),
               SizedBox(
                 width: width * 0.01,
               ),
-              requirementTextField(height, width, 0.04, 0.19, "Lastname"),
+              requirementTextFieldCont(
+                height,
+                width,
+                0.04,
+                0.19,
+                "Lastname",
+                lastNameController,
+              ),
             ],
           ),
           SizedBox(
@@ -125,7 +226,14 @@ class _RequirementState extends State<Requirement> {
               SizedBox(
                 width: width * 0.05,
               ),
-              requirementTextField(height, width, 0.04, 0.6, "Email"),
+              requirementTextFieldCont(
+                height,
+                width,
+                0.04,
+                0.6,
+                "Email",
+                emailController,
+              ),
             ],
           ),
           SizedBox(
@@ -137,7 +245,14 @@ class _RequirementState extends State<Requirement> {
               SizedBox(
                 width: width * 0.017,
               ),
-              requirementTextField(height, width, 0.06, 0.6, "Address"),
+              Forms.requirementTextFieldCont(
+                height,
+                width,
+                0.06,
+                0.6,
+                "Address",
+                addressController,
+              ),
             ],
           ),
           SizedBox(
@@ -198,18 +313,78 @@ class _RequirementState extends State<Requirement> {
                   width: width * 0.6,
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
-                      value: selectedState,
+                      hint: Text(selectedState),
                       elevation: 16,
-                      items: stateItems
+                      items: stateData
                           .map(
                             (it) => DropdownMenuItem<String>(
-                              value: it,
-                              child: Text(it,
-                                  style: TextStyle(fontSize: height * 0.02)),
+                              value: it["state_name"],
+                              child: Text(
+                                it["state_name"],
+                                style: TextStyle(fontSize: height * 0.02),
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  stateId = it["id"];
+                                  getCities();
+                                });
+                              },
                             ),
                           )
                           .toList(),
-                      onChanged: (it) => setState(() => selectedState = it!),
+                      onChanged: (it) => setState(() {
+                        selectedState = it!;
+                        getCities();
+                      }),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: height * 0.01,
+          ),
+          Row(
+            children: [
+              Forms.requirementText("city"),
+              SizedBox(
+                width: width * 0.085,
+              ),
+              Material(
+                elevation: 5,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(5),
+                ),
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  height: height * 0.04,
+                  width: width * 0.6,
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      hint: Text(myState),
+                      elevation: 16,
+                      items: cityData
+                          .map(
+                            (it) => DropdownMenuItem<String>(
+                              value: it["city_name"],
+                              child: Text(it["city_name"],
+                                  style: TextStyle(fontSize: height * 0.02)),
+                              onTap: () {
+                                setState(() {
+                                  cityId = it["id"];
+                                });
+                              },
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (newValue) {
+                        setState(
+                          () {
+                            myState = newValue!;
+                          },
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -223,7 +398,10 @@ class _RequirementState extends State<Requirement> {
             children: [
               const Text(
                 "Property details",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               SizedBox(
                 width: width * 0.23,
@@ -296,7 +474,26 @@ class _RequirementState extends State<Requirement> {
             SizedBox(
               width: width * 0.04,
             ),
-            requirementTextField(height, width, 0.04, 0.15, "Length"),
+            Container(
+              height: height * 0.04,
+              width: width * 0.15,
+              child: TextField(
+                onChanged: (value) {
+                  setState(() {
+                    plotlength = value;
+                  });
+                },
+                onSubmitted: (value) {
+                  setState(() {
+                    plotlength = value;
+
+                    plotSize = int.parse(plotlength);
+                    plotSize *= int.parse(plotWidth);
+                  });
+                },
+                keyboardType: TextInputType.number,
+              ),
+            ),
             SizedBox(
               width: width * 0.01,
             ),
@@ -309,7 +506,8 @@ class _RequirementState extends State<Requirement> {
               SizedBox(
                 width: width * 0.02,
               ),
-              requirementTextField(height, width, 0.04, 0.2, "Diagonal ")
+              requirementTextFieldCont(
+                  height, width, 0.04, 0.2, "Diagonal", daigonal1Controller)
             ]
           ]),
           SizedBox(
@@ -321,7 +519,32 @@ class _RequirementState extends State<Requirement> {
               SizedBox(
                 width: width * 0.05,
               ),
-              requirementTextField(height, width, 0.04, 0.15, "Width"),
+              Container(
+                height: height * 0.04,
+                width: width * 0.15,
+                child: TextFormField(
+                  onChanged: (value) {
+                    setState(() {
+                      plotWidth = value;
+                    });
+                  },
+                  onFieldSubmitted: (value) {
+                    setState(() {
+                      plotWidth = value;
+                      plotSize = int.parse(plotWidth);
+                      plotSize *= int.parse(plotlength);
+                    });
+                  },
+                  // onSubmitted: (value) {
+                  //   setState(() {
+                  //     plotWidth = value;
+                  //     plotSize = int.parse(plotWidth);
+                  //     plotSize *= int.parse(plotlength);
+                  //   });
+                  // },
+                  keyboardType: TextInputType.number,
+                ),
+              ),
               SizedBox(
                 width: width * 0.01,
               ),
@@ -334,7 +557,8 @@ class _RequirementState extends State<Requirement> {
                 SizedBox(
                   width: width * 0.02,
                 ),
-                requirementTextField(height, width, 0.04, 0.2, "Diagonal ")
+                requirementTextFieldCont(
+                    height, width, 0.04, 0.2, "Diagonal", diagonal2Controller)
               ]
             ],
           ),
@@ -346,7 +570,7 @@ class _RequirementState extends State<Requirement> {
             SizedBox(
               width: width * 0.05,
             ),
-            requirementTextField(height, width, 0.04, 0.15, "00"),
+            Forms.valueContainer(height, width, "$plotSize", 0.04, 0.1),
             SizedBox(
               width: width * 0.015,
             ),
@@ -465,7 +689,8 @@ class _RequirementState extends State<Requirement> {
                 width: width * 0.01,
               ),
               if (eastRoad == true) ...[
-                requirementTextField(height, width, 0.04, 0.22, "Road Width"),
+                Forms.requirementTextFieldCont(
+                    height, width, 0.04, 0.22, "Road Width", eastController),
                 SizedBox(
                   width: width * 0.01,
                 ),
@@ -506,7 +731,8 @@ class _RequirementState extends State<Requirement> {
                 width: width * 0.01,
               ),
               if (westRoad == true) ...[
-                requirementTextField(height, width, 0.04, 0.22, "Road Width"),
+                Forms.requirementTextFieldCont(
+                    height, width, 0.04, 0.22, "Road Width", westController),
                 SizedBox(
                   width: width * 0.01,
                 ),
@@ -516,7 +742,7 @@ class _RequirementState extends State<Requirement> {
           ),
           Row(
             children: [
-              requirementText("West"),
+              requirementText("North"),
               Checkbox(
                   activeColor: checkColor,
                   checkColor: Colors.white,
@@ -547,7 +773,8 @@ class _RequirementState extends State<Requirement> {
                 width: width * 0.01,
               ),
               if (nortRoad == true) ...[
-                requirementTextField(height, width, 0.04, 0.22, "Road Width"),
+                Forms.requirementTextFieldCont(
+                    height, width, 0.04, 0.22, "Road Width", northController),
                 SizedBox(
                   width: width * 0.01,
                 ),
@@ -588,7 +815,8 @@ class _RequirementState extends State<Requirement> {
                 width: width * 0.01,
               ),
               if (southRoad == true) ...[
-                requirementTextField(height, width, 0.04, 0.22, "Road Width"),
+                requirementTextFieldCont(
+                    height, width, 0.04, 0.22, "Road Width", southController),
                 SizedBox(
                   width: width * 0.01,
                 ),
@@ -685,38 +913,125 @@ class _RequirementState extends State<Requirement> {
                                           TextStyle(fontSize: height * 0.02)),
                                 ))
                             .toList(),
-                        onChanged: (it) => setState(() => selectedLevel = it!),
+                        onChanged: (it) => setState(() {
+                          selectedLevel = it!;
+                          if (it == "Up") {
+                            selectedLevelInt = 2;
+                          } else if (it == "Down") {
+                            selectedLevelInt = 3;
+                          } else if (it == "Almost same level") {
+                            selectedLevelInt = 1;
+                          }
+                        }),
                       ),
                     ),
                   ),
                 ),
               ),
               if (selectedLevel == "Up") ...[
-                requirementTextField(height, width, 0.04, 0.2, "Up/Down"),
+                Forms.requirementTextFieldCont(
+                    height, width, 0.04, 0.2, "Up/Down", levelController),
                 SizedBox(
                   width: width * 0.01,
                 ),
                 valueContainer(height, width, size, 0.039, 0.05)
               ],
               if (selectedLevel == "Down") ...[
-                requirementTextField(height, width, 0.04, 0.2, "Up/Down"),
+                Forms.requirementTextFieldCont(
+                    height, width, 0.04, 0.2, "Up/Down", levelController),
                 SizedBox(
                   width: width * 0.01,
                 ),
-                valueContainer(height, width, size, 0.039, 0.05)
+                valueContainer(
+                  height,
+                  width,
+                  size,
+                  0.039,
+                  0.05,
+                ),
               ]
             ],
           ),
           SizedBox(
             height: height * 0.02,
           ),
-          Container(
-            decoration: BoxDecoration(
-                color: buttonColor, borderRadius: BorderRadius.circular(4)),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: const Text(
-              "save and continue",
-              style: TextStyle(color: Colors.white, fontSize: 14),
+          InkWell(
+            onTap: () {
+              setState(() {
+                if (regularPlotValue == true) {
+                  isRegular = 1;
+                }
+
+                if (regularPlotValue == true) {
+                  isNotRegular = 1;
+                }
+
+                if (isNorthOrientaion == true) {
+                  isNorthOrientaion = 1;
+                }
+
+                if (isNorth == true) {
+                  isNorth = "1";
+                }
+                if (isEast == true) {
+                  isEast = "1";
+                }
+
+                if (isWest == true) {
+                  isWest = "1";
+                }
+
+                if (isNorth == true) {
+                  isWest = "1";
+                }
+                if(notReqired == true){
+                  notReqiredInt = 1;
+                }
+              });
+              futureRequirement = requirementPost(
+                2342,
+                978,
+                098,
+                selectedItems,
+                nameController.text,
+                lastNameController.text,
+                emailController.text,
+                1,
+                stateId,
+                cityId,
+                addressController.text,
+                isRegular,
+                isNotRegular,
+                plotlength,
+                plotWidth,
+                daigonal1Controller.text,
+                diagonal2Controller.text,
+                plotSizeStr,
+                " ",
+                isNorthOrientaion,
+                " ",
+                isEast,
+                eastController.text,
+                isWest,
+                westController.text,
+                isNorth,
+                northController.text,
+                isSouth,
+                southController.text,
+                selectedLevelInt,
+                levelController.text,
+                notReqiredInt
+                
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  color: buttonColor, borderRadius: BorderRadius.circular(4)),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: const Text(
+                "save and continue",
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              ),
             ),
           )
         ],
@@ -732,3 +1047,12 @@ class _RequirementState extends State<Requirement> {
     }
   }
 }
+// Future<int> addFromJs(
+//     JavascriptRuntime jsRuntime, int firstNumber, int secondNumber) async {
+//   String blocjs = await rootBundle.loadString("assets/bloc.js");
+//   final jsResult = jsRuntime.evaluate(blocjs + "${firstNumber + secondNumber}");
+//   final jsStringResult = jsResult.stringResult;
+//   return int.parse(jsStringResult);
+// }
+
+
