@@ -1,8 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import '../../../components/app_bar.dart';
-import '../../../components/bungalow_steps.dart';
+
 import '../../../components/forms.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
@@ -14,6 +13,8 @@ class LivingHall extends StatefulWidget {
 }
 
 class _LivingHallState extends State<LivingHall> {
+
+
   List<String> floorItems = [
     "Select",
     "Ground floor",
@@ -23,7 +24,50 @@ class _LivingHallState extends State<LivingHall> {
     "other"
   ];
   String selectedFloor = "Select";
+  
+   int livingHallLocation = 0;
 
+  void living() {
+    if (selectedFloor == "1 floor") {
+      livingHallLocation = 1;
+    }
+
+    if (selectedFloor == "2 floor") {
+      livingHallLocation = 2;
+    }
+
+    if (selectedFloor == "3 floor") {
+      livingHallLocation = 3;
+    }
+
+    if (selectedFloor == "other") {
+      drawingHallLocation = 4;
+    }
+
+  }
+  String livingHallArea = "";
+  
+  void livingArea(){
+  int living = int.parse(LivingHallLengthController.text) *
+                  int.parse(LivingHallWidthController.text);
+  livingHallArea = living.toString();
+  }
+  
+
+  TextEditingController drawingHallLengthController = TextEditingController();
+  TextEditingController drawingHallWidthController = TextEditingController();
+  TextEditingController drawingSpecialFeaturesController = TextEditingController();
+  TextEditingController livingSpecialFeaturesController = TextEditingController();
+  TextEditingController LivingHallWidthController = TextEditingController();
+  TextEditingController LivingHallLengthController = TextEditingController();
+  TextEditingController KitchenLengthController = TextEditingController();
+  TextEditingController attachedLengthController = TextEditingController();
+  TextEditingController kitchenWidthController = TextEditingController();
+  TextEditingController attachedWidthController = TextEditingController();
+  TextEditingController utilityLengthController = TextEditingController();
+  TextEditingController utilityWidthController = TextEditingController();
+  TextEditingController specificReq = TextEditingController();
+  
   List<String> kitchenItems = [
     "Select",
     "Ground floor",
@@ -33,17 +77,67 @@ class _LivingHallState extends State<LivingHall> {
     "other"
   ];
   String selectedKitchen = "Select";
+  String kitchenArea = "";
+  String KitchenFloor = "0";
+ 
+   
+  void kitchen(){
+    int kitch = int.parse(KitchenLengthController.text) *
+                  int.parse(kitchenWidthController.text);
+  livingHallArea = living.toString();
+  }
 
-  List<String> drawingHallItems = [
-    "Select",
-    "Ground floor",
-    "1st Floor ",
-    "2nd Floor",
-    "3rd Floor",
-    "other"
-  ];
+  void kitchenFlo() {
+    if (selectedKitchen == "1 floor") {
+      KitchenFloor = "1";
+    }
+
+    if (selectedKitchen == "2 floor") {
+      KitchenFloor = "2";
+    }
+
+    if (selectedKitchen == "3 floor") {
+      KitchenFloor = "3";
+    }
+
+    if (selectedKitchen == "other") {
+      KitchenFloor = "4";
+    }
+
+  }
+
+
+  // List<String> drawingHallItems = [
+  //   "Select",
+  //   "Ground floor",
+  //   "1st Floor ",
+  //   "2nd Floor",
+  //   "3rd Floor",
+  //   "other"
+  // ];
+
   String selecteDrawingHall = "Select";
+  int drawingHallLocation = 0;
+  void drawing() {
+    if (DrawingSelected == "1 floor") {
+      drawingHallLocation = 1;
+    }
 
+    if (DrawingSelected == "2 floor") {
+      drawingHallLocation = 2;
+    }
+
+    if (DrawingSelected == "3 floor") {
+      drawingHallLocation = 3;
+    }
+
+    if (DrawingSelected == "Ground floor") {
+      drawingHallLocation = 1;
+    }
+
+  }
+
+  String DrawingSelected = "Select";
   List<String> DrawingItems = [
     "Select",
     "Ground floor",
@@ -52,6 +146,7 @@ class _LivingHallState extends State<LivingHall> {
     "3rd Floor",
     "other"
   ];
+
   List<String> kitchenFunctionItems = [
     "Selecting dining function",
     "full open to dining ",
@@ -60,29 +155,76 @@ class _LivingHallState extends State<LivingHall> {
     "open with a door",
   ];
   String selectedKitchenFunction = "Selecting dining function";
+    String kitchenDiningFunction = "0";
 
+  void kitchenDining() {
+    if (selectedKitchenFunction == "Selecting dining function") {
+      KitchenFloor = "1";
+    }
+
+    if (selectedKitchenFunction == "full open to dining ") {
+      KitchenFloor = "2";
+    }
+
+    if (selectedKitchenFunction == "open with a reasonable opening") {
+      KitchenFloor = "3";
+    }
+
+    if (selectedKitchenFunction == "open with a door") {
+      KitchenFloor = "4";
+    }
+
+  }
   List<String> refrigeratorItems = [
     "Selecting fridge",
     "Single Door ",
     "Double Door",
   ];
   String selectedRefrigerator = "Selecting fridge";
+  String refrigeratorSize = "";
+  void refrigerator(){
+    if (selectedRefrigerator == "Single Door ") {
+      KitchenFloor = "1";
+    }
 
-  String DrawingSelected = "Select";
+    if (selectedRefrigerator == "Double Door") {
+      KitchenFloor = "2";
+    }
+
+    if (selectedRefrigerator == "open with a reasonable opening") {
+      KitchenFloor = "3";
+    }
+
+  }
+
+ 
+
+
 
   List<String> selectedItem = [" ", "Double height", "powder toilet"];
 
   String selectedFeatures = " ";
 
+  String kitchenFeatures = "";
+
   bool? attachedStore = false;
+  String attachStoreArea = "";
+
   bool? utilityWash = false;
+  String utilityWashArea = "";
+
   bool? washArea = false;
   bool? breakFast = false;
   bool? centralIsland = false;
   bool? livingRequired = false;
   bool? livingNotRequired = false;
+  int livingHallInt = 1;
   bool? drawingHallRequired = false;
   bool? drawingHallNotRequired = false;
+  int drawingInt = 0;
+  String drawingArea = "0";
+
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -232,7 +374,7 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "length" ,LivingHallLengthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.02,
@@ -241,7 +383,7 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "Width",LivingHallWidthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.01,
@@ -300,8 +442,8 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.02,
                   ),
-                  requirementTextField(
-                      height, width, 0.04, 0.5, "special feature")
+                  requirementTextFieldCont(
+                      height, width, 0.04, 0.5, "special feature",livingSpecialFeaturesController)
                 ],
               ),
               SizedBox(
@@ -488,7 +630,7 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15,"length", drawingHallLengthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.02,
@@ -497,7 +639,7 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15,"Width" ,drawingHallWidthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.01,
@@ -514,8 +656,8 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.02,
                   ),
-                  requirementTextField(
-                      height, width, 0.04, 0.5, "special feature")
+                  requirementTextFieldCont(
+                      height, width, 0.04, 0.5, "special feature",drawingSpecialFeaturesController)
                 ],
               ),
               SizedBox(
@@ -635,7 +777,7 @@ class _LivingHallState extends State<LivingHall> {
                 SizedBox(
                   width: width * 0.015,
                 ),
-                requirementTextField(height, width, 0.04, 0.15, "length"),
+                requirementTextFieldCont(height, width, 0.04, 0.15, "length",KitchenLengthController),
                 valueContainer(height, width, size, 0.04, 0.05),
                 SizedBox(
                   width: width * 0.02,
@@ -644,7 +786,7 @@ class _LivingHallState extends State<LivingHall> {
                 SizedBox(
                   width: width * 0.015,
                 ),
-                requirementTextField(height, width, 0.04, 0.15, "Width"),
+                requirementTextFieldCont(height, width, 0.04, 0.15, "Width",kitchenWidthController),
                 valueContainer(height, width, size, 0.04, 0.05),
                 SizedBox(
                   width: width * 0.01,
@@ -879,7 +1021,7 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "length",attachedLengthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.02,
@@ -888,7 +1030,7 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "Width",attachedWidthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                 ],
               ),
@@ -931,7 +1073,7 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "length",utilityLengthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.02,
@@ -940,7 +1082,7 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "Width",utilityWidthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.01,
@@ -1047,29 +1189,109 @@ class _LivingHallState extends State<LivingHall> {
                 SizedBox(
                   width: width * 0.01,
                 ),
-                requirementTextField(
+                requirementTextFieldCont(
                   height,
                   width,
                   0.04,
                   0.4,
                   "Specific requirement",
+                  specificReq
                 )
               ],
             ),
             SizedBox(
               height: height * 0.01,
             ),
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                height: height * 0.04,
-                decoration: BoxDecoration(
-                    color: buttonColor, borderRadius: BorderRadius.circular(4)),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: const Text(
-                  "save and continue",
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  living();
+                  livingArea();
+                  drawing();
+                  kitchen();
+                  kitchenFlo();
+                  kitchenDining();
+                  refrigerator();
+                  if(utilityWash == true){
+                    int utility = int.parse(utilityLengthController.text) * int.parse(utilityWidthController.text);
+                     utilityWashArea = utility.toString();
+                  }
+                  if(attachedStore == true){
+                    kitchenFeatures = "1";
+                  }
+                  if(utilityWash == true){
+                    kitchenFeatures = "${kitchenFeatures} 2 ";
+                  }
+                  
+                  if(washArea == true){
+                    kitchenFeatures = "${kitchenFeatures} 3 ";
+                  }
+                  if(breakFast == true){
+                    kitchenFeatures = "${kitchenFeatures} 4 ";
+                  }
+                  if(centralIsland == true){
+                    kitchenFeatures = "${kitchenFeatures} 5 ";
+                  }
+
+                  if(livingNotRequired == true){
+                    livingHallInt = 1;
+                  }
+                  if(attachStoreArea == true){
+                    int attach = int.parse(attachedLengthController.text) * int.parse(attachedWidthController.text);
+                    attachStoreArea = attach.toString();
+                  }
+                  
+                  if (drawingHallRequired == true) {
+                    drawingInt = 1;
+                 int drawing = int.parse(drawingHallLengthController.text) * int.parse(drawingHallWidthController.text);
+                  drawingArea = drawing.toString();
+                  }
+                });
+                livingHallPost(
+                  123,
+                  drawingInt,
+                  drawingHallLocation,
+                  drawingHallLengthController.text,
+                  drawingHallWidthController.text,
+                  drawingArea,
+                  drawingSpecialFeaturesController.text,
+                  drawingSpecialFeaturesController.text,
+                  livingHallInt,
+                  livingHallLocation,
+                  LivingHallLengthController.text,
+                  LivingHallWidthController.text,
+                  livingHallArea,
+                  livingSpecialFeaturesController.text,
+                  livingSpecialFeaturesController.text,
+                  kitchenFeatures,
+                  KitchenFloor,
+                  KitchenLengthController.text,
+                  kitchenWidthController.text,
+                  kitchenArea,
+                  kitchenDiningFunction,
+                  attachedLengthController.text,
+                  attachedWidthController.text,
+                  attachStoreArea,
+                  utilityWidthController.text,
+                  utilityLengthController.text,
+                  utilityWashArea,
+                  refrigeratorSize,
+                  specificReq.text,
+                );
+              },
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  height: height * 0.04,
+                  decoration: BoxDecoration(
+                      color: buttonColor,
+                      borderRadius: BorderRadius.circular(4)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: const Text(
+                    "save and continue",
+                    style: TextStyle(color: Colors.white, fontSize: 14),
+                  ),
                 ),
               ),
             ),

@@ -7,6 +7,7 @@ import '../const.dart';
 
 List<String> sizeitems = ["ft", "m"];
 String size = "ft";
+int dimenInt = 1;
 
 Container lableText(String lable) {
   return Container(

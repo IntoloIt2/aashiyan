@@ -2,9 +2,8 @@ import 'package:aashiyan/components/forms.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import '../../../components/bungalow_steps.dart';
 import '../../../const.dart';
-import '../../../components/app_bar.dart';
+
 import '../../../controller/api_services.dart';
 
 class Entrance extends StatefulWidget {
@@ -16,8 +15,50 @@ class Entrance extends StatefulWidget {
 }
 
 class _EntranceState extends State<Entrance> {
-  List<String> floors = ["Select", "1(G)", "2(G+1)", "3(G+3)", "more"];
+  List<String> floors = [
+    "Select",
+    "1(G)",
+    "2(G+1)",
+    "3(G+2)",
+    "4(G+3)",
+    "more"
+  ];
+
   String selectedFloor = "Select";
+
+  int floorInt = 1;
+
+  TextEditingController floorController = TextEditingController();
+  TextEditingController gateWidthController = TextEditingController();
+  TextEditingController selectedCarGateController = TextEditingController();
+  TextEditingController selectedSidePadestController = TextEditingController();
+  TextEditingController diffrentCustomizedLocationController =
+      TextEditingController();
+  TextEditingController securityKioskLengthController = TextEditingController();
+  TextEditingController securityKioskWidthController = TextEditingController();
+  TextEditingController porchLengthController = TextEditingController();
+  TextEditingController porchWidthController = TextEditingController();
+  TextEditingController foyerWidthController = TextEditingController();
+  TextEditingController foyerLengthController = TextEditingController();
+  TextEditingController verandaWidthController = TextEditingController();
+  TextEditingController verandaLengthController = TextEditingController();
+
+  void floor() {
+    setState(() {
+      if (selectedFloor == "2(G+1)") {
+        floorInt = 2;
+      }
+      if (selectedFloor == "3(G+2)") {
+        floorInt = 3;
+      }
+      if (selectedFloor == "4(G+3)") {
+        floorInt = 4;
+      }
+      if (selectedFloor == "more") {
+        floorInt = int.parse(floorController.text);
+      }
+    });
+  }
 
   List<String> lobbyDesign = [
     "Select",
@@ -39,6 +80,8 @@ class _EntranceState extends State<Entrance> {
   List<String> sidePadest = ["Select", "3", "4", "more"];
   String selectedSidePadest = "Select";
 
+  String securityKiosqArea = "";
+
   List<String> visualItems = [
     "Select",
     "single height",
@@ -48,24 +91,53 @@ class _EntranceState extends State<Entrance> {
 
   List<String> carParkingItems = ["Select", "1", "2", "3", "4", "5", "more"];
   String selectedCarParking = "Select";
+
   bool? outSideOpen = false;
   bool? outSideClosed = false;
+
   bool? requiredVeranda = false;
   bool? notReqiredVeranda = false;
+  int requiredVerandaInt = 0;
+  String verandaArea = "0";
+
   bool? requiredWelcomeLobyy = false;
+  int requiredWelcomeLobyyInt = 0;
+  String foyerArea = "0";
+  String veranda = "";
+
   bool? notReqiredWelcomeLobby = false;
+
   bool? carparking = false;
+  String carParkingString = "0";
+
   bool? visualNature = false;
+  String visualNaturString = "0";
+
   bool? securityRequired = false;
+  int securityReqInt = 0;
+
   bool? securityNotRequired = false;
+
   bool? adjascent = false;
   bool? diffrentCustom = false;
+
   bool? moderate = false;
+  String moderateString = "0";
+
   bool? consult = false;
+
   bool? oneGate = true;
+  String gate = "OneGate";
+
   bool? twoGate = false;
+
   bool? porchRequired = false;
+  int porchReqInt = 0;
+  
   bool? porchNotRequired = false;
+  String porchArea = "";
+
+  String porch = "";
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +145,6 @@ class _EntranceState extends State<Entrance> {
     var width = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       child: Container(
-       
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -113,7 +184,11 @@ class _EntranceState extends State<Entrance> {
                               setState(() => selectedFloor = it!)),
                     ),
                   ),
-                )
+                ),
+                if (selectedFloor == "more") ...[
+                  requirementTextFieldCont(
+                      height, width, 0.04, 0.15, "floors", floorController)
+                ]
               ],
             ),
             SizedBox(
@@ -312,7 +387,8 @@ class _EntranceState extends State<Entrance> {
                     SizedBox(
                       width: width * 0.065,
                     ),
-                    requirementTextField(height, width, 0.04, 0.2, "gatewidth")
+                    requirementTextFieldCont(height, width, 0.04, 0.2,
+                        "gatewidth", gateWidthController)
                   ]
                 ],
                 if (twoGate == true) ...[
@@ -490,13 +566,13 @@ class _EntranceState extends State<Entrance> {
               SizedBox(
                 height: height * 0.01,
               ),
-              requirementTextField(
-                height,
-                width,
-                0.05,
-                0.95,
-                "Bnef of diffrent customed location",
-              ),
+              requirementTextFieldCont(
+                  height,
+                  width,
+                  0.05,
+                  0.95,
+                  "Bnef of diffrent customed location",
+                  diffrentCustomizedLocationController),
             ],
             Row(
               children: [
@@ -504,14 +580,15 @@ class _EntranceState extends State<Entrance> {
                   width: width * 0.025,
                 ),
                 if (selectedCarGate == "more" && adjascent == true) ...[
-                  requirementTextField(height, width, 0.04, 0.2, "gate width")
+                  requirementTextFieldCont(height, width, 0.04, 0.2,
+                      "gate width", selectedCarGateController)
                 ],
                 SizedBox(
                   width: width * 0.375,
                 ),
                 if (selectedSidePadest == "more" && adjascent == true) ...[
-                  requirementTextField(
-                      height, width, 0.04, 0.28, "side gate width")
+                  requirementTextFieldCont(height, width, 0.04, 0.28,
+                      "side gate width", selectedSidePadestController)
                 ],
               ],
             ),
@@ -600,7 +677,8 @@ class _EntranceState extends State<Entrance> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "length",
+                      securityKioskLengthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.02,
@@ -609,7 +687,8 @@ class _EntranceState extends State<Entrance> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "Width",
+                      securityKioskWidthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.01,
@@ -751,8 +830,15 @@ class _EntranceState extends State<Entrance> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
-                  valueContainer(height, width, size, 0.04, 0.05),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "length",
+                      porchLengthController),
+                  valueContainer(
+                    height,
+                    width,
+                    size,
+                    0.04,
+                    0.05,
+                  ),
                   SizedBox(
                     width: width * 0.02,
                   ),
@@ -760,7 +846,8 @@ class _EntranceState extends State<Entrance> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
+                  requirementTextFieldCont(
+                      height, width, 0.04, 0.15, "Width", porchWidthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.01,
@@ -1085,7 +1172,8 @@ class _EntranceState extends State<Entrance> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "length",
+                      foyerLengthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.02,
@@ -1094,7 +1182,8 @@ class _EntranceState extends State<Entrance> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
+                  requirementTextFieldCont(
+                      height, width, 0.04, 0.15, "Width", foyerWidthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.01,
@@ -1267,7 +1356,8 @@ class _EntranceState extends State<Entrance> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "length",
+                      verandaLengthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.02,
@@ -1276,7 +1366,8 @@ class _EntranceState extends State<Entrance> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "Width",
+                      verandaWidthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.01,
@@ -1395,13 +1486,119 @@ class _EntranceState extends State<Entrance> {
             SizedBox(
               height: height * 0.01,
             ),
-            Container(
-              decoration: BoxDecoration(
-                  color: buttonColor, borderRadius: BorderRadius.circular(4)),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: const Text(
-                "save and continue",
-                style: TextStyle(color: Colors.white, fontSize: 14),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  if (moderate == true) {
+                    moderateString = "0";
+                  }
+                  floor();
+                  if (oneGate == false) {
+                    gate = "Twogate";
+                  }
+                  if (selectedCarGate == "more") {
+                    selectedCarGate = selectedCarGateController.text;
+                  }
+                  if (selectedSidePadest == "more") {
+                    selectedSidePadest = selectedSidePadestController.text;
+                  }
+
+                  if (securityRequired == true) {
+                    securityReqInt = 1;
+                    int securityArea =
+                        int.parse(securityKioskLengthController.text) *
+                            int.parse(securityKioskWidthController.text);
+
+                    securityKiosqArea = securityArea.toString();
+                  }
+                  if (porchRequired == true) {
+                    porchReqInt = 1;
+                    int pArea = int.parse(porchLengthController.text) *
+                        int.parse(porchWidthController.text);
+                    porchArea = pArea.toString();
+                  }
+                  if (visualNature == true) {
+                    porch = "visual nature ";
+                  }
+                  if (carparking == true) {
+                    porch = "car parking space";
+                  }
+                  if (carparking == true && visualNature == true) {
+                    porch = "visual nature car parking space ";
+                  }
+                  if (carparking == true) {
+                    carParkingString = "1";
+                  }
+                  if (visualNature == true) {
+                    visualNaturString = "1";
+                  }
+                  if (requiredWelcomeLobyy == true) {
+                    requiredWelcomeLobyyInt = 1;
+                    int fArea = int.parse(foyerLengthController.text) *
+                        int.parse(foyerWidthController.text);
+
+                    porchArea = fArea.toString();
+                  }
+                  if (requiredVeranda == true) {
+                    requiredVerandaInt = 1;
+                    int vArea = 0;
+
+                    vArea = int.parse(verandaLengthController.text) *
+                        int.parse(verandaWidthController.text);
+                    verandaArea = vArea.toString();
+
+                    if (outSideOpen == true) {
+                      veranda = "out side open";
+                    }
+                    if (outSideClosed == true) {
+                      veranda = "out side closed with glass or grill";
+                    }
+                    
+                  }
+                });
+                entrancePost(
+                  123,
+                  moderateString,
+                  floorInt,
+                  gate,
+                  entranceSelectedGates,
+                  gate,
+                  selectedCarGate,
+                  selectedSidePadest,
+                  diffrentCustomizedLocationController.text,
+                  securityReqInt,
+                  securityKioskLengthController.text,
+                  securityKioskWidthController.text,
+                  securityKiosqArea,
+                  0,
+                  porchReqInt,
+                  porchLengthController.text,
+                  porchWidthController.text,
+                  porchArea,
+                  porch,
+                  visualNaturString,
+                  carParkingString,
+                  requiredWelcomeLobyyInt,
+                  foyerLengthController.text,
+                  foyerWidthController.text,
+                  foyerArea,
+                  SelectedLobbyDesign,
+                  requiredVerandaInt,
+                  verandaLengthController.text,
+                  verandaWidthController.text,
+                  verandaArea,
+                  veranda,
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: buttonColor, borderRadius: BorderRadius.circular(4)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: const Text(
+                  "save and continue",
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
               ),
             )
           ],

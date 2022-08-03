@@ -86,14 +86,11 @@ class _MultiSelectState extends State<MultiSelect> {
   final List<String> _selectedItems = [];
 
 // This function is triggered when a checkbox is checked or unchecked
-  void _itemChange(String itemValue, bool isSelected)
-  {
+  void _itemChange(String itemValue, bool isSelected) {
     setState(() {
       if (isSelected) {
-
         _selectedItems.add(itemValue);
       } else {
-
         _selectedItems.remove(itemValue);
       }
     });
@@ -101,37 +98,29 @@ class _MultiSelectState extends State<MultiSelect> {
 
   // this function is called when the Cancel button is pressed
   void _cancel() {
-
     Navigator.pop(context);
   }
 
 // this function is called when the Submit button is tapped
   void _submit() {
-
     Navigator.pop(context, _selectedItems);
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-
       title: const Text('Select Topics'),
       content: SingleChildScrollView(
-
-      child: ListBody(
-
-      children: widget.items
-
+        child: ListBody(
+          children: widget.items
               .map((item) => CheckboxListTile(
                     value: _selectedItems.contains(item),
                     title: Text(item),
                     controlAffinity: ListTileControlAffinity.leading,
-                    onChanged: (isChecked) => _itemChange(item,isChecked!),
+                    onChanged: (isChecked) => _itemChange(item, isChecked!),
                   ))
               .toList(),
-
         ),
-
       ),
       actions: [
         TextButton(
@@ -170,23 +159,22 @@ class _HomeState extends State<Home> {
 
     final List<String>? results = await showDialog(
       context: context,
-      builder: (BuildContext context){
+      builder: (BuildContext context) {
         return MultiSelect(items: _items);
       },
     );
 
     // Update UI
-    if(results != null) {
+    if (results != null) {
       setState(() {
         _selectedItems = results;
-        });
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -215,4 +203,114 @@ class _HomeState extends State<Home> {
   }
 }
 
+class test extends StatefulWidget {
+  const test({Key? key}) : super(key: key);
 
+  @override
+  State<test> createState() => _testState();
+}
+
+class _testState extends State<test> {
+  TextEditingController textEditingController = TextEditingController();
+  var velocityEditingController = TextEditingController();
+  var finalValue = TextEditingController();
+
+  int? airFlow;
+  int? velocity;
+  int? valueFinal;
+  String? sam2;
+  String? airFlowText, velocityText, finalText;
+  String sam = '';
+  @override
+  void initState() {
+    super.initState();
+    finalValue.addListener(() => setState(() {}));
+  }
+
+  String totalCalculated() {
+    airFlowText = textEditingController.text;
+
+    velocityText = velocityEditingController.text;
+
+    finalText = finalValue.text;
+
+    if (airFlowText != '' && velocityText != '') {
+      sam = (airFlow! + velocity!).toString();
+      finalValue.value = finalValue.value.copyWith(
+        text: sam.toString(),
+      );
+    }
+    return sam;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TextFormField(
+            // key: Key(totalCalculated()),
+            controller: textEditingController,
+            onChanged: (textEditingController) {
+              setState(() {
+                airFlow = int.parse(textEditingController.toString());
+              });
+            },
+            onTap: () {
+              setState(() {
+                textEditingController.clear();
+              });
+            },
+            decoration: const InputDecoration(
+              hintText: 'Enter Value',
+
+              labelText: 'Air Flow',
+
+            ),
+            keyboardType: TextInputType.number,
+          ),
+          TextField(
+            controller: velocityEditingController,
+            onChanged: (velocityEditingController) {
+              setState(() {
+                velocity = int.parse(velocityEditingController.toString());
+                 });
+            },
+            decoration: const InputDecoration(
+              hintText: 'Enter Value',
+              labelText: 'Velocity',
+            ),
+            keyboardType: TextInputType.number,
+          ),
+          TextFormField(
+            key: Key(totalCalculated()),
+            controller: finalValue,
+            onChanged: (value) {
+              setState(() {
+                finalValue.value = finalValue.value.copyWith(
+                  text: value.toString(),
+                );
+              });
+            },
+            onTap: () {
+              setState(() {
+                finalValue.clear();
+                finalValue.value = finalValue.value.copyWith(
+                  text: '',
+                );
+              });
+            },
+            decoration: InputDecoration(
+              hintText: 'Enter Value',
+              labelText: 'Final Value',
+            ),
+            keyboardType: TextInputType.number,
+          ),
+          Text('Entered Value is  $airFlow + $velocity + ${finalValue.text}'),
+        ],
+      ),
+    );
+  }
+}
