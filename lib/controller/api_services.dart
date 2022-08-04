@@ -335,7 +335,6 @@ Future<void> entrancePost(
 }
 
 Future<void> livingHallPost(
-  int projectid,
   int drawingHallRequirement,
   int drawingHallLocation,
   String drawingHallLength,
@@ -348,9 +347,9 @@ Future<void> livingHallPost(
   String livingHallLength,
   String livingHallwidth,
   String livingHallArea,
-  String livinghall,
+  List livinghall,
   String LivingHallText,
-  String kitchenFeatures,
+  List kitchenFeatures,
   String kitchenFloor,
   String kitchenLength,
   String kitchenWidth,
@@ -365,10 +364,11 @@ Future<void> livingHallPost(
   String refrigeratorSize,
   String specificReq,
 ) async {
+  print(specificReq);
   var projectData = {
-    "project_id": 123,
-    "user_id": 123,
-    "projec_id": 5,
+    "project_id": 785657,
+     "user_id": 986,
+     "dimension": dimenInt,
     "drawing_hall_req": drawingHallRequirement,
     "drawing_hall_location": drawingHallLocation,
     "drwing_hall_length": drawingHallLength,
@@ -397,9 +397,8 @@ Future<void> livingHallPost(
     "utility_wash_area": utilityWashArea,
     "refrigerator_size": refrigeratorSize,
     "specific_req": specificReq,
-    "dimension": dimenInt,
   };
-
+  print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
     Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-drawing-hall'),
@@ -410,3 +409,54 @@ Future<void> livingHallPost(
   );
   print(response.body);
 }
+
+Future<void> pantryPost(
+  int pantryRequest,
+  String pantryFloor,
+  String pantryLength,
+  String pantryWidth,
+  String pantryArea,
+  String specificRequest,
+  String diningLength,
+  String diningWidth,
+  String diningArea,
+  String diningFeatures,
+  String diningFloor,
+  String diningSeat,
+  String diningText,
+  
+  
+) async {
+  
+  var projectData = {
+    "project_id": 785657,
+     "user_id": 986,
+     "dimension": dimenInt,
+    "pantry_req": pantryRequest,
+    "pantry_floor": pantryFloor,
+    "pantry_length": pantryLength,
+    "pantry_width": pantryWidth,
+    "pantry_area": pantryArea,
+    "specific_req": specificRequest,
+    "dining_length": diningLength,
+    "dining_width": diningWidth,
+    "dining_area": diningArea,
+    "dining_features": diningFeatures,
+    "dining_floor": diningFloor,
+    "dining_seat": diningSeat,
+    "dining_text": diningText,
+    
+    
+  };
+  print(projectData);
+  final response = await http.post(
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-drawing-hall'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+  print(response.body);
+}
+
