@@ -1,5 +1,3 @@
-
-
 import 'package:aashiyan/controller/api_services.dart';
 import 'package:flutter/material.dart';
 
@@ -65,12 +63,16 @@ Text requirementText(String txt) {
     style: TextStyle(
       fontWeight: FontWeight.bold,
     ),
-
   );
 }
 
 Material requirementTextField(
-    double height, double width, double h, double w, String str,  ) {
+  double height,
+  double width,
+  double h,
+  double w,
+  String str,
+) {
   return Material(
     elevation: 5,
     borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -78,7 +80,6 @@ Material requirementTextField(
       height: height * h,
       width: width * w,
       child: TextFormField(
-        
         style: TextStyle(fontSize: 14),
         decoration: InputDecoration(
             hintText: str,
@@ -90,15 +91,19 @@ Material requirementTextField(
             contentPadding: EdgeInsets.all(8)
             //fillColor: Colors.green
             ),
-           
       ),
     ),
   );
 }
 
-
 Material requirementTextFieldCont(
-    double height, double width, double h, double w, String str, TextEditingController txt, ) {
+  double height,
+  double width,
+  double h,
+  double w,
+  String str,
+  TextEditingController txt,
+) {
   return Material(
     elevation: 5,
     borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -106,7 +111,6 @@ Material requirementTextFieldCont(
       height: height * h,
       width: width * w,
       child: TextFormField(
-        
         controller: txt,
         style: TextStyle(fontSize: 14),
         decoration: InputDecoration(
@@ -119,9 +123,7 @@ Material requirementTextFieldCont(
             contentPadding: EdgeInsets.all(8)
             //fillColor: Colors.green
             ),
-           
       ),
     ),
   );
 }
-

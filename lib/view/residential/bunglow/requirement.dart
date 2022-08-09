@@ -87,7 +87,7 @@ class _RequirementState extends State<Requirement> {
   int plotSize = 0;
   String plotSizeStr = '';
   String selectedState = "Select State";
-
+ 
   List cityData = [];
   List stateData = [];
 
@@ -96,6 +96,8 @@ class _RequirementState extends State<Requirement> {
     super.initState();
 
     getCities();
+    
+    
     getState();
     plotValue.addListener(() => setState(() {}));
   }
@@ -141,6 +143,7 @@ class _RequirementState extends State<Requirement> {
   String diagonalCalculation = "";
 
   String diagonalCalculations() {
+    
     diagonal1Text = diagonal1Controller.text;
     diagonal2Text = diagonal2Controller.text;
     finalDiagonal = plotValue.text;
@@ -171,6 +174,7 @@ class _RequirementState extends State<Requirement> {
     } catch (e) {
       print(e.toString());
     }
+
   }
 
   Future<List?> getCities() async {
@@ -182,8 +186,10 @@ class _RequirementState extends State<Requirement> {
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         final cityList = jsonResponse['cities'] as List;
-        setState(() {
+        setState((){
+
           cityData = cityList;
+
         });
         // print(cityData);
         return cityList;
@@ -201,9 +207,8 @@ class _RequirementState extends State<Requirement> {
     //   print(element["city_name"]);
     // }
     // print(stateId);
-    // print(cityData);
-    // print(stateData);
-
+    
+    
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

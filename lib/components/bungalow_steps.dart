@@ -5,6 +5,7 @@ import 'package:aashiyan/view/residential/bunglow/livinghall.dart';
 import 'package:aashiyan/view/residential/bunglow/pantrydetail.dart';
 import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:flutter/material.dart';
+import '../view/residential/bunglow/bedroom.dart';
 import '../view/residential/bunglow/bedroompage.dart';
 import '../view/residential/bunglow/entrance.dart';
 import 'steps_container.dart';

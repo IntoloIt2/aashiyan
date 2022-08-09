@@ -367,8 +367,8 @@ Future<void> livingHallPost(
   print(specificReq);
   var projectData = {
     "project_id": 785657,
-     "user_id": 986,
-     "dimension": dimenInt,
+    "user_id": 986,
+    "dimension": dimenInt,
     "drawing_hall_req": drawingHallRequirement,
     "drawing_hall_location": drawingHallLocation,
     "drwing_hall_length": drawingHallLength,
@@ -398,6 +398,7 @@ Future<void> livingHallPost(
     "refrigerator_size": refrigeratorSize,
     "specific_req": specificReq,
   };
+
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
@@ -420,18 +421,15 @@ Future<void> pantryPost(
   String diningLength,
   String diningWidth,
   String diningArea,
-  String diningFeatures,
+  List diningFeatures,
   String diningFloor,
   String diningSeat,
   String diningText,
-  
-  
 ) async {
-  
   var projectData = {
-    "project_id": 785657,
-     "user_id": 986,
-     "dimension": dimenInt,
+    "project_id": 255825,
+    "user_id": 3655,
+    "dimension": dimenInt,
     "pantry_req": pantryRequest,
     "pantry_floor": pantryFloor,
     "pantry_length": pantryLength,
@@ -445,13 +443,12 @@ Future<void> pantryPost(
     "dining_floor": diningFloor,
     "dining_seat": diningSeat,
     "dining_text": diningText,
-    
-    
   };
+  print("$diningFeatures  dini");
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-drawing-hall'),
+    Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-pantry'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -460,3 +457,117 @@ Future<void> pantryPost(
   print(response.body);
 }
 
+Future<void> flooreStorePost(
+  int floorStoreRequirement,
+  String floorStoreLength,
+  String floorStoreWidth,
+  String floorStoreArea,
+  String storeFloor,
+  String stairCase,
+  int liftRequirement,
+  String liftSpecialRequirement,
+  int passengerCapacity,
+  int poojaRoomReq,
+  String poojaRoomLength,
+  String poojaRoomWidth,
+  String poojaRoomArea,
+  String poojaRoomFloor,
+  String poojaRoomType,
+  String openingToLiHa,
+) async {
+  var projectData = {
+
+    "project_id": 5456,
+    "dimension": 1,
+    "floor_store_req": floorStoreRequirement,
+    "floor_store_length": floorStoreArea,
+    "floor_store_width": floorStoreLength,
+    "floor_store_area": floorStoreArea,
+    "store_floor": storeFloor,
+    "stair_case": stairCase,
+    "stair_case_image": "sta",
+    "lift_req": liftRequirement,
+    "passanger_capacity": passengerCapacity,
+    "pooja_room_req": poojaRoomReq,
+    "pooja_room_length": poojaRoomLength,
+    "pooja_room_width": poojaRoomWidth,
+    "pooja_room_area": poojaRoomArea,
+    "pooja_room_floor": poojaRoomFloor,
+    "pooja_room_type": poojaRoomReq,
+    "opening_to_li_ha": poojaRoomWidth,
+    "lift_special_req": liftRequirement,
+    
+
+  };
+
+  print(floorStoreArea);
+
+  print(projectData);
+  final response = await http.post(
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-floor-store'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+  
+  print(response.body);
+
+}
+
+Future<void> BedRoomPost(
+  int bedRoom,
+  int bedRoomFloor,
+  String bedRoomLength,
+  String bedRoomWidth,
+  String bedRoomArea,
+  String bedRoomToiletLength,
+  String bedRoomToiletWidth,
+  String bedRoomToiletArea,
+  String bedRoomToiletReqText,
+  int bedroomDressRequirment,
+  String bedroomDressLength,
+  String bedroomDressWidth,
+  String bedroomDressArea,
+  String bedroomDressFacility,
+  String bedroomDressRequirmentText,
+  String bedroomImg,
+  String bedroomFacility,
+  String bedroom,
+  String bedroomFacilityRequirementText,
+) async {
+  var projectData = {
+    "project_id": 5456,
+    "dimension": 1,
+    "bedroom": bedroom,
+    "bedroom_floor": bedRoomFloor,
+    "bedroom_width": bedRoomWidth,
+    "bedroom_length": bedRoomLength,
+    "bedroom_area": bedRoomArea,
+    "bedroom_toilet_length": bedRoomToiletLength,
+    "bedroom_toilet_width": bedRoomToiletWidth,
+    "bedroom_toilet_area": bedRoomToiletArea,
+    "bedroom_toilet_req_text": bedRoomToiletReqText,
+    "bedroom_dress_req": bedroomDressRequirment,
+    "bedroom_dress_length": bedroomDressLength,
+    "bedroom_dress_width": bedroomDressWidth,
+    "bedroom_dress_area": bedroomDressArea,
+    "bedroom_dress_facility": bedroomDressFacility,
+    "bedroom_dress_req_text": bedroomDressRequirmentText,
+    "bedroom_img": bedroomImg,
+    "bedroom_facility": bedroomFacility,
+    "bedroom_facility_req_text": bedroomFacilityRequirementText,  
+  };
+
+  
+  final response = await http.post(
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-floor-store'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+  print(response.body);
+}
