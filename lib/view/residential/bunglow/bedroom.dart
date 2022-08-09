@@ -75,9 +75,7 @@ class _BedroomPageState extends State<BedroomPage> {
                         icon: new Icon(Icons.delete),
                         onPressed: () {
                           setState(() {
-                            bedModelList[bedroomIndex].bedroom = bedroomList[item.index].
-
-                            bedroomIndex = item.index!;
+                           
                             print(bedroomIndex);
                             bedroomList.remove(item);
 
