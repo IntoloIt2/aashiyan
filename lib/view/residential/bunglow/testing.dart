@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
 // class Item {
 //   Item({
 //     required this.expandedValue,
@@ -11,43 +12,41 @@ import 'package:flutter/material.dart';
 //   String headerValue;
 //   bool isExpanded;
 // }
-//   // Material(
-//   //                   elevation: 5,
-//   //                   child: GFMultiSelect(
-//   //                     items:dropList,
-//   //                     onSelect: (value) {
-//   //                       print('selected $value ');
-//   //                     },
-//   //                     dropdownTitleTileText: 'Select feature',
-
-//   //                     dropdownUnderlineBorder:
-//   //                         const BorderSide(color: Colors.transparent, width: 2),
-//   //                     // dropdownTitleTileBorder:
-//   //                     //     Border.all(color: Colors.black, width: 1),
-//   //                     dropdownTitleTileBorderRadius: BorderRadius.circular(5),
-//   //                     dropdownTitleTileMargin: const EdgeInsets.all(1),
-//   //                     dropdownTitleTilePadding:
-//   //                         const EdgeInsets.symmetric(horizontal: 10),
-//   //                     expandedIcon: const Icon(
-//   //                       Icons.keyboard_arrow_down,
-//   //                       color: Colors.black54,
-//   //                     ),
-//   //                     collapsedIcon: const Icon(
-//   //                       Icons.keyboard_arrow_up,
-//   //                       color: Colors.black54,
-//   //                     ),
-//   //                     submitButton: const Text('Submit'),
-//   //                     cancelButton: const Text('Cancel'),
-//   //                     dropdownTitleTileTextStyle: const TextStyle(
-//   //                       fontSize: 14,
-//   //                     ),
-//   //                     padding: const EdgeInsets.all(0),
-//   //                     margin: const EdgeInsets.all(0),
-//   //                     type: GFCheckboxType.basic,
-//   //                     inactiveBorderColor: Colors.grey,
-//   //                   ),
-//   //                 ),
-
+//   //Material(
+//   //                  elevation: 5,
+//   //                  child: GFMultiSelect(
+//   //                    items:dropList,
+//   //                    onSelect: (value) {
+//   //                      print('selected $value ');
+//   //                    },
+//   //                    dropdownTitleTileText: 'Select feature',
+//   //                    dropdownUnderlineBorder:
+//   //                        const BorderSide(color: Colors.transparent, width: 2),
+//   //                    // dropdownTitleTileBorder:
+//   //                    //     Border.all(color: Colors.black, width: 1),
+//   //                    dropdownTitleTileBorderRadius: BorderRadius.circular(5),
+//   //                    dropdownTitleTileMargin: const EdgeInsets.all(1),
+//   //                    dropdownTitleTilePadding:
+//   //                        const EdgeInsets.symmetric(horizontal: 10),
+//   //                    expandedIcon: const Icon(
+//   //                      Icons.keyboard_arrow_down,
+//   //                      color: Colors.black54,
+//   //                    ),
+//   //                    collapsedIcon: const Icon(
+//   //                      Icons.keyboard_arrow_up,
+//   //                      color: Colors.black54,
+//   //                    ),
+//   //                    submitButton: const Text('Submit'),
+//   //                    cancelButton: const Text('Cancel'),
+//   //                    dropdownTitleTileTextStyle: const TextStyle(
+//   //                      fontSize: 14,
+//   //                    ),
+//   //                    padding: const EdgeInsets.all(0),
+//   //                    margin: const EdgeInsets.all(0),
+//   //                    type: GFCheckboxType.basic,
+//   //                    inactiveBorderColor: Colors.grey,
+//   //                  ),
+//   //                ),
 // List<Item> generateItems(int numberOfItems) {
 //   return List<Item>.generate(numberOfItems, (int index) {
 //     return Item(
@@ -356,7 +355,7 @@ import 'package:flutter/material.dart';
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return 
+//     return
 //   }
 // }
 
@@ -422,8 +421,6 @@ import 'package:flutter/material.dart';
 //   }
 // }
 
-
-
 // class MyHomePage extends StatefulWidget {
 //   MyHomePage({key,required this.title}) : super(key: key);
 //   final String title;
@@ -433,7 +430,6 @@ import 'package:flutter/material.dart';
 // }
 
 // class _MyHomePageState extends State<MyHomePage>{
-
 
 //    @override
 //    void initState() {
@@ -461,7 +457,7 @@ import 'package:flutter/material.dart';
 //         title: Text(widget.title),
 //       ),
 //       body: Stack(
-        
+
 //         children: [
 //           Opacity(opacity: .6,child: Image.network( "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRwp3QntHc1KiYvEt-zoR3_k5KndhiaXTZKfw&usqp=CAU",width: double.infinity,height:double.infinity,fit: BoxFit.cover,)),
 //           Center(
@@ -495,20 +491,16 @@ import 'package:flutter/material.dart';
 //       case 5:
 //         return "Roties";
 
-
 //     }
 //   }
 
 //   List<SubItem> getSubMenu()
 //   {
 
-
 //     return [ SubItem("Item 1",false,0), SubItem("Item 2",false,0), SubItem("Item 3",false,0)].toList();
-//   }    
-
+//   }
 
 // }
-
 
 // class SubItem{
 
@@ -525,11 +517,9 @@ import 'package:flutter/material.dart';
 //   }
 // }
 
-
 // class ListItem extends StatefulWidget{
 
 //  int index;
-
 
 //   ListItem(this.index);
 
@@ -655,15 +645,13 @@ import 'package:flutter/material.dart';
 //   String menuName;
 //   List<SubItem>subMenu;
 // Cart({required this.menuName ,required this.subMenu});
- 
+
 // }
 
 // class Constants
 // {
 
 //   static List<Cart> allItems=[];
-
-
 
 //   static addCartItem(index,childIndex)
 //   {
@@ -677,6 +665,93 @@ import 'package:flutter/material.dart';
 //   static void removeAll(index, int childIndex) {
 
 //       allItems[index].subMenu[childIndex].count=0;
-
-//  }
 // }
+//}
+
+class dynmicTesting extends StatefulWidget {
+  const dynmicTesting({Key? key}) : super(key: key);
+
+  @override
+  State<dynmicTesting> createState() => _dynmicTestingState();
+}
+
+class _dynmicTestingState extends State<dynmicTesting> {
+  int count = 0;
+  String result = "";
+  List<Map<String, dynamic>>? _values;
+  @override
+  void initState() {
+    super.initState();
+    count = 0;
+    _values = [];
+    result = '';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("dynamic"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              count = count + 1;
+            },
+            icon: Icon(Icons.add),
+          ),
+          IconButton(
+            onPressed: () {
+              count = 0;
+            },
+            icon: Icon(Icons.add),
+          ),
+        ],
+      ),
+      body: Container(
+        child: Column(children: [
+          Flexible(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return _row(index);
+              },
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(result),
+        ]),
+      ),
+    );
+  }
+
+  _row(int key) {
+    return Row(
+      children: [
+        Text("Id ${key}"),
+        SizedBox(
+          width: 30,
+        ),
+        Expanded(child: TextField(
+          onChanged: (value) {
+            _onUpdate(key, value);
+          },
+        )),
+      ],
+    );
+  }
+
+  _onUpdate(int key, String value) {
+    Map<String, dynamic> json = {"id": key, "value": value};
+    _values!.add(json);
+    setState(() {
+      result = _prettyPrint(_values);
+    });
+  }
+
+  String _prettyPrint(jsonObject) {
+    var encoder = JsonEncoder.withIndent('  ');
+    return encoder.convert(jsonObject);
+  }
+}

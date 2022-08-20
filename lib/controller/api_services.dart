@@ -476,7 +476,6 @@ Future<void> flooreStorePost(
   String openingToLiHa,
 ) async {
   var projectData = {
-
     "project_id": 5456,
     "dimension": 1,
     "floor_store_req": floorStoreRequirement,
@@ -496,8 +495,6 @@ Future<void> flooreStorePost(
     "pooja_room_type": poojaRoomReq,
     "opening_to_li_ha": poojaRoomWidth,
     "lift_special_req": liftRequirement,
-    
-
   };
 
   print(floorStoreArea);
@@ -511,9 +508,8 @@ Future<void> flooreStorePost(
     },
     body: jsonEncode(projectData),
   );
-  
-  print(response.body);
 
+  print(response.body);
 }
 
 Future<void> BedRoomPost(
@@ -557,13 +553,12 @@ Future<void> BedRoomPost(
     "bedroom_dress_req_text": bedroomDressRequirmentText,
     "bedroom_img": bedroomImg,
     "bedroom_facility": bedroomFacility,
-    "bedroom_facility_req_text": bedroomFacilityRequirementText,  
+    "bedroom_facility_req_text": bedroomFacilityRequirementText,
   };
 
-  
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-floor-store'),
+    Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-bedroom'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -571,3 +566,142 @@ Future<void> BedRoomPost(
   );
   print(response.body);
 }
+
+Future<void> BasementPost(
+  int projectId,
+  int basementReq,
+  String basementType,
+  int StiltRequirement,
+  String StiltType,
+  int officeRequirement,
+  String officeLength,
+  String officeWidth,
+  String officeLocation,
+  List officeFacility,
+  String officeSpecificReq,
+  int serventQuaterReq,
+  String serventQuaterLength,
+  String serventQuaterWidth,
+  String serventQuaterSpecificReq,
+  String noOfServentsQuater,
+  List serventQuaterFacility,
+  String serventQuaterLocation,
+  String servantQuaterSpecificReq,
+  int parkingGarageReq,
+  String parkingGarageLength,
+  String parkingGarageWidth,
+  String noOfCar,
+  String parkingGarageLocation,
+  String saperateShade,
+  String parkingGarageSpecificReq,
+  int homeTheaterReq,
+  String homeTheaterLength,
+  String homeTheaterWidth,
+  String homeTheaterLocation,
+  String homeTheaterSeats,
+  String homeTheaterSpecificReq,
+  int indoorPlayReq,
+  String indoorPlayLocation,
+  String indoorPlayLength,
+  String indoorPlayWidth,
+  String indorPlaySpecificReq,
+  int barReq,
+  String barLocaion,
+  List barFacility,
+  String barLength,
+  String barWidth,
+  String barSpecificReq,
+  int swimmingPoolReq,
+  String swimmingPoolLocation,
+  String swimmingPoollength,
+  String swimmingPoolWidth,
+  String swimmingPoolSpecificReq,
+  int gymReq,
+  String gymlocation,
+  String gymLength,
+  String gymWidth,
+  String gymSpecificReq,
+  int spaReq,
+  String spaLocation,
+  String spaLength,
+  String spaWidth,
+  String spaSpecificReq,
+  int gardenReq,
+  String gardenType,
+  String gardenSpecificReq,
+) async {
+  var projectData = {
+    "project_id": 664187,
+    "dimension": 1,
+    "basement_req": 0,
+    "basement_type": basementType,
+    "stilt_req": StiltRequirement,
+    "stilt_type": StiltType,
+    "office_req": officeRequirement,
+    "office_length": officeLength,
+    "office_width": officeWidth,
+    "office_location": officeLocation,
+    "office_facility": officeFacility,
+    "office_specific_req": officeSpecificReq,
+    "servent_quarter_req": serventQuaterReq,
+    "servent_quarter_length": serventQuaterLength,
+    "servent_quarter_width": serventQuaterWidth,
+    "no_of_servent_quarter": noOfServentsQuater,
+    "servent_quarter_facility": serventQuaterFacility,
+    "servent_quarter_location": serventQuaterLocation,
+    "servent_quarter_specific_req": serventQuaterSpecificReq,
+    "parking_garage_req": parkingGarageReq,
+    "parking_garage_length": parkingGarageLength,
+    "parking_garage_width": parkingGarageWidth,
+    "no_of_cars": noOfCar,
+    "parking_garage_location": parkingGarageLocation,
+    "saperate_shade": saperateShade,
+    "parking_garage_specific_req": parkingGarageSpecificReq,
+    "home_theater_req": homeTheaterReq,
+    "home_theater_length": homeTheaterLength,
+    "home_theater_width": homeTheaterWidth,
+    "home_theater_location": homeTheaterLocation,
+    "home_theater_seats": homeTheaterSeats,
+    "home_theater_specific_req": homeTheaterSpecificReq,
+    "indoor_play_req": indoorPlayReq,
+    "indoor_play_location": indoorPlayLocation,
+    "indoor_play_length": indoorPlayLength,
+    "indoor_play_width": indoorPlayWidth,
+    "indoor_play_specific_req": indorPlaySpecificReq,
+    "bar_req": barReq,
+    "bar_location": barLocaion,
+    "bar_facility": barFacility,
+    "bar_length": barLength,
+    "bar_width": barWidth,
+    "bar_specific_req": barSpecificReq,
+    "swimming_pool_req": swimmingPoolReq,
+    "swimming_pool_location": swimmingPoolLocation,
+    "swimming_pool_length": swimmingPoollength,
+    "swimming_pool_width": swimmingPoolWidth,
+    "swimming_pool_specific_req": swimmingPoolSpecificReq,
+    "gym_req": gymReq,
+    "gym_location": gymlocation,
+    "gym_length": gymLength,
+    "gym_width": gymWidth,
+    "gym_specific_req": gymSpecificReq,
+    "spa_req": spaReq,
+    "spa_location": spaLocation,
+    "spa_length": spaLength,
+    "spa_width": spaWidth,
+    "spa_specific_req": spaSpecificReq,
+    "garden_req": gardenReq,
+    "garden_type": gardenType,
+    "garden_specific_req": gardenSpecificReq,
+  };
+
+  final response = await http.post(
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-basement'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+  print(response.body);
+}
+

@@ -1,10 +1,6 @@
-import 'package:aashiyan/components/app_bar.dart';
-import 'package:aashiyan/components/bungalow_steps.dart';
 import 'package:aashiyan/components/forms.dart';
-import 'package:aashiyan/view/residential/bunglow/bedroom.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
 
@@ -31,6 +27,39 @@ class _BasementState extends State<Basement> {
       });
     }
   }
+
+  TextEditingController officeLengthController = TextEditingController();
+  TextEditingController officeWidthController = TextEditingController();
+  TextEditingController officeSpecificReqController = TextEditingController();
+  TextEditingController serventLengthController = TextEditingController();
+  TextEditingController serventWidthController = TextEditingController();
+  TextEditingController serventSpecificController = TextEditingController();
+  TextEditingController serventController = TextEditingController();
+  TextEditingController homeTheaterLengthController = TextEditingController();
+  TextEditingController homeTheaterWidthController = TextEditingController();
+  TextEditingController homeTheaterSpecificController = TextEditingController();
+  TextEditingController additionalParkingLength = TextEditingController();
+  TextEditingController additionalParkingWidth = TextEditingController();
+  TextEditingController additionalCarsController = TextEditingController();
+  TextEditingController additionalParkingSpecificController = TextEditingController();
+  TextEditingController indoorPlayLengthController = TextEditingController();
+  TextEditingController indoorPlayWidtController = TextEditingController();
+  TextEditingController indoorPlaySpecificRequirement = TextEditingController();
+  TextEditingController barLengthController = TextEditingController();
+  TextEditingController barWidthController = TextEditingController();
+  TextEditingController barSpecificRequiremrnt =          TextEditingController();
+  TextEditingController swimmingPoolLengthController =    TextEditingController();
+  TextEditingController swimmingPoolSpecificRequirement = TextEditingController();
+  TextEditingController swimmingPoolWidthController = TextEditingController();
+  TextEditingController gymLengthController = TextEditingController();
+  TextEditingController gymWidthController = TextEditingController();
+  TextEditingController gymSpecificRequirement = TextEditingController();
+  TextEditingController spaLengthController = TextEditingController();
+  TextEditingController spaWidthController = TextEditingController();
+  TextEditingController spaSpecificReq = TextEditingController();
+  TextEditingController gardenSpecificRequiremnt = TextEditingController();
+  TextEditingController sepratedShadeController = TextEditingController();
+  TextEditingController NoOfserventController = TextEditingController();
 
   String slectedBasement = "For parking";
   List<String> basementList = ["For parking", "For amenites", "Both"];
@@ -66,6 +95,7 @@ class _BasementState extends State<Basement> {
     "Terrace",
     "other"
   ];
+  int noServents = 0;
   String selectedServent = "Select";
   List<String> noOfServents = ["Select", "1", "2", "3"];
 
@@ -112,53 +142,93 @@ class _BasementState extends State<Basement> {
     "Ground other than stilt area",
   ];
 
+  String gardenLocation = "Select Location";
+  List<String> gardenItems = [
+    "Select Location",
+    "Basement",
+    "Stilt",
+    "Ground other than stilt area",
+  ];
+
+  String selectedParkingLocation = "Select Location";
+  List<String> parkingLocation = [
+    "Select Location",
+    "Basement",
+    "Stilt",
+    "Ground other than stilt area",
+  ];
+
   bool? serventFacility1 = false;
   bool? serventFacility2 = false;
 
   bool? BasementRequirement = false;
   bool? BasementNotRequire = false;
+  int basementReqInt = 0;
 
   bool? StiltRequirement = false;
   bool? StiltNotRequire = false;
+  int stilitReqInt = 0;
 
   bool? officeRequirement = false;
   bool? officeNotRequire = false;
+  int officeReqInt = 0;
+  String officeArea = '';
+  List officeFacility = [];
 
   bool? servantNotRequired = false;
   bool? servantRequirement = false;
+  int servantReqInt = 0;
+  String serventArea = '';
+  List serventFacility = [];
 
   bool? HomeTheaterNotRequired = false;
   bool? HomeTheaterRequirement = false;
+  int homeReqInt = 0;
+  String homeArea = '';
 
   bool? AdditionalNotRequired = false;
   bool? AdditionalRequirement = false;
+  int additionalReqInt = 0;
+  String additionalArea = '';
 
   bool? indoorNotRequired = false;
   bool? indoorRequirement = false;
+  int indoorReqInt = 0;
+  String indoorArea = '';
 
   bool? barNotRequired = false;
   bool? barRequirement = false;
 
   bool? barFacility1 = false;
   bool? barFacility2 = false;
+  int barReqInt = 0;
+  String barArea = '';
+  List barFacility = [];
 
   bool? swimmingNotRequired = false;
   bool? swimmingRequirement = false;
+  int swimmingReqInt = 0;
+  String swimmingPoolArea = '';
 
   bool? gymNotRequired = false;
   bool? gymRequirement = false;
+  int gymReqInt = 0;
+  String gymArea = '';
 
   bool? spaNotRequired = false;
   bool? spaRequirement = false;
+  int spaRequiredInt = 0;
+  String spArea = '';
 
   bool? gardenNotRequired = false;
   bool? gardenRequirement = false;
+  int gardenRequirementInt = 0;
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-
+    print(otherFacilities);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,7 +445,7 @@ class _BasementState extends State<Basement> {
                       child: DropdownButton<String>(
                         icon: const Visibility(
                             visible: false, child: Icon(Icons.arrow_downward)),
-                        value: slectedBasement,
+                        value: slectedstilt,
                         items: stiltList
                             .map((it) => DropdownMenuItem<String>(
                                 value: it, child: Text(it)))
@@ -485,8 +555,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "length"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "length", officeLengthController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -499,8 +569,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "Width"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "Width", officeWidthController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -532,8 +602,39 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                DropDown(width, height, listOfficeLocation,
-                    selectedOfficeLocation, 0.6, .035)
+                // DropDown(width, height, listOfficeLocation,
+                //     selectedOfficeLocation, 0.6, .035),
+                Material(
+                  elevation: 5,
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    height: height * 0.03,
+                    width: width * 0.6,
+                    margin: const EdgeInsets.all(
+                      3,
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                          icon: const Visibility(
+                              visible: false,
+                              child: Icon(Icons.arrow_downward)),
+                          value: selectedOfficeLocation,
+                          elevation: 16,
+                          items: listOfficeLocation
+                              .map((it) => DropdownMenuItem<String>(
+                                  value: it,
+                                  child: Text(
+                                    it,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  )))
+                              .toList(),
+                          onChanged: (it) =>
+                              setState(() => selectedOfficeLocation = it!)),
+                    ),
+                  ),
+                )
               ],
             ),
             SizedBox(
@@ -587,8 +688,8 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   width: width * 0.02,
                 ),
-                requirementTextField(
-                    height, width, 0.04, 0.5, "Other requirement")
+                requirementTextFieldCont(height, width, 0.04, 0.5,
+                    "Other requirement", officeSpecificReqController)
               ],
             ),
           ],
@@ -687,8 +788,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "length"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "length", serventLengthController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -701,8 +802,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "Width"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "Width", serventWidthController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -731,14 +832,45 @@ class _BasementState extends State<Basement> {
             Row(
               children: [
                 requirementText("Location"),
-                DropDown(
-                  width,
-                  height,
-                  serventItems,
-                  serventLocation,
-                  0.6,
-                  0.03,
-                )
+                // DropDown(
+                //   width,
+                //   height,
+                //   serventItems,
+                //   serventLocation,
+                //   0.6,
+                //   0.03,
+                // ),
+                Material(
+                  elevation: 5,
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    height: height * 0.03,
+                    width: width * 0.6,
+                    margin: const EdgeInsets.all(
+                      3,
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                          icon: const Visibility(
+                              visible: false,
+                              child: Icon(Icons.arrow_downward)),
+                          value: serventLocation,
+                          elevation: 16,
+                          items: serventItems
+                              .map((it) => DropdownMenuItem<String>(
+                                  value: it,
+                                  child: Text(
+                                    it,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  )))
+                              .toList(),
+                          onChanged: (it) =>
+                              setState(() => serventLocation = it!)),
+                    ),
+                  ),
+                ),
               ],
             ),
             SizedBox(
@@ -747,13 +879,36 @@ class _BasementState extends State<Basement> {
             Row(
               children: [
                 requirementText("No Of Servent"),
-                DropDown(
-                  width,
-                  height,
-                  noOfServents,
-                  selectedServent,
-                  0.2,
-                  0.03,
+                Material(
+                  elevation: 5,
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    height: height * 0.03,
+                    width: width * 0.2,
+                    margin: const EdgeInsets.all(
+                      3,
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                          icon: const Visibility(
+                              visible: false,
+                              child: Icon(Icons.arrow_downward)),
+                          value: selectedServent,
+                          elevation: 16,
+                          items: noOfServents
+                              .map((it) => DropdownMenuItem<String>(
+                                  value: it,
+                                  child: Text(
+                                    it,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  )))
+                              .toList(),
+                          onChanged: (it) =>
+                              setState(() => selectedServent = it!)),
+                    ),
+                  ),
                 )
               ],
             ),
@@ -809,8 +964,8 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   width: width * 0.01,
                 ),
-                requirementTextField(
-                    height, width, 0.04, 0.5, "Other Requirement")
+                requirementTextFieldCont(height, width, 0.04, 0.5,
+                    "Other Requirement", serventSpecificController)
               ],
             )
           ],
@@ -909,8 +1064,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "length"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "length", homeTheaterLengthController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -923,8 +1078,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "Width"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "Width", homeTheaterWidthController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -953,13 +1108,36 @@ class _BasementState extends State<Basement> {
             Row(
               children: [
                 requirementText("floor"),
-                DropDown(
-                  width,
-                  height,
-                  homeTheaterFloorItems,
-                  homeTheaterFloor,
-                  0.6,
-                  0.03,
+                Material(
+                  elevation: 5,
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    height: height * 0.03,
+                    width: width * 0.6,
+                    margin: const EdgeInsets.all(
+                      3,
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                          icon: const Visibility(
+                              visible: false,
+                              child: Icon(Icons.arrow_downward)),
+                          value: homeTheaterFloor,
+                          elevation: 16,
+                          items: homeTheaterFloorItems
+                              .map((it) => DropdownMenuItem<String>(
+                                  value: it,
+                                  child: Text(
+                                    it,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  )))
+                              .toList(),
+                          onChanged: (it) =>
+                              setState(() => homeTheaterFloor = it!)),
+                    ),
+                  ),
                 )
               ],
             ),
@@ -969,13 +1147,44 @@ class _BasementState extends State<Basement> {
             Row(
               children: [
                 requirementText("Seats"),
-                DropDown(
-                  width,
-                  height,
-                  seatsItems,
-                  selectedSeats,
-                  0.2,
-                  0.03,
+                // DropDown(
+                //   width,
+                //   height,
+                //   seatsItems,
+                //   selectedSeats,
+                //   0.2,
+                //   0.03,
+                // ),
+                Material(
+                  elevation: 5,
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    height: height * 0.03,
+                    width: width * 0.2,
+                    margin: const EdgeInsets.all(
+                      3,
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                          icon: const Visibility(
+                              visible: false,
+                              child: Icon(Icons.arrow_downward)),
+                          value: selectedSeats,
+                          elevation: 16,
+                          items: seatsItems
+                              .map((it) => DropdownMenuItem<String>(
+                                  value: it,
+                                  child: Text(
+                                    it,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  )))
+                              .toList(),
+                          onChanged: (it) =>
+                              setState(() => selectedSeats = it!)),
+                    ),
+                  ),
                 ),
                 if (selectedSeats == "more") ...[
                   requirementTextField(height, width, 0.04, 0.2, "more")
@@ -991,12 +1200,13 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   width: width * 0.01,
                 ),
-                requirementTextField(
+                requirementTextFieldCont(
                   height,
                   width,
                   0.04,
                   0.5,
                   "Special Requirement",
+                  homeTheaterSpecificController,
                 ),
               ],
             )
@@ -1096,8 +1306,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "length"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "length", additionalParkingLength),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -1110,8 +1320,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "Width"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "Width", additionalParkingWidth),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -1143,7 +1353,8 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   width: width * 0.03,
                 ),
-                requirementTextField(height, width, .04, .5, "no. of cars")
+                requirementTextFieldCont(height, width, .04, .5, "no. of cars",
+                    additionalCarsController)
               ],
             ),
             SizedBox(
@@ -1151,18 +1362,59 @@ class _BasementState extends State<Basement> {
             ),
             Row(
               children: [
-                requirementText("Seats"),
-                DropDown(
-                  width,
-                  height,
-                  seatsItems,
-                  selectedSeats,
-                  0.2,
-                  0.03,
+                requirementText("location"),
+                // DropDown(
+                //   width,
+                //   height,
+                //   parkingLocation,
+                //   selectedParkingLocation,
+                //   0.5,
+                //   0.03,
+                // ),
+                Material(
+                  elevation: 5,
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    height: height * 0.03,
+                    width: width * 0.5,
+                    margin: const EdgeInsets.all(
+                      3,
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                          icon: const Visibility(
+                              visible: false,
+                              child: Icon(Icons.arrow_downward)),
+                          value: selectedParkingLocation,
+                          elevation: 16,
+                          items: parkingLocation
+                              .map((it) => DropdownMenuItem<String>(
+                                  value: it,
+                                  child: Text(
+                                    it,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  )))
+                              .toList(),
+                          onChanged: (it) =>
+                              setState(() => selectedParkingLocation = it!)),
+                    ),
+                  ),
                 ),
-                if (selectedSeats == "more") ...[
-                  requirementTextField(height, width, 0.04, 0.2, "more")
-                ]
+              ],
+            ),
+            SizedBox(
+              height: height * 0.01,
+            ),
+            Row(
+              children: [
+                requirementText("seprated Shade"),
+                SizedBox(
+                  width: width * 0.01,
+                ),
+                requirementTextFieldCont(height, width, 0.04, 0.5,
+                    "Special Requirement", sepratedShadeController),
               ],
             ),
             SizedBox(
@@ -1174,15 +1426,10 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   width: width * 0.01,
                 ),
-                requirementTextField(
-                  height,
-                  width,
-                  0.04,
-                  0.5,
-                  "Special Requirement",
-                ),
+                requirementTextFieldCont(height, width, 0.04, 0.5,
+                    "Special Requirement", additionalParkingSpecificController),
               ],
-            )
+            ),
           ],
           SizedBox(
             height: height * 0.01,
@@ -1277,8 +1524,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "length"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "length", indoorPlayLengthController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -1291,8 +1538,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "Width"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "Width", indoorPlayWidtController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -1366,8 +1613,8 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   width: width * 0.01,
                 ),
-                requirementTextField(
-                    height, width, 0.04, 0.5, "Special Requirement ")
+                requirementTextFieldCont(height, width, 0.04, 0.5,
+                    "Special Requirement", indoorPlaySpecificRequirement)
               ],
             ),
           ],
@@ -1466,8 +1713,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "length"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "length", barLengthController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -1480,8 +1727,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "Width"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "Width", barWidthController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -1633,14 +1880,14 @@ class _BasementState extends State<Basement> {
               children: [
                 requirementText("Special Requirement"),
                 SizedBox(
-                  width: width * 0.02,
+                  width: width * 0.01,
                 ),
-                requirementTextField(
-                    height, width, 0.04, 0.5, "Special requirement"),
+                requirementTextFieldCont(height, width, 0.04, 0.5,
+                    "Special requirement", barSpecificRequiremrnt),
               ],
             ),
             SizedBox(
-              height: height * 0.1,
+              height: height * 0.01,
             ),
           ],
           requirementText("Swimming pool"),
@@ -1733,8 +1980,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "length"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "length", swimmingPoolLengthController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -1747,8 +1994,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "Width"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "Width", swimmingPoolWidthController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -1822,12 +2069,12 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   width: width * 0.01,
                 ),
-                requirementTextField(
-                    height, width, 0.04, 0.5, "Special Requirement ")
+                requirementTextFieldCont(height, width, 0.04, 0.5,
+                    "Special Requirement", swimmingPoolSpecificRequirement)
               ],
             ),
             SizedBox(
-              height: height * 0.1,
+              height: height * 0.01,
             ),
           ],
           requirementText("Gym"),
@@ -1920,8 +2167,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "length"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "length", gymLengthController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -1934,8 +2181,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "Width"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "Width", gymWidthController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -2008,8 +2255,8 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   width: width * 0.01,
                 ),
-                requirementTextField(
-                    height, width, 0.04, 0.5, "Special Requirement ")
+                requirementTextFieldCont(height, width, 0.04, 0.5,
+                    "Special Requirement ", gymSpecificRequirement)
               ],
             ),
           ],
@@ -2106,8 +2353,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "length"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "length", spaLengthController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -2120,8 +2367,8 @@ class _BasementState extends State<Basement> {
                     flex: 30,
                     child: Row(
                       children: [
-                        requirementTextField(
-                            height, width, 0.04, 0.15, "Width"),
+                        requirementTextFieldCont(height, width, 0.04, 0.15,
+                            "Width", spaWidthController),
                         valueContainer(height, width, size, 0.04, 0.05),
                       ],
                     )),
@@ -2195,8 +2442,8 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   width: width * 0.01,
                 ),
-                requirementTextField(
-                    height, width, 0.04, 0.5, "Special Requirement ")
+                requirementTextFieldCont(height, width, 0.04, 0.5,
+                    "Special Requirement", spaSpecificReq)
               ],
             ),
           ],
@@ -2304,9 +2551,9 @@ class _BasementState extends State<Basement> {
                           icon: const Visibility(
                               visible: false,
                               child: Icon(Icons.arrow_downward)),
-                          value: spaLocation,
+                          value: gardenLocation,
                           elevation: 16,
-                          items: itemsSpaLocation
+                          items: gardenItems
                               .map((it) => DropdownMenuItem<String>(
                                   value: it,
                                   child: Text(
@@ -2316,12 +2563,14 @@ class _BasementState extends State<Basement> {
                                     ),
                                   )))
                               .toList(),
-                          onChanged: (it) => setState(() => spaLocation = it!)),
+                          onChanged: (it) =>
+                              setState(() => gardenLocation = it!)),
                     ),
                   ),
                 ),
               ],
             ),
+            
             SizedBox(
               height: height * 0.01,
             ),
@@ -2331,8 +2580,8 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   width: width * 0.01,
                 ),
-                requirementTextField(
-                    height, width, .04, .5, "Special requirement")
+                requirementTextFieldCont(height, width, .04, .5,
+                    "Special requirement", gardenSpecificRequiremnt)
               ],
             ),
             SizedBox(
@@ -2389,14 +2638,155 @@ class _BasementState extends State<Basement> {
           ),
           Align(
             alignment: Alignment.center,
-            child: Container(
-              height: height * 0.04,
-              decoration: BoxDecoration(
-                  color: buttonColor, borderRadius: BorderRadius.circular(4)),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: const Text(
-                "save and continue",
-                style: TextStyle(color: Colors.white, fontSize: 14),
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  if (BasementRequirement == true) {
+                    basementReqInt = 1;
+                  }
+                  if (StiltRequirement == true) {
+                    stilitReqInt = 1;
+                  }
+                  if (officeRequirement == true) {
+                    officeReqInt = 1;
+
+                    for (int i = 0; i < otherFacilities.length; i++) {
+                      if (otherFacilities[i] == 'Pantry') {
+                        officeFacility.add('1');
+                      }
+                      if (otherFacilities[i] == 'Staff Toilet') {
+                        officeFacility.add('2');
+                      }
+                      if (otherFacilities[i] == 'Toilet') {
+                        officeFacility.add('3');
+                      }
+                    }
+                  }
+                  if (spaRequirement == true) {
+                    spaRequiredInt = 1;
+                    int area = int.parse(spaLengthController.text) *
+                        int.parse(spaWidthController.text);
+                    spArea = area.toString();
+                  }
+                  if (gymRequirement == true) {
+                    gymReqInt = 1;
+                  }
+                  if (swimmingRequirement == true) {
+                    swimmingReqInt = 1;
+                  }
+                  if (barRequirement == true) {
+                    barReqInt = 1;
+
+                    if (barFacility1 == true) {
+                      barFacility.add(1);
+                    }
+                    if (barFacility2 == true) {
+                      barFacility.add(2);
+                    }
+                  }
+                  if (indoorRequirement == true) {
+                    indoorReqInt = 1;
+                  }
+                  if (HomeTheaterRequirement == true) {
+                    homeReqInt = 1;
+                  }
+                  if (servantRequirement == true) {
+                    servantReqInt = 1;
+                    noServents = 1;
+                    if (serventFacility1 == true) {
+                      serventFacility.add(1);
+                    }
+                    if (serventFacility2 == true) {
+                      serventFacility.add(2);
+                    }
+                  }
+                  if (AdditionalRequirement == true) {
+                    additionalReqInt = 1;                  
+                  }
+                  print(
+                      "indoor play width controller ${indoorPlayWidtController.text}");
+                  print(
+                      "bar specific requirement ${barSpecificRequiremrnt.text}");
+                  print("bar width requirement ${barWidthController.text}");
+                  print("bar length controler ${barLengthController.text}");
+                });
+                BasementPost(
+                  123,
+                  basementReqInt,
+                  slectedBasement,
+                  stilitReqInt,
+                  slectedstilt,
+                  officeReqInt,
+                  officeLengthController.text,
+                  officeWidthController.text,
+                  selectedOfficeLocation,
+                  officeFacility,
+                  officeSpecificReqController.text,
+                  servantReqInt,
+                  serventLengthController.text,
+                  serventWidthController.text,
+                  serventSpecificController.text,
+                  selectedServent,
+                  serventFacility,
+                  serventLocation,
+                  serventSpecificController.text,
+                  additionalReqInt,
+                  additionalParkingLength.text,
+                  additionalParkingWidth.text,
+                  additionalCarsController.text,
+                  selectedParkingLocation,
+                  sepratedShadeController.text,
+                  additionalParkingSpecificController.text,
+                  homeReqInt,
+                  homeTheaterLengthController.text,
+                  homeTheaterWidthController.text,
+                  homeTheaterFloor,
+                  selectedSeats,
+                  homeTheaterSpecificController.text,
+                  indoorReqInt,
+                  selectedIndoorLocation,
+                  indoorPlayLengthController.text,
+                  indoorPlayWidtController.text,
+                  indoorPlaySpecificRequirement.text,
+                  barReqInt,
+                  selectedBarLocation,
+                  barFacility,
+                  barLengthController.text,
+                  barWidthController.text,
+                  barSpecificRequiremrnt.text,
+                  swimmingReqInt,
+                  swimmingLocation,
+                  swimmingPoolLengthController.text,
+                  swimmingPoolWidthController.text,
+                  swimmingPoolSpecificRequirement.text,
+                  gymReqInt,
+                  gymLocation,
+                  gymLengthController.text,
+                  gymWidthController.text,
+                  gymSpecificRequirement.text,
+                  spaRequiredInt,
+                  spaLocation,
+                  spaLengthController.text,
+                  spaWidthController.text,
+                  spaSpecificReq.text,
+                  gardenRequirementInt,
+                  gardenLocation,
+                  gardenSpecificRequiremnt.text,
+                );
+              },
+              child: Container(
+                height: height * 0.04,
+                decoration: BoxDecoration(
+                    color: buttonColor, borderRadius: BorderRadius.circular(4)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: const Text(
+                  "save and continue",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                  ),
+                ),
               ),
             ),
           ),
