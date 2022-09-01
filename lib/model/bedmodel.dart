@@ -9,7 +9,6 @@ class BedrooModel {
   BedrooModel({
     this.bedtypes,
   });
-
   Bedtypes? bedtypes;
 
   factory BedrooModel.fromJson(Map<String, dynamic> json) => BedrooModel(
@@ -84,77 +83,72 @@ class Bedtypes {
 
 
 
-// class Bed {
-  
-//   String? name;
-  
-// }
 
-// class BedModel {
-//   String?   bedroomLength;
-//   String?   bedroom;
-//   int?      bedRoomFloor;
-//   String?   bedRoomWidth;
-//   String?   bedRoomArea;
-//   String?   bedRoomToiletLength;
-//   String?   bedRoomToiletWidth;
-//   String?   bedRoomToiletArea;
-//   String?   bedRoomToiletReqText;
-//   String?   bedroomDressLength;
-//   String?   bedroomDressWidth;
-//   String?   bedroomDressArea;
-//   String?   bedroomDressRequirment;
-//   String?   bedroomDressFacility;
-//   String?   bedroomDressRequirmentText;
-//   String?   bedroomImg;
-//   String?   bedroomFacility;
-//   String?   bedroomFacilityRequirementText;
-//   int?      index;
-//   Function? removeServiceCard;
+class BedModel {
+  String?   bedroomLength;
+  String?   bedroom;
+  int?      bedRoomFloor;
+  String?   bedRoomWidth;
+  String?   bedRoomArea;
+  String?   bedRoomToiletLength;
+  String?   bedRoomToiletWidth;
+  String?   bedRoomToiletArea;
+  String?   bedRoomToiletReqText;
+  String?   bedroomDressLength;
+  String?   bedroomDressWidth;
+  String?   bedroomDressArea;
+  String?   bedroomDressRequirment;
+  String?   bedroomDressFacility;
+  String?   bedroomDressRequirmentText;
+  String?   bedroomImg;
+  String?   bedroomFacility;
+  String?   bedroomFacilityRequirementText;
+  int?      index;
+  Function? removeServiceCard;
 
-//   BedModel([
-//     this.index,
-//     this.removeServiceCard,
-//     this.bedroomLength,
-//     this.bedroom,
-//     this.bedRoomFloor,
-//     this.bedRoomWidth,
-//     this.bedRoomArea,
-//     this.bedRoomToiletLength,
-//     this.bedRoomToiletWidth,
-//     this.bedRoomToiletArea,
-//     this.bedRoomToiletReqText,
-//     this.bedroomDressLength,
-//     this.bedroomDressWidth,
-//     this.bedroomDressArea,
-//     this.bedroomDressRequirment,
-//     this.bedroomDressFacility,
-//     this.bedroomDressRequirmentText,
-//     this.bedroomImg,
-//     this.bedroomFacility,
-//     this.bedroomFacilityRequirementText,
-//   ]);
+  BedModel([
+    this.index,
+    this.removeServiceCard,
+    this.bedroomLength,
+    this.bedroom,
+    this.bedRoomFloor,
+    this.bedRoomWidth,
+    this.bedRoomArea,
+    this.bedRoomToiletLength,
+    this.bedRoomToiletWidth,
+    this.bedRoomToiletArea,
+    this.bedRoomToiletReqText,
+    this.bedroomDressLength,
+    this.bedroomDressWidth,
+    this.bedroomDressArea,
+    this.bedroomDressRequirment,
+    this.bedroomDressFacility,
+    this.bedroomDressRequirmentText,
+    this.bedroomImg,
+    this.bedroomFacility,
+    this.bedroomFacilityRequirementText,
+  ]);
 
-//   Map toJson() => {
-//         'bedroomLength':  bedroomLength,
-//         'bedroom':  bedroom,
-//         'bedRoomFloor':  bedRoomFloor,
-//         'bedRoomWidth' :  bedRoomWidth,
-//         'bedRoomArea' :  bedRoomArea,
-//         'bedRoomToiletLength': bedRoomToiletLength,
-//         'bedRoomToiletWidth':  bedRoomToiletWidth,     
-//         'bedRoomToiletArea':  bedRoomToiletArea,     
-//         'bedRoomToiletReqText' :  bedRoomToiletReqText,    
-//         'bedroomDressLength': bedroomDressLength,      
-//          "bedroomDressWidth" : bedroomDressWidth,       
-//          "bedroomDressArea" : bedroomDressArea,
-//          "bedroomDressRequirment" : bedroomDressRequirment,     
-//          "bedroomDressFacility" : bedroomDressFacility,
-//          "bedroomDressRequirmentText" : bedroomDressRequirmentText,
-//          "bedroomImg" :   bedroomImg,
-//          "bedroomFacility" :   bedroomFacility,
-//          "bedroomFacilityRequirementText" :   bedroomFacilityRequirementText,
-//          "index" :   index,
-//          "removeServiceCard" :   removeServiceCard,
-//       };
-// }
+  Map toJson() => {
+        'bedroomLength':  bedroomLength,
+        'bedroom':  bedroom,
+        'bedRoomFloor':  bedRoomFloor,
+        'bedRoomWidth' :  bedRoomWidth,
+        'bedRoomArea' :  bedRoomArea,
+        'bedRoomToiletLength': bedRoomToiletLength,
+        'bedRoomToiletWidth':  bedRoomToiletWidth,     
+        'bedRoomToiletArea':  bedRoomToiletArea,     
+        'bedRoomToiletReqText' :  bedRoomToiletReqText,    
+        'bedroomDressLength': bedroomDressLength,      
+         "bedroomDressWidth" : bedroomDressWidth,       
+         "bedroomDressArea" : bedroomDressArea,
+         "bedroomDressRequirment" : bedroomDressRequirment,     
+         "bedroomDressFacility" : bedroomDressFacility,
+         "bedroomDressRequirmentText" : bedroomDressRequirmentText,
+         "bedroomImg" :   bedroomImg,
+         "bedroomFacility" :   bedroomFacility,
+         "bedroomFacilityRequirementText" :   bedroomFacilityRequirementText,
+         "index" :   index,
+         "removeServiceCard" :   removeServiceCard,
+      };
+}

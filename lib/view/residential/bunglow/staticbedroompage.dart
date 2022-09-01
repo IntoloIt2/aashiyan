@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:core';
 
 import 'package:aashiyan/model/bedmodel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -16,8 +17,6 @@ class StaticBedroomPage extends StatefulWidget {
 
 class _StaticBedroomPageState extends State<StaticBedroomPage> {
   final lengthController = TextEditingController();
-
-  
 
   bool? requiredDress = false;
   bool? notRequiredDress = false;
@@ -46,13 +45,73 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
   bool? other3RequiredDress = false;
   bool? other3NotRequiredDress = false;
 
+  var result;
+
   @override
   void initState() {
     //Initialize with 1 item
 
     super.initState();
     lengthController.addListener(_printLatestValue);
+    _values;
     // getData();
+  }
+
+  _onUpdate(
+    int key,
+    String length,
+    String width,
+    String floor,
+    String toiletLength,
+    String toiletWidth,
+    String toiletFacility,
+    String dresReq,
+    String dressLength,
+    String dressWidth,
+    String dressFacility,
+    String roomFacility,
+  ) {
+    int foundKey = -1;
+    for (var map in _values) {
+      if (map.containsKey("id")) {
+        if (map["id"] == key) {
+          // print("$foundKey ${map["id"]} ");
+          foundKey = key;
+          break;
+        }
+      }
+    }
+    if (-1 != foundKey) {
+      _values.removeWhere((map) {
+        // print("${map["id"] == foundKey} ${map["id"]}");
+        return map["id"] == foundKey;
+      });
+    }
+    Map<String, dynamic> json = {
+      "id": key,
+      "bedroom_length": length,
+      "bedroom_width": width,
+      "floor": floor,
+      "toilet_length": toiletLength,
+      "toilet_width": toiletWidth,
+      "toilet_facility": toiletFacility,
+      "dress_req": dressFacility,
+      "dress_length": dressLength,
+      "dress_width": dressWidth,
+      "dress_facility": dressFacility,
+      "room_facility": roomFacility,
+    };
+
+    _values.add(json);
+    setState(() {
+      result = _prettyPrint(_values);
+    });
+    print(result);
+  }
+
+  String _prettyPrint(jsonObject) {
+    var encoder = const JsonEncoder.withIndent('  ');
+    return encoder.convert(jsonObject);
   }
 
   @override
@@ -144,6 +203,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
     "3rd Floor",
     "other"
   ];
+
+  List<Map<String, dynamic>> _values = [];
+
   String masterDressReq = '0';
   List<String> masterLength = <String>[];
   List<String> masterWidth = <String>[];
@@ -283,6 +345,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                       width: width * 0.45,
                       child: Row(
                         children: [
+                          
                           SizedBox(
                             height: height * 0.03,
                             width: width * 0.07,
@@ -561,6 +624,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
           Container(
             color: Colors.grey,
             child: ExpansionTile(
+              maintainState: true,
               initiallyExpanded: true,
               title: Text(
                 'Master\'s BedRoom Details',
@@ -606,19 +670,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     //fillColor: Colors.green
                                     ),
                                 onChanged: (value) {
-                                  if (value != ',') {
-                                    print(value);
-                                    setState(() {});
-                                    Future<void>.delayed(
-                                      const Duration(milliseconds: 10),
-                                      masterLength.clear,
-                                    );
-                                  }
+                                  _onUpdate(1, value, '', '', '', '', '', '',
+                                      '', '', '', '');
                                 },
-                                onFieldSubmitted: ((value) {
-                                  masterLength.add(value);
-                                  print(masterLength);
-                                }),
                               ),
                             ),
                           ),
@@ -651,18 +705,27 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     ),
                                 onChanged: (value) {
                                   setState(() {
-                                    masterWidth.add(value);
+                                    _onUpdate(
+                                        0,
+                                        _values[0]["bedroom_length"],
+                                        value,
+                                        '',
+                                        '',
+                                        '',
+                                        '',
+                                        '',
+                                        '',
+                                        '',
+                                        '',
+                                        '',);
                                   });
-                                },
-                                onFieldSubmitted: (value) {
-                                  print(masterWidth);
                                 },
                               ),
                             ),
                           ),
                           valueContainer(height, width, size, 0.04, 0.05),
                           SizedBox(
-                            width: width * 0.1,
+                            width: width * 0.08,
                           ),
                           Row(
                             children: [
@@ -696,23 +759,45 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton<String>(
-                                    icon: const Visibility(
-                                        visible: false,
-                                        child: Icon(Icons.arrow_downward)),
-                                    value: selectedFloorMaster,
-                                    elevation: 16,
-                                    items: floorItemsMater
-                                        .map((it) => DropdownMenuItem<String>(
-                                            value: it,
-                                            child: Text(
-                                              it,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                              ),
-                                            )))
-                                        .toList(),
-                                    onChanged: (it) => setState(
-                                        () => selectedFloorMaster = it!)),
+                                  icon: const Visibility(
+                                      visible: false,
+                                      child: Icon(Icons.arrow_downward)),
+                                  value: selectedFloor,
+                                  elevation: 16,
+                                  items: floorItems
+                                      .map((it) => DropdownMenuItem<String>(
+                                          value: it,
+                                          child: Text(
+                                            it,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                            ),
+                                          )))
+                                      .toList(),
+                                  onChanged: (it) {
+                                    setState(() {
+                                      _onUpdate(
+                                          0,
+                                          _values[0]["bedroom_length"],
+                                          _values[0]["bedroom_width"],
+                                          it!,
+                                          '',
+                                          '',
+                                          '',
+                                          '',
+                                          '',
+                                          '',
+                                          '',
+                                          '');
+                                    });
+
+                                    setState(
+                                      () {
+                                        selectedFloor = it;
+                                      },
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                           ),
@@ -752,8 +837,19 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     ),
                                 onChanged: (value) {
                                   setState(() {
-                                    masterToiletLength = value;
-                                    print(masterToiletLength);
+                                    _onUpdate(
+                                        0,
+                                        _values[0]["bedroom_length"],
+                                        _values[0]["bedroom_width"],
+                                        _values[0]["floor"],
+                                        value,
+                                        '',
+                                        '',
+                                        '',
+                                        '',
+                                        '',
+                                        '',
+                                        '');
                                   });
                                 },
                               ),
@@ -787,8 +883,19 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    masterToiletWidth = value;
-                                    print(masterToiletWidth);
+                                    _onUpdate(
+                                        0,
+                                        _values[0]["bedroom_length"],
+                                        _values[0]["bedroom_width"],
+                                        _values[0]["floor"],
+                                        _values[0]["toilet_length"],
+                                        value,
+                                        '',
+                                        '',
+                                        '',
+                                        '',
+                                        '',
+                                        '');
                                   });
                                 },
                                 onFieldSubmitted: (value) {},
@@ -797,7 +904,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           ),
                           valueContainer(height, width, size, 0.04, 0.05),
                           SizedBox(
-                            width: width * 0.1,
+                            width: width * 0.08,
                           ),
                           Row(
                             children: [
@@ -839,9 +946,20 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 isDense: true,
                                 contentPadding: EdgeInsets.all(8)),
                             onChanged: (value) {
-                              setState(() {
-                                masterToiletFacility = value;
-                              });
+                              _onUpdate(
+                                0,
+                                _values[0]["bedroom_length"],
+                                _values[0]["bedroom_width"],
+                                _values[0]["floor"],
+                                _values[0]["toilet_length"],
+                                _values[0]["toilet_width"],
+                                value,
+                                '',
+                                '',
+                                '',
+                                '',
+                                '',
+                              );
                             },
                           ),
                         ),
@@ -869,15 +987,44 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         child: Checkbox(
                                             activeColor: checkColor,
                                             checkColor: Colors.white,
-                                            value: masterRequiredDress,
+                                            value: requiredDress,
                                             onChanged: (value) {
-                                              setState(
-                                                () {
-                                                  masterRequiredDress = value;
-                                                  masterNotRequiredDress =
-                                                      false;
-                                                },
-                                              );
+                                              setState(() {
+                                                requiredDress = value;
+                                                notRequiredDress = false;
+                                              });
+                                              if (requiredDress == true) {
+                                                _onUpdate(
+                                                  0,
+                                                  _values[0]["bedroom_length"],
+                                                  _values[0]["bedroom_width"],
+                                                  _values[0]["floor"],
+                                                  _values[0]["toilet_length"],
+                                                  _values[0]["toilet_width"],
+                                                  _values[0]["toilet_facility"],
+                                                  "1",
+                                                  '',
+                                                  '',
+                                                  '',
+                                                  '',
+                                                );
+                                              }
+                                              if (notRequiredDress == false) {
+                                                _onUpdate(
+                                                  0,
+                                                  _values[0]["bedroom_length"],
+                                                  _values[0]["bedroom_width"],
+                                                  _values[0]["floor"],
+                                                  _values[0]["toilet_length"],
+                                                  _values[0]["toilet_width"],
+                                                  _values[0]["toilet_facility"],
+                                                  "0",
+                                                  '',
+                                                  '',
+                                                  '',
+                                                  '',
+                                                );
+                                              }
                                             }),
                                       ),
                                       requirementText("Required")
@@ -907,12 +1054,44 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         child: Checkbox(
                                             activeColor: checkColor,
                                             checkColor: Colors.white,
-                                            value: masterNotRequiredDress,
+                                            value: notRequiredDress,
                                             onChanged: (value) {
                                               setState(() {
-                                                masterNotRequiredDress = value;
-                                                masterRequiredDress = false;
+                                                notRequiredDress = value;
+                                                requiredDress = false;
                                               });
+                                              if (requiredDress == true) {
+                                                _onUpdate(
+                                                  0,
+                                                  _values[0]["bedroom_length"],
+                                                  _values[0]["bedroom_width"],
+                                                  _values[0]["floor"],
+                                                  _values[0]["toilet_length"],
+                                                  _values[0]["toilet_width"],
+                                                  _values[0]["toilet_facility"],
+                                                  "1",
+                                                  '',
+                                                  '',
+                                                  '',
+                                                  '',
+                                                );
+                                              }
+                                              if (notRequiredDress == false) {
+                                                _onUpdate(
+                                                  0,
+                                                  _values[0]["bedroom_length"],
+                                                  _values[0]["bedroom_width"],
+                                                  _values[0]["floor"],
+                                                  _values[0]["toilet_length"],
+                                                  _values[0]["toilet_width"],
+                                                  _values[0]["toilet_facility"],
+                                                  "0",
+                                                  '',
+                                                  '',
+                                                  '',
+                                                  '',
+                                                );
+                                              }
                                             }),
                                       ),
                                       requirementText("Not Required"),
@@ -930,7 +1109,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                       SizedBox(
                         height: height * 0.01,
                       ),
-                      if (masterRequiredDress == true) ...[
+                      if (requiredDress == true) ...[
                         Row(
                           children: [
                             requirementText("Length"),
@@ -956,10 +1135,20 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     contentPadding: EdgeInsets.all(8),
                                   ),
                                   onChanged: (value) {
-                                    setState(() {
-                                      masterDressLength = value;
-                                      print(masterDressLength);
-                                    });
+                                    _onUpdate(
+                                      0,
+                                      _values[0]["bedroom_length"],
+                                      _values[0]["bedroom_width"],
+                                      _values[0]["floor"],
+                                      _values[0]["toilet_length"],
+                                      _values[0]["toilet_width"],
+                                      _values[0]["toilet_facility"],
+                                      _values[0]["dress_req"],
+                                      value,
+                                      '',
+                                      '',
+                                      '',
+                                    );
                                   },
                                   onFieldSubmitted: (value) {},
                                 ),
@@ -992,10 +1181,20 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     contentPadding: EdgeInsets.all(8),
                                   ),
                                   onChanged: (value) {
-                                    setState(() {
-                                      masterDressWidth = value;
-                                      print(masterDressWidth);
-                                    });
+                                    _onUpdate(
+                                      0,
+                                      _values[0]["bedroom_length"],
+                                      _values[0]["bedroom_width"],
+                                      _values[0]["floor"],
+                                      _values[0]["toilet_length"],
+                                      _values[0]["toilet_width"],
+                                      _values[0]["toilet_facility"],
+                                      _values[0]["dress_req"],
+                                      _values[0]["dress_lenght"],
+                                      value,
+                                      '',
+                                      '',
+                                    );
                                   },
                                   onFieldSubmitted: (value) {},
                                 ),
@@ -1003,7 +1202,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                             ),
                             valueContainer(height, width, size, 0.04, 0.05),
                             SizedBox(
-                              width: width * 0.1,
+                              width: width * 0.08,
                             ),
                             Row(
                               children: [
@@ -1051,10 +1250,20 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     contentPadding: EdgeInsets.all(8),
                                   ),
                                   onChanged: (value) {
-                                    setState(() {
-                                      masterDressFacility = value;
-                                      print(masterDressFacility);
-                                    });
+                                    _onUpdate(
+                                      0,
+                                      _values[0]["bedroom_length"],
+                                      _values[0]["bedroom_width"],
+                                      _values[0]["floor"],
+                                      _values[0]["toilet_length"],
+                                      _values[0]["toilet_width"],
+                                      _values[0]["toilet_facility"],
+                                      _values[0]["dress_req"],
+                                      _values[0]["dress_lenght"],
+                                      _values[0]["dress_width"],
+                                      value,
+                                      '',
+                                    );
                                   },
                                 ),
                               ),
@@ -1183,8 +1392,20 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                             ),
                             onChanged: (value) {
                               setState(() {
-                                masterRoomFacility = value;
-                                print(masterRoomFacility);
+                                _onUpdate(
+                                  0,
+                                  _values[0]["bedroom_length"],
+                                  _values[0]["bedroom_width"],
+                                  _values[0]["floor"],
+                                  _values[0]["toilet_length"],
+                                  _values[0]["toilet_width"],
+                                  _values[0]["toilet_facility"],
+                                  _values[0]["dress_req"],
+                                  _values[0]["dress_lenght"],
+                                  _values[0]["dress_width"],
+                                  _values[0]["dress_facility"],
+                                  value,
+                                );
                               });
                             },
                           ),
@@ -1253,6 +1474,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
           Container(
             color: Colors.grey,
             child: ExpansionTile(
+              maintainState: true,
               initiallyExpanded: true,
               title: Text(
                 'Son\'s Bedroom Details',
@@ -1269,9 +1491,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [],
-                      ),
                       SizedBox(
                         height: height * 0.01,
                       ),
@@ -1302,8 +1521,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     ),
                                 onChanged: (value) {
                                   setState(() {
-                                    sonLength = value;
-                                    print(sonLength);
+                                    _onUpdate(2, value, '', '', '', '', '', '',
+                                        '', '', '', '');
                                   });
                                 },
                               ),
@@ -1338,8 +1557,19 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     ),
                                 onChanged: (value) {
                                   setState(() {
-                                    sonWidth = value;
-                                    print(sonWidth);
+                                    // _onUpdate(
+                                    //     2,
+                                    //     _values[1]['bedroon_length'],
+                                    //     value,
+                                    //     '',
+                                    //     '',
+                                    //     '',
+                                    //     '',
+                                    //     '',
+                                    //     '',
+                                    //     '',
+                                    //     '',
+                                    //     '');
                                   });
                                 },
                               ),
@@ -1865,9 +2095,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 //fillColor: Colors.green
                                 ),
                             onChanged: (value) {
-                              setState(() {
-                                sonRoomFacility = value;
-                              });
+                              setState(() {});
                             },
                           ),
                         ),
@@ -6142,8 +6370,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
               for (int i = 0; i < bedData.length; i++) {
                 jsonUser.add(jsonEncode(bedData[i]));
               }
-              print(masterLength);
-              print(jsonUser);
+              // print(masterLength);
+              // print(jsonUser);
+              print(_values);
+              // print(_values[0]["bedroom_length"]);
             },
             child: Container(
               height: height * 0.04,

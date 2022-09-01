@@ -85,15 +85,17 @@ class _BunglowStepsState extends State<BunglowSteps> {
                     });
                   },
                   child: stepsContainer("step5")),
-               const SizedBox(
+              const SizedBox(
                 width: 10,
-               ),
-               GestureDetector(
+              ),
+              GestureDetector(
                 onTap: () {
-                  setState(() {
-                    index = 5;
-                    st = "Bed Room";
-                  },);
+                  setState(
+                    () {
+                      index = 5;
+                      st = "Bed Room";
+                    },
+                  );
                 },
                 child: stepsContainer("step6"),
               ),
@@ -135,7 +137,7 @@ List Pages = [
   LivingHall(),
   PantryDetail(),
   FloorStore(),
-  StaticBedroomPage(),
+  MultiForm(),
   Basement()
 ];
 
@@ -181,8 +183,7 @@ class _StepPagesState extends State<StepPages> {
                           onTap: () {
                             setState(() {
                               index = 1;
-                              st = "Entrance";
-                            });
+                              st = "Entrance";});
                           },
                           child: stepsContainer("Step 2"),
                         ),

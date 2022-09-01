@@ -31,12 +31,13 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          fontFamily: 'OpenSans',
-          primaryColor: primaryColor,
-          colorScheme: ColorScheme.fromSwatch().copyWith(
-            primary: primaryColor,
-          )),
-      home: dynmicTesting(),
+        fontFamily: 'OpenSans',
+        primaryColor: primaryColor,
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: primaryColor,
+        ),
+      ),
+      home: HomePage(),
       routes: {
         Residential.namedRoute: (context) => Residential(),
         Bunglow.namedRoute: (context) => Bunglow(),

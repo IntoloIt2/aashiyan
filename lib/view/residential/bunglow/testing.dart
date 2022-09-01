@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 // class Item {
 //   Item({
@@ -678,7 +679,7 @@ class dynmicTesting extends StatefulWidget {
 class _dynmicTestingState extends State<dynmicTesting> {
   int count = 0;
   String result = "";
-  List<Map<String, dynamic>>? _values;
+  List<Map<String, dynamic>> _values = [];
   @override
   void initState() {
     super.initState();
@@ -695,15 +696,19 @@ class _dynmicTestingState extends State<dynmicTesting> {
         actions: [
           IconButton(
             onPressed: () {
-              count = count + 1;
+              setState(() {
+                count = count + 1;
+              });
             },
             icon: Icon(Icons.add),
           ),
           IconButton(
             onPressed: () {
-              count = 0;
+              setState(() {
+                count = 0;
+              });
             },
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.refresh),
           ),
         ],
       ),
@@ -711,6 +716,7 @@ class _dynmicTestingState extends State<dynmicTesting> {
         child: Column(children: [
           Flexible(
             child: ListView.builder(
+              itemCount: count,
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return _row(index);
@@ -743,8 +749,24 @@ class _dynmicTestingState extends State<dynmicTesting> {
   }
 
   _onUpdate(int key, String value) {
+    int foundKey = -1;
+    for (var map in _values) {
+      if (map.containsKey("id")) {
+        if (map["id"] == key) {
+          print("$foundKey ${map["id"]} ");
+          foundKey = key;
+          break;
+        }
+      }
+    }
+    if (-1 != foundKey) {
+      _values.removeWhere((map) {
+        print("${map["id"] == foundKey} ${map["id"]} ");
+        return map["id"] == foundKey;
+      });
+    }
     Map<String, dynamic> json = {"id": key, "value": value};
-    _values!.add(json);
+    _values.add(json);
     setState(() {
       result = _prettyPrint(_values);
     });
@@ -755,3 +777,938 @@ class _dynmicTestingState extends State<dynmicTesting> {
     return encoder.convert(jsonObject);
   }
 }
+
+// import 'package:flutter/material.dart';
+
+// import '../../../components/forms.dart';
+// import '../../../const.dart';
+// import '../../../controller/api_services.dart';
+
+// List<BedRoom> users = [];
+
+// class MultiForm extends StatefulWidget {
+//   @override
+//   _MultiFormState createState() => _MultiFormState();
+// }
+
+// class _MultiFormState extends State<MultiForm> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         elevation: .0,
+//         leading: Icon(
+//           Icons.wb_cloudy,
+//         ),
+//         title: Text('REGISTER USERS'),
+//         actions: <Widget>[
+//           FlatButton(
+//             child: Text('Save'),
+//             textColor: Colors.white,
+//             onPressed: () {
+//               var userdata = users.map((it) => it.user).toList();
+//               for (int i = 0; i < userdata.length; i++) {
+//                 print(users[i].user!.fullName);
+//                 print(users[i].user!.email);
+//               }
+//             },
+//           )
+//         ],
+//       ),
+//       body: Container(
+//         child: users.length <= 0
+//             ? Center(
+//                 child: EmptyState(
+//                   title: 'Oops',
+//                   message: 'Add form by tapping add button below',
+//                 ),
+//               )
+//             : ListView.builder(
+//                 addAutomaticKeepAlives: true,
+//                 itemCount: users.length,
+//                 itemBuilder: (_, i) => users[i],
+//               ),
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         child: Icon(Icons.add),
+//         onPressed: onAddForm,
+//         foregroundColor: Colors.white,
+//       ),
+//     );
+//   }
+
+//   ///on form user deleted
+//   void onDelete(User _user) {
+//     setState(() {
+//       var find = users.firstWhere(
+//         (it) => it.user == _user,
+//         // orElse: () => null,
+//       );
+//       if (find != null) users.removeAt(users.indexOf(find));
+//     });
+//   }
+
+//   ///on add form
+//   void onAddForm() {
+//     setState(() {
+//       var _user = User();
+//       users.add(BedRoom(
+//         user: _user,
+//         onDelete: () => onDelete(_user),
+//       ));
+//     });
+//   }
+
+//   ///on save forms
+//   void onSave() {
+//     if (users.length > 0) {
+//       var userdata = users.map((it) => it.user).toList();
+//       for (int i = 0; i < userdata.length; i++) {
+//         print(users[i].user!.fullName);
+//         print(users[i].user!.email);
+//       }
+//       var allValid = true;
+
+//       var data = users.map((it) => it.user).toList();
+//       Navigator.push(
+//         context,
+//         MaterialPageRoute(
+//           fullscreenDialog: true,
+//           builder: (_) => Scaffold(
+//             appBar: AppBar(
+//               title: Text('List of Users'),
+//             ),
+//             body: ListView.builder(
+//               itemCount: data.length,
+//               itemBuilder: (_, i) => ListTile(
+//                 leading: CircleAvatar(
+//                   child: Text(data[i]!.fullName.substring(0, 1)),
+//                 ),
+//                 title: Text(data[i]!.fullName),
+//                 subtitle: Text(data[i]!.email),
+//               ),
+//             ),
+//             floatingActionButton: FloatingActionButton(
+//               onPressed: () {
+//                 var data = users.map((it) => it.user).toList();
+//                 for (int i = 0; i < data.length; i++) {
+//                   print(users[i].user!.fullName);
+//                   print(users[i].user!.email);
+//                 }
+//               },
+//               child: Icon(Icons.add),
+//             ),
+//           ),
+//         ),
+//       );
+//     }
+//   }
+// }
+
+// class User {
+//   String fullName;
+//   String email;
+
+//   User({this.fullName = '', this.email = ''});
+// }
+
+// typedef OnDelete();
+
+// class UserForm extends StatefulWidget {
+//   final User? user;
+//   final state = _UserFormState();
+//   final OnDelete? onDelete;
+
+//   UserForm({Key? key, this.user, this.onDelete}) : super(key: key);
+//   @override
+//   _UserFormState createState() => state;
+
+//   bool isValid() => state.validate();
+// }
+
+// class _UserFormState extends State<UserForm> {
+//   final form = GlobalKey<FormState>();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: EdgeInsets.all(16),
+//       child: Material(
+//         elevation: 1,
+//         clipBehavior: Clip.antiAlias,
+//         borderRadius: BorderRadius.circular(8),
+//         child: Form(
+//           key: form,
+//           child: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             children: <Widget>[
+//               AppBar(
+//                 leading: Icon(Icons.verified_user),
+//                 elevation: 0,
+//                 title: Text('User Details'),
+//                 backgroundColor: Theme.of(context).accentColor,
+//                 centerTitle: true,
+//                 actions: <Widget>[
+//                   IconButton(
+//                     icon: Icon(Icons.delete),
+//                     onPressed: widget.onDelete,
+//                   )
+//                 ],
+//               ),
+//               Padding(
+//                 padding: EdgeInsets.only(left: 16, right: 16, top: 16),
+//                 child: TextFormField(
+//                   initialValue: widget.user!.fullName,
+//                   onSaved: (val) => widget.user!.fullName = val!,
+//                   validator: (val) =>
+//                       val!.length > 3 ? null : 'Full name is invalid',
+//                   decoration: InputDecoration(
+//                     labelText: 'Full Name',
+//                     hintText: 'Enter your full name',
+//                     icon: Icon(Icons.person),
+//                     isDense: true,
+//                   ),
+//                 ),
+//               ),
+//               Padding(
+//                 padding: EdgeInsets.only(left: 16, right: 16, bottom: 24),
+//                 child: TextFormField(
+//                   initialValue: widget.user!.email,
+//                   onSaved: (val) => widget.user!.email = val!,
+//                   validator: (val) =>
+//                       val!.contains('@') ? null : 'Email is invalid',
+//                   decoration: InputDecoration(
+//                     labelText: 'Email Address',
+//                     hintText: 'Enter your email',
+//                     icon: Icon(Icons.email),
+//                     isDense: true,
+//                   ),
+//                 ),
+//               )
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+
+
+
+// class BedRoom extends StatefulWidget {
+//   static const namedRoute = "/namedRoute";
+
+//   // int? index;
+//   // Function? removeServiceCard;
+//   // bool isExpanded;
+//   // String personBedroomController = '';
+
+//   final User? user;
+
+//   final OnDelete? onDelete;
+
+  // String? bedroomLengt;
+  // int? bedroom;
+  // int? bedRoomFloor;
+  // String? bedRoomWidth;
+  // String bedRoomArea = "400";
+  // String? bedRoomToiletLength;
+  // String? bedRoomToiletWidth;
+  // String? bedRoomToiletArea;
+  // String? bedRoomToiletReqText;
+  // String? bedroomDressRequirment;
+  // String? bedroomDressLength;
+  // String? bedroomDressWidth;
+  // String? bedroomDressArea;
+  // String? bedroomDressFacility;
+  // String? bedroomDressRequirmentText;
+  // String? bedroomImg;
+  // String? bedroomFacility;
+  // String? bedroomFacilityRequirementText;
+
+//   String? selectedFloor = "select Floor";
+//   List<String> floorItems = [
+//     "select Floor",
+//     "Ground Floor",
+//     "1st Floor",
+//     "2nd Floor",
+//     "3rd Floor",
+//     "other"
+//   ];
+
+//   BedRoom({this.user, this.onDelete});
+
+//   @override
+//   State<BedRoom> createState() => _BedRoomState();
+// }
+
+// class _BedRoomState extends State<BedRoom> {
+//   onUpdate(int key, String length, String width) {
+//     int foundKey = -1;
+//     for (var map in values) {
+//       if (map.containsKey("id")) {
+//         if (map["id"] == key) {
+//           print("$foundKey ${map["id"]} ");
+//           foundKey = key;
+//           break;
+//         }
+//       }
+//     }
+//     if (-1 != foundKey) {
+//       values.removeWhere((map) {
+//         print("${map["id"] == foundKey} ${map["id"]}");
+//         return map["id"] == foundKey;
+//       });
+//     }
+//     Map<String, dynamic> json = {
+//       "id": key,
+//       "bedroom_length": length,
+//       "bedroom_width": width,
+//     };
+//     // Map<String, dynamic> json = {
+//     //   "bed": {
+//     //     "id": key,
+//     //     "bedroom_length": length,
+//     //     "bedroom_width": width,
+//     //   }
+//     // };
+
+//     values.add(json);
+//     setState(() {
+//       var result = _prettyPrint(values);
+//     });
+//     print(values);
+//   }
+
+//   String _prettyPrint(jsonObject) {
+//     var encoder = const JsonEncoder.withIndent('  ');
+//     return encoder.convert(jsonObject);
+//   }
+
+//   List<Map<String, dynamic>> values = [];
+//   bool? requiredDress = false;
+//   bool? notRequiredDress = false;
+
+//   @override
+//   void initState() {
+//     //Initialize with 1 item
+//     super.initState();
+//     // getData();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     var height = MediaQuery.of(context).size.height;
+//     var width = MediaQuery.of(context).size.width;
+
+//     return ExpansionTile(
+//         maintainState: true,
+//         title: Text(
+//           'BedRoom Details',
+//           style: TextStyle(
+//             fontWeight: FontWeight.bold,
+//             color: Colors.black,
+//           ),
+//         ),
+//         children: [
+//           Column(
+//             children: [
+//               Container(
+//                 width: width * 1,
+//                 color: color3,
+//                 child: Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     SizedBox(
+//                       height: height * 0.01,
+//                     ),
+//                     Row(
+//                       children: [
+//                         requirementText("Select Person bedroom"),
+//                         SizedBox(
+//                           width: width * 0.02,
+//                         ),
+//                         Material(
+//                           elevation: 5,
+//                           borderRadius:
+//                               const BorderRadius.all(Radius.circular(5)),
+//                           child: SizedBox(
+//                             height: height * 0.04,
+//                             width: width * 0.5,
+//                             child: TextFormField(
+//                               style: const TextStyle(fontSize: 14),
+//                               decoration: const InputDecoration(
+//                                 hintText:
+//                                     "Son's Room , Daughter Room , Mother room's",
+//                                 hintStyle: TextStyle(fontSize: 14),
+//                                 border: OutlineInputBorder(
+//                                   borderSide: BorderSide.none,
+//                                 ),
+//                                 isDense: true,
+//                                 contentPadding: EdgeInsets.all(8),
+//                                 //fillColor: Colors.green
+//                               ),
+//                               onChanged: (value) {
+//                                 setState(() {
+//                                   widget.user!.email = value;
+//                                 });
+//                               },
+//                             ),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                     SizedBox(
+//                       height: height * 0.01,
+//                     ),
+//                     Row(
+//                       children: [
+//                         requirementText("Length"),
+//                         SizedBox(
+//                           width: width * 0.015,
+//                         ),
+//                         Material(
+//                           elevation: 5,
+//                           borderRadius:
+//                               const BorderRadius.all(Radius.circular(5)),
+//                           child: SizedBox(
+//                             height: height * 0.04,
+//                             width: width * 0.15,
+//                             child: TextFormField(
+//                               style: const TextStyle(fontSize: 14),
+//                               decoration: const InputDecoration(
+//                                   hintText: "Length",
+//                                   hintStyle: TextStyle(fontSize: 14),
+//                                   border: OutlineInputBorder(
+//                                     borderSide: BorderSide.none,
+//                                   ),
+//                                   isDense: true,
+//                                   contentPadding: EdgeInsets.all(8)
+//                                   //fillColor: Colors.green
+//                                   ),
+//                               onChanged: (value) {
+//                                 widget.user!.fullName = value;
+//                               },
+//                               onFieldSubmitted: (value) {
+//                                 print(values);
+//                               },
+//                               // onSaved: (newValue) {
+//                               // widget.bedroomLength = newValue;
+//                               // getData();
+//                               // },
+//                             ),
+//                           ),
+//                         ),
+//                         valueContainer(height, width, size, 0.04, 0.05),
+//                         SizedBox(
+//                           width: width * 0.02,
+//                         ),
+//                         requirementText("Width"),
+//                         SizedBox(
+//                           width: width * 0.015,
+//                         ),
+//                         requirementTextField(
+//                             height, width, 0.04, 0.15, "Width"),
+//                         valueContainer(height, width, size, 0.04, 0.05),
+//                         SizedBox(
+//                           width: width * 0.15,
+//                         ),
+//                         Row(
+//                           children: [
+//                             requirementText("help"),
+//                             IconButton(
+//                                 padding: EdgeInsets.all(5),
+//                                 constraints: BoxConstraints(),
+//                                 onPressed: () {},
+//                                 icon: Icon(
+//                                   Icons.help,
+//                                   size: height * 0.03,
+//                                 ))
+//                           ],
+//                         ),
+//                       ],
+//                     ),
+//                     SizedBox(
+//                       height: height * .01,
+//                     ),
+//                     Row(
+//                       children: [
+//                         requirementText("Floor"),
+//                         Material(
+//                           elevation: 5,
+//                           borderRadius: BorderRadius.circular(5),
+//                           child: Container(
+//                             height: height * 0.03,
+//                             width: width * 0.6,
+//                             margin: const EdgeInsets.all(
+//                               3,
+//                             ),
+//                             child: DropdownButtonHideUnderline(
+//                               child: DropdownButton<String>(
+//                                   icon: const Visibility(
+//                                       visible: false,
+//                                       child: Icon(Icons.arrow_downward)),
+//                                   value: widget.selectedFloor,
+//                                   elevation: 16,
+//                                   items: widget.floorItems
+//                                       .map((it) => DropdownMenuItem<String>(
+//                                           value: it,
+//                                           child: Text(
+//                                             it,
+//                                             style: TextStyle(
+//                                               color: Colors.black,
+//                                             ),
+//                                           )))
+//                                       .toList(),
+//                                   onChanged: (it) => setState(
+//                                       () => widget.selectedFloor = it!)),
+//                             ),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                     SizedBox(
+//                       height: height * 0.01,
+//                     ),
+//                     requirementText("Toilet details"),
+//                     SizedBox(
+//                       height: height * 0.01,
+//                     ),
+//                     Row(
+//                       children: [
+//                         requirementText("Length"),
+//                         SizedBox(
+//                           width: width * 0.015,
+//                         ),
+//                         requirementTextField(
+//                             height, width, 0.04, 0.15, "length"),
+//                         valueContainer(height, width, size, 0.04, 0.05),
+//                         SizedBox(
+//                           width: width * 0.02,
+//                         ),
+//                         requirementText("Width"),
+//                         SizedBox(
+//                           width: width * 0.015,
+//                         ),
+//                         requirementTextField(
+//                             height, width, 0.04, 0.15, "Width"),
+//                         valueContainer(height, width, size, 0.04, 0.05),
+//                         SizedBox(
+//                           width: width * 0.15,
+//                         ),
+//                         Row(
+//                           children: [
+//                             requirementText("help"),
+//                             IconButton(
+//                                 padding: EdgeInsets.all(5),
+//                                 constraints: BoxConstraints(),
+//                                 onPressed: () {},
+//                                 icon: Icon(
+//                                   Icons.help,
+//                                   size: height * 0.03,
+//                                 ))
+//                           ],
+//                         )
+//                       ],
+//                     ),
+//                     SizedBox(
+//                       height: height * 0.01,
+//                     ),
+//                     requirementText("Toilet Facility"),
+//                     SizedBox(
+//                       height: height * 0.01,
+//                     ),
+//                     requirementTextField(
+//                         height, width, 0.04, 0.9, "Other Toilet Facility"),
+//                     SizedBox(
+//                       height: height * 0.01,
+//                     ),
+//                     requirementText("Dress Details"),
+//                     SizedBox(
+//                       height: height * 0.01,
+//                     ),
+//                     Row(
+//                       children: [
+//                         Row(
+//                           children: [
+//                             Material(
+//                               borderRadius: BorderRadius.circular(5),
+//                               elevation: 5,
+//                               child: Container(
+//                                 padding: EdgeInsets.only(right: 10),
+//                                 child: Row(
+//                                   children: [
+//                                     SizedBox(
+//                                       height: height * 0.04,
+//                                       child: Checkbox(
+//                                           activeColor: checkColor,
+//                                           checkColor: Colors.white,
+//                                           value: requiredDress,
+//                                           onChanged: (value) {
+//                                             setState(
+//                                               () {
+//                                                 requiredDress = value;
+//                                                 notRequiredDress = false;
+//                                               },
+//                                             );
+//                                           }),
+//                                     ),
+//                                     requirementText("Required")
+//                                   ],
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                         SizedBox(
+//                           height: height * 0.01,
+//                         ),
+//                         Row(
+//                           children: [
+//                             SizedBox(
+//                               width: width * 0.05,
+//                             ),
+//                             Material(
+//                               borderRadius: BorderRadius.circular(5),
+//                               elevation: 5,
+//                               child: Container(
+//                                 padding: EdgeInsets.only(right: 10),
+//                                 child: Row(
+//                                   children: [
+//                                     SizedBox(
+//                                       height: height * 0.04,
+//                                       child: Checkbox(
+//                                           activeColor: checkColor,
+//                                           checkColor: Colors.white,
+//                                           value: notRequiredDress,
+//                                           onChanged: (value) {
+//                                             setState(() {
+//                                               notRequiredDress = value;
+//                                               requiredDress = false;
+//                                             });
+//                                           }),
+//                                     ),
+//                                     requirementText("Not Required"),
+//                                     SizedBox(
+//                                       height: height * 0.01,
+//                                     )
+//                                   ],
+//                                 ),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ],
+//                     ),
+//                     SizedBox(
+//                       height: height * 0.01,
+//                     ),
+//                     if (requiredDress == true) ...[
+//                       Row(
+//                         children: [
+//                           requirementText("Length"),
+//                           SizedBox(
+//                             width: width * 0.015,
+//                           ),
+//                           requirementTextField(
+//                               height, width, 0.04, 0.15, "Length"),
+//                           valueContainer(height, width, size, 0.04, 0.05),
+//                           SizedBox(
+//                             width: width * 0.02,
+//                           ),
+//                           requirementText("Width"),
+//                           SizedBox(
+//                             width: width * 0.015,
+//                           ),
+//                           requirementTextField(
+//                               height, width, 0.04, 0.15, "Width"),
+//                           valueContainer(height, width, size, 0.04, 0.05),
+//                           SizedBox(
+//                             width: width * 0.15,
+//                           ),
+//                           Row(
+//                             children: [
+//                               requirementText("help"),
+//                               IconButton(
+//                                   padding: EdgeInsets.all(5),
+//                                   constraints: BoxConstraints(),
+//                                   onPressed: () {},
+//                                   icon: Icon(
+//                                     Icons.help,
+//                                     size: height * 0.03,
+//                                   ))
+//                             ],
+//                           )
+//                         ],
+//                       ),
+//                       SizedBox(
+//                         height: height * 0.01,
+//                       ),
+//                       Column(
+//                         children: [
+//                           Align(
+//                             alignment: Alignment.topLeft,
+//                             child: requirementText("Dress Facility"),
+//                           ),
+//                           SizedBox(
+//                             height: height * 0.01,
+//                           ),
+//                           requirementTextField(height, width, 0.04, 1, "more")
+//                         ],
+//                       )
+//                     ],
+//                     SizedBox(
+//                       height: height * 0.01,
+//                     ),
+//                     SizedBox(height: height * 0.01),
+//                     Material(
+//                       elevation: 10,
+//                       child: Container(
+//                         padding: const EdgeInsets.symmetric(vertical: 10),
+//                         color: Colors.white,
+//                         child: SizedBox(
+//                           width: width * 9,
+//                           height: height * 0.3,
+//                           child: FutureBuilder(
+//                               future: getRecent(),
+//                               builder: (context, snapshot) {
+//                                 if (snapshot.connectionState ==
+//                                     ConnectionState.waiting) {
+//                                   return Container(
+//                                     child: const Center(
+//                                       child: CircularProgressIndicator(),
+//                                     ),
+//                                   );
+//                                 } else {
+//                                   return CarouselSlider.builder(
+//                                     itemCount: bunglowPageRecentList.length,
+//                                     itemBuilder: (context, i, id) {
+//                                       return Container(
+//                                         height: height * 0.4,
+//                                         width: width * 0.9,
+//                                         child: Image.network(
+//                                           imageUrl +
+//                                               bunglowPageRecentList[i]
+//                                                   ["img_path"],
+//                                           fit: BoxFit.fill,
+//                                         ),
+//                                       );
+//                                     },
+//                                     options: CarouselOptions(
+//                                       autoPlay: true,
+//                                       enableInfiniteScroll: true,
+//                                       autoPlayAnimationDuration:
+//                                           const Duration(milliseconds: 800),
+//                                       viewportFraction: 1,
+//                                     ),
+//                                   );
+//                                 }
+//                               }),
+//                         ),
+//                       ),
+//                     ),
+//                     SizedBox(
+//                       height: height * 0.01,
+//                     ),
+//                     Material(
+//                       elevation: 5,
+//                       child: Container(
+//                         margin: EdgeInsets.all(10),
+//                         child: Row(
+//                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                           children: [
+//                             Material(
+//                               elevation: 3,
+//                               child: Container(
+//                                 margin: EdgeInsets.all(5),
+//                                 child: Row(
+//                                   children: const [
+//                                     Icon(Icons.cloud_upload),
+//                                     SizedBox(
+//                                       width: 10,
+//                                     ),
+//                                     Text("Upload a stair image"),
+//                                   ],
+//                                 ),
+//                               ),
+//                             ),
+//                             SizedBox(
+//                               width: width * 0.2,
+//                             ),
+//                             Container(
+//                               padding: const EdgeInsets.symmetric(
+//                                   vertical: 5, horizontal: 10),
+//                               color: buttonColor,
+//                               child: const Text(
+//                                 "Preview",
+//                                 style: TextStyle(color: Colors.white),
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                     SizedBox(
+//                       height: height * 0.01,
+//                     ),
+//                     Align(
+//                       alignment: Alignment.topLeft,
+//                       child: requirementText("Room Facility"),
+//                     ),
+//                     SizedBox(
+//                       height: height * 0.01,
+//                     ),
+//                     requirementTextField(
+//                         height, width, .04, .8, "other requirement"),
+//                     SizedBox(
+//                       height: height * 0.01,
+//                     ),
+//                     Material(
+//                       elevation: 10,
+//                       child: Container(
+//                         padding: const EdgeInsets.symmetric(vertical: 10),
+//                         color: Colors.white,
+//                         child: SizedBox(
+//                           width: width * 9,
+//                           height: height * 0.3,
+//                           child: FutureBuilder(
+//                               future: getRecent(),
+//                               builder: (context, snapshot) {
+//                                 if (snapshot.connectionState ==
+//                                     ConnectionState.waiting) {
+//                                   return Container(
+//                                     child: const Center(
+//                                       child: CircularProgressIndicator(),
+//                                     ),
+//                                   );
+//                                 } else {
+//                                   return CarouselSlider.builder(
+//                                     itemCount: bunglowPageRecentList.length,
+//                                     itemBuilder: (context, i, id) {
+//                                       return Container(
+//                                         height: height * 0.4,
+//                                         width: width * 0.9,
+//                                         child: Image.network(
+//                                           imageUrl +
+//                                               bunglowPageRecentList[i]
+//                                                   ["img_path"],
+//                                           fit: BoxFit.fill,
+//                                         ),
+//                                       );
+//                                     },
+//                                     options: CarouselOptions(
+//                                       autoPlay: true,
+//                                       enableInfiniteScroll: true,
+//                                       autoPlayAnimationDuration:
+//                                           const Duration(milliseconds: 800),
+//                                       viewportFraction: 1,
+//                                     ),
+//                                   );
+//                                 }
+//                               }),
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ]);
+//   }
+// }
+
+// class DropDown extends StatefulWidget {
+//   var width;
+//   var height;
+//   var w;
+//   var h;
+//   List<String>? drop;
+//   String? selectedDrop;
+//   DropDown(
+//       this.width, this.height, this.drop, this.selectedDrop, this.w, this.h);
+//   @override
+//   State<DropDown> createState() => _DropDownState();
+// }
+
+// class _DropDownState extends State<DropDown> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       children: [
+//         SizedBox(
+//           width: widget.width * 0.02,
+//         ),
+//         Material(
+//           elevation: 5,
+//           borderRadius: BorderRadius.circular(5),
+//           child: Container(
+//             height: widget.height * widget.h,
+//             width: widget.width * widget.w,
+//             margin: const EdgeInsets.all(
+//               3,
+//             ),
+//             child: DropdownButtonHideUnderline(
+//               child: DropdownButton<String>(
+//                   icon: const Visibility(
+//                       visible: false, child: Icon(Icons.arrow_downward)),
+//                   value: widget.selectedDrop,
+//                   elevation: 16,
+//                   items: widget.drop
+//                       ?.map(
+//                         (it) => DropdownMenuItem<String>(
+//                             value: it,
+//                             child: Text(
+//                               it,
+//                               style: TextStyle(
+//                                 color: Colors.black,
+//                               ),
+//                             )),
+//                       )
+//                       .toList(),
+//                   onChanged: (it) => setState(() => widget.selectedDrop = it!)),
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+// ///form validator
+// //   bool validate() {
+// //     var valid = form.currentState!.validate();
+// //     if (valid) form.currentState!.save();
+// //     return valid;
+// //   }
+// // }
+
+// class EmptyState extends StatelessWidget {
+//   final String? title, message;
+//   EmptyState({this.title, this.message});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Material(
+//       borderRadius: BorderRadius.circular(16),
+//       elevation: 16,
+//       color: Theme.of(context).cardColor.withOpacity(.95),
+//       shadowColor: Theme.of(context).accentColor.withOpacity(.5),
+//       child: Padding(
+//         padding: EdgeInsets.all(16),
+//         child: Column(
+//           mainAxisSize: MainAxisSize.min,
+//           children: <Widget>[
+//             Text(
+//               title!,
+//             ),
+//             Padding(
+//               padding: EdgeInsets.all(8.0),
+//               child: Text(message!),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

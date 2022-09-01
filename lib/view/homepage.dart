@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 centerTitle: true,
                 bottom: PreferredSize(
-                  child: Container(
+                  child:  Container(
                     margin:  EdgeInsets.only(bottom: 10),
                     child: Text(
                       "Premium Architecture Engineering",

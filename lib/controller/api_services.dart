@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:aashiyan/components/forms.dart';
-import 'package:aashiyan/model/citiesmodel.dart';
 import 'package:aashiyan/model/requirementmodel.dart';
 import 'package:http/http.dart' as http;
 
