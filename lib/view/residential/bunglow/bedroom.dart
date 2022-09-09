@@ -11,6 +11,7 @@ import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
 
 List<BedRoom> users = [];
+int listLen = 0;
 
 class MultiForm extends StatefulWidget {
   @override
@@ -18,77 +19,133 @@ class MultiForm extends StatefulWidget {
 }
 
 class _MultiFormState extends State<MultiForm> {
+  bool isloading = false;
+  var printData;
+  int bedroomPage = 0;
+  Future<void> getData() async {
+    try {
+      // var client = http.Client();
+      // http://sdplweb.com/sdpl/api/edit-bungalow-bedroom/project_id
+      var response = await http.get(
+        Uri.parse(
+            "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-bedroom/179"),
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        setState(() {
+          printData = jsonResponse;
+        });
+
+        print(printData);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+    if (printData != null) {
+      isloading = true;
+    }
+    print(isloading);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Column(
-        children: [
-          OutlinedButton(
-            onPressed: onAddForm,
-            child: const Text('Add a Bedroom'),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.7,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: users.length,
-              itemBuilder: (_, i) => users[i],
+    if (printData != null) {
+      isloading = true;
+      listLen = printData["bungalow_bedroom"].length;
+    }
+    return isloading == false
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                OutlinedButton(
+                  onPressed: onAddForm,
+                  child: const Text('Add a Bedroom'),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: printData["bungalow_bedroom"].length != null
+                        ? printData["bungalow_bedroom"].length
+                        : users.length,
+                    itemBuilder: (_, i) {
+                      if (printData != null)
+                        for (int i = 0;
+                            i < printData["bungalow_bedroom"].length;
+                            i++) {
+                          users.add(BedRoom());
+                        }
+                      print(printData["bungalow_bedroom"].length);
+                      return users[i];
+                    },
+                  ),
+                ),
+                OutlinedButton(
+                  onPressed: () async {
+                    // final  Map<String, dynamic> _values;
+                    List<Map<String, dynamic>> val = [];
+                    Map<String, dynamic> _value = {};
+                    var userdata = users.map((it) => it.user).toList();
+                    _value.putIfAbsent(
+                      "project_id",
+                      () => "349",
+                    );
+                    _value.putIfAbsent("dimension", () => dimenInt);
+                    for (int i = 0; i < userdata.length; i++) {
+                      Map<String, dynamic> json = {
+                        "bedroom": users[i].user!.personBedRoom,
+                        "bedroom_length": users[i].user!.length,
+                        "bedroom_width": users[i].user!.width,
+                        "bedroom_dress_length": users[i].user!.dressLenght,
+                        "bedroom_dress_width": users[i].user!.dressWidth,
+                        "bedroom_dress_req_text": users[i].user!.dressReqText,
+                        "bedroom_dress_req": users[i].user!.dressReq,
+                        "bedroom_floor": users[i].user!.selectedFloor,
+                        "bedroom_toilet_length": users[i].user!.toiletLength,
+                        "bedroom_toilet_width": users[i].user!.toiletWidth,
+                        "bedroom_dress_facility": users[i].user!.dressFacility,
+                        "bedroom_toilet_req_text":
+                            users[i].user!.toiletFacility,
+                        "bedroom_facility": users[i].user!.roomRequirement,
+                        "bedroom_facility_req_text":
+                            users[i].user!.roomOtherRequirement,
+                      };
+                      val.add(json);
+                    }
+
+                    _value.putIfAbsent("bedrooms", () => val);
+
+                    var finalResponse = _value;
+                    // print(finalResponse);
+                    final response = await http.post(
+                      // Uri.parse(baseUrlLocal + "project"),
+                      Uri.parse(
+                          'http://192.168.1.99:8080/sdplserver/api/bungalow-bedroom'),
+                      headers: <String, String>{
+                        'Content-Type': 'application/json; charset=UTF-8',
+                      },
+                      body: jsonEncode(finalResponse),
+                    );
+
+                    print(response.body);
+                  },
+                  child: const Text('save'),
+                ),
+              ],
             ),
-          ),
-          OutlinedButton(
-            onPressed: () async {
-              // final  Map<String, dynamic> _values;
-              List<Map<String, dynamic>> val = [];
-              Map<String, dynamic> _value = {};
-              var userdata = users.map((it) => it.user).toList();
-              _value.putIfAbsent(
-                "project_id",
-                () => "349",
-              );
-              _value.putIfAbsent("dimension", () => dimenInt);
-              for (int i = 0; i < userdata.length; i++) {
-                Map<String, dynamic> json = {
-                  "bedroom": users[i].user!.personBedRoom,
-                  "bedroom_length": users[i].user!.length,
-                  "bedroom_width": users[i].user!.width,
-                  "bedroom_dress_length": users[i].user!.dressLenght,
-                  "bedroom_dress_width": users[i].user!.dressWidth,
-                  "bedroom_dress_req_text": users[i].user!.dressReqText,
-                  "bedroom_dress_req": users[i].user!.dressReq,
-                  "bedroom_floor": users[i].user!.selectedFloor,
-                  "bedroom_toilet_length": users[i].user!.toiletLength,
-                  "bedroom_toilet_width": users[i].user!.toiletWidth,
-                  "bedroom_dress_facility": users[i].user!.dressFacility,
-                  "bedroom_toilet_req_text": users[i].user!.toiletFacility,
-                  "bedroom_facility": users[i].user!.roomRequirement,
-                  "bedroom_facility_req_text":
-                      users[i].user!.roomOtherRequirement,
-                };
-                val.add(json);
-              }
-
-              _value.putIfAbsent("bedrooms", () => val);
-
-              var finalResponse = _value;
-              print(finalResponse);
-              final response = await http.post(
-                // Uri.parse(baseUrlLocal + "project"),
-                Uri.parse(
-                    'http://192.168.1.99:8080/sdplserver/api/bungalow-bedroom'),
-                headers: <String, String>{
-                  'Content-Type': 'application/json; charset=UTF-8',
-                },
-                body: jsonEncode(finalResponse),
-              );
-
-              print(response.body);
-            },
-            child: const Text('save'),
-          ),
-        ],
-      ),
-    );
+          );
   }
 
   ///on form user deleted
@@ -104,13 +161,24 @@ class _MultiFormState extends State<MultiForm> {
 
   ///on add form
   void onAddForm() {
-    setState(() {
-      var _user = User();
-      users.add(BedRoom(
-        user: _user,
-        onDelete: () => onDelete(_user),
-      ));
-    });
+    setState(
+      () {
+        var _user = User();
+
+        printData["bungalow_bedroom"].add(
+          BedRoom(
+            user: _user,
+            onDelete: () => onDelete(_user),
+          ),
+        );
+        users.add(
+          BedRoom(
+            user: _user,
+            onDelete: () => onDelete(_user),
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -153,7 +221,6 @@ class BedRoom extends StatefulWidget {
   static const namedRoute = "/namedRoute";
 
   final User? user;
-
   final OnDelete? onDelete;
 
   String? selectedFloor = "select Floor";
@@ -193,7 +260,6 @@ class _BedRoomState extends State<BedRoom> {
       "TV",
       "Mini Bar"
     ];
-
     final List<String> result = await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -216,10 +282,11 @@ class _BedRoomState extends State<BedRoom> {
     ];
 
     final List<String> result = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return MultiSelect(items: otherIt);
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return MultiSelect(items: otherIt);
+      },
+    );
 
     if (result != null) {
       setState(() {
@@ -235,6 +302,10 @@ class _BedRoomState extends State<BedRoom> {
     var width = MediaQuery.of(context).size.width;
 
     return ExpansionTile(
+        trailing: const InkWell(
+          child: Icon(Icons.delete),
+          //onTap: onDelete(),
+        ),
         maintainState: true,
         title: const Text(
           'BedRoom Details',

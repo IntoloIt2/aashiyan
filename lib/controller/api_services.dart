@@ -490,7 +490,7 @@ Future<void> flooreStorePost(
     "pooja_room_width": poojaRoomWidth,
     "pooja_room_area": poojaRoomArea,
     "pooja_room_floor": poojaRoomFloor,
-    "pooja_room_type": poojaRoomReq,
+    "pooja_room_type": poojaRoomType,
     "opening_to_li_ha": poojaRoomWidth,
     "lift_special_req": liftRequirement,
   };
@@ -702,4 +702,3 @@ Future<void> BasementPost(
   );
   print(response.body);
 }
-

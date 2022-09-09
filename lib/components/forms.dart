@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 List<String> sizeitems = ["ft", "m"];
 String size = "ft";
 int dimenInt = 1;
@@ -42,7 +41,7 @@ Material textField(BuildContext context) {
 
 Material valueContainer(
     double height, double width, String str, double h, double w) {
-  return  Material(
+  return Material(
     borderRadius: BorderRadius.circular(5),
     elevation: 1,
     child: Container(
@@ -101,7 +100,7 @@ Material requirementTextFieldCont(
   double w,
   String str,
   TextEditingController txt,
-){
+) {
   return Material(
     elevation: 5,
     borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -118,9 +117,9 @@ Material requirementTextFieldCont(
               borderSide: BorderSide.none,
             ),
             isDense: true,
-            contentPadding:const EdgeInsets.all(8)
+            contentPadding: const EdgeInsets.all(8)
             //fillColor: Colors.green
-      ),
+            ),
       ),
     ),
   );
