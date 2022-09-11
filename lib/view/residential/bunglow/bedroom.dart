@@ -1,12 +1,10 @@
 import 'dart:convert';
-
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,6 +19,7 @@ class MultiForm extends StatefulWidget {
 class _MultiFormState extends State<MultiForm> {
   bool isloading = false;
   var printData;
+  var _user = User();
   int bedroomPage = 0;
   Future<void> getData() async {
     try {
@@ -62,7 +61,7 @@ class _MultiFormState extends State<MultiForm> {
       listLen = printData["bungalow_bedroom"].length;
     }
     return isloading == false
-        ? Center(
+        ? const Center(
             child: CircularProgressIndicator(),
           )
         : SingleChildScrollView(
@@ -77,15 +76,19 @@ class _MultiFormState extends State<MultiForm> {
                   height: MediaQuery.of(context).size.height * 0.7,
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: printData["bungalow_bedroom"].length != null
-                        ? printData["bungalow_bedroom"].length
+                    itemCount: printData != null
+                        ? printData['bungalow_bedroom'].length
                         : users.length,
                     itemBuilder: (_, i) {
                       if (printData != null)
+                        // ignore: curly_braces_in_flow_control_structures
                         for (int i = 0;
                             i < printData["bungalow_bedroom"].length;
                             i++) {
-                          users.add(BedRoom());
+                          users.add(BedRoom(
+                            user: _user,
+                            onDelete: () => onDelete(_user),
+                          ));
                         }
                       print(printData["bungalow_bedroom"].length);
                       return users[i];
@@ -151,11 +154,23 @@ class _MultiFormState extends State<MultiForm> {
   ///on form user deleted
   void onDelete(User _user) {
     setState(() {
+      var findApi = printData["bungalow_bedroom"].firstWhere(
+        (it) => it == _user,
+        orElse: () => null!,
+      );
+      print("delete");
       var find = users.firstWhere(
         (it) => it.user == _user,
-        // orElse: () => null,
+        orElse: () => null!,
       );
-      if (find != null) users.removeAt(users.indexOf(find));
+      if (find != null)
+        users.removeAt(
+          users.indexOf(find),
+        );
+      if (findApi != null)
+        printData.removeAt(
+          printData["bungalow_bedroom"].indexOf(find),
+        );
     });
   }
 
@@ -164,7 +179,6 @@ class _MultiFormState extends State<MultiForm> {
     setState(
       () {
         var _user = User();
-
         printData["bungalow_bedroom"].add(
           BedRoom(
             user: _user,
@@ -181,6 +195,17 @@ class _MultiFormState extends State<MultiForm> {
     );
   }
 }
+
+// void onDelete(User _user) {
+//   Obx(() {
+//     var find;
+//     return find = users.firstWhere(
+//       (it) => it.user == _user,
+//       // orElse: () => null,
+//     );
+//     if (find != null) users.removeAt(users.indexOf(find));
+//   });
+// }
 
 class User {
   String personBedRoom;
@@ -224,13 +249,14 @@ class BedRoom extends StatefulWidget {
   final OnDelete? onDelete;
 
   String? selectedFloor = "select Floor";
+
   List<String> floorItems = [
     "select Floor",
     "Ground Floor",
     "1st Floor",
     "2nd Floor",
     "3rd Floor",
-    "other"
+    "other",
   ];
 
   BedRoom({this.user, this.onDelete});
@@ -243,6 +269,29 @@ class _BedRoomState extends State<BedRoom> {
   List<String> otherFacilities = [];
   List<String> dressF = [];
 
+  // var printData;
+  // int bedroomPage = 0;
+  // Future<void> getData() async {
+  //   try {
+  //     // var client = http.Client();
+  //     // http://sdplweb.com/sdpl/api/edit-bungalow-bedroom/project_id
+  //     var response = await http.get(
+  //       Uri.parse(
+  //           "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-bedroom/179"),
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       final jsonResponse = jsonDecode(response.body);
+  //       setState(() {
+  //         printData = jsonResponse;
+  //       });
+
+  //       print(printData);
+  //     }
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+
   bool? requiredDress = false;
   bool? notRequiredDress = false;
 
@@ -251,6 +300,8 @@ class _BedRoomState extends State<BedRoom> {
     super.initState();
   }
 
+  User _u = User();
+
   void multiSelected() async {
     final List<String> otherItems = [
       "None",
@@ -258,19 +309,21 @@ class _BedRoomState extends State<BedRoom> {
       "Sofa Arrangement",
       "Writing and Laptop table",
       "TV",
-      "Mini Bar"
+      "Mini Bar",
     ];
     final List<String> result = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return MultiSelect(items: otherItems);
-        });
-
+      context: context,
+      builder: (BuildContext context) {
+        return MultiSelect(items: otherItems);
+      },
+    );
     if (result != null) {
-      setState(() {
-        otherFacilities = result;
-        widget.user!.roomRequirement = result;
-      });
+      setState(
+        () {
+          otherFacilities = result;
+          widget.user!.roomRequirement = result;
+        },
+      );
     }
   }
 
@@ -300,11 +353,10 @@ class _BedRoomState extends State<BedRoom> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-
     return ExpansionTile(
-        trailing: const InkWell(
+        trailing: InkWell(
           child: Icon(Icons.delete),
-          //onTap: onDelete(),
+          onTap: widget.onDelete,
         ),
         maintainState: true,
         title: const Text(
