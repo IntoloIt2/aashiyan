@@ -1,17 +1,21 @@
 import 'package:aashiyan/components/bungalow_steps.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/components/project_category.dart';
-import 'package:aashiyan/view/residential/bunglow/requirement.dart';
+import 'package:aashiyan/controller/api_controller.dart';
 // import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+// import 'package:http/http.dart';
 
 import '../../../components/app_bar.dart';
 import '../../../controller/api_services.dart';
 
 class Bunglow extends StatelessWidget {
-  const Bunglow({Key? key}) : super(key: key);
+  Bunglow({Key? key}) : super(key: key);
   static const namedRoute = "/bunglow";
+  final ApiController cont = Get.put(ApiController());
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -65,6 +69,8 @@ class Bunglow extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).pushNamed(StepPages.namedRoute);
+                    cont.getData();
+                    cont.printData;
                   },
                   child: Card(
                     child: ListTile(
