@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:ffi';
+import 'dart:core';
 
 import 'package:aashiyan/components/bungalow_steps.dart';
 import 'package:aashiyan/components/forms.dart' as Forms;
@@ -23,32 +23,32 @@ class Requirement extends StatefulWidget {
 class _RequirementState extends State<Requirement> {
   final JavascriptRuntime jsRuntime = getJavascriptRuntime();
 
-  String plotlength = "1";
-  String plotWidth = "1";
-
   late Future<RequirementModel> futureRequirement;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-  TextEditingController daigonal1Controller = TextEditingController();
+  TextEditingController diagonal1Controller = TextEditingController();
   TextEditingController diagonal2Controller = TextEditingController();
   TextEditingController eastController = TextEditingController();
   TextEditingController westController = TextEditingController();
   TextEditingController northController = TextEditingController();
   TextEditingController southController = TextEditingController();
   TextEditingController levelController = TextEditingController();
-  var levelControllerDouble;
+  TextEditingController lengthController = TextEditingController();
+  TextEditingController widthController = TextEditingController();
+  var plotValue = TextEditingController();
 
-  int isRegular = 0;
+  int isRegular = 1;
   int isNotRegular = 0;
   int isNorthOrientaion = 0;
+  int plot_orientaion = 0;
 
-  String isEast = "0";
-  String isWest = "0";
-  String isNorth = "0";
-  String isSouth = "0";
+  String isWest = "1";
+  String isNorth = "1";
+  String isSouth = "1";
+  String isEast = "1";
 
   bool? northOriented = false;
   bool? regularPlotValue = false;
@@ -87,16 +87,74 @@ class _RequirementState extends State<Requirement> {
   int plotSize = 0;
   String plotSizeStr = '';
   String selectedState = "Select State";
-
+ 
   List cityData = [];
   List stateData = [];
 
   @override
   void initState() {
     super.initState();
+
     getCities();
+    
+    
     getState();
-    print("getting data");
+    plotValue.addListener(() => setState(() {}));
+  }
+
+  int plotWidth = 0;
+  int plotLenght = 0;
+  int value = 0;
+  String? lengthText, widthText, finalString;
+  String calculation = "";
+
+  String totalCalculated() {
+    lengthText = lengthController.text;
+    widthText = widthController.text;
+    finalString = plotValue.text;
+
+    // if (lengthText != '' && widthText != '') {
+
+    if (lengthText != '' && widthText != '') {
+      calculation = (plotLenght * plotWidth).toString();
+      plotValue.value = plotValue.value.copyWith(
+        text: calculation.toString(),
+      );
+    }
+
+    // if (lengthText != '' && widthText != '') {
+    //   calculation = (plotLenght * plotWidth).toString() as int;
+    //   print(calculation);
+    //   plotValue.value = plotValue.value.copyWith(
+    //     text: calculation.toString(),
+    //   );
+    //   // }
+    //   return calculation;
+    // } else {
+    //   return calculation;
+    // }
+    return calculation;
+  }
+
+  int? diagonal1;
+  int? diagonal2;
+  int? diagonalValue;
+  String? diagonal1Text, diagonal2Text, finalDiagonal;
+  String diagonalCalculation = "";
+
+  String diagonalCalculations() {
+    
+    diagonal1Text = diagonal1Controller.text;
+    diagonal2Text = diagonal2Controller.text;
+    finalDiagonal = plotValue.text;
+
+    if (diagonal1Text != '' && diagonal2Text != '') {
+      diagonalCalculation = (((diagonal1! * diagonal2!) / 2)).toString();
+      plotValue.value = plotValue.value.copyWith(
+        text: diagonalCalculation.toString(),
+      );
+    }
+    return diagonalCalculation;
   }
 
   Future<void> getState() async {
@@ -116,6 +174,7 @@ class _RequirementState extends State<Requirement> {
     } catch (e) {
       print(e.toString());
     }
+
   }
 
   Future<List?> getCities() async {
@@ -127,8 +186,10 @@ class _RequirementState extends State<Requirement> {
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         final cityList = jsonResponse['cities'] as List;
-        setState(() {
+        setState((){
+
           cityData = cityList;
+
         });
         // print(cityData);
         return cityList;
@@ -146,9 +207,8 @@ class _RequirementState extends State<Requirement> {
     //   print(element["city_name"]);
     // }
     // print(stateId);
-    // print(cityData);
-    // print(stateData);
-
+    
+    
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,16 +239,18 @@ class _RequirementState extends State<Requirement> {
                                     style: TextStyle(fontSize: height * 0.02)),
                               ))
                           .toList(),
-                      onChanged: (it) => setState(() {
-                        if (it == "MR") {
-                          selectedItemInt = 1;
-                        } else if (it == "MRS") {
-                          selectedItemInt = 2;
-                        } else if (it == "MS") {
-                          selectedItemInt = 3;
-                        }
-                        selectedItems = it!;
-                      }),
+                      onChanged: (it) => setState(
+                        () {
+                          if (it == "MR") {
+                            selectedItemInt = 1;
+                          } else if (it == "MRS") {
+                            selectedItemInt = 2;
+                          } else if (it == "MS") {
+                            selectedItemInt = 3;
+                          }
+                          selectedItems = it!;
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -469,49 +531,104 @@ class _RequirementState extends State<Requirement> {
               requirementText("Irregular plot"),
             ],
           ),
-          Row(children: [
-            requirementText("Length"),
-            SizedBox(
-              width: width * 0.04,
-            ),
-            Container(
-              height: height * 0.04,
-              width: width * 0.15,
-              child: TextField(
-                onChanged: (value) {
-                  setState(() {
-                    plotlength = value;
-                  });
-                },
-                onSubmitted: (value) {
-                  setState(() {
-                    plotlength = value;
-
-                    plotSize = int.parse(plotlength);
-                    plotSize *= int.parse(plotWidth);
-                  });
-                },
-                keyboardType: TextInputType.number,
+          Row(
+            children: [
+              requirementText("Length"),
+              SizedBox(
+                width: width * 0.04,
               ),
-            ),
-            SizedBox(
-              width: width * 0.01,
-            ),
-            valueContainer(height, width, size, 0.039, 0.05),
-            SizedBox(
-              width: width * 0.02,
-            ),
-            if (irregularPlotValue == true) ...[
-              requirementText("Diagona1"),
+              Material(
+                borderRadius: BorderRadius.circular(10),
+                elevation: 5,
+                child: Container(
+                  height: height * 0.04,
+                  width: width * 0.15,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                        hintText: "Lenght",
+                        hintStyle: TextStyle(fontSize: 14),
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        isDense: true,
+                        contentPadding: EdgeInsets.all(8)
+                        //fillColor: Colors.green
+                        ),
+                    controller: lengthController,
+                    onChanged: (lengthController) {
+                      setState(() {
+                        if (lengthController != '') {
+                          plotLenght = int.parse(lengthController.toString());
+                        } else {
+                          plotLenght = 0;
+                          plotValue.text = '0';
+                        }
+                      });
+                    },
+                    onTap: () {
+                      setState(() {
+                        plotLenght = 0;
+                        print('lengthController $lengthController.text');
+                        print("plotLenght $plotLenght");
+                      });
+                    },
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: width * 0.01,
+              ),
+              valueContainer(height, width, size, 0.039, 0.05),
               SizedBox(
                 width: width * 0.02,
               ),
-              requirementTextFieldCont(
-                  height, width, 0.04, 0.2, "Diagonal", daigonal1Controller)
-            ]
-          ]),
+              if (irregularPlotValue == true) ...[
+                requirementText("Diagona1"),
+                SizedBox(
+                  width: width * 0.02,
+                ),
+                Material(
+                  borderRadius: BorderRadius.circular(10),
+                  elevation: 5,
+                  child: Container(
+                    height: height * 0.04,
+                    width: width * 0.2,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          hintText: "Diagonal 1",
+                          hintStyle: TextStyle(fontSize: 14),
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          isDense: true,
+                          contentPadding: EdgeInsets.all(8)
+                          //fillColor: Colors.green
+                          ),
+                      controller: diagonal1Controller,
+                      onChanged: (diagonal1Controller) {
+                        setState(() {
+                          if (diagonal1Controller != '') {
+                            diagonal1 =
+                                int.parse(diagonal1Controller.toString());
+                          } else {
+                            diagonal1 = 0;
+                            plotValue.text = '0';
+                          }
+                        });
+                      },
+                      onTap: () {
+                        setState(() {});
+                      },
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                ),
+              ]
+            ],
+          ),
           SizedBox(
-            height: height * 0.004,
+            height: height * 0.01,
           ),
           Row(
             children: [
@@ -519,30 +636,43 @@ class _RequirementState extends State<Requirement> {
               SizedBox(
                 width: width * 0.05,
               ),
-              Container(
-                height: height * 0.04,
-                width: width * 0.15,
-                child: TextFormField(
-                  onChanged: (value) {
-                    setState(() {
-                      plotWidth = value;
-                    });
-                  },
-                  onFieldSubmitted: (value) {
-                    setState(() {
-                      plotWidth = value;
-                      plotSize = int.parse(plotWidth);
-                      plotSize *= int.parse(plotlength);
-                    });
-                  },
-                  // onSubmitted: (value) {
-                  //   setState(() {
-                  //     plotWidth = value;
-                  //     plotSize = int.parse(plotWidth);
-                  //     plotSize *= int.parse(plotlength);
-                  //   });
-                  // },
-                  keyboardType: TextInputType.number,
+              Material(
+                borderRadius: BorderRadius.circular(5),
+                elevation: 5,
+                child: Container(
+                  height: height * 0.04,
+                  width: width * 0.15,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                        hintText: "width",
+                        hintStyle: TextStyle(fontSize: 14),
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.all(8)
+                        //fillColor: Colors.green
+                        ),
+                    controller: widthController,
+                    onChanged: (widthController) {
+                      setState(() {
+                        if (widthController != '') {
+                          plotWidth = int.parse(widthController.toString());
+                        } else {
+                          plotWidth = 0;
+                          plotValue.text = '0';
+                        }
+                      });
+                    },
+                    onTap: () {
+                      setState(() {
+                        // widthController.clear();
+                        if (widthController.value == 0) {
+                          plotWidth = 0;
+                        }
+                      });
+                    },
+                    keyboardType: TextInputType.number,
+                  ),
                 ),
               ),
               SizedBox(
@@ -557,29 +687,149 @@ class _RequirementState extends State<Requirement> {
                 SizedBox(
                   width: width * 0.02,
                 ),
-                requirementTextFieldCont(
-                    height, width, 0.04, 0.2, "Diagonal", diagonal2Controller)
+                Material(
+                  borderRadius: BorderRadius.circular(5),
+                  elevation: 5,
+                  child: Container(
+                    height: height * 0.04,
+                    width: width * 0.2,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          hintText: "Diagonal 2",
+                          hintStyle: TextStyle(fontSize: 14),
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: EdgeInsets.all(8)
+                          //fillColor: Colors.green
+                          ),
+                      controller: diagonal2Controller,
+                      onChanged: (diagonal2Controller) {
+                        setState(() {
+                          setState(() {
+                            if (diagonal2Controller != '') {
+                              diagonal2 =
+                                  int.parse(diagonal2Controller.toString());
+                            } else {
+                              diagonal2 = 0;
+                              plotValue.text = '0';
+                            }
+                          });
+                        });
+                      },
+                      onTap: () {
+                        setState(() {});
+                      },
+                      // onSubmitted: (value) {
+                      //   setState(() {
+                      //     plotWidth = value;
+                      //     plotSize = int.parse(plotWidth);
+                      //     plotSize *= int.parse(plotlength);
+                      //   });
+                      // },
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                ),
               ]
             ],
           ),
           SizedBox(
-            height: height * 0.004,
+            height: height * 0.01,
           ),
           Row(children: [
             requirementText("Plot size"),
             SizedBox(
               width: width * 0.05,
             ),
-            Forms.valueContainer(height, width, "$plotSize", 0.04, 0.1),
-            SizedBox(
-              width: width * 0.015,
-            ),
-            requirementTextField(height, width, 0.04, 0.15, "Length"),
-            SizedBox(
-              width: width * 0.01,
-            ),
-            valueContainer(height, width, "Length", 0.039, 0.08)
+            if (irregularPlotValue == true) ...[
+              Material(
+                borderRadius: BorderRadius.circular(5),
+                elevation: 5,
+                child: Container(
+                  height: height * 0.04,
+                  width: width * 0.2,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                        hintStyle: TextStyle(fontSize: 14),
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        isDense: true,
+                        contentPadding: EdgeInsets.all(8)
+                        //fillColor: Colors.green
+                        ),
+                    key: Key(diagonalCalculations()),
+                    controller: plotValue,
+                    onChanged: (value) {
+                      setState(() {
+                        if (plotLenght == 0 || plotWidth == 0) {
+                          value = "0";
+                        } else if (lengthController == '' ||
+                            widthController == '') {
+                          value = "0";
+                        } else {
+                          plotValue.value = plotValue.value.copyWith(
+                            text: value.toString(),
+                          );
+                        }
+                      });
+                    },
+                    onTap: () {
+                      setState(() {
+                        plotValue.clear();
+                        plotValue.value = plotValue.value.copyWith(
+                          text: '',
+                        );
+                      });
+                    },
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+              ),
+            ] else ...[
+              Material(
+                borderRadius: BorderRadius.circular(5),
+                elevation: 5,
+                child: Container(
+                  height: height * 0.04,
+                  width: width * 0.2,
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                        hintStyle: TextStyle(fontSize: 14),
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        isDense: true,
+                        contentPadding: EdgeInsets.all(8)
+                        //fillColor: Colors.green
+                        ),
+                    key: Key(totalCalculated()),
+                    controller: plotValue,
+                    onChanged: (value) {
+                      setState(() {
+                        plotValue.value = plotValue.value.copyWith(
+                          text: value.toString(),
+                        );
+                      });
+                    },
+                    onTap: () {
+                      setState(() {
+                        plotValue.clear();
+                        plotValue.value = plotValue.value.copyWith(
+                          text: '',
+                        );
+                      });
+                    },
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+              ),
+            ]
           ]),
+          SizedBox(
+            height: height * 0.01,
+          ),
           if (irregularPlotValue == true) ...[
             Container(
               padding: EdgeInsets.all(5),
@@ -957,11 +1207,16 @@ class _RequirementState extends State<Requirement> {
           ),
           InkWell(
             onTap: () {
-              setState(() {
-                if (regularPlotValue == true) {
-                  isRegular = 1;
+              setState(
+                () {
+                
+                if (irregularPlotValue == true) {
+                  isRegular = 2;
+                  plot_orientaion = 1;
                 }
-
+                if (size == "m") {
+                  dimenInt = 2;
+                }
                 if (regularPlotValue == true) {
                   isNotRegular = 1;
                 }
@@ -970,59 +1225,75 @@ class _RequirementState extends State<Requirement> {
                   isNorthOrientaion = 1;
                 }
 
-                if (isNorth == true) {
-                  isNorth = "1";
+                if (westRoad == true) {
+                  isWest = "2";
                 }
-                if (isEast == true) {
+                if (otherwest == true) {
+                  isWest = "1";
+                }
+
+                if (eastRoad == true) {
+                  isEast = "2";
+                }
+                if (otherEast == true) {
                   isEast = "1";
                 }
 
-                if (isWest == true) {
-                  isWest = "1";
+                if (nortRoad == true) {
+                  isNorth = "2";
+                }
+                if (otherNortn == true) {
+                  isNorth = "1";
                 }
 
-                if (isNorth == true) {
-                  isWest = "1";
+                if (southRoad == true) {
+                  isSouth = "2";
                 }
-                if(notReqired == true){
+                if (otherSouth == true) {
+                  isSouth = "1";
+                }
+
+                if (notReqired == true) {
                   notReqiredInt = 1;
                 }
               });
+
+              print("d1 ${diagonal1Controller.text}");
+              print("d2 ${diagonal2Controller.text}");
+
               futureRequirement = requirementPost(
-                2342,
-                978,
-                098,
-                selectedItems,
-                nameController.text,
-                lastNameController.text,
-                emailController.text,
-                1,
-                stateId,
-                cityId,
-                addressController.text,
-                isRegular,
-                isNotRegular,
-                plotlength,
-                plotWidth,
-                daigonal1Controller.text,
-                diagonal2Controller.text,
-                plotSizeStr,
-                " ",
-                isNorthOrientaion,
-                " ",
-                isEast,
-                eastController.text,
-                isWest,
-                westController.text,
-                isNorth,
-                northController.text,
-                isSouth,
-                southController.text,
-                selectedLevelInt,
-                levelController.text,
-                notReqiredInt
-                
-              );
+                  2342,
+                  978,
+                  098,
+                  selectedItems,
+                  nameController.text,
+                  lastNameController.text,
+                  emailController.text,
+                  1,
+                  stateId,
+                  cityId,
+                  addressController.text,
+                  isRegular,
+                  dimenInt,
+                  lengthController.text,
+                  widthController.text,
+                  diagonal1Controller.text,
+                  diagonal2Controller.text,
+                  plotSizeStr,
+                  " ",
+                  plot_orientaion,
+                  " ",
+                  isEast,
+                  eastController.text,
+                  isWest,
+                  westController.text,
+                  isNorth,
+                  northController.text,
+                  isSouth,
+                  southController.text,
+                  selectedLevelInt,
+                  levelController.text,
+                  notReqiredInt);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -1047,12 +1318,3 @@ class _RequirementState extends State<Requirement> {
     }
   }
 }
-// Future<int> addFromJs(
-//     JavascriptRuntime jsRuntime, int firstNumber, int secondNumber) async {
-//   String blocjs = await rootBundle.loadString("assets/bloc.js");
-//   final jsResult = jsRuntime.evaluate(blocjs + "${firstNumber + secondNumber}");
-//   final jsStringResult = jsResult.stringResult;
-//   return int.parse(jsStringResult);
-// }
-
-

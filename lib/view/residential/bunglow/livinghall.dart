@@ -1,8 +1,7 @@
+import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-import '../../../components/app_bar.dart';
-import '../../../components/bungalow_steps.dart';
 import '../../../components/forms.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
@@ -14,6 +13,24 @@ class LivingHall extends StatefulWidget {
 }
 
 class _LivingHallState extends State<LivingHall> {
+  List<String> otherFeatures = [];
+  List livingHall = [];
+  void multiSelected() async {
+    final List<String> otherItems = ["Double Height", "Powder Toilet"];
+
+    final List<String> result = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return MultiSelect(items: otherItems);
+        });
+
+    if (result != null) {
+      setState(() {
+        otherFeatures = result;
+      });
+    }
+  }
+
   List<String> floorItems = [
     "Select",
     "Ground floor",
@@ -24,6 +41,29 @@ class _LivingHallState extends State<LivingHall> {
   ];
   String selectedFloor = "Select";
 
+  int livingHallLocation = 1;
+
+  String livingHallArea = "";
+
+  TextEditingController drawingHallLengthController = TextEditingController();
+  TextEditingController drawingHallWidthController = TextEditingController();
+  TextEditingController drawingSpecialFeaturesController =
+      TextEditingController();
+  TextEditingController livingSpecialFeaturesController =
+      TextEditingController();
+  TextEditingController LivingHallWidthController = TextEditingController();
+  TextEditingController LivingHallLengthController = TextEditingController();
+  TextEditingController KitchenLengthController = TextEditingController();
+  TextEditingController attachedLengthController = TextEditingController();
+  TextEditingController kitchenWidthController = TextEditingController();
+  TextEditingController attachedWidthController = TextEditingController();
+  TextEditingController utilityLengthController = TextEditingController();
+  TextEditingController utilityWidthController = TextEditingController();
+  TextEditingController specificReq = TextEditingController();
+  TextEditingController otherDrawingHallLocationController =
+      TextEditingController();
+  TextEditingController ohterLivingHallController = TextEditingController();
+
   List<String> kitchenItems = [
     "Select",
     "Ground floor",
@@ -33,17 +73,22 @@ class _LivingHallState extends State<LivingHall> {
     "other"
   ];
   String selectedKitchen = "Select";
+  String kitchenArea = "";
+  String KitchenFloor = "1";
 
-  List<String> drawingHallItems = [
-    "Select",
-    "Ground floor",
-    "1st Floor ",
-    "2nd Floor",
-    "3rd Floor",
-    "other"
-  ];
-  String selecteDrawingHall = "Select";
+  // List<String> drawingHallItems = [
+  //   "Select",
+  //   "Ground floor",
+  //   "1st Floor ",
+  //   "2nd Floor",
+  //   "3rd Floor",
+  //   "other"
+  // ];
 
+  // String selecteDrawingHall = "Select";
+  int drawingHallLocation = 0;
+
+  String DrawingSelected = "Select";
   List<String> DrawingItems = [
     "Select",
     "Ground floor",
@@ -52,6 +97,7 @@ class _LivingHallState extends State<LivingHall> {
     "3rd Floor",
     "other"
   ];
+
   List<String> kitchenFunctionItems = [
     "Selecting dining function",
     "full open to dining ",
@@ -60,6 +106,7 @@ class _LivingHallState extends State<LivingHall> {
     "open with a door",
   ];
   String selectedKitchenFunction = "Selecting dining function";
+  String kitchenDiningFunction = "1";
 
   List<String> refrigeratorItems = [
     "Selecting fridge",
@@ -67,22 +114,31 @@ class _LivingHallState extends State<LivingHall> {
     "Double Door",
   ];
   String selectedRefrigerator = "Selecting fridge";
-
-  String DrawingSelected = "Select";
+  String refrigeratorSize = "";
 
   List<String> selectedItem = [" ", "Double height", "powder toilet"];
 
   String selectedFeatures = " ";
 
+  List kitchenFeatures = [];
+
   bool? attachedStore = false;
+  String attachStoreArea = "";
+
   bool? utilityWash = false;
+  String utilityWashArea = "";
+
   bool? washArea = false;
   bool? breakFast = false;
   bool? centralIsland = false;
   bool? livingRequired = false;
   bool? livingNotRequired = false;
+  int livingHallInt = 0;
   bool? drawingHallRequired = false;
   bool? drawingHallNotRequired = false;
+  int drawingInt = 0;
+  String drawingArea = "0";
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -232,7 +288,8 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "length",
+                      LivingHallLengthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.02,
@@ -241,7 +298,8 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "Width",
+                      LivingHallWidthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.01,
@@ -258,37 +316,73 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.02,
                   ),
+                  // Material(
+                  //   elevation: 5,
+                  //   borderRadius: BorderRadius.circular(5),
+                  //   child: Container(
+                  //     height: height * 0.03,
+                  //     width: width * 0.25,
+                  //     margin: EdgeInsets.all(
+                  //       3,
+                  //     ),
+                  //     child: DropdownButtonHideUnderline(
+                  //       child: DropdownButton<String>(
+                  //           icon: const Visibility(
+                  //               visible: false,
+                  //               child: Icon(Icons.arrow_downward)),
+                  //           value: selectedFeatures,
+                  //           elevation: 16,
+                  //           items: selectedItem
+                  //               .map((it) => DropdownMenuItem<String>(
+                  //                   value: it,
+                  //                   child: Text(
+                  //                     it,
+                  //                     style: TextStyle(
+                  //                       color: Colors.black,
+                  //                     ),
+                  //                   )))
+                  //               .toList(),
+                  //           onChanged: (it) =>
+                  //               setState(() => selectedFeatures = it!)),
+                  //     ),
+                  //   ),
+                  // ),
                   Material(
-                    elevation: 5,
                     borderRadius: BorderRadius.circular(5),
+                    elevation: 5,
                     child: Container(
-                      height: height * 0.03,
-                      width: width * 0.25,
-                      margin: EdgeInsets.all(
-                        3,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                            icon: const Visibility(
-                                visible: false,
-                                child: Icon(Icons.arrow_downward)),
-                            value: selectedFeatures,
-                            elevation: 16,
-                            items: selectedItem
-                                .map((it) => DropdownMenuItem<String>(
-                                    value: it,
-                                    child: Text(
-                                      it,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    )))
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            onTap: () => multiSelected(),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Text("Office features"),
+                            ),
+                          ),
+                          Wrap(
+                            children: otherFeatures
+                                .map((e) => Chip(
+                                      label: Text(e),
+                                    ))
                                 .toList(),
-                            onChanged: (it) =>
-                                setState(() => selectedFeatures = it!)),
+                          )
+                        ],
                       ),
                     ),
                   ),
+                  if (selectedFeatures == "other") ...[
+                    requirementTextFieldCont(height, width, 0.04, .2,
+                        "other Location", ohterLivingHallController)
+                  ]
                 ],
               ),
               SizedBox(
@@ -300,8 +394,8 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.02,
                   ),
-                  requirementTextField(
-                      height, width, 0.04, 0.5, "special feature")
+                  requirementTextFieldCont(height, width, 0.04, 0.5,
+                      "special feature", livingSpecialFeaturesController)
                 ],
               ),
               SizedBox(
@@ -474,8 +568,8 @@ class _LivingHallState extends State<LivingHall> {
                     width: width * 0.02,
                   ),
                   if (selectedFloor == "other") ...[
-                    requirementTextField(
-                        height, width, 0.04, 0.25, "other location"),
+                    requirementTextFieldCont(height, width, 0.04, 0.25,
+                        "other location", otherDrawingHallLocationController),
                   ]
                 ],
               ),
@@ -488,7 +582,8 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "length",
+                      drawingHallLengthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.02,
@@ -497,7 +592,8 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "Width",
+                      drawingHallWidthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.01,
@@ -514,8 +610,8 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.02,
                   ),
-                  requirementTextField(
-                      height, width, 0.04, 0.5, "special feature")
+                  requirementTextFieldCont(height, width, 0.04, 0.5,
+                      "special feature", drawingSpecialFeaturesController)
                 ],
               ),
               SizedBox(
@@ -635,7 +731,8 @@ class _LivingHallState extends State<LivingHall> {
                 SizedBox(
                   width: width * 0.015,
                 ),
-                requirementTextField(height, width, 0.04, 0.15, "length"),
+                requirementTextFieldCont(height, width, 0.04, 0.15, "length",
+                    KitchenLengthController),
                 valueContainer(height, width, size, 0.04, 0.05),
                 SizedBox(
                   width: width * 0.02,
@@ -644,7 +741,8 @@ class _LivingHallState extends State<LivingHall> {
                 SizedBox(
                   width: width * 0.015,
                 ),
-                requirementTextField(height, width, 0.04, 0.15, "Width"),
+                requirementTextFieldCont(
+                    height, width, 0.04, 0.15, "Width", kitchenWidthController),
                 valueContainer(height, width, size, 0.04, 0.05),
                 SizedBox(
                   width: width * 0.01,
@@ -879,7 +977,8 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "length",
+                      attachedLengthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.02,
@@ -888,7 +987,8 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "Width",
+                      attachedWidthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                 ],
               ),
@@ -931,7 +1031,8 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "length",
+                      utilityLengthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.02,
@@ -940,7 +1041,8 @@ class _LivingHallState extends State<LivingHall> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "Width",
+                      utilityWidthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.01,
@@ -1047,29 +1149,199 @@ class _LivingHallState extends State<LivingHall> {
                 SizedBox(
                   width: width * 0.01,
                 ),
-                requirementTextField(
-                  height,
-                  width,
-                  0.04,
-                  0.4,
-                  "Specific requirement",
-                )
+                requirementTextFieldCont(height, width, 0.04, 0.4,
+                    "Specific requirement", specificReq)
               ],
             ),
             SizedBox(
               height: height * 0.01,
             ),
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                height: height * 0.04,
-                decoration: BoxDecoration(
-                    color: buttonColor, borderRadius: BorderRadius.circular(4)),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: const Text(
-                  "save and continue",
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  int kitch = int.parse(KitchenLengthController.text) *
+                      int.parse(kitchenWidthController.text);
+                  livingHallArea = living.toString();
+                  if (selectedRefrigerator == "Single Door ") {
+                    refrigeratorSize = "1";
+                  }
+
+                  if (selectedRefrigerator == "Double Door") {
+                    refrigeratorSize = "2";
+                  }
+
+                  // if (selectedRefrigerator ==
+                  //     "open with a reasonable opening") {
+                  //   refrigeratorSize = "3";
+                  // }
+                  if (livingRequired == true) {
+                    if (selectedFloor == "1 floor") {
+                      livingHallLocation = 1;
+                    }
+
+                    if (selectedFloor == "2 floor") {
+                      livingHallLocation = 2;
+                    }
+
+                    if (selectedFloor == "3 floor") {
+                      livingHallLocation = 3;
+                    }
+
+                    if (selectedFloor == "other") {
+                      livingHallLocation =
+                          int.parse(ohterLivingHallController.text);
+                    }
+                    int living = int.parse(LivingHallLengthController.text) *
+                        int.parse(LivingHallWidthController.text);
+                    livingHallArea = living.toString();
+                    for (int i = 0; i < otherFeatures.length; i++) {
+                      if (otherFeatures[i] == "Powder Toilet") {
+                        livingHall.add(1);
+                      }
+                      if (otherFeatures[i] == "Double Height") {
+                        livingHall.add(2);
+                      }
+                    }
+                  }
+                  if (selectedKitchen == "1 floor") {
+                    KitchenFloor = "1";
+                  }
+
+                  if (selectedKitchen == "2 floor") {
+                    KitchenFloor = "2";
+                  }
+
+                  if (selectedKitchen == "3 floor") {
+                    KitchenFloor = "3";
+                  }
+
+                  if (selectedKitchen == "other") {
+                    KitchenFloor = "4";
+                  }
+
+                  if (utilityWash == true) {
+                    int utility = int.parse(utilityLengthController.text) *
+                        int.parse(utilityWidthController.text);
+                    utilityWashArea = utility.toString();
+                  }
+                  if (attachedStore == true) {
+                    kitchenFeatures.add(1);
+                  }
+                  if (utilityWash == true) {
+                    kitchenFeatures.add(2);
+                  }
+
+                  if (washArea == true) {
+                    kitchenFeatures.add(3);
+                  }
+                  if (breakFast == true) {
+                   kitchenFeatures.add(4);
+                  }
+                  if (centralIsland == true) {
+                   kitchenFeatures.add(5);
+                  }
+
+                  if (livingRequired == true) {
+                    livingHallInt = 1;
+                  }
+                  if (attachedStore == true) {
+                    int attach = int.parse(attachedLengthController.text) *
+                        int.parse(attachedWidthController.text);
+                    attachStoreArea = attach.toString();
+                  }
+
+                  if (drawingHallRequired == true) {
+                    drawingInt = 1;
+                    int drawing = int.parse(drawingHallLengthController.text) *
+                        int.parse(drawingHallWidthController.text);
+                    drawingArea = drawing.toString();
+                    if (DrawingSelected == "Ground floor") {
+                      drawingHallLocation = 1;
+                    }
+
+                    if (DrawingSelected == "1st Floor ") {
+                      drawingHallLocation = 2;
+                    }
+
+                    if (DrawingSelected == "2nd Floor") {
+                      drawingHallLocation = 3;
+                    }
+
+                    if (DrawingSelected == "3rd Floor") {
+                      drawingHallLocation = 4;
+                    }
+                    if (DrawingSelected == "other") {
+                      drawingHallLocation =
+                          int.parse(otherDrawingHallLocationController.text);
+                    }
+                  }
+
+                  if(selectedKitchenFunction == "full open to dining ") {
+                    kitchenDiningFunction = "1";
+                  }
+
+                  if (selectedKitchenFunction == "partial open to dining") {
+                    kitchenDiningFunction = "2";
+                  }
+
+                  if (selectedKitchenFunction ==
+                      "open with a reasonable opening") {
+                    kitchenDiningFunction = "3";
+                  }
+
+                  if (selectedKitchenFunction == "open with a door") {
+                    KitchenFloor = "4";
+                  }
+
+                  if (attachStoreArea == true) {}
+                  int kitchen = int.parse(KitchenLengthController.text) *
+                      int.parse(kitchenWidthController.text);
+                  kitchenArea = kitchen.toString();
+                });
+                livingHallPost(
+                  drawingInt,
+                  drawingHallLocation,
+                  drawingHallLengthController.text,
+                  drawingHallWidthController.text,
+                  drawingArea,
+                  drawingSpecialFeaturesController.text,
+                  drawingSpecialFeaturesController.text,
+                  livingHallInt,
+                  livingHallLocation,
+                  LivingHallLengthController.text,
+                  LivingHallWidthController.text,
+                  livingHallArea,
+                  livingHall,
+                  livingSpecialFeaturesController.text,
+                  kitchenFeatures,
+                  KitchenFloor,
+                  KitchenLengthController.text,
+                  kitchenWidthController.text,
+                  kitchenArea,
+                  kitchenDiningFunction,
+                  attachedLengthController.text,
+                  attachedWidthController.text,
+                  attachStoreArea,
+                  utilityWidthController.text,
+                  utilityLengthController.text,
+                  utilityWashArea,
+                  refrigeratorSize,
+                  specificReq.text,
+                );
+              },
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  height: height * 0.04,
+                  decoration: BoxDecoration(
+                      color: buttonColor,
+                      borderRadius: BorderRadius.circular(4)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: const Text(
+                    "save and continue",
+                    style: TextStyle(color: Colors.white, fontSize: 14),
+                  ),
                 ),
               ),
             ),
@@ -1079,3 +1351,7 @@ class _LivingHallState extends State<LivingHall> {
     );
   }
 }
+
+
+//  "project_id": 3514, "user_id": 123, "dimension": 1, "drawing_hall_req": 1, "drawing_hall_location": 1, "drwing_hall_length": 30, "drawing_hall_width": 30, "drawing_hall_area": 900, "drawing_hall": "exclusive", "drawing_hall_text": "exclusive", "living_hall_req": 1, "living_hall_location": 0, "living_hall_width": 20, "living_hall_length": 400, "living_hall_area": 400,
+//      "living_hall": " 2 1 2 1", "living_hall_text": "nothing", "kitchen_features": "1 2  4  5" , "kitchen_floor": 0, "kitchen_length": 87, "kitchen_width": 87, "kitchen_area": 7569, "kitchen_dining_function": 2, "attach_store_length": 30, "attach_store_width": 30, "attach_store_area": 900, "utility_wash_width": 20, "utility_wash_length": 20, "utility_wash_area": 400, "refrigerator_size": 1, "specific_req": "kj"

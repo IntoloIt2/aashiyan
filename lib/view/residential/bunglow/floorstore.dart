@@ -16,6 +16,20 @@ class FloorStore extends StatefulWidget {
 }
 
 class _FloorStoreState extends State<FloorStore> {
+  String floorStoreArea = "";
+
+  TextEditingController floorStoreLengthController = TextEditingController();
+  TextEditingController floorStoreWidthController = TextEditingController();
+  TextEditingController floorStoreLocationController = TextEditingController();
+  TextEditingController liftSpecialRequirementController =
+      TextEditingController();
+  TextEditingController passengerCapacityControler = TextEditingController();
+  TextEditingController poojaLengthController = TextEditingController();
+  TextEditingController poojaWidthController = TextEditingController();
+  TextEditingController poojaRoomLocationController = TextEditingController();
+
+  String liftArea = "";
+
   String selectedPoojaPlace = "select room type";
   List<String> poojaPlaceItems = [
     "select room type",
@@ -23,6 +37,7 @@ class _FloorStoreState extends State<FloorStore> {
     "only place",
   ];
 
+  String poojaRoomLocation = "";
   String selectedPooja = "select floor";
   List<String> poojaRoomItems = [
     "select floor",
@@ -41,17 +56,20 @@ class _FloorStoreState extends State<FloorStore> {
     "Semi circular"
   ];
 
-  String? selectedFloor = "select floor";
+  String storeFloor = "";
+  String poojaRoomArea = "";
+  String selectedFloor = "select floor";
   List<String> pantryItems = [
     "select floor",
     "Ground floor",
-    "1st floor ",
+    "1st floor",
     "2nd floor",
     "3rd floor",
     "other"
   ];
 
-  String? selectedLift = "select no of passenger";
+  int passengerCapacity = 0;
+  String selectedLift = "select no of passenger";
   List<String> liftItems = [
     "select no of passenger",
     "4",
@@ -63,18 +81,23 @@ class _FloorStoreState extends State<FloorStore> {
 
   bool? FloorStoreDetail1 = false;
   bool? FloorStoreDetail2 = false;
+  int floorStoreInt = 0;
+
   bool? requiredLift = false;
   bool? notRequiredLift = false;
+  int liftRequirement = 0;
+
+  int poojaRoomReq = 0;
   bool? poojaRoomRequired = false;
   bool? poojaRoomNotRequired = false;
   bool? openHall = false;
+  String openingToLiHa = "";
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Container(
-    
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,8 +227,8 @@ class _FloorStoreState extends State<FloorStore> {
                     width: width * 0.02,
                   ),
                   if (selectedFloor == "other") ...[
-                    requirementTextField(
-                        height, width, 0.04, 0.25, "other location"),
+                    requirementTextFieldCont(height, width, 0.04, 0.25,
+                        "other location", floorStoreLocationController),
                   ]
                 ],
               ),
@@ -218,7 +241,8 @@ class _FloorStoreState extends State<FloorStore> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "length",
+                      floorStoreLengthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.02,
@@ -227,7 +251,8 @@ class _FloorStoreState extends State<FloorStore> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "Width",
+                      floorStoreWidthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.01,
@@ -503,8 +528,8 @@ class _FloorStoreState extends State<FloorStore> {
                   SizedBox(
                     width: width * 0.02,
                   ),
-                  requirementTextField(
-                      height, width, .04, 0.35, "lift Requirement")
+                  requirementTextFieldCont(height, width, .04, 0.35,
+                      "lift Requirement", liftSpecialRequirementController)
                 ],
               ),
             ],
@@ -595,7 +620,8 @@ class _FloorStoreState extends State<FloorStore> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
+                  requirementTextFieldCont(height, width, 0.04, 0.15, "length",
+                      poojaLengthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.02,
@@ -604,7 +630,8 @@ class _FloorStoreState extends State<FloorStore> {
                   SizedBox(
                     width: width * 0.015,
                   ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
+                  requirementTextFieldCont(
+                      height, width, 0.04, 0.15, "Width", poojaWidthController),
                   valueContainer(height, width, size, 0.04, 0.05),
                   SizedBox(
                     width: width * 0.01,
@@ -707,8 +734,8 @@ class _FloorStoreState extends State<FloorStore> {
             if (selectedPooja == "other") ...[
               Material(
                 elevation: 5,
-                child: requirementTextField(
-                    height, width, 0.04, 1, "other location"),
+                child: requirementTextFieldCont(height, width, 0.04, 1,
+                    "other location", poojaLengthController),
               ),
             ],
             SizedBox(
@@ -787,17 +814,108 @@ class _FloorStoreState extends State<FloorStore> {
             SizedBox(
               height: height * 0.01,
             ),
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                height: height * 0.04,
-                decoration: BoxDecoration(
-                    color: buttonColor, borderRadius: BorderRadius.circular(4)),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: const Text(
-                  "save and continue",
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+            GestureDetector(
+              onTap: () => {
+                setState(
+                  () {
+                    if (FloorStoreDetail1 == true) {
+                      floorStoreInt = 1;
+                      int area = int.parse(floorStoreLengthController.text) *
+                          int.parse(floorStoreWidthController.text);
+                      floorStoreArea = area.toString();
+                      if (selectedFloor == "Ground floor") {
+                        storeFloor = "0";
+                      }
+                      if (selectedFloor == "1st floor") {
+                        storeFloor = "1";
+                      }
+                      if (selectedFloor == "2nd floor") {
+                        storeFloor = "2";
+                      }
+                      if (selectedFloor == "3rd floor") {
+                        storeFloor = "3";
+                      }
+                      if (selectedFloor == "other") {
+                        storeFloor = floorStoreLocationController.text;
+                      }
+                    }
+                    if (requiredLift == true) {
+                      liftRequirement = 1;
+                      // if (selectedFloor == "4") {
+                      //   passengerCapacity = 1;
+                      // }
+                      // if (selectedFloor == "6") {
+                      //   passengerCapacity = 2;
+                      // }
+                      // if (selectedFloor == "8") {
+                      //  passengerCapacity = 3;
+                      // }
+                      // if (selectedFloor == "10") {
+                      //   passengerCapacity = 4;
+                      // }
+                      // if (selectedFloor == "more") {
+                      //   passengerCapacity =int.parse(passengerCapacityControler.text);
+                      // }
+                      passengerCapacity = int.parse(selectedLift);
+                    }
+                    if (poojaRoomRequired == true) {
+                      poojaRoomReq = 1;
+                      int area = int.parse(poojaLengthController.text) *
+                          int.parse(poojaWidthController.text);
+                      poojaRoomArea = area.toString();
+                      if (selectedPooja == "Groung floor") {
+                        poojaRoomLocation = "0";
+                      }
+                      if (selectedPooja == "1st Floor") {
+                        poojaRoomLocation = "1";
+                      }
+                      if (selectedPooja == "2nd Floor") {
+                        poojaRoomLocation = "2";
+                      }
+                      if (selectedPooja == "3rd Floor") {
+                        poojaRoomLocation = "3";
+                      }
+                      if (selectedPooja == "other") {
+                        poojaRoomLocation = poojaRoomLocationController.text;
+                      }
+                    }
+                    if (openHall == true) {
+                      openingToLiHa = "Opening toward hall/ Lobby";
+                    }
+                  },
+                ),
+                flooreStorePost(
+                  floorStoreInt,
+                  floorStoreLengthController.text,
+                  floorStoreWidthController.text,
+                  floorStoreArea,
+                  storeFloor,
+                  selectedStair,
+                  liftRequirement,
+                  liftSpecialRequirementController.text,
+                  passengerCapacity,
+                  poojaRoomReq,
+                  poojaLengthController.text,
+                  poojaWidthController.text,
+                  poojaRoomArea,
+                  poojaRoomLocation,
+                  selectedPoojaPlace,
+                  openingToLiHa,
+                )
+              },
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  height: height * 0.04,
+                  decoration: BoxDecoration(
+                      color: buttonColor,
+                      borderRadius: BorderRadius.circular(4)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: const Text(
+                    "save and continue",
+                    style: TextStyle(color: Colors.white, fontSize: 14),
+                  ),
                 ),
               ),
             ),
