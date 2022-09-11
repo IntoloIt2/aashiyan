@@ -6,8 +6,9 @@ import 'package:aashiyan/view/residential/bunglow/pantrydetail.dart';
 import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:flutter/material.dart';
 import '../view/residential/bunglow/bedroom.dart';
-import '../view/residential/bunglow/bedroompage.dart';
+
 import '../view/residential/bunglow/entrance.dart';
+import '../view/residential/bunglow/staticbedroompage.dart';
 import 'steps_container.dart';
 
 int? index = 0;
@@ -89,10 +90,12 @@ class _BunglowStepsState extends State<BunglowSteps> {
               ),
               GestureDetector(
                 onTap: () {
-                  setState(() {
-                    index = 5;
-                    st = "Bed Room";
-                  });
+                  setState(
+                    () {
+                      index = 5;
+                      st = "Bed Room";
+                    },
+                  );
                 },
                 child: stepsContainer("step6"),
               ),
@@ -134,7 +137,7 @@ List Pages = [
   LivingHall(),
   PantryDetail(),
   FloorStore(),
-  BedroomPage(),
+  MultiForm(),
   Basement()
 ];
 
@@ -180,8 +183,7 @@ class _StepPagesState extends State<StepPages> {
                           onTap: () {
                             setState(() {
                               index = 1;
-                              st = "Entrance";
-                            });
+                              st = "Entrance";});
                           },
                           child: stepsContainer("Step 2"),
                         ),
@@ -231,11 +233,9 @@ class _StepPagesState extends State<StepPages> {
                           },
                           child: stepsContainer("step6"),
                         ),
-
                         const SizedBox(
                           width: 10,
                         ),
-
                         GestureDetector(
                           onTap: () {
                             setState(() {
@@ -245,7 +245,6 @@ class _StepPagesState extends State<StepPages> {
                           },
                           child: Center(child: stepsContainer("step7")),
                         ),
-
                         const SizedBox(
                           width: 10,
                         ),
@@ -264,11 +263,9 @@ class _StepPagesState extends State<StepPages> {
                 ],
               ),
             ),
-
             SizedBox(
               height: 10,
             ),
-
             Container(
               padding: EdgeInsets.only(left: 10, right: 10),
               child: Pages[index!],
