@@ -96,6 +96,7 @@ class _FloorStoreState extends State<FloorStore> {
     try {
       // var client = http.Client();
       // http://sdplweb.com/sdpl/api/edit-bungalow-floor-store/project_id
+      //https://localhost/sdplserver/api/get-design
 
       var response = await http.get(
         Uri.parse(

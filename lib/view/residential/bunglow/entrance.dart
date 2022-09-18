@@ -6,6 +6,13 @@ import '../../../const.dart';
 import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
 
+ Text headingFont(String s) {
+    return Text(
+                  s,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                );
+  }
+
 class Entrance extends StatefulWidget {
   const Entrance({Key? key}) : super(key: key);
   static const namedRoute = "/entrance";
@@ -417,12 +424,9 @@ class _EntranceState extends State<Entrance> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                const Align(
+                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text(
-                    "Ground floor requirement",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
+                  child: headingFont('Ground floor requirement'),
                 ),
                 SizedBox(
                   height: height * 0.01,
@@ -2207,4 +2211,6 @@ class _EntranceState extends State<Entrance> {
             ),
           );
   }
+
+ 
 }
