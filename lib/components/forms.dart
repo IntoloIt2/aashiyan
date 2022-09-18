@@ -1,12 +1,8 @@
-
-
-import 'package:aashiyan/controller/api_services.dart';
 import 'package:flutter/material.dart';
-
-import '../const.dart';
 
 List<String> sizeitems = ["ft", "m"];
 String size = "ft";
+int dimenInt = 1;
 
 Container lableText(String lable) {
   return Container(
@@ -29,7 +25,7 @@ Material textField(BuildContext context) {
       height: MediaQuery.of(context).size.height * 0.05,
       width: MediaQuery.of(context).size.width * 0.3,
       child: TextFormField(
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           labelText: "First name",
           fillColor: Colors.white,
           border: OutlineInputBorder(
@@ -61,15 +57,19 @@ Material valueContainer(
 Text requirementText(String txt) {
   return Text(
     txt,
-    style: TextStyle(
+    style: const TextStyle(
       fontWeight: FontWeight.bold,
     ),
-
   );
 }
 
 Material requirementTextField(
-    double height, double width, double h, double w, String str,  ) {
+  double height,
+  double width,
+  double h,
+  double w,
+  String str,
+) {
   return Material(
     elevation: 5,
     borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -77,7 +77,6 @@ Material requirementTextField(
       height: height * h,
       width: width * w,
       child: TextFormField(
-        
         style: TextStyle(fontSize: 14),
         decoration: InputDecoration(
             hintText: str,
@@ -89,15 +88,19 @@ Material requirementTextField(
             contentPadding: EdgeInsets.all(8)
             //fillColor: Colors.green
             ),
-           
       ),
     ),
   );
 }
-
 
 Material requirementTextFieldCont(
-    double height, double width, double h, double w, String str, TextEditingController txt, ) {
+  double height,
+  double width,
+  double h,
+  double w,
+  String str,
+  TextEditingController txt,
+) {
   return Material(
     elevation: 5,
     borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -105,22 +108,19 @@ Material requirementTextFieldCont(
       height: height * h,
       width: width * w,
       child: TextFormField(
-        
         controller: txt,
-        style: TextStyle(fontSize: 14),
+        style: const TextStyle(fontSize: 14),
         decoration: InputDecoration(
             hintText: str,
-            hintStyle: TextStyle(fontSize: 14),
+            hintStyle: const TextStyle(fontSize: 14),
             border: const OutlineInputBorder(
               borderSide: BorderSide.none,
             ),
             isDense: true,
-            contentPadding: EdgeInsets.all(8)
+            contentPadding: const EdgeInsets.all(8)
             //fillColor: Colors.green
             ),
-           
       ),
     ),
   );
 }
-

@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 centerTitle: true,
                 bottom: PreferredSize(
-                  child: Container(
+                  child:  Container(
                     margin:  EdgeInsets.only(bottom: 10),
                     child: Text(
                       "Premium Architecture Engineering",
@@ -288,6 +288,7 @@ class _HomePageState extends State<HomePage> {
       alignment: Alignment.center,
       children: [
         Container(
+          
           height: MediaQuery.of(context).size.height * 0.13,
           width: MediaQuery.of(context).size.width * 0.2,
           child: CustomPaint(

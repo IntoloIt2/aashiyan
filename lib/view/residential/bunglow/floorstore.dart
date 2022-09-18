@@ -1,10 +1,9 @@
-import 'package:aashiyan/components/app_bar.dart';
-import 'package:aashiyan/components/bungalow_steps.dart';
+import 'dart:convert';
+
 import 'package:aashiyan/components/forms.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-
+import 'package:http/http.dart' as http;
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
 
@@ -16,6 +15,19 @@ class FloorStore extends StatefulWidget {
 }
 
 class _FloorStoreState extends State<FloorStore> {
+  String floorStoreArea = "";
+
+  String floorStoreLengthController = ' ';
+  String floorStoreWidthController = ' ';
+  String floorStoreLocationController = ' ';
+  String liftSpecialRequirementController = ' ';
+  String passengerCapacityControler = ' ';
+  String poojaLengthController = ' ';
+  String poojaWidthController = ' ';
+  String poojaRoomLocationController = ' ';
+
+  String liftArea = "";
+
   String selectedPoojaPlace = "select room type";
   List<String> poojaPlaceItems = [
     "select room type",
@@ -23,6 +35,7 @@ class _FloorStoreState extends State<FloorStore> {
     "only place",
   ];
 
+  String poojaRoomLocation = "";
   String selectedPooja = "select floor";
   List<String> poojaRoomItems = [
     "select floor",
@@ -41,17 +54,20 @@ class _FloorStoreState extends State<FloorStore> {
     "Semi circular"
   ];
 
-  String? selectedFloor = "select floor";
+  String storeFloor = "";
+  String poojaRoomArea = "";
+  String selectedFloor = "select floor";
   List<String> pantryItems = [
     "select floor",
     "Ground floor",
-    "1st floor ",
+    "1st floor",
     "2nd floor",
     "3rd floor",
     "other"
   ];
 
-  String? selectedLift = "select no of passenger";
+  int passengerCapacity = 0;
+  String selectedLift = "select no of passenger";
   List<String> liftItems = [
     "select no of passenger",
     "4",
@@ -63,54 +79,471 @@ class _FloorStoreState extends State<FloorStore> {
 
   bool? FloorStoreDetail1 = false;
   bool? FloorStoreDetail2 = false;
+  int floorStoreInt = 0;
+
   bool? requiredLift = false;
   bool? notRequiredLift = false;
+  int liftRequirement = 0;
+
+  int poojaRoomReq = 0;
   bool? poojaRoomRequired = false;
   bool? poojaRoomNotRequired = false;
   bool? openHall = false;
+  String openingToLiHa = "";
+
+  bool isloading = false;
+  var printData;
+  Future<void> getData() async {
+    try {
+      // var client = http.Client();
+      // http://sdplweb.com/sdpl/api/edit-bungalow-floor-store/project_id
+
+      var response = await http.get(
+        Uri.parse(
+          "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-floor-store/179",
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        setState(() {
+          printData = jsonResponse;
+          print(printData);
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+    if (printData == null) {
+      isloading = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    return Container(
-    
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            requirementText("floor store details"),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Row(
+    if (printData != null) {
+      setState(() {
+        isloading = false;
+      });
+    }
+    return isloading == true
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                requirementText("floor store details"),
+                SizedBox(
+                  height: height * 0.01,
+                ),
                 Row(
                   children: [
-                    Material(
-                      borderRadius: BorderRadius.circular(5),
-                      elevation: 5,
-                      child: Container(
-                        padding: EdgeInsets.only(right: 10),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              height: height * 0.04,
-                              child: Checkbox(
-                                  activeColor: checkColor,
-                                  checkColor: Colors.white,
-                                  value: FloorStoreDetail1,
-                                  onChanged: (value) {
-                                    setState(
-                                      () {
-                                        FloorStoreDetail1 = value;
-                                        FloorStoreDetail2 = false;
-                                      },
-                                    );
-                                  }),
+                    Row(
+                      children: [
+                        Material(
+                          borderRadius: BorderRadius.circular(5),
+                          elevation: 5,
+                          child: Container(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  height: height * 0.04,
+                                  child: Checkbox(
+                                      activeColor: checkColor,
+                                      checkColor: Colors.white,
+                                      value: printData["bungalow_floor_store"]
+                                                  ["floor_store_req"] ==
+                                              1
+                                          ? true
+                                          : FloorStoreDetail1,
+                                      onChanged: (value) {
+                                        setState(
+                                          () {
+                                            FloorStoreDetail1 = value;
+                                            FloorStoreDetail2 = false;
+                                            printData["bungalow_floor_store"]
+                                                ["floor_store_req"] = 2;
+                                          },
+                                        );
+                                      }),
+                                ),
+                                requirementText("Required")
+                              ],
                             ),
-                            requirementText("Required")
-                          ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: width * 0.05,
+                        ),
+                        Material(
+                          borderRadius: BorderRadius.circular(5),
+                          elevation: 5,
+                          child: Container(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  height: height * 0.04,
+                                  child: Checkbox(
+                                    activeColor: checkColor,
+                                    checkColor: Colors.white,
+                                    value: printData["bungalow_floor_store"]
+                                                ["floor_store_req"] ==
+                                            0
+                                        ? true
+                                        : FloorStoreDetail2,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          FloorStoreDetail2 = value;
+                                          FloorStoreDetail1 = false;
+                                          printData["bungalow_floor_store"]
+                                              ["floor_store_req"] = 2;
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                                requirementText("Not Required"),
+                                SizedBox(
+                                  height: height * 0.01,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                if (FloorStoreDetail1 == true ||
+                    printData["bungalow_floor_store"]["floor_store_req"] ==
+                        1) ...[
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Row(
+                    children: [
+                      requirementText("Location"),
+                      SizedBox(
+                        width: width * 0.02,
+                      ),
+                      Material(
+                        elevation: 5,
+                        borderRadius: BorderRadius.circular(5),
+                        child: Container(
+                          height: height * 0.03,
+                          width: width * 0.25,
+                          margin: const EdgeInsets.all(
+                            3,
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              icon: const Visibility(
+                                  visible: false,
+                                  child: Icon(Icons.arrow_downward)),
+                              hint: printData['bungalow_floor_store']
+                                          ['store_floor'] !=
+                                      null
+                                  ? Text(pantryItems[
+                                      printData['bungalow_floor_store']
+                                          ['store_floor']])
+                                  : Text(selectedFloor),
+                              elevation: 16,
+                              items: pantryItems
+                                  .map(
+                                    (it) => DropdownMenuItem<String>(
+                                      value: it,
+                                      child: Text(
+                                        it,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (it) {
+                                setState(
+                                  () {
+                                    selectedFloor = it!;
+                                    // printData['bungalow_floor_store']
+                                    //     ['store_floor'] = '';
+                                    if (selectedFloor == "select floor") {
+                                      printData['bungalow_floor_store']
+                                          ['store_floor'] = 0;
+                                    }
+                                    if (selectedFloor == "Ground floor") {
+                                      printData['bungalow_floor_store']
+                                          ['store_floor'] = 1;
+                                    }
+                                    if (selectedFloor == "1st floor") {
+                                      printData['bungalow_floor_store']
+                                          ['store_floor'] = 2;
+                                    }
+                                    if (selectedFloor == "2nd floor") {
+                                      printData['bungalow_floor_store']
+                                          ['store_floor'] = 3;
+                                    }
+                                    if (selectedFloor == "3rd floor") {
+                                      printData['bungalow_floor_store']
+                                          ['store_floor'] = 4;
+                                    }
+                                    if (selectedFloor == "other") {
+                                      printData['bungalow_floor_store']
+                                          ['store_floor'] = 5;
+                                    }
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: width * 0.02,
+                      ),
+                      if (selectedFloor == "other") ...[
+                        Material(
+                          elevation: 5,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(5)),
+                          child: SizedBox(
+                            height: height * 0.04,
+                            width: width * 0.25,
+                            child: TextFormField(
+                              // controller: txt,
+                              initialValue: printData["bungalow_floor_store"]
+                                      ["store_floor"]
+                                  .toString(),
+                              style: const TextStyle(fontSize: 14),
+                              decoration: const InputDecoration(
+                                  hintText: "other location",
+                                  hintStyle: TextStyle(fontSize: 14),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(8)
+                                  //fillColor: Colors.green
+                                  ),
+                              onChanged: ((value) {
+                                setState(() {
+                                  floorStoreLocationController = value;
+                                  printData["bungalow_floor_store"]
+                                          ["store_floor"] =
+                                      floorStoreLocationController;
+                                });
+                              }),
+                            ),
+                          ),
+                        ),
+                        // requirementTextFieldCont(height, width, 0.04, 0.25,
+                        //     "other location", floorStoreLocationController),
+                      ]
+                    ],
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Row(
+                    children: [
+                      requirementText("Length"),
+                      SizedBox(
+                        width: width * 0.015,
+                      ),
+                      // Material(
+                      //     elevation: 5,
+                      //     borderRadius:
+                      //         const BorderRadius.all(Radius.circular(5)),
+                      //     child: SizedBox(
+                      //       height: height * 0.04,
+                      //       width: width * 0.25,
+                      //       child: TextFormField(
+                      //         // controller: txt,
+                      //         initialValue: printData["bungalow_floor_store"]
+                      //             ["store_floor"],
+                      //         style: const TextStyle(fontSize: 14),
+                      //         decoration: const InputDecoration(
+                      //             hintText: "other location",
+                      //             hintStyle: TextStyle(fontSize: 14),
+                      //             border: OutlineInputBorder(
+                      //               borderSide: BorderSide.none,
+                      //             ),
+                      //             isDense: true,
+                      //             contentPadding: EdgeInsets.all(8)
+                      //             //fillColor: Colors.green
+                      //             ),
+                      //         onChanged: ((value) {
+                      //           floorStoreLocationController = value;
+                      //         }),
+                      //       ),
+                      //     ),
+                      //   ),
+                      Material(
+                        elevation: 5,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        child: SizedBox(
+                          height: height * 0.04,
+                          width: width * 0.15,
+                          child: TextFormField(
+                            // controller: txt,
+                            initialValue: printData["bungalow_floor_store"]
+                                ["floor_store_length"],
+                            style: const TextStyle(fontSize: 14),
+                            decoration: const InputDecoration(
+                                hintText: "length",
+                                hintStyle: TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(8)
+                                //fillColor: Colors.green
+                                ),
+                            onChanged: ((value) {
+                              setState(
+                                () {
+                                  floorStoreLengthController = value;
+                                  printData["bungalow_floor_store"]
+                                          ["floor_store_length"] =
+                                      floorStoreLengthController;
+                                },
+                              );
+                            }),
+                          ),
+                        ),
+                      ),
+                      // requirementTextFieldCont(height, width, 0.04, 0.15,
+                      //     "length", floorStoreLengthController),
+                      valueContainer(height, width, size, 0.04, 0.05),
+                      SizedBox(
+                        width: width * 0.02,
+                      ),
+                      requirementText("Width"),
+                      SizedBox(
+                        width: width * 0.015,
+                      ),
+                      Material(
+                        elevation: 5,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        child: SizedBox(
+                          height: height * 0.04,
+                          width: width * 0.15,
+                          child: TextFormField(
+                            // controller: txt,
+                            initialValue: printData["bungalow_floor_store"]
+                                ["floor_store_width"],
+                            style: const TextStyle(fontSize: 14),
+                            decoration: const InputDecoration(
+                                hintText: "width",
+                                hintStyle: TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(8)
+                                //fillColor: Colors.green
+                                ),
+                            onChanged: ((value) {
+                              setState(() {
+                                floorStoreWidthController = value;
+                                printData["bungalow_floor_store"]
+                                        ["floor_store_width"] =
+                                    floorStoreWidthController;
+                              });
+                            }),
+                          ),
+                        ),
+                      ),
+                      // requirementTextFieldCont(height, width, 0.04, 0.15,
+                      //     "Width", floorStoreWidthController),
+                      valueContainer(height, width, size, 0.04, 0.05),
+                      SizedBox(
+                        width: width * 0.01,
+                      ),
+                      requirementText("help ?"),
+                    ],
+                  ),
+                ],
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Row(
+                  children: [
+                    requirementText("Bunglow staircase"),
+                    SizedBox(
+                      width: width * 0.01,
+                    ),
+                    Material(
+                      elevation: 5,
+                      borderRadius: BorderRadius.circular(5),
+                      child: Container(
+                        height: height * 0.03,
+                        width: width * 0.25,
+                        margin: const EdgeInsets.all(
+                          3,
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            icon: const Visibility(
+                                visible: false,
+                                child: Icon(Icons.arrow_downward)),
+                            hint: printData['bungalow_floor_store']
+                                        ['stair_case'] !=
+                                    null
+                                ? Text(printData['bungalow_floor_store']
+                                    ['stair_case'])
+                                : Text(selectedStair),
+                            // value: selectedStair,
+                            elevation: 16,
+                            items: stairItems
+                                .map((it) => DropdownMenuItem<String>(
+                                    value: it,
+                                    child: Text(
+                                      it,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    )))
+                                .toList(),
+                            onChanged: (it) {
+                              setState(
+                                () {
+                                  // "select stair",
+                                  // "U shaped",
+                                  // "L saped",
+                                  // "Semi circular"
+                                  selectedStair = it!;
+                                  printData['bungalow_floor_store']
+                                      ['stair_case'] = selectedStair;
+                                },
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -119,691 +552,871 @@ class _FloorStoreState extends State<FloorStore> {
                 SizedBox(
                   height: height * 0.01,
                 ),
+                Material(
+                  elevation: 10,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    color: Colors.white,
+                    child: SizedBox(
+                      width: width * 9,
+                      height: height * 0.3,
+                      child: 
+                      FutureBuilder(
+                        future: getRecent(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Container(
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          } else {
+                            return CarouselSlider.builder(
+                              itemCount: bunglowPageRecentList.length,
+                              itemBuilder: (context, i, id) {
+                                return Container(
+                                  height: height * 0.4,
+                                  width: width * 0.9,
+                                  child: Image.network(
+                                    imageUrl +
+                                        bunglowPageRecentList[i]["img_path"],
+                                    fit: BoxFit.fill,
+                                  ),
+                                );
+                              },
+                              options: CarouselOptions(
+                                autoPlay: true,
+                                enableInfiniteScroll: true,
+                                autoPlayAnimationDuration:
+                                    const Duration(milliseconds: 800),
+                                viewportFraction: 1,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Material(
+                  elevation: 5,
+                  child: Container(
+                    margin: EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Material(
+                          elevation: 3,
+                          child: Container(
+                            margin: EdgeInsets.all(5),
+                            child: Row(
+                              children: const [
+                                Icon(Icons.cloud_upload),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text("Upload a stair image"),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: width * 0.2,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 10),
+                          color: buttonColor,
+                          child: const Text(
+                            "Preview",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                requirementText("Lift"),
+                SizedBox(
+                  height: height * 0.01,
+                ),
                 Row(
                   children: [
-                    SizedBox(
-                      width: width * 0.05,
-                    ),
-                    Material(
-                      borderRadius: BorderRadius.circular(5),
-                      elevation: 5,
-                      child: Container(
-                        padding: EdgeInsets.only(right: 10),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              height: height * 0.04,
-                              child: Checkbox(
-                                  activeColor: checkColor,
-                                  checkColor: Colors.white,
-                                  value: FloorStoreDetail2,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      FloorStoreDetail2 = value;
-                                      FloorStoreDetail1 = false;
-                                    });
-                                  }),
+                    Row(
+                      children: [
+                        Material(
+                          borderRadius: BorderRadius.circular(5),
+                          elevation: 5,
+                          child: Container(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  height: height * 0.04,
+                                  child: Checkbox(
+                                      activeColor: checkColor,
+                                      checkColor: Colors.white,
+                                      value: printData["bungalow_floor_store"]
+                                                  ["lift_req"] ==
+                                              1
+                                          ? true
+                                          : requiredLift,
+                                      onChanged: (value) {
+                                        setState(
+                                          () {
+                                            requiredLift = value;
+                                            notRequiredLift = false;
+                                            printData["bungalow_floor_store"]
+                                                ["lift_req"] = 2;
+                                          },
+                                        );
+                                      }),
+                                ),
+                                requirementText("Required")
+                              ],
                             ),
-                            requirementText("Not Required"),
-                            SizedBox(
-                              height: height * 0.01,
-                            )
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: width * 0.05,
+                        ),
+                        Material(
+                          borderRadius: BorderRadius.circular(5),
+                          elevation: 5,
+                          child: Container(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  height: height * 0.04,
+                                  child: Checkbox(
+                                      activeColor: checkColor,
+                                      checkColor: Colors.white,
+                                      value: printData["bungalow_floor_store"]
+                                                  ["lift_req"] ==
+                                              0
+                                          ? true
+                                          : notRequiredLift,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          notRequiredLift = value;
+                                          requiredLift = false;
+                                          printData["bungalow_floor_store"]
+                                              ["lift_req"] = 2;
+                                        });
+                                      }),
+                                ),
+                                requirementText("Not Required"),
+                                SizedBox(
+                                  height: height * 0.01,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            if (FloorStoreDetail1 == true) ...[
-              SizedBox(
-                height: height * 0.01,
-              ),
-              Row(
-                children: [
-                  requirementText("Location"),
-                  SizedBox(
-                    width: width * 0.02,
-                  ),
-                  Material(
-                    elevation: 5,
-                    borderRadius: BorderRadius.circular(5),
-                    child: Container(
-                      height: height * 0.03,
-                      width: width * 0.25,
-                      margin: EdgeInsets.all(
-                        3,
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                if (requiredLift == true ||
+                    printData["bungalow_floor_store"]["lift_req"] == 1) ...[
+                  Row(
+                    children: [
+                      requirementText("Passenger capacity"),
+                      SizedBox(
+                        width: width * 0.02,
                       ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                            icon: const Visibility(
-                                visible: false,
-                                child: Icon(Icons.arrow_downward)),
-                            value: selectedFloor,
-                            elevation: 16,
-                            items: pantryItems
-                                .map((it) => DropdownMenuItem<String>(
-                                    value: it,
-                                    child: Text(
-                                      it,
-                                      style: TextStyle(
-                                        color: Colors.black,
+                      Material(
+                        elevation: 5,
+                        borderRadius: BorderRadius.circular(5),
+                        child: Container(
+                          height: height * 0.03,
+                          margin: const EdgeInsets.all(
+                            3,
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                                icon: const Visibility(
+                                    visible: false,
+                                    child: Icon(Icons.arrow_downward)),
+                                hint: printData['bungalow_floor_store']
+                                            ['passanger_capacity'] !=
+                                        null
+                                    ? Text(printData['bungalow_floor_store']
+                                            ['passanger_capacity']
+                                        .toString())
+                                    : Text(selectedLift),
+                                // value: selectedLift,
+                                elevation: 16,
+                                items: liftItems
+                                    .map(
+                                      (it) => DropdownMenuItem<String>(
+                                        value: it,
+                                        child: Text(
+                                          it,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
                                       ),
-                                    )))
-                                .toList(),
-                            onChanged: (it) =>
-                                setState(() => selectedFloor = it!)),
+                                    )
+                                    .toList(),
+                                onChanged: (it) {
+                                  setState(() {
+                                    selectedLift = it!;
+                                    printData['bungalow_floor_store']
+                                        ['passanger_capacity'] = selectedLift;
+                                  });
+                                }),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                   SizedBox(
-                    width: width * 0.02,
+                    height: height * 0.01,
                   ),
-                  if (selectedFloor == "other") ...[
+                  if (selectedLift == "more") ...[
                     requirementTextField(
-                        height, width, 0.04, 0.25, "other location"),
-                  ]
-                ],
-              ),
-              SizedBox(
-                height: height * 0.01,
-              ),
-              Row(
-                children: [
-                  requirementText("Length"),
-                  SizedBox(
-                    width: width * 0.015,
-                  ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
-                  valueContainer(height, width, size, 0.04, 0.05),
-                  SizedBox(
-                    width: width * 0.02,
-                  ),
-                  requirementText("Width"),
-                  SizedBox(
-                    width: width * 0.015,
-                  ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
-                  valueContainer(height, width, size, 0.04, 0.05),
-                  SizedBox(
-                    width: width * 0.01,
-                  ),
-                  requirementText("help ?"),
-                ],
-              ),
-            ],
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Row(
-              children: [
-                requirementText("Bunglow staircase"),
-                SizedBox(
-                  width: width * 0.01,
-                ),
-                Material(
-                  elevation: 5,
-                  borderRadius: BorderRadius.circular(5),
-                  child: Container(
-                    height: height * 0.03,
-                    width: width * 0.25,
-                    margin: EdgeInsets.all(
-                      3,
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                          icon: const Visibility(
-                              visible: false,
-                              child: Icon(Icons.arrow_downward)),
-                          value: selectedStair,
-                          elevation: 16,
-                          items: stairItems
-                              .map((it) => DropdownMenuItem<String>(
-                                  value: it,
-                                  child: Text(
-                                    it,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  )))
-                              .toList(),
-                          onChanged: (it) =>
-                              setState(() => selectedStair = it!)),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Material(
-              elevation: 10,
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                color: Colors.white,
-                child: SizedBox(
-                  width: width * 9,
-                  height: height * 0.3,
-                  child: FutureBuilder(
-                      future: getRecent(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Container(
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        } else {
-                          return CarouselSlider.builder(
-                            itemCount: bunglowPageRecentList.length,
-                            itemBuilder: (context, i, id) {
-                              return Container(
-                                height: height * 0.4,
-                                width: width * 0.9,
-                                child: Image.network(
-                                  imageUrl +
-                                      bunglowPageRecentList[i]["img_path"],
-                                  fit: BoxFit.fill,
+                        height, width, 0.04, 1, "passenger capacity"),
+                    SizedBox(
+                      height: height * 0.01,
+                    )
+                  ],
+                  Row(
+                    children: [
+                      requirementText("specific requirement"),
+                      SizedBox(
+                        width: width * 0.02,
+                      ),
+                      Material(
+                        elevation: 5,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        child: SizedBox(
+                          height: height * 0.04,
+                          width: width * 0.35,
+                          child: TextFormField(
+                            // controller: txt,
+                            initialValue: printData["bungalow_floor_store"]
+                                ["lift_special_req"],
+                            style: const TextStyle(fontSize: 14),
+                            decoration: const InputDecoration(
+                                hintText: "lift Requirement",
+                                hintStyle: TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
                                 ),
-                              );
-                            },
-                            options: CarouselOptions(
-                              autoPlay: true,
-                              enableInfiniteScroll: true,
-                              autoPlayAnimationDuration:
-                                  const Duration(milliseconds: 800),
-                              viewportFraction: 1,
-                            ),
-                          );
-                        }
-                      }),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Material(
-              elevation: 5,
-              child: Container(
-                margin: EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Material(
-                      elevation: 3,
-                      child: Container(
-                        margin: EdgeInsets.all(5),
-                        child: Row(
-                          children: const [
-                            Icon(Icons.cloud_upload),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text("Upload a stair image"),
-                          ],
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(8)
+                                //fillColor: Colors.green
+                                ),
+                            onChanged: ((value) {
+                              setState(() {
+                                liftSpecialRequirementController = value;
+                                printData["bungalow_floor_store"]
+                                        ["lift_special_req"] =
+                                    liftSpecialRequirementController;
+                              });
+                            }),
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: width * 0.2,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 10),
-                      color: buttonColor,
-                      child: const Text(
-                        "Preview",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
+                      // requirementTextFieldCont(height, width, .04, 0.35,
+                      //     "lift Requirement", liftSpecialRequirementController)
+                    ],
+                  ),
+                ],
+                requirementText("Pooja Room"),
+                SizedBox(
+                  height: height * 0.01,
                 ),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            requirementText("Lift"),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Row(
-              children: [
                 Row(
                   children: [
-                    Material(
-                      borderRadius: BorderRadius.circular(5),
-                      elevation: 5,
-                      child: Container(
-                        padding: EdgeInsets.only(right: 10),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              height: height * 0.04,
-                              child: Checkbox(
-                                  activeColor: checkColor,
-                                  checkColor: Colors.white,
-                                  value: requiredLift,
-                                  onChanged: (value) {
-                                    setState(
-                                      () {
-                                        requiredLift = value;
-                                        notRequiredLift = false;
-                                      },
-                                    );
-                                  }),
+                    Row(
+                      children: [
+                        Material(
+                          borderRadius: BorderRadius.circular(5),
+                          elevation: 5,
+                          child: Container(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  height: height * 0.04,
+                                  child: Checkbox(
+                                      activeColor: checkColor,
+                                      checkColor: Colors.white,
+                                      value: printData["bungalow_floor_store"]
+                                                  ["pooja_room_req"] ==
+                                              1
+                                          ? true
+                                          : poojaRoomRequired,
+                                      onChanged: (value) {
+                                        setState(
+                                          () {
+                                            poojaRoomRequired = value;
+                                            poojaRoomNotRequired = false;
+                                            printData["bungalow_floor_store"]
+                                                ["pooja_room_req"] = 2;
+                                          },
+                                        );
+                                      }),
+                                ),
+                                requirementText("Required")
+                              ],
                             ),
-                            requirementText("Required")
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: width * 0.05,
+                        ),
+                        Material(
+                          borderRadius: BorderRadius.circular(5),
+                          elevation: 5,
+                          child: Container(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  height: height * 0.04,
+                                  child: Checkbox(
+                                      activeColor: checkColor,
+                                      checkColor: Colors.white,
+                                      value: printData["bungalow_floor_store"]
+                                                  ["pooja_room_req"] ==
+                                              0
+                                          ? true
+                                          : poojaRoomNotRequired,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          poojaRoomNotRequired = value;
+                                          poojaRoomRequired = false;
+                                          printData["bungalow_floor_store"]
+                                              ["pooja_room_req"] = 2;
+                                        });
+                                      }),
+                                ),
+                                requirementText("Not Required"),
+                                SizedBox(
+                                  height: height * 0.01,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
                 SizedBox(
                   height: height * 0.01,
                 ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: width * 0.05,
-                    ),
-                    Material(
-                      borderRadius: BorderRadius.circular(5),
-                      elevation: 5,
-                      child: Container(
-                        padding: EdgeInsets.only(right: 10),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              height: height * 0.04,
-                              child: Checkbox(
-                                  activeColor: checkColor,
-                                  checkColor: Colors.white,
-                                  value: notRequiredLift,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      notRequiredLift = value;
-                                      requiredLift = false;
-                                    });
-                                  }),
-                            ),
-                            requirementText("Not Required"),
-                            SizedBox(
-                              height: height * 0.01,
-                            )
-                          ],
+                if (poojaRoomRequired == true ||
+                    printData["bungalow_floor_store"]["pooja_room_req"] ==
+                        1) ...[
+                  Row(
+                    children: [
+                      requirementText("Length"),
+                      SizedBox(
+                        width: width * 0.015,
+                      ),
+                      Material(
+                        elevation: 5,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        child: SizedBox(
+                          height: height * 0.04,
+                          width: width * 0.15,
+                          child: TextFormField(
+                            // controller: txt,
+                            initialValue: printData["bungalow_floor_store"]
+                                ["pooja_room_length"],
+                            style: const TextStyle(fontSize: 14),
+                            decoration: const InputDecoration(
+                                hintText: "length",
+                                hintStyle: TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(8)
+                                //fillColor: Colors.green
+                                ),
+                            onChanged: ((value) {
+                              setState(() {
+                                poojaLengthController = value;
+                                printData["bungalow_floor_store"]
+                                        ["lift_special_req"] =
+                                    poojaLengthController;
+                              });
+                            }),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            if (requiredLift == true) ...[
-              Row(children: [
-                requirementText("Passenger capacity"),
-                SizedBox(
-                  width: width * 0.02,
-                ),
-                Material(
-                  elevation: 5,
-                  borderRadius: BorderRadius.circular(5),
-                  child: Container(
-                    height: height * 0.03,
-                    margin: EdgeInsets.all(
-                      3,
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                          icon: const Visibility(
-                              visible: false,
-                              child: Icon(Icons.arrow_downward)),
-                          value: selectedLift,
-                          elevation: 16,
-                          items: liftItems
-                              .map((it) => DropdownMenuItem<String>(
-                                  value: it,
-                                  child: Text(
-                                    it,
-                                    style: TextStyle(
-                                      color: Colors.black,
+                      // requirementTextFieldCont(height, width, 0.04, 0.15,
+                      //     "length", poojaLengthController),
+                      valueContainer(height, width, size, 0.04, 0.05),
+                      SizedBox(
+                        width: width * 0.02,
+                      ),
+                      requirementText("Width"),
+                      SizedBox(
+                        width: width * 0.015,
+                      ),
+                      Material(
+                        elevation: 5,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        child: SizedBox(
+                          height: height * 0.04,
+                          width: width * 0.15,
+                          child: TextFormField(
+                            // controller: txt,
+                            initialValue: printData["bungalow_floor_store"]
+                                ["pooja_room_width"],
+                            style: const TextStyle(fontSize: 14),
+                            decoration: const InputDecoration(
+                                hintText: "width",
+                                hintStyle: TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(8)
+                                //fillColor: Colors.green
+                                ),
+                            onChanged: ((value) {
+                              setState(() {
+                                poojaWidthController = value;
+                                printData["bungalow_floor_store"]
+                                    ["pooja_room_width"] = poojaWidthController;
+                              });
+                            }),
+                          ),
+                        ),
+                      ),
+                      // requirementTextFieldCont(height, width, 0.04, 0.15,
+                      //     "Width", poojaWidthController),
+                      valueContainer(height, width, size, 0.04, 0.05),
+                      SizedBox(
+                        width: width * 0.01,
+                      ),
+                      requirementText("help ?"),
+                    ],
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Row(
+                    children: [
+                      requirementText("Location"),
+                      SizedBox(
+                        width: width * 0.02,
+                      ),
+                      Material(
+                        elevation: 5,
+                        borderRadius: BorderRadius.circular(5),
+                        child: Container(
+                          height: height * 0.03,
+                          margin: EdgeInsets.all(
+                            3,
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                                icon: const Visibility(
+                                    visible: false,
+                                    child: Icon(Icons.arrow_downward)),
+                                hint: printData['bungalow_floor_store']
+                                            ['pooja_room_floor'] !=
+                                        null
+                                    ? Text(
+                                        poojaRoomItems[
+                                            printData['bungalow_floor_store']
+                                                ['pooja_room_floor']],
+                                      )
+                                    : Text(selectedPooja),
+
+                                // value: selectedPooja,
+                                elevation: 16,
+                                items: poojaRoomItems
+                                    .map(
+                                      (it) => DropdownMenuItem<String>(
+                                        // "select floor",
+                                        // "Groung floor",
+                                        // "1st Floor",
+                                        // "2nd Floor",
+                                        // "3rd Floor",
+                                        // "other"
+                                        value: it,
+                                        child: Text(
+                                          it,
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (it) {
+                                  setState(() {
+                                    selectedPooja = it!;
+                                    if (selectedPooja == "select floor") {
+                                      printData['bungalow_floor_store']
+                                          ['pooja_room_floor'] = 0;
+                                    }
+                                    if (selectedPooja == "Groung floor") {
+                                      printData['bungalow_floor_store']
+                                          ['pooja_room_floor'] = 1;
+                                    }
+                                    if (selectedPooja == "1st Floor") {
+                                      printData['bungalow_floor_store']
+                                          ['pooja_room_floor'] = 2;
+                                    }
+                                    if (selectedPooja == "2nd Floor") {
+                                      printData['bungalow_floor_store']
+                                          ['pooja_room_floor'] = 3;
+                                    }
+                                    if (selectedPooja == "3rd Floor") {
+                                      printData['bungalow_floor_store']
+                                          ['pooja_room_floor'] = 4;
+                                    }
+                                    if (selectedPooja == "other") {
+                                      printData['bungalow_floor_store']
+                                          ['pooja_room_floor'] = 5;
+                                    }
+                                  });
+                                }),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: width * 0.02,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Row(
+                    children: [
+                      requirementText("Type"),
+                      SizedBox(
+                        width: width * 0.02,
+                      ),
+                      Material(
+                        elevation: 5,
+                        borderRadius: BorderRadius.circular(5),
+                        child: Container(
+                          height: height * 0.03,
+                          margin: EdgeInsets.all(
+                            3,
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              icon: const Visibility(
+                                  visible: false,
+                                  child: Icon(Icons.arrow_downward)),
+                              hint: printData['bungalow_floor_store']
+                                          ['pooja_room_type'] !=
+                                      null
+                                  ? Text(
+                                      printData['bungalow_floor_store']
+                                          ['pooja_room_type'],
+                                    )
+                                  : Text(selectedPoojaPlace),
+                              // value: selectedPoojaPlace,
+                              elevation: 16,
+                              items: poojaPlaceItems
+                                  .map(
+                                    (it) => DropdownMenuItem<String>(
+                                      value: it,
+                                      child: Text(
+                                        it,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
                                     ),
-                                  )))
-                              .toList(),
-                          onChanged: (it) =>
-                              setState(() => selectedLift = it!)),
-                    ),
-                  ),
-                ),
-              ]),
-              SizedBox(
-                height: height * 0.01,
-              ),
-              if (selectedLift == "more") ...[
-                requirementTextField(
-                    height, width, 0.04, 1, "passenger capacity"),
-                SizedBox(
-                  height: height * 0.01,
-                )
-              ],
-              Row(
-                children: [
-                  requirementText("specific requirement"),
-                  SizedBox(
-                    width: width * 0.02,
-                  ),
-                  requirementTextField(
-                      height, width, .04, 0.35, "lift Requirement")
-                ],
-              ),
-            ],
-            requirementText("Pooja Room"),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Row(
-              children: [
-                Row(
-                  children: [
-                    Material(
-                      borderRadius: BorderRadius.circular(5),
-                      elevation: 5,
-                      child: Container(
-                        padding: EdgeInsets.only(right: 10),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              height: height * 0.04,
-                              child: Checkbox(
-                                  activeColor: checkColor,
-                                  checkColor: Colors.white,
-                                  value: poojaRoomRequired,
-                                  onChanged: (value) {
-                                    setState(
-                                      () {
-                                        poojaRoomRequired = value;
-                                        poojaRoomNotRequired = false;
-                                      },
-                                    );
-                                  }),
+                                  )
+                                  .toList(),
+                              onChanged: (it) {
+                                setState(
+                                  () {
+                                    selectedPoojaPlace = it!;
+                                    printData['bungalow_floor_store']
+                                            ['pooja_room_type'] =
+                                        selectedPoojaPlace;
+                                  },
+                                );
+                              },
                             ),
-                            requirementText("Required")
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                      SizedBox(
+                        width: width * 0.02,
+                      ),
+                    ],
+                  )
+                ],
                 SizedBox(
                   height: height * 0.01,
                 ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: width * 0.05,
-                    ),
-                    Material(
-                      borderRadius: BorderRadius.circular(5),
-                      elevation: 5,
-                      child: Container(
-                        padding: EdgeInsets.only(right: 10),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              height: height * 0.04,
-                              child: Checkbox(
-                                  activeColor: checkColor,
-                                  checkColor: Colors.white,
-                                  value: poojaRoomNotRequired,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      poojaRoomNotRequired = value;
-                                      poojaRoomRequired = false;
-                                    });
-                                  }),
-                            ),
-                            requirementText("Not Required"),
-                            SizedBox(
-                              height: height * 0.01,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            if (poojaRoomRequired == true) ...[
-              Row(
-                children: [
-                  requirementText("Length"),
-                  SizedBox(
-                    width: width * 0.015,
-                  ),
-                  requirementTextField(height, width, 0.04, 0.15, "length"),
-                  valueContainer(height, width, size, 0.04, 0.05),
-                  SizedBox(
-                    width: width * 0.02,
-                  ),
-                  requirementText("Width"),
-                  SizedBox(
-                    width: width * 0.015,
-                  ),
-                  requirementTextField(height, width, 0.04, 0.15, "Width"),
-                  valueContainer(height, width, size, 0.04, 0.05),
-                  SizedBox(
-                    width: width * 0.01,
-                  ),
-                  requirementText("help ?"),
-                ],
-              ),
-              SizedBox(
-                height: height * 0.01,
-              ),
-              Row(
-                children: [
-                  requirementText("Location"),
-                  SizedBox(
-                    width: width * 0.02,
-                  ),
+                if (selectedPooja == "other") ...[
                   Material(
                     elevation: 5,
-                    borderRadius: BorderRadius.circular(5),
-                    child: Container(
-                      height: height * 0.03,
-                      margin: EdgeInsets.all(
-                        3,
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                            icon: const Visibility(
-                                visible: false,
-                                child: Icon(Icons.arrow_downward)),
-                            value: selectedPooja,
-                            elevation: 16,
-                            items: poojaRoomItems
-                                .map((it) => DropdownMenuItem<String>(
-                                    value: it,
-                                    child: Text(
-                                      it,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    )))
-                                .toList(),
-                            onChanged: (it) =>
-                                setState(() => selectedPooja = it!)),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: width * 0.02,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: height * 0.01,
-              ),
-              Row(
-                children: [
-                  requirementText("Type"),
-                  SizedBox(
-                    width: width * 0.02,
-                  ),
-                  Material(
-                    elevation: 5,
-                    borderRadius: BorderRadius.circular(5),
-                    child: Container(
-                      height: height * 0.03,
-                      margin: EdgeInsets.all(
-                        3,
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                            icon: const Visibility(
-                                visible: false,
-                                child: Icon(Icons.arrow_downward)),
-                            value: selectedPoojaPlace,
-                            elevation: 16,
-                            items: poojaPlaceItems
-                                .map((it) => DropdownMenuItem<String>(
-                                    value: it,
-                                    child: Text(
-                                      it,
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    )))
-                                .toList(),
-                            onChanged: (it) =>
-                                setState(() => selectedPoojaPlace = it!)),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: width * 0.02,
-                  ),
-                ],
-              )
-            ],
-            SizedBox(
-              height: height * 0.01,
-            ),
-            if (selectedPooja == "other") ...[
-              Material(
-                elevation: 5,
-                child: requirementTextField(
-                    height, width, 0.04, 1, "other location"),
-              ),
-            ],
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Material(
-              elevation: 10,
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                color: Colors.white,
-                child: SizedBox(
-                  width: width * 9,
-                  height: height * 0.3,
-                  child: FutureBuilder(
-                      future: getRecent(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Container(
-                            child: const Center(
-                              child: CircularProgressIndicator(),
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    child: SizedBox(
+                      height: height * 0.04,
+                      width: width * 0.15,
+                      child: TextFormField(
+                        // controller: txt,
+                        initialValue: printData["bungalow_floor_store"]
+                                ["pooja_room_floor"]
+                            .toString(),
+                        style: const TextStyle(fontSize: 14),
+                        decoration: const InputDecoration(
+                            hintText: "width",
+                            hintStyle: TextStyle(fontSize: 14),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
                             ),
-                          );
-                        } else {
-                          return CarouselSlider.builder(
-                            itemCount: bunglowPageRecentList.length,
-                            itemBuilder: (context, i, id) {
-                              return Container(
-                                height: height * 0.4,
-                                width: width * 0.9,
-                                child: Image.network(
-                                  imageUrl +
-                                      bunglowPageRecentList[i]["img_path"],
-                                  fit: BoxFit.fill,
-                                ),
-                              );
-                            },
-                            options: CarouselOptions(
-                              autoPlay: true,
-                              enableInfiniteScroll: true,
-                              autoPlayAnimationDuration:
-                                  const Duration(milliseconds: 800),
-                              viewportFraction: 1,
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(8)
+                            //fillColor: Colors.green
                             ),
-                          );
-                        }
-                      }),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Material(
-              elevation: 5,
-              child: Row(
-                children: [
-                  SizedBox(
-                    height: height * 0.04,
-                    child: Checkbox(
-                        activeColor: checkColor,
-                        checkColor: Colors.white,
-                        value: openHall,
-                        onChanged: (value) {
-                          setState(
-                            () {
-                              openHall = value;
-                            },
-                          );
+                        onChanged: ((value) {
+                          setState(() {
+                            poojaLengthController = value;
+                            printData["bungalow_floor_store"]
+                                ["pooja_room_floor"] = poojaLengthController;
+                          });
                         }),
+                      ),
+                    ),
                   ),
-                  requirementText("Opening toward hall/ lobby")
+                  // Material(
+                  //   elevation: 5,
+                  //   child: requirementTextFieldCont(height, width, 0.04, 1,
+                  //       "other location", poojaLengthController),
+                  // ),
                 ],
-              ),
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                height: height * 0.04,
-                decoration: BoxDecoration(
-                    color: buttonColor, borderRadius: BorderRadius.circular(4)),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: const Text(
-                  "save and continue",
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                SizedBox(
+                  height: height * 0.01,
                 ),
-              ),
+                Material(
+                  elevation: 10,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    color: Colors.white,
+                    child: SizedBox(
+                      width: width * 9,
+                      height: height * 0.3,
+                      child: FutureBuilder(
+                          future: getRecent(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Container(
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            } else {
+                              return CarouselSlider.builder(
+                                itemCount: bunglowPageRecentList.length,
+                                itemBuilder: (context, i, id) {
+                                  return Container(
+                                    height: height * 0.4,
+                                    width: width * 0.9,
+                                    child: Image.network(
+                                      imageUrl +
+                                          bunglowPageRecentList[i]["img_path"],
+                                      fit: BoxFit.fill,
+                                    ),
+                                  );
+                                },
+                                options: CarouselOptions(
+                                  autoPlay: true,
+                                  enableInfiniteScroll: true,
+                                  autoPlayAnimationDuration:
+                                      const Duration(milliseconds: 800),
+                                  viewportFraction: 1,
+                                ),
+                              );
+                            }
+                          }),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                Material(
+                  elevation: 5,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: height * 0.04,
+                        child: Checkbox(
+                            activeColor: checkColor,
+                            checkColor: Colors.white,
+                            value: printData["bungalow_floor_store"]
+                                        ["opening_to_li_ha"] !=
+                                    null
+                                ? true
+                                : openHall,
+                            onChanged: (value) {
+                              setState(
+                                () {
+                                  openHall = value;
+                                  printData["bungalow_floor_store"]
+                                      ["opening_to_li_ha"] = null;
+                                },
+                              );
+                            }),
+                      ),
+                      requirementText("Opening toward hall/ lobby"),
+                      Card(),
+                      Container(),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: height * 0.01,
+                ),
+                GestureDetector(
+                  onTap: () => {
+                    setState(
+                      () {
+                        if (FloorStoreDetail1 == true) {
+                          floorStoreInt = 1;
+                          int area = int.parse(floorStoreLengthController) *
+                              int.parse(floorStoreWidthController);
+                          floorStoreArea = area.toString();
+                          if (selectedFloor == "Ground floor") {
+                            storeFloor = "0";
+                          }
+                          if (selectedFloor == "1st floor") {
+                            storeFloor = "1";
+                          }
+                          if (selectedFloor == "2nd floor") {
+                            storeFloor = "2";
+                          }
+                          if (selectedFloor == "3rd floor") {
+                            storeFloor = "3";
+                          }
+                          if (selectedFloor == "other") {
+                            storeFloor = floorStoreLocationController;
+                          }
+                        }
+                        if (requiredLift == true) {
+                          liftRequirement = 1;
+                          // if (selectedFloor == "4") {
+                          //   passengerCapacity = 1;
+                          // }
+                          // if (selectedFloor == "6") {
+                          //   passengerCapacity = 2;
+                          // }
+                          // if (selectedFloor == "8") {
+                          //  passengerCapacity = 3;
+                          // }
+                          // if (selectedFloor == "10") {
+                          //   passengerCapacity = 4;
+                          // }
+                          // if (selectedFloor == "more") {
+                          //   passengerCapacity =int.parse(passengerCapacityControler.text);
+                          // }
+                          passengerCapacity = int.parse(selectedLift);
+                        }
+                        if (poojaRoomRequired == true) {
+                          poojaRoomReq = 1;
+                          int area = int.parse(poojaLengthController) *
+                              int.parse(poojaWidthController);
+                          poojaRoomArea = area.toString();
+                          if (selectedPooja == "Groung floor") {
+                            poojaRoomLocation = "0";
+                          }
+                          if (selectedPooja == "1st Floor") {
+                            poojaRoomLocation = "1";
+                          }
+                          if (selectedPooja == "2nd Floor") {
+                            poojaRoomLocation = "2";
+                          }
+                          if (selectedPooja == "3rd Floor") {
+                            poojaRoomLocation = "3";
+                          }
+                          if (selectedPooja == "other") {
+                            poojaRoomLocation = poojaRoomLocationController;
+                          }
+                        }
+                        if (openHall == true) {
+                          openingToLiHa = "Opening toward hall/ Lobby";
+                        }
+                      },
+                    ),
+                    flooreStorePost(
+                      floorStoreInt,
+                      floorStoreLengthController,
+                      floorStoreWidthController,
+                      floorStoreArea,
+                      storeFloor,
+                      selectedStair,
+                      liftRequirement,
+                      liftSpecialRequirementController,
+                      passengerCapacity,
+                      poojaRoomReq,
+                      poojaLengthController,
+                      poojaWidthController,
+                      poojaRoomArea,
+                      poojaRoomLocation,
+                      selectedPoojaPlace,
+                      openingToLiHa,
+                    )
+                  },
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      height: height * 0.04,
+                      decoration: BoxDecoration(
+                          color: buttonColor,
+                          borderRadius: BorderRadius.circular(4)),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: const Text(
+                        "save and continue",
+                        style: TextStyle(color: Colors.white, fontSize: 14),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }
