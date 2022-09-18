@@ -6407,7 +6407,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                 //   Bedtypes(
                 //       bedroomLength: sonLength,
                 //       bedRoomFloor: selectedFloorSon,
-                //       bedRoomWidth: sonWidth,
+                //       bedRoomWidth: sonWidth
                 //       bedRoomToiletLength: sonToiletLength,
                 //       bedRoomToiletWidth: sonToiletWidth,
                 //       bedRoomToiletFacility: sonToiletFacility,
