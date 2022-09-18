@@ -109,7 +109,9 @@ class _BunglowStepsState extends State<BunglowSteps> {
                     st = "Basement";
                   });
                 },
-                child: Center(child: stepsContainer("step7")),
+                child: Center(
+                  child: stepsContainer("step7"),
+                ),
               ),
               const SizedBox(
                 width: 10,
@@ -137,7 +139,7 @@ List Pages = [
   LivingHall(),
   PantryDetail(),
   FloorStore(),
-  MultiForm(),
+  StaticBedroomPage(),
   Basement()
 ];
 
@@ -183,7 +185,8 @@ class _StepPagesState extends State<StepPages> {
                           onTap: () {
                             setState(() {
                               index = 1;
-                              st = "Entrance";});
+                              st = "Entrance";
+                            });
                           },
                           child: stepsContainer("Step 2"),
                         ),

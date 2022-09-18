@@ -17,6 +17,8 @@ import 'package:aashiyan/view/residential/bunglow/testing.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
+import 'view/residential/bunglow/bedpratise.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -39,15 +41,15 @@ class MyApp extends StatelessWidget {
       ),
       home: HomePage(),
       routes: {
-        Residential.namedRoute: (context) => Residential(),
-        Bunglow.namedRoute: (context) => Bunglow(),
-        Requirement.namedRoute: (context) => Requirement(),
-        Entrance.namedRoute: (context) => Entrance(),
-        LivingHall.namedRoute: (context) => LivingHall(),
-        PantryDetail.namedRoute: (context) => PantryDetail(),
-        FloorStore.namedRoute: (context) => FloorStore(),
-        Basement.namedRoute: (context) => Basement(),
-        StepPages.namedRoute: (context) => StepPages(),
+        Residential.namedRoute:  (context)  => Residential(),
+        Bunglow.namedRoute:      (context)  => Bunglow(),
+        Requirement.namedRoute:  (context)  => Requirement(),
+        Entrance.namedRoute:     (context)  => Entrance(),
+        LivingHall.namedRoute:   (context)  => LivingHall(),
+        PantryDetail.namedRoute: (context)  => PantryDetail(),
+        FloorStore.namedRoute:   (context)  => FloorStore(),
+        Basement.namedRoute:     (context)  => Basement(),
+        StepPages.namedRoute:    (context)  => StepPages(),
       },
     );
   }
