@@ -152,7 +152,7 @@ class _EntranceState extends State<Entrance> {
   Future<void> getData() async {
     try {
       // var client = http.Client();
-      
+
       var response = await http.get(Uri.parse(
           "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-entrance/179"));
 
