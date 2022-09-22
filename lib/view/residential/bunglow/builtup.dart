@@ -1,0 +1,2751 @@
+// ignore_for_file: non_constant_identifier_names
+
+// import 'dart:ui';
+
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+
+import '../../../components/forms.dart';
+import '../../../const.dart';
+import 'builtFunc.dart';
+import 'entrance.dart';
+import 'package:http/http.dart' as http;
+
+class BuiltUp extends StatefulWidget {
+  const BuiltUp({super.key});
+
+  @override
+  State<BuiltUp> createState() => _BuiltUpState();
+}
+
+List ar_design = [];
+
+List str_design = [];
+
+List mep_design = [];
+
+List int_design = [];
+
+// ignore: prefer_typing_uninitialized_variables
+var getData;
+
+class _BuiltUpState extends State<BuiltUp> {
+  @override
+  void initState() {
+    super.initState();
+
+    fetchData();
+  }
+
+  bool isloading = false;
+
+  Future fetchData() async {
+    var response =
+        await http.get(Uri.parse('https://sdplweb.com/sdpl/api/get-design'));
+    final jsonResponse = jsonDecode(response.body);
+
+    setState(() {
+      getData = jsonResponse;
+    });
+  }
+
+  bool? SuperRequirment = false;
+  bool? SuperNotRequire = false;
+  int SuperInt = 0;
+
+  bool? PremiumRequirment = false;
+  bool? PremiumNotRequire = false;
+  int PremiumInt = 0;
+
+  bool? StandardRequirment = false;
+  bool? StandardNotRequire = false;
+  int StdLuxInt = 0;
+
+  bool? BasicRequirment = false;
+  bool? BasicNotRequire = false;
+  int BasicInt = 0;
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+  bool? ConceptRequirment = false;
+  bool? ConceptNotRequire = false;
+  int ConceptInt = 0;
+
+  bool? D3Requirment = false;
+  bool? D3NotRequire = false;
+  int D3Int = 0;
+
+  bool? WorkingRequirment = false;
+  bool? WorkingNotRequire = false;
+  int WorkingInt = 0;
+
+  bool? OpeningRequirment = false;
+  bool? OpeningNotRequire = false;
+  int OpeningInt = 0;
+
+  bool? GrillRequirment = false;
+  bool? GrillNotRequire = false;
+  int GrillInt = 0;
+
+  bool? BuildingRequirment = false;
+  bool? BuildingNotRequire = false;
+  int BuildingInt = 0;
+
+  bool? D2Requirment = false;
+  bool? D2NotRequire = false;
+  int D2Int = 0;
+
+  bool? BoundaryRequirment = false;
+  bool? BoundaryNotRequire = false;
+  int BoundaryInt = 0;
+
+  bool? RailingRequirment = false;
+  bool? RailingNotRequire = false;
+  int RailingInt = 0;
+
+  bool? EntranceRequirment = false;
+  bool? EntranceNotRequire = false;
+  int EnteranceInt = 0;
+
+  bool? VisionRequirment = false;
+  bool? VisionNotRequire = false;
+  int VisionInt = 0;
+
+  bool? LayoutRequirment = false;
+  bool? LayoutNotRequire = false;
+  int LayoutInt = 0;
+
+  bool? FoundationPlanRequirment = false;
+  bool? FoundationPlanNotRequire = false;
+  int FoundationPlanInt = 0;
+
+  bool? FoundationDetailsRequirment = false;
+  bool? FoundationDetailsNotRequire = false;
+  int FoundationDetailsInt = 0;
+
+  bool? ColumnRequirment = false;
+  bool? ColumnNotRequire = false;
+  int ColumnInt = 0;
+
+  bool? RccRequirment = false;
+  bool? RccNotRequire = false;
+  int RccInt = 0;
+
+  bool? StairsRequirment = false;
+  bool? StairsNotRequire = false;
+  int StairsInt = 0;
+
+  bool? LintelRequirment = false;
+  bool? LintelNotRequire = false;
+  int LintelInt = 0;
+
+  bool? SlabRequirment = false;
+  bool? SlabNotRequire = false;
+  int SlabInt = 0;
+
+  bool? ElectricRequirment = false;
+  bool? ElectricNotRequire = false;
+  int ElectricInt = 0;
+
+  bool? PlumbingRequirment = false;
+  bool? PlumbingNotRequire = false;
+  int PlumbingInt = 0;
+
+  bool? HVACRequirment = false;
+  bool? HVACNotRequire = false;
+  int HVACInt = 0;
+
+  bool? FurnitureRequirment = false;
+  bool? FurnitureNotRequire = false;
+  int FurnitureInt = 0;
+
+  bool? FalseRequirment = false;
+  bool? FalseNotRequire = false;
+  int FalseInt = 0;
+
+  bool? FlooringRequirment = false;
+  bool? FlooringNotRequire = false;
+  int FlooringInt = 0;
+
+  bool? ElectricalRequirment = false;
+  bool? ElectricalNotRequire = false;
+  int ElectricalInt = 0;
+
+  bool? StairStepRequirment = false;
+  bool? StairStepNotRequire = false;
+  int StairStepInt = 0;
+
+  bool? EachSpaceRequirment = false;
+  bool? EachSpaceNotRequire = false;
+  int EachSpaceInt = 0;
+
+  bool? ToiletRequirment = false;
+  bool? ToiletNotRequire = false;
+  int ToiletInt = 0;
+
+  bool? MaterialRequirment = false;
+  bool? MaterialNotRequire = false;
+  int MaterialInt = 0;
+
+  bool? AtGoodRequirment = false;
+  bool? AtGoodNotRequire = false;
+  int AtGoodInt = 0;
+
+  bool? D3FrontRequirment = false;
+  bool? D3FrontNotRequire = false;
+  int D3FrontInt = 0;
+
+  bool? DrawingRequirment = false;
+  bool? DrawingNotRequire = false;
+  int DrawingInt = 0;
+
+  bool? SetofRequirment = false;
+  bool? SetofNotRequire = false;
+  int SetofInt = 0;
+
+  bool? HandingRequirment = false;
+  bool? HandingNotRequire = false;
+  int HandingInt = 0;
+
+  bool? WithSuperRequirment = false;
+  bool? WithSuperNotRequire = false;
+  int WithSuperInt = 0;
+
+  bool? FurnitureLayoutRequirment = false;
+  bool? FurnitureLayoutNotRequire = false;
+  int FurnitureLayoutInt = 0;
+
+  bool? CeilingRequirment = false;
+  bool? CeilingNotRequire = false;
+  int CeilingInt = 0;
+
+  bool? ToiletDadoRequirment = false;
+  bool? ToiletDadoNotRequire = false;
+  int ToiletDadoInt = 0;
+
+  bool? EachRequirment = false;
+  bool? EachNotRequire = false;
+  int EachInt = 0;
+
+  bool? MaterialSelectionRequirment = false;
+  bool? MaterialSelectionNotRequire = false;
+  int MaterialSelectionInt = 0;
+
+//  - - - - -Heading variables- - - - - - - - - - - - - - - - - - - - -
+
+  var projectCost = 00;
+  var totalBuild = 5000;
+  var arcitecturalCost = 00;
+  var totalfeeCost = 00;
+  var structuralCost = 00;
+  var buildingCost = 00;
+  var superCost = 00;
+  var interiorCost = 00;
+  var arcRemainingFees = 00;
+
+//- - - - - -Arc Design  - - - - - - - - - - - - - - - - -
+
+  var conCost = 00;
+  var d3Cost = 00;
+  var worCost = 00;
+  var opeCost = 00;
+  var griCost = 00;
+  var builCost = 00;
+  var d2Cost = 00;
+  var bouCost = 00;
+  var raiCost = 00;
+  var entCost = 00;
+
+// - - - - - -Str Design - - - - - - - - - - - - - - - - -
+
+  var layCost = 00;
+  var fppCost = 00;
+  var fouCost = 00;
+  var colCost = 00;
+  var rccCost = 00;
+  var staCost = 00;
+  var linCost = 00;
+  var slaCost = 00;
+
+// - - - - - -Build Design - - - - - - - - - - - - - - - -
+
+  var efpCost = 00;
+  var pspCost = 00;
+  var hvacCost = 00;
+
+// - - - - - - -Super Vision - - - - - - - - - - - - - - - -
+
+  var supCostA = 00;
+  var supCostb = 00;
+
+//  - - - - - - Int Design - - - - - - - - - - - - - - - - - - - -
+
+  var flpCost = 00;
+  var fcdCost = 00;
+  var floCost = 00;
+  var edpCost = 00;
+  var ssdCost = 00;
+  var eswCost = 00;
+  var tddCost = 00;
+  var mscCost = 00;
+
+// - - - - - - - - - - - - - - - - - - - - - - - -
+
+  @override
+  Widget build(BuildContext context) {
+    if (getData != null) {
+      ar_design = getData['ar_design'];
+      str_design = getData['str_design'];
+      mep_design = getData['mep_design'];
+      int_design = getData['int_design'];
+    }
+
+    if (ar_design != null) {
+      setState(() {
+        isloading = true;
+      });
+    }
+
+    Object country;
+    return getData == null
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : Container(
+            height: MediaQuery.of(context).size.height * 0.82,
+            child: Column(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.48,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          child: headingFont('Area Statement'),
+                        ),
+                        Container(
+                          color: Colors.blue[100],
+                          child: Padding(
+                            padding: const EdgeInsets.all(3),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                requirementText("Plot Area"),
+                                requirementText("2400"),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                            color: Colors.blue[100],
+                            child: Padding(
+                              padding: const EdgeInsets.all(3),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  requirementText("Number of Floors"),
+                                  requirementText("3"),
+                                ],
+                              ),
+                            )),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          child: headingFont('Built Up Areas'),
+                        ),
+                        Container(
+                          color: Colors.blue[100],
+                          child: Padding(
+                            padding: const EdgeInsets.all(3),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  child: requirementText("Ground Floor"),
+                                ),
+                                Container(
+                                  child: requirementText("00"),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          color: Colors.blue[100],
+                          child: Padding(
+                            padding: const EdgeInsets.all(3),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  child: requirementText("First Floor"),
+                                ),
+                                Container(
+                                  child: requirementText("00"),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                            color: Colors.blue[100],
+                            child: Padding(
+                              padding: const EdgeInsets.all(3),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    child:
+                                        requirementText("Total Build Up Area"),
+                                  ),
+                                  Container(
+                                    child: requirementText("$totalBuild"),
+                                  )
+                                ],
+                              ),
+                            )),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                          child: headingFont('Select Project Specifications'),
+                        ),
+                        Container(
+                          color: Colors.blue[100],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                          activeColor: checkColor,
+                                          checkColor: Colors.white,
+                                          value: SuperRequirment,
+                                          onChanged: (value) {
+                                            setState(
+                                              () {
+                                                SuperRequirment = value;
+                                                SuperNotRequire = false;
+                                                BasicRequirment = false;
+                                                StandardRequirment = false;
+                                                PremiumRequirment = false;
+
+                                                projectCost = totalBuild * 4000;
+
+                                                if (SuperRequirment == true) {
+                                                } else {}
+                                              },
+                                            );
+                                          }),
+                                      requirementText("Super Premium"),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Row(
+                                      children: [
+                                        requirementText("4000 persqft"),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                          activeColor: checkColor,
+                                          checkColor: Colors.white,
+                                          value: PremiumRequirment,
+                                          onChanged: (value) {
+                                            setState(
+                                              () {
+                                                PremiumRequirment = value;
+                                                PremiumNotRequire = false;
+                                                BasicRequirment = false;
+                                                StandardRequirment = false;
+                                                SuperRequirment = false;
+                                                projectCost = totalBuild * 3000;
+                                                if (PremiumRequirment == true) {
+                                                } else {}
+                                              },
+                                            );
+                                          }),
+                                      requirementText("Premium"),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Row(
+                                      children: [
+                                        requirementText("3000 persqft"),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                          activeColor: checkColor,
+                                          checkColor: Colors.white,
+                                          value: StandardRequirment,
+                                          onChanged: (value) {
+                                            setState(
+                                              () {
+                                                StandardRequirment = value;
+                                                StandardNotRequire = false;
+                                                BasicRequirment = false;
+                                                PremiumRequirment = false;
+                                                SuperRequirment = false;
+
+                                                projectCost = totalBuild * 2000;
+
+                                                if (StandardRequirment ==
+                                                    true) {
+                                                } else {}
+                                              },
+                                            );
+                                          }),
+                                      requirementText("Standard Luxury"),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Row(
+                                      children: [
+                                        requirementText("2000 persqft"),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                          activeColor: checkColor,
+                                          checkColor: Colors.white,
+                                          value: BasicRequirment,
+                                          onChanged: (value) {
+                                            setState(
+                                              () {
+                                                BasicRequirment = value;
+                                                BasicNotRequire = false;
+                                                StandardRequirment = false;
+                                                PremiumRequirment = false;
+                                                SuperRequirment = false;
+
+                                                projectCost = totalBuild * 1500;
+
+                                                if (BasicRequirment == true) {
+                                                  print('$totalBuild');
+                                                }
+                                              },
+                                            );
+                                          }),
+                                      requirementText("Basic Standard"),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Row(
+                                      children: [
+                                        requirementText("1500 persqft"),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                          child: headingFont('Total Project'),
+                        ),
+                        Container(
+                          color: Colors.blue[100],
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                requirementText("Total Project Cost"),
+                                headingFont('${projectCost} '),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          child: headingFont('Select Scope of Works'),
+                        ),
+                        Text(
+                          'Note-1 : Advise to get started with conceptual plan only.',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5),
+                          child: Text(
+                            'Note-2 : For the purpose of approvals plans locsal consultants shall be engaged at your own.',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Container(
+                            color: Colors.blue[100],
+                            padding: const EdgeInsets.all(0),
+                            child: ExpansionTile(
+                              title: headingFont('Architectural Design'),
+                              children: [
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: ConceptRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var design1Percent = double
+                                                          .parse(ar_design[0][
+                                                              'design_percent']);
+
+                                                      ConceptRequirment = value;
+                                                      ConceptNotRequire = false;
+                                                      conCost =
+                                                          conceptualAndThreeDCost(
+                                                              totalBuild);
+
+                                                      if (ConceptRequirment ==
+                                                          true) {
+                                                        print(conCost);
+                                                      } else {
+                                                        conCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                ar_design[0]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: 37,
+                                            // decoration:
+                                            //     BoxDecoration(border: Border.all()),
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Sample pdf",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: D3Requirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var design2Percent = double
+                                                          .parse(ar_design[1][
+                                                              'design_percent']);
+                                                      D3Requirment =
+                                                          ConceptRequirment;
+
+                                                      // D3Requirment = value;
+                                                      D3NotRequire =
+                                                          ConceptNotRequire;
+                                                      // D3NotRequire = false;
+                                                      d3Cost =
+                                                          conceptualAndThreeDCost(
+                                                              totalBuild);
+                                                      if (D3Requirment ==
+                                                          true) {
+                                                        print(d3Cost);
+                                                      } else {
+                                                        d3Cost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                ar_design[1]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            height: 37,
+                                            color: Colors.white,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Sample pdf",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: WorkingRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var design3Percent = double
+                                                          .parse(ar_design[2][
+                                                              'design_percent']);
+                                                      // print('$design3Percent');
+                                                      WorkingRequirment = value;
+                                                      WorkingNotRequire = false;
+                                                      worCost =
+                                                          remainingFeesCost(
+                                                              arcRemainingFees);
+                                                      worCost =
+                                                          worCost * 30 ~/ 100;
+
+                                                      if (WorkingRequirment ==
+                                                          true) {
+                                                        // print(worCost);
+                                                      } else {
+                                                        worCost = 0;
+                                                      }
+                                                      print(worCost);
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                ar_design[2]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            height: 37,
+                                            color: Colors.white,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Sample pdf",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: OpeningRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var design4Percent = double
+                                                          .parse(ar_design[3][
+                                                              'design_percent']);
+                                                      // print('$design4Percent');
+
+                                                      OpeningRequirment = value;
+                                                      OpeningNotRequire = false;
+                                                      opeCost =
+                                                          remainingFeesCost(
+                                                              arcRemainingFees);
+                                                      opeCost =
+                                                          opeCost * 10 ~/ 100;
+
+                                                      if (OpeningRequirment ==
+                                                          true) {
+                                                      } else {
+                                                        opeCost = 0;
+                                                      }
+                                                      print(opeCost);
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                ar_design[3]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            height: 37,
+                                            color: Colors.white,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Sample pdf",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: GrillRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var design5Percent = double
+                                                          .parse(ar_design[4][
+                                                              'design_percent']);
+
+                                                      GrillRequirment = value;
+                                                      GrillNotRequire = false;
+                                                      griCost =
+                                                          remainingFeesCost(
+                                                              arcRemainingFees);
+                                                      griCost =
+                                                          griCost * 5 ~/ 100;
+                                                      if (GrillRequirment ==
+                                                          true) {
+                                                        print(griCost);
+                                                      } else {
+                                                        griCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                ar_design[4]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            height: 37,
+                                            color: Colors.white,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Sample pdf",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: BuildingRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var design6Percent = double
+                                                          .parse(ar_design[5][
+                                                              'design_percent']);
+                                                      // print('$design6Percent');
+                                                      BuildingRequirment =
+                                                          value;
+                                                      BuildingNotRequire =
+                                                          false;
+                                                      builCost =
+                                                          remainingFeesCost(
+                                                              arcRemainingFees);
+                                                      builCost =
+                                                          builCost * 10 ~/ 100;
+                                                      if (BuildingRequirment ==
+                                                          true) {
+                                                        print(builCost);
+                                                      } else {
+                                                        builCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                ar_design[5]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            height: 37,
+                                            color: Colors.white,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Sample pdf",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: D2Requirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var design7Percent = double
+                                                          .parse(ar_design[6][
+                                                              'design_percent']);
+                                                      // print('$design7Percent');
+                                                      D2Requirment = value;
+                                                      D2NotRequire = false;
+                                                      d2Cost =
+                                                          remainingFeesCost(
+                                                              arcRemainingFees);
+                                                      d2Cost =
+                                                          d2Cost * 20 ~/ 100;
+                                                      if (D2Requirment ==
+                                                          true) {
+                                                        print(d2Cost);
+                                                      } else {
+                                                        d2Cost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                ar_design[6]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            height: 37,
+                                            color: Colors.white,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Sample pdf",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: BoundaryRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var design8Percent = double
+                                                          .parse(ar_design[7][
+                                                              'design_percent']);
+                                                      // print('$design8Percent');
+                                                      BoundaryRequirment =
+                                                          value;
+                                                      BoundaryNotRequire =
+                                                          false;
+                                                      bouCost =
+                                                          remainingFeesCost(
+                                                              arcRemainingFees);
+                                                      bouCost =
+                                                          bouCost * 15 ~/ 100;
+                                                      if (BoundaryRequirment ==
+                                                          true) {
+                                                        print(bouCost);
+                                                      } else {
+                                                        bouCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                ar_design[7]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            height: 37,
+                                            color: Colors.white,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Sample pdf",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: RailingRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var design9Percent = double
+                                                          .parse(ar_design[8][
+                                                              'design_percent']);
+                                                      // print('$design9Percent');
+                                                      RailingRequirment = value;
+                                                      RailingNotRequire = false;
+                                                      raiCost =
+                                                          remainingFeesCost(
+                                                              arcRemainingFees);
+                                                      raiCost =
+                                                          raiCost * 5 ~/ 100;
+                                                      if (RailingRequirment ==
+                                                          true) {
+                                                        print(raiCost);
+                                                      } else {
+                                                        raiCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                ar_design[8]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            height: 37,
+                                            color: Colors.white,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Sample pdf",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: EntranceRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var design10Percent =
+                                                          double.parse(ar_design[
+                                                                  9][
+                                                              'design_percent']);
+                                                      // print('$design10Percent');
+                                                      EntranceRequirment =
+                                                          value;
+                                                      EntranceNotRequire =
+                                                          false;
+                                                      entCost =
+                                                          remainingFeesCost(
+                                                              arcRemainingFees);
+                                                      entCost =
+                                                          entCost * 5 ~/ 100;
+                                                      if (GrillRequirment ==
+                                                          true) {
+                                                        print(entCost);
+                                                      } else {
+                                                        entCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                ar_design[9]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            height: 37,
+                                            color: Colors.white,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child: Text(
+                                                "Sample pdf",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Container(
+                            color: Colors.blue[100],
+                            // height: 200,
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 2.0),
+                            child: ExpansionTile(
+                              title: headingFont('Structural Design '),
+                              children: [
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: LayoutRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var strDesign1 = double
+                                                          .parse(str_design[0][
+                                                              'design_percent']);
+
+                                                      LayoutRequirment = value;
+                                                      LayoutNotRequire = false;
+                                                      layCost =
+                                                          structuralDesing(
+                                                              structuralCost);
+                                                      layCost =
+                                                          layCost * 10 ~/ 100;
+                                                      if (LayoutRequirment ==
+                                                          true) {
+                                                        print(layCost);
+                                                      } else {
+                                                        layCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                str_design[0]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: 37,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: FoundationPlanRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var strDesign2 = double
+                                                          .parse(str_design[1][
+                                                              'design_percent']);
+                                                      FoundationPlanRequirment =
+                                                          value;
+                                                      FoundationPlanNotRequire =
+                                                          false;
+                                                      fppCost =
+                                                          structuralDesing(
+                                                              structuralCost);
+                                                      fppCost =
+                                                          fppCost * 15 ~/ 100;
+                                                      if (FoundationPlanRequirment ==
+                                                          true) {
+                                                        print(fppCost);
+                                                      } else {
+                                                        fppCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                str_design[1]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 0.1, right: 5),
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: 37,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value:
+                                                    FoundationDetailsRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var strDesign3 = double
+                                                          .parse(str_design[2][
+                                                              'design_percent']);
+                                                      FoundationDetailsRequirment =
+                                                          value;
+                                                      FoundationDetailsNotRequire =
+                                                          false;
+                                                      fouCost =
+                                                          structuralDesing(
+                                                              structuralCost);
+                                                      fouCost =
+                                                          fouCost * 10 ~/ 100;
+                                                      if (FoundationDetailsRequirment ==
+                                                          true) {
+                                                        print(fouCost);
+                                                      } else {
+                                                        fouCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                str_design[2]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: 37,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: ColumnRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var strDesign4 = double
+                                                          .parse(str_design[3][
+                                                              'design_percent']);
+                                                      ColumnRequirment = value;
+                                                      ColumnNotRequire = false;
+                                                      colCost =
+                                                          structuralDesing(
+                                                              structuralCost);
+                                                      colCost =
+                                                          colCost * 15 ~/ 100;
+                                                      if (ColumnRequirment ==
+                                                          true) {
+                                                        print(colCost);
+                                                      } else {
+                                                        colCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                str_design[3]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: 37,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: RccRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var strDesign5 = double
+                                                          .parse(str_design[4][
+                                                              'design_percent']);
+                                                      RccRequirment = value;
+                                                      RccNotRequire = false;
+                                                      rccCost =
+                                                          structuralDesing(
+                                                              structuralCost);
+                                                      rccCost =
+                                                          rccCost * 5 ~/ 100;
+                                                      if (RccRequirment ==
+                                                          true) {
+                                                        print(rccCost);
+                                                      } else {
+                                                        rccCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                str_design[4]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: 37,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: StairsRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var strDesign6 = double
+                                                          .parse(str_design[5][
+                                                              'design_percent']);
+                                                      StairsRequirment = value;
+                                                      StairsNotRequire = false;
+                                                      staCost =
+                                                          structuralDesing(
+                                                              structuralCost);
+                                                      staCost =
+                                                          staCost * 5 ~/ 100;
+                                                      if (StairsRequirment ==
+                                                          true) {
+                                                        print(staCost);
+                                                      } else {
+                                                        staCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                str_design[5]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: 37,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: LintelRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var strDesign7 = double
+                                                          .parse(str_design[6][
+                                                              'design_percent']);
+                                                      LintelRequirment = value;
+                                                      LintelNotRequire = false;
+                                                      linCost =
+                                                          structuralDesing(
+                                                              structuralCost);
+                                                      linCost =
+                                                          linCost * 10 ~/ 100;
+                                                      if (LintelRequirment ==
+                                                          true) {
+                                                        print(linCost);
+                                                      } else {
+                                                        linCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                str_design[6]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: 37,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: SlabRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var strDesign8 = double
+                                                          .parse(str_design[7][
+                                                              'design_percent']);
+                                                      SlabRequirment = value;
+                                                      SlabNotRequire = false;
+                                                      slaCost =
+                                                          structuralDesing(
+                                                              structuralCost);
+                                                      slaCost =
+                                                          slaCost * 20 ~/ 100;
+                                                      if (SlabRequirment ==
+                                                          true) {
+                                                        print(slaCost);
+                                                      } else {
+                                                        slaCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                str_design[7]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            height: 37,
+                                            color: Colors.white,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Container(
+                            color: Colors.blue[100],
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 2.0),
+                            child: ExpansionTile(
+                              // backgroundColor: Colors.black,
+                              title: headingFont('Building Service'),
+                              children: [
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: ElectricRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var mep1 = double.parse(
+                                                          mep_design[0][
+                                                              'design_percent']);
+                                                      ElectricRequirment =
+                                                          value;
+                                                      ElectricNotRequire =
+                                                          false;
+                                                      efpCost = buildingDesign(
+                                                          buildingCost);
+                                                      efpCost =
+                                                          efpCost * 40 ~/ 100;
+                                                      if (ElectricRequirment ==
+                                                          true) {
+                                                        print(efpCost);
+                                                      } else {
+                                                        efpCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                mep_design[0]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: 37,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: PlumbingRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var mep2 = double.parse(
+                                                          mep_design[1][
+                                                              'design_percent']);
+                                                      PlumbingRequirment =
+                                                          value;
+                                                      PlumbingNotRequire =
+                                                          false;
+                                                      pspCost = buildingDesign(
+                                                          buildingCost);
+                                                      pspCost =
+                                                          pspCost * 40 ~/ 100;
+                                                      if (PlumbingRequirment ==
+                                                          true) {
+                                                        print(pspCost);
+                                                      } else {
+                                                        pspCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                mep_design[1]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: 37,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: HVACRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var mep3 = double.parse(
+                                                          mep_design[2][
+                                                              'design_percent']);
+                                                      HVACRequirment = value;
+                                                      HVACNotRequire = false;
+                                                      hvacCost = buildingDesign(
+                                                          buildingCost);
+                                                      hvacCost =
+                                                          hvacCost * 20 ~/ 100;
+                                                      if (HVACRequirment ==
+                                                          true) {
+                                                        print(hvacCost);
+                                                      } else {
+                                                        hvacCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                mep_design[2]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            height: 37,
+                                            color: Colors.white,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Container(
+                              height: 55,
+                              color: Colors.blue[100],
+                              padding: const EdgeInsets.only(right: 15.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                          value: VisionRequirment,
+                                          onChanged: (value) {
+                                            setState(
+                                              () {
+                                                VisionRequirment = value;
+                                                VisionNotRequire = false;
+                                                superCost = superVisionDesign(
+                                                    superCost);
+                                                if (VisionRequirment == true) {
+                                                  print(superCost);
+                                                } else {
+                                                  superCost = 0;
+                                                }
+                                              },
+                                            );
+                                          }),
+                                      headingFont('Super Vision'),
+                                    ],
+                                  ),
+                                  DropdownButton<String>(
+                                      hint: headingFont('Jabalpur'),
+                                      icon: Icon(
+                                        Icons.arrow_drop_down,
+                                        size: 30,
+                                        color: Colors.black,
+                                      ),
+                                      items: [],
+                                      onChanged: (it) =>
+                                          setState(() => country = it!)),
+                                ],
+                              )),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: Container(
+                            color: Colors.blue[100],
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 2.0),
+                            child: ExpansionTile(
+                              title: headingFont('Interior Design'),
+                              children: [
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: FurnitureRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var intD1 = double.parse(
+                                                          int_design[0][
+                                                              'design_percent']);
+                                                      FurnitureRequirment =
+                                                          value;
+                                                      FurnitureNotRequire =
+                                                          false;
+                                                      flpCost = interiorDesign(
+                                                          interiorCost);
+                                                      flpCost =
+                                                          flpCost * 10 ~/ 100;
+                                                      if (FurnitureRequirment ==
+                                                          true) {
+                                                        print(flpCost);
+                                                      } else {
+                                                        flpCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                int_design[0]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            height: 37,
+                                            color: Colors.white,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: FalseRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var intD2 = double.parse(
+                                                          int_design[1][
+                                                              'design_percent']);
+                                                      FalseRequirment = value;
+                                                      FalseNotRequire = false;
+                                                      fcdCost = interiorDesign(
+                                                          interiorCost);
+                                                      fcdCost =
+                                                          fcdCost * 15 ~/ 100;
+                                                      if (FalseRequirment ==
+                                                          true) {
+                                                        print(fcdCost);
+                                                      } else {
+                                                        fcdCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                int_design[1]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: 37,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: FlooringRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var intD3 = double.parse(
+                                                          int_design[2][
+                                                              'design_percent']);
+                                                      FlooringRequirment =
+                                                          value;
+                                                      FlooringNotRequire =
+                                                          false;
+                                                      floCost = interiorDesign(
+                                                          interiorCost);
+                                                      floCost =
+                                                          floCost * 10 ~/ 100;
+                                                      if (FlooringRequirment ==
+                                                          true) {
+                                                        print(floCost);
+                                                      } else {
+                                                        floCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                int_design[2]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: 37,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: ElectricalRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var intD4 = double.parse(
+                                                          int_design[3][
+                                                              'design_percent']);
+                                                      ElectricalRequirment =
+                                                          value;
+                                                      ElectricalNotRequire =
+                                                          false;
+                                                      edpCost = interiorDesign(
+                                                          interiorCost);
+                                                      edpCost =
+                                                          edpCost * 5 ~/ 100;
+                                                      if (ElectricRequirment ==
+                                                          true) {
+                                                        print(edpCost);
+                                                      } else {
+                                                        edpCost;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                int_design[3]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            height: 37,
+                                            color: Colors.white,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: StairStepRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var intD5 = double.parse(
+                                                          int_design[4][
+                                                              'design_percent']);
+                                                      StairStepRequirment =
+                                                          value;
+                                                      StairStepNotRequire =
+                                                          false;
+                                                      ssdCost = interiorDesign(
+                                                          interiorCost);
+                                                      ssdCost =
+                                                          ssdCost * 10 ~/ 100;
+                                                      if (StairStepRequirment ==
+                                                          true) {
+                                                        print(ssdCost);
+                                                      } else {
+                                                        ssdCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                int_design[4]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            height: 37,
+                                            color: Colors.white,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: EachSpaceRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var intD6 = double.parse(
+                                                          int_design[5][
+                                                              'design_percent']);
+                                                      EachSpaceRequirment =
+                                                          value;
+                                                      EachSpaceNotRequire =
+                                                          false;
+                                                      eswCost = interiorDesign(
+                                                          interiorCost);
+                                                      eswCost =
+                                                          eswCost * 30 ~/ 100;
+                                                      if (EachSpaceRequirment ==
+                                                          true) {
+                                                        print(eswCost);
+                                                      } else {
+                                                        eswCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                int_design[5]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: 37,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: ToiletRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var intD7 = double.parse(
+                                                          int_design[6][
+                                                              'design_percent']);
+                                                      ToiletRequirment = value;
+                                                      ToiletNotRequire = false;
+                                                      tddCost = interiorDesign(
+                                                          interiorCost);
+                                                      tddCost =
+                                                          tddCost * 10 ~/ 100;
+                                                      if (ToiletRequirment ==
+                                                          true) {
+                                                        print(tddCost);
+                                                      } else {
+                                                        tddCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                int_design[6]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: 37,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  child: Container(
+                                    color: Colors.blue[50],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                                value: MaterialRequirment,
+                                                onChanged: (value) {
+                                                  setState(
+                                                    () {
+                                                      var intD8 = double.parse(
+                                                          int_design[7][
+                                                              'design_percent']);
+                                                      MaterialRequirment =
+                                                          value;
+                                                      MaterialNotRequire =
+                                                          false;
+                                                      mscCost = interiorDesign(
+                                                          interiorCost);
+                                                      mscCost =
+                                                          mscCost * 10 ~/ 100;
+                                                      if (MaterialRequirment ==
+                                                          true) {
+                                                        print(mscCost);
+                                                      } else {
+                                                        mscCost = 0;
+                                                      }
+                                                    },
+                                                  );
+                                                }),
+                                            requirementText(
+                                                int_design[7]['design']),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0),
+                                          child: Container(
+                                            color: Colors.white,
+                                            height: 37,
+                                            child: TextButton(
+                                              onPressed: () {},
+                                              child:
+                                                  requirementText("Sample pdf"),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  color: Colors.blue[100],
+                  height: MediaQuery.of(context).size.height * 0.20,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Table(
+                          children: [
+                            TableRow(children: [
+                              Column(children: [
+                                requirementText(
+                                  'S.no.',
+                                )
+                              ]),
+                              Column(children: [
+                                requirementText(
+                                  'Payment Schedule',
+                                )
+                              ]),
+                              Column(children: [
+                                requirementText(
+                                  'Working Time Part A (Civil)',
+                                )
+                              ]),
+                              Column(children: [
+                                requirementText(
+                                  'Pay for',
+                                )
+                              ]),
+                              Column(children: [
+                                requirementText(
+                                  'Fee',
+                                )
+                              ]),
+                            ]),
+                            TableRow(children: [
+                              Column(children: const [Text('1.')]),
+                              Column(children: const [Text('At good Start')]),
+                              Column(children: const [Text('7 Days')]),
+                              Column(children: [
+                                Container(
+                                  // height: 19,
+                                  // width: 19,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(1)),
+                                  child: Icon(
+                                    Icons.check,
+                                    color: Colors.blue[100],
+                                    size: 18,
+                                  ),
+                                )
+                                // Checkbox(
+                                //     value: AtGoodRequirment,
+                                //     onChanged: (value) {
+                                //       setState(
+                                //         () {
+                                //           AtGoodRequirment = value;
+                                //           AtGoodNotRequire = false;
+                                //         },
+                                //       );
+                                //     }),
+                              ]),
+                              Column(children: [Text('$conCost')]),
+                            ]),
+                            TableRow(children: [
+                              Column(children: const [Text('2.')]),
+                              Column(
+                                  children: const [Text('3D Front Elevation')]),
+                              Column(children: const [Text('7 Days')]),
+                              Column(children: [
+                                Checkbox(
+                                    value: D3FrontRequirment,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          D3FrontRequirment = value;
+                                          D3FrontNotRequire = false;
+                                        },
+                                      );
+                                    }),
+                              ]),
+                              Column(children: [Text('$d3Cost')]),
+                            ]),
+                            TableRow(children: [
+                              Column(children: const [Text('3.')]),
+                              Column(children: const [
+                                Text('Drawing UpTo Plinth')
+                              ]),
+                              Column(children: const [Text('7 Days')]),
+                              Column(children: [
+                                Checkbox(
+                                    value: DrawingRequirment,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          DrawingRequirment = value;
+                                          DrawingNotRequire = false;
+                                        },
+                                      );
+                                    }),
+                              ]),
+                              Column(children: [Text('$worCost')]),
+                            ]),
+                            TableRow(children: [
+                              Column(children: const [Text('4.')]),
+                              Column(children: const [
+                                Text('Sets of Drawings(Start)')
+                              ]),
+                              Column(children: const [Text('30 Days')]),
+                              Column(children: [
+                                Checkbox(
+                                    value: SetofRequirment,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          SetofRequirment = value;
+                                          SetofNotRequire = false;
+                                        },
+                                      );
+                                    }),
+                              ]),
+                              Column(children: const [Text('38335')]),
+                            ]),
+                            TableRow(children: [
+                              Column(children: const [Text('5.')]),
+                              Column(
+                                  children: const [Text('Handing Over Ste')]),
+                              Column(children: const [Text('---')]),
+                              Column(children: [
+                                Checkbox(
+                                    value: HandingRequirment,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          HandingRequirment = value;
+                                          HandingNotRequire = false;
+                                        },
+                                      );
+                                    }),
+                              ]),
+                              Column(children: const [Text('30214')]),
+                            ]),
+                            TableRow(children: [
+                              Column(children: const [Text('6.')]),
+                              Column(
+                                  children: const [Text('With Super Vision')]),
+                              Column(children: const [Text('---')]),
+                              Column(children: [
+                                Checkbox(
+                                    value: WithSuperRequirment,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          WithSuperRequirment = value;
+                                          WithSuperNotRequire = false;
+                                        },
+                                      );
+                                    }),
+                              ]),
+                              Column(children: const [Text('')]),
+                            ]),
+                          ],
+                        ),
+                        Container(
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                requirementText('Design Fees (Part A)'),
+                                requirementText('125891'),
+                              ],
+                            ),
+                          ),
+                        ),
+                        requirementText('Part B (Interior)'),
+                        Table(
+                          children: [
+                            TableRow(children: [
+                              Column(children: const [Text('1.')]),
+                              Column(
+                                  children: const [Text('Furniture Layout')]),
+                              Column(children: const [Text('7days')]),
+                              Column(children: [
+                                Checkbox(
+                                    value: FurnitureLayoutRequirment,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          FurnitureLayoutRequirment = value;
+                                          FurnitureLayoutNotRequire = false;
+                                        },
+                                      );
+                                    }),
+                              ]),
+                              Column(children: const [Text('9442')]),
+                            ]),
+                            TableRow(children: [
+                              Column(children: const [Text('2.')]),
+                              Column(children: const [
+                                Text('Ceiling, Flooring Details')
+                              ]),
+                              Column(children: const [Text('7days')]),
+                              Column(children: [
+                                Checkbox(
+                                    value: CeilingRequirment,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          CeilingRequirment = value;
+                                          CeilingNotRequire = false;
+                                        },
+                                      );
+                                    }),
+                              ]),
+                              Column(children: const [Text('23605')]),
+                            ]),
+                            TableRow(children: [
+                              Column(children: const [Text('3.')]),
+                              Column(children: const [
+                                Text('Toilet Dado Details')
+                              ]),
+                              Column(children: const [Text('3days')]),
+                              Column(children: [
+                                Checkbox(
+                                    value: ToiletDadoRequirment,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          ToiletDadoRequirment = value;
+                                          ToiletDadoNotRequire = false;
+                                        },
+                                      );
+                                    }),
+                              ]),
+                              Column(children: const [Text('23605')]),
+                            ]),
+                            TableRow(children: [
+                              Column(children: const [Text('4.')]),
+                              Column(children: const [
+                                Text('Each Space Wall Details')
+                              ]),
+                              Column(children: const [Text('21days')]),
+                              Column(children: [
+                                Checkbox(
+                                    value: EachRequirment,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          EachRequirment = value;
+                                          EachNotRequire = false;
+                                        },
+                                      );
+                                    }),
+                              ]),
+                              Column(children: const [Text('28326')]),
+                            ]),
+                            TableRow(children: [
+                              Column(children: const [Text('5.')]),
+                              Column(
+                                  children: const [Text('Material Selection')]),
+                              Column(children: const [Text('3days')]),
+                              Column(children: [
+                                Checkbox(
+                                    value: MaterialSelectionRequirment,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          MaterialSelectionRequirment = value;
+                                          MaterialSelectionNotRequire = false;
+                                        },
+                                      );
+                                    }),
+                              ]),
+                              Column(children: const [Text('9442')]),
+                            ]),
+                          ],
+                        ),
+                        Container(
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                requirementText('Interior Desing (Part B)'),
+                                requirementText('94420'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  // height: 120,
+                  color: Colors.blue[100],
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            requirementText(
+                                'Design and Drawing Fee \n(Part A + B)'),
+                            requirementText('220311')
+                          ],
+                        ),
+                      ),
+                      Container(
+                        color: Colors.white,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: Container(
+                                  height: 35,
+                                  color: Colors.blue,
+                                  child: TextButton(
+                                      onPressed: () {},
+                                      child: Text(
+                                        'SAVE',
+                                        style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 255, 255, 255)),
+                                      ))),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                  height: 35,
+                                  color: Colors.blue,
+                                  // decoration: BoxDecoration(
+                                  //     borderRadius: BorderRadius.circular(5)),
+                                  child: TextButton(
+                                      onPressed: () {},
+                                      child: Text(
+                                        'CONTINUE TO PAY',
+                                        style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 255, 255, 255)),
+                                      ))),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          );
+  }
+
+  int conceptualAndThreeDCost(totalBuild) {
+    int cost = totalBuild * 1800 * 2 ~/ 100 * 15 ~/ 100;
+    return cost;
+  }
+
+  int remainingFeesCost(arcRemainingFees) {
+    int fees = projectCost * 2 ~/ 100 * 50 ~/ 100 - conCost - d3Cost;
+    return fees;
+  }
+
+  int structuralDesing(structuralCost) {
+    int strFees = projectCost * 2 ~/ 100 * 35 ~/ 100;
+    return strFees;
+  }
+
+  int buildingDesign(buildingCost) {
+    int buildingfees = projectCost * 2 ~/ 100 * 15 ~/ 100;
+    return buildingfees;
+  }
+
+  int superVisionDesign(superCost) {
+    int superVisionFees = projectCost * 0.25 ~/ 100;
+    return superVisionFees;
+  }
+
+  int interiorDesign(interiorCost) {
+    int interiorFees = (projectCost * 1.5 ~/ 100);
+    return interiorFees;
+  }
+}

@@ -1,32 +1,32 @@
 import 'dart:convert';
-import 'package:aashiyan/components/forms.dart';
-import 'package:aashiyan/const.dart';
+
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:aashiyan/view/residential/bunglow/statemanagement.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
+import '../../../components/forms.dart';
+import '../../../const.dart';
+import '../../../controller/api_services.dart';
 
-
-
-class MultiForm extends StatefulWidget {
+class BedPractise extends StatefulWidget {
   @override
-  State<MultiForm> createState() => _MultiFormState();
+  State<BedPractise> createState() => _BedPractiseState();
 }
 
-class _MultiFormState extends State<MultiForm> {
-
+class _BedPractiseState extends State<BedPractise> {
   final StateManagement cont = Get.put(StateManagement());
 
   bool isloading = false;
 
   var _user = User();
 
-  int bedroomPage = 0;
+  int BedPage = 0;
 
   int index = 0;
+
+  get dimenInt => null;
 
   @override
   void initState() {
@@ -37,115 +37,131 @@ class _MultiFormState extends State<MultiForm> {
   // @override
   @override
   Widget build(BuildContext context) {
-
     // if (printData != null) {
     //   isloading = true;
-    //   listLen = printData["bungalow_bedroom"].length;
+    //   listLen = printData["bungalow_Bed"].length;
     // }
-    // for (int i = 0; i < printData["bungalow_bedroom"].length; i++) {
+    // for (int i = 0; i < printData["bungalow_Bed"].length; i++) {
     //   users.add(
-    //     BedRoom(
+    //     Bed(
     //       user: _user,
     //       onDelete: () => onDelete(_user),
     //     ),
     //   );
     // }
-    // print(printData["bungalow_bedroom"]
+    // print(printData["bungalow_Bed"]
     // );
+
     print("hello");
 
-    return SingleChildScrollView(
-
-      scrollDirection: Axis.vertical,
-      
-      child:
-      Column(
-        children: [
-          OutlinedButton(
-            onPressed: cont.onAddForm,
-            child: const Text('Add a Bedroom'),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.7,
-            child: FutureBuilder(
-              future: cont.getData(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Container(
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
-                } else {
-                  return Obx(
-                    () {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount:
-                            // cont.printData != null
-                            //     ? cont.printData.length
-                            //     :
-                            cont.users.length,
-                        itemBuilder: (_, i) {
-                          return cont.users[i];
-                        },
-                      );
-                    },
-                  );
-                }
-              },
+    return Scaffold(
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children: [
+            OutlinedButton(
+              onPressed: cont.onAddForm,
+              child: const Text('Add a Bed'),
             ),
-          ),
-          OutlinedButton(
-            onPressed: () async {
-              // final  Map<String, dynamic> _values;
-              List<Map<String, dynamic>> val = [];
-              Map<String, dynamic> _value = {};
-              var userdata = cont.users.map((it) => it.user).toList();
-              _value.putIfAbsent(
-                "project_id",
-                () => "349",
-              );
-              _value.putIfAbsent( "dimension", () => dimenInt);
-              for (int i = 0; i < userdata.length; i++) {
-                Map<String, dynamic> json = {  
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: FutureBuilder(
+                future: cont.getData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  } else {
+                    return Obx(
+                      () {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount:
 
-                  "bedroom":                   cont.users[i].user!.personBedRoom,
-                  "bedroom_length":            cont.users[i].user!.length,
-                  "bedroom_width":             cont.users[i].user!.width,
-                  "bedroom_dress_length":      cont.users[i].user!.dressLenght,
-                  "bedroom_dress_width":       cont.users[i].user!.dressWidth,
-                  "bedroom_dress_req_text":    cont.users[i].user!.dressReqText,
-                  "bedroom_dress_req":         cont.users[i].user!.dressReq,
-                  "bedroom_floor":             cont.users[i].user!.selectedFloor,
-                  "bedroom_toilet_length":     cont.users[i].user!.toiletLength,
-                  "bedroom_toilet_width":      cont.users[i].user!.toiletWidth,
-                  "bedroom_dress_facility":    cont.users[i].user!.dressFacility,
-                  "bedroom_toilet_req_text":   cont.users[i].user!.toiletFacility,
-                  "bedroom_facility":          cont.users[i].user!.roomRequirement,
-                  "bedroom_facility_req_text": cont.users[i].user!.roomOtherRequirement,
+                              // cont.printData != null
 
-                };
-                val.add(json);
-              }
+                              //     ? cont.printData.length
 
-              _value.putIfAbsent("bedrooms", () => val);
+                              //     :
 
-              var finalResponse = _value;
-              // print(finalResponse);
-              final response = await http.post(
-                // Uri.parse(baseUrlLocal + "project"),
-                Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-bedroom'),
-                headers: <String, String>{
-                  'Content-Type': 'application/json; charset=UTF-8',
+                              cont.users.length,
+                          itemBuilder: (_, i) {
+                            return cont.users[i];
+                          },
+                        );
+                      },
+                    );
+                  }
                 },
-                body: jsonEncode(finalResponse),
-              );
-              print(response.body);
-            },
-            child: const Text('save'),
-          ),
-        ],
+              ),
+            ),
+            OutlinedButton(
+              onPressed: () async {
+                // final  Map<String, dynamic> _values;
+
+                List<Map<String, dynamic>> val = [];
+
+                Map<String, dynamic> _value = {};
+
+                var userdata = cont.users.map((it) => it.user).toList();
+
+                _value.putIfAbsent(
+                  "project_id",
+                  () => "349",
+                );
+
+                _value.putIfAbsent("dimension", () => dimenInt);
+
+                for (int i = 0; i < userdata.length; i++) {
+                  Map<String, dynamic> json = {
+                    "Bed": cont.users[i].user!.personBed,
+                    "Bed_length": cont.users[i].user!.length,
+                    "Bed_width": cont.users[i].user!.width,
+                    "Bed_dress_length": cont.users[i].user!.dressLenght,
+                    "Bed_dress_width": cont.users[i].user!.dressWidth,
+                    "Bed_dress_req_text": cont.users[i].user!.dressReqText,
+                    "Bed_dress_req": cont.users[i].user!.dressReq,
+                    "Bed_floor": cont.users[i].user!.selectedFloor,
+                    "Bed_toilet_length": cont.users[i].user!.toiletLength,
+                    "Bed_toilet_width": cont.users[i].user!.toiletWidth,
+                    "Bed_dress_facility": cont.users[i].user!.dressFacility,
+                    "Bed_toilet_req_text": cont.users[i].user!.toiletFacility,
+                    "Bed_facility": cont.users[i].user!.roomRequirement,
+                    "Bed_facility_req_text":
+                        cont.users[i].user!.roomOtherRequirement,
+                  };
+
+                  val.add(json);
+                }
+
+                _value.putIfAbsent("Beds", () => val);
+
+                var finalResponse = _value;
+
+                // print(finalResponse);
+
+                final response = await http.post(
+                  // Uri.parse(baseUrlLocal + "project"),
+
+                  Uri.parse(
+                      'http://192.168.1.99:8080/sdplserver/api/bungalow-Bed'),
+
+                  headers: <String, String>{
+                    'Content-Type': 'application/json; charset=UTF-8',
+                  },
+
+                  body: jsonEncode(finalResponse),
+                );
+
+                print(response.body);
+              },
+              child: const Text('save'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -163,7 +179,7 @@ class _MultiFormState extends State<MultiForm> {
 // }
 
 class User {
-  String personBedRoom;
+  String personBed;
   String length;
   String width;
   int selectedFloor;
@@ -178,7 +194,7 @@ class User {
   String roomOtherRequirement;
   String dressReqText;
   User({
-    this.personBedRoom = '',
+    this.personBed = '',
     this.length = '',
     this.width = '',
     this.selectedFloor = 0,
@@ -197,7 +213,7 @@ class User {
 
 typedef OnDelete();
 
-class BedRoom extends StatefulWidget {
+class Bed extends StatefulWidget {
   static const namedRoute = "/namedRoute";
   final User? user;
   final OnDelete? onDelete;
@@ -214,27 +230,27 @@ class BedRoom extends StatefulWidget {
     "other",
   ];
 
-  BedRoom({this.user, this.onDelete, this.index});
+  Bed({this.user, this.onDelete, this.index});
 
   @override
-  State<BedRoom> createState() => _BedRoomState();
+  State<Bed> createState() => _BedState();
 }
 
-class _BedRoomState extends State<BedRoom> {
+class _BedState extends State<Bed> {
   List<String> otherFacilities = [];
   List<String> dressF = [];
 
   final StateManagement cont = Get.put(StateManagement());
 
   // var printData;
-  // int bedroomPage = 0;
+  // int BedPage = 0;
   // Future<void> getData() async {
   //   try {
   //     // var client = http.Client();
-  //     // http://sdplweb.com/sdpl/api/edit-bungalow-bedroom/project_id
+  //     // http://sdplweb.com/sdpl/api/edit-bungalow-Bed/project_id
   //     var response = await http.get(
   //       Uri.parse(
-  //           "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-bedroom/179"),
+  //           "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-Bed/179"),
   //     );
 
   //     if (response.statusCode == 200) {
@@ -268,16 +284,13 @@ class _BedRoomState extends State<BedRoom> {
       "TV",
       "Mini Bar",
     ];
-
-   final List<String> result = await showDialog(
+    final List<String> result = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return MultiSelect(items: otherItems);
-
       },
     );
-
-    if(result != null) {
+    if (result != null) {
       setState(
         () {
           otherFacilities = result;
@@ -285,7 +298,6 @@ class _BedRoomState extends State<BedRoom> {
         },
       );
     }
-
   }
 
   void multi() async {
@@ -324,7 +336,7 @@ class _BedRoomState extends State<BedRoom> {
       ),
       maintainState: true,
       title: const Text(
-        'BedRoom Details',
+        'Bed Details',
         style: TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.black,
@@ -344,7 +356,7 @@ class _BedRoomState extends State<BedRoom> {
                   ),
                   Row(
                     children: [
-                      requirementText("Name the BedRoom"),
+                      requirementText("Name the Bed"),
                       SizedBox(
                         width: width * 0.02,
                       ),
@@ -368,7 +380,7 @@ class _BedRoomState extends State<BedRoom> {
                             ),
                             onChanged: (value) {
                               setState(() {
-                                widget.user!.personBedRoom = value;
+                                widget.user!.personBed = value;
                               });
                             },
                           ),
@@ -524,7 +536,7 @@ class _BedRoomState extends State<BedRoom> {
                             child: TextFormField(
                               style: const TextStyle(fontSize: 14),
                               decoration: const InputDecoration(
-                                  hintText: "Bedroom Location",
+                                  hintText: "Bed Location",
                                   hintStyle: TextStyle(fontSize: 14),
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide.none,

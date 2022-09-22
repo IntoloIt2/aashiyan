@@ -13,17 +13,18 @@ class FloorStore extends StatefulWidget {
   @override
   State<FloorStore> createState() => _FloorStoreState();
 }
+
 class _FloorStoreState extends State<FloorStore> {
   String floorStoreArea = "";
 
-  String  floorStoreLengthController        =  ' ';
-  String  floorStoreWidthController         =  ' ';
-  String  floorStoreLocationController      =  ' ';
-  String  liftSpecialRequirementController  =  ' ';
-  String  passengerCapacityControler        =  ' ';
-  String  poojaLengthController             =  ' ';
-  String  poojaWidthController              =  ' ';
-  String  poojaRoomLocationController       =  ' ';
+  String floorStoreLengthController = ' ';
+  String floorStoreWidthController = ' ';
+  String floorStoreLocationController = ' ';
+  String liftSpecialRequirementController = ' ';
+  String passengerCapacityControler = ' ';
+  String poojaLengthController = ' ';
+  String poojaWidthController = ' ';
+  String poojaRoomLocationController = ' ';
 
   String liftArea = "";
 
@@ -96,6 +97,7 @@ class _FloorStoreState extends State<FloorStore> {
     try {
       // var client = http.Client();
       // http://sdplweb.com/sdpl/api/edit-bungalow-floor-store/project_id
+      //https://localhost/sdplserver/api/get-design
 
       var response = await http.get(
         Uri.parse(
@@ -135,8 +137,9 @@ class _FloorStoreState extends State<FloorStore> {
     }
     return isloading == true
         ? const Center(
-            child : CircularProgressIndicator(),
-          ) : SingleChildScrollView(
+            child: CircularProgressIndicator(),
+          )
+        : SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -558,40 +561,42 @@ class _FloorStoreState extends State<FloorStore> {
                     child: SizedBox(
                       width: width * 9,
                       height: height * 0.3,
-                      child: FutureBuilder(
-                          future: getRecent(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Container(
-                                child: const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              );
-                            } else {
-                              return CarouselSlider.builder(
-                                itemCount: bunglowPageRecentList.length,
-                                itemBuilder: (context, i, id) {
-                                  return Container(
-                                    height: height * 0.4,
-                                    width: width * 0.9,
-                                    child: Image.network(
-                                      imageUrl +
-                                          bunglowPageRecentList[i]["img_path"],
-                                      fit: BoxFit.fill,
-                                    ),
-                                  );
-                                },
-                                options: CarouselOptions(
-                                  autoPlay: true,
-                                  enableInfiniteScroll: true,
-                                  autoPlayAnimationDuration:
-                                      const Duration(milliseconds: 800),
-                                  viewportFraction: 1,
-                                ),
-                              );
-                            }
-                          }),
+                      child: 
+                      FutureBuilder(
+                        future: getRecent(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Container(
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          } else {
+                            return CarouselSlider.builder(
+                              itemCount: bunglowPageRecentList.length,
+                              itemBuilder: (context, i, id) {
+                                return Container(
+                                  height: height * 0.4,
+                                  width: width * 0.9,
+                                  child: Image.network(
+                                    imageUrl +
+                                        bunglowPageRecentList[i]["img_path"],
+                                    fit: BoxFit.fill,
+                                  ),
+                                );
+                              },
+                              options: CarouselOptions(
+                                autoPlay: true,
+                                enableInfiniteScroll: true,
+                                autoPlayAnimationDuration:
+                                    const Duration(milliseconds: 800),
+                                viewportFraction: 1,
+                              ),
+                            );
+                          }
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -1166,7 +1171,8 @@ class _FloorStoreState extends State<FloorStore> {
                                     selectedPoojaPlace = it!;
                                     printData['bungalow_floor_store']
                                             ['pooja_room_type'] =
-                                        selectedPoojaPlace;},
+                                        selectedPoojaPlace;
+                                  },
                                 );
                               },
                             ),
@@ -1281,12 +1287,17 @@ class _FloorStoreState extends State<FloorStore> {
                         child: Checkbox(
                             activeColor: checkColor,
                             checkColor: Colors.white,
-                            value: printData["bungalow_floor_store"]["opening_to_li_ha"] != null ? true : openHall,
+                            value: printData["bungalow_floor_store"]
+                                        ["opening_to_li_ha"] !=
+                                    null
+                                ? true
+                                : openHall,
                             onChanged: (value) {
                               setState(
                                 () {
                                   openHall = value;
-                                  printData["bungalow_floor_store"]["opening_to_li_ha"] = null;
+                                  printData["bungalow_floor_store"]
+                                      ["opening_to_li_ha"] = null;
                                 },
                               );
                             }),
