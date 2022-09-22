@@ -94,14 +94,13 @@ class _PantryDetailState extends State<PantryDetail> {
 
 // http://sdplweb.com/sdpl/api/edit-bungalow-pantry/project_id
 
-bool isloading = false;
+  bool isloading = false;
   var printData;
   Future<void> getData() async {
     try {
       // var client = http.Client();
       var response = await http.get(
         Uri.parse(
-
           "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-pantry/179",
         ),
       );
