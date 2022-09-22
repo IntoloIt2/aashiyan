@@ -4,7 +4,10 @@
 
 import 'dart:convert';
 
+import 'package:aashiyan/components/contants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../components/forms.dart';
 import '../../../const.dart';
@@ -232,61 +235,68 @@ class _BuiltUpState extends State<BuiltUp> {
 
 //  - - - - -Heading variables- - - - - - - - - - - - - - - - - - - - -
 
-  var projectCost = 00;
+  var projectCost = 0;
   var totalBuild = 5000;
-  var arcitecturalCost = 00;
-  var totalfeeCost = 00;
-  var structuralCost = 00;
-  var buildingCost = 00;
-  var superCost = 00;
-  var interiorCost = 00;
-  var arcRemainingFees = 00;
+  var arcitecturalCost = 0;
+  var totalfeeCost = 0;
+  var structuralCost = 0;
+  var buildingCost = 0;
+  var superCost = 0;
+  var interiorCost = 0;
+  var arcRemainingFees = 0;
+  var drawingValue = 0;
+  var setsOfDrawing = 0;
+  var handingOver = 0;
+  var designFeesA = 0;
+  var designFeesB = 0;
+  var payDesFees = 0;
+  var serviceValue = 0;
 
 //- - - - - -Arc Design  - - - - - - - - - - - - - - - - -
 
-  var conCost = 00;
-  var d3Cost = 00;
-  var worCost = 00;
-  var opeCost = 00;
-  var griCost = 00;
-  var builCost = 00;
-  var d2Cost = 00;
-  var bouCost = 00;
-  var raiCost = 00;
-  var entCost = 00;
+  var conCost = 0;
+  var d3Cost = 0;
+  var worCost = 0;
+  var opeCost = 0;
+  var griCost = 0;
+  var builCost = 0;
+  var d2Cost = 0;
+  var bouCost = 0;
+  var raiCost = 0;
+  var entCost = 0;
 
 // - - - - - -Str Design - - - - - - - - - - - - - - - - -
 
-  var layCost = 00;
-  var fppCost = 00;
-  var fouCost = 00;
-  var colCost = 00;
-  var rccCost = 00;
-  var staCost = 00;
-  var linCost = 00;
-  var slaCost = 00;
+  var layCost = 0;
+  var fppCost = 0;
+  var fouCost = 0;
+  var colCost = 0;
+  var rccCost = 0;
+  var pbpCost = 0;
+  var staCost = 0;
+  var linCost = 0;
+  var slaCost = 0;
 
 // - - - - - -Build Design - - - - - - - - - - - - - - - -
 
-  var efpCost = 00;
-  var pspCost = 00;
-  var hvacCost = 00;
+  var efpCost = 0;
+  var pspCost = 0;
+  var hvacCost = 0;
 
 // - - - - - - -Super Vision - - - - - - - - - - - - - - - -
 
-  var supCostA = 00;
-  var supCostb = 00;
+  var supCostA = 0;
 
 //  - - - - - - Int Design - - - - - - - - - - - - - - - - - - - -
 
-  var flpCost = 00;
-  var fcdCost = 00;
-  var floCost = 00;
-  var edpCost = 00;
-  var ssdCost = 00;
-  var eswCost = 00;
-  var tddCost = 00;
-  var mscCost = 00;
+  var flpCost = 0;
+  var fcdCost = 0;
+  var floCost = 0;
+  var edpCost = 0;
+  var ssdCost = 0;
+  var eswCost = 0;
+  var tddCost = 0;
+  var mscCost = 0;
 
 // - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -307,7 +317,7 @@ class _BuiltUpState extends State<BuiltUp> {
 
     Object country;
     return getData == null
-        ? Center(
+        ? const Center(
             child: CircularProgressIndicator(),
           )
         : Container(
@@ -322,7 +332,7 @@ class _BuiltUpState extends State<BuiltUp> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5),
+                          padding: const EdgeInsets.symmetric(vertical: 5),
                           child: headingFont('Area Statement'),
                         ),
                         Container(
@@ -352,7 +362,7 @@ class _BuiltUpState extends State<BuiltUp> {
                               ),
                             )),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5),
+                          padding: const EdgeInsets.symmetric(vertical: 5),
                           child: headingFont('Built Up Areas'),
                         ),
                         Container(
@@ -408,7 +418,7 @@ class _BuiltUpState extends State<BuiltUp> {
                               ),
                             )),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
                           child: headingFont('Select Project Specifications'),
                         ),
                         Container(
@@ -434,11 +444,28 @@ class _BuiltUpState extends State<BuiltUp> {
                                                 BasicRequirment = false;
                                                 StandardRequirment = false;
                                                 PremiumRequirment = false;
+                                                projectCostCalculation();
+                                                // if (SuperRequirment == true) {
+                                                //   serviceValue = 4000;
+                                                //   specificationDetail();
+                                                //   print(projectCost);
 
-                                                projectCost = totalBuild * 4000;
+                                                //   print(drawingDesign(
+                                                //       drawingValue));
+                                                // } else {
+                                                //   ConceptRequirment = false;
+                                                //   projectCost = 0;
+                                                //   drawingDesign(0);
+                                                // }
 
-                                                if (SuperRequirment == true) {
-                                                } else {}
+                                                // if (SuperRequirment == true) {
+
+                                                //   setsOfDrawingFees(
+                                                //       setsOfDrawing);
+                                                // } else {
+                                                //   setsOfDrawingFees(
+                                                //       setsOfDrawing = 0);
+                                                // }
                                               },
                                             );
                                           }),
@@ -473,9 +500,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                                 BasicRequirment = false;
                                                 StandardRequirment = false;
                                                 SuperRequirment = false;
-                                                projectCost = totalBuild * 3000;
-                                                if (PremiumRequirment == true) {
-                                                } else {}
+                                                projectCostCalculation();
                                               },
                                             );
                                           }),
@@ -510,12 +535,14 @@ class _BuiltUpState extends State<BuiltUp> {
                                                 BasicRequirment = false;
                                                 PremiumRequirment = false;
                                                 SuperRequirment = false;
+                                                projectCostCalculation();
 
-                                                projectCost = totalBuild * 2000;
-
-                                                if (StandardRequirment ==
+                                                if (StandardRequirment == 
                                                     true) {
-                                                } else {}
+                                                  drawingDesign(drawingValue);
+                                                } else {
+                                                  projectCost = 0;
+                                                }
                                               },
                                             );
                                           }),
@@ -550,12 +577,13 @@ class _BuiltUpState extends State<BuiltUp> {
                                                 StandardRequirment = false;
                                                 PremiumRequirment = false;
                                                 SuperRequirment = false;
-
-                                                projectCost = totalBuild * 1500;
-
-                                                if (BasicRequirment == true) {
-                                                  print('$totalBuild');
-                                                }
+                                                projectCostCalculation();
+                                                // if (BasicRequirment == true) {
+                                                //   serviceValue = 1500;
+                                                //   specificationDetail();
+                                                // } else {
+                                                //   projectCost = 0;
+                                                // }
                                               },
                                             );
                                           }),
@@ -576,7 +604,7 @@ class _BuiltUpState extends State<BuiltUp> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5.0),
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
                           child: headingFont('Total Project'),
                         ),
                         Container(
@@ -593,10 +621,10 @@ class _BuiltUpState extends State<BuiltUp> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5),
+                          padding: const EdgeInsets.symmetric(vertical: 5),
                           child: headingFont('Select Scope of Works'),
                         ),
-                        Text(
+                        const Text(
                           'Note-1 : Advise to get started with conceptual plan only.',
                           style: TextStyle(fontSize: 15),
                         ),
@@ -632,9 +660,38 @@ class _BuiltUpState extends State<BuiltUp> {
                                                       var design1Percent = double
                                                           .parse(ar_design[0][
                                                               'design_percent']);
+                                                      if (SuperRequirment == true ||
+                                                          BasicRequirment ==
+                                                              true ||
+                                                          StandardRequirment ==
+                                                              true ||
+                                                          PremiumRequirment ==
+                                                              true) {
+                                                        ConceptRequirment =
+                                                            value;
+                                                      } else {
+                                                        Fluttertoast.showToast(
+                                                            backgroundColor:
+                                                                Colors.white,
+                                                            textColor:
+                                                                Colors.black87,
+                                                            msg:
+                                                                'Kindly Select Specification First');
+                                                      }
 
-                                                      ConceptRequirment = value;
                                                       ConceptNotRequire = false;
+                                                      D3Requirment = false;
+                                                      WorkingRequirment = false;
+                                                      OpeningRequirment = false;
+                                                      GrillRequirment = false;
+                                                      BuildingRequirment =
+                                                          false;
+                                                      D2Requirment = false;
+                                                      BoundaryRequirment =
+                                                          false;
+                                                      RailingRequirment = false;
+                                                      EntranceRequirment =
+                                                          false;
                                                       conCost =
                                                           conceptualAndThreeDCost(
                                                               totalBuild);
@@ -644,6 +701,15 @@ class _BuiltUpState extends State<BuiltUp> {
                                                         print(conCost);
                                                       } else {
                                                         conCost = 0;
+                                                        d3Cost = 0;
+                                                        worCost = 0;
+                                                        opeCost = 0;
+                                                        griCost = 0;
+                                                        builCost = 0;
+                                                        d2Cost = 0;
+                                                        bouCost = 0;
+                                                        raiCost = 0;
+                                                        entCost = 0;
                                                       }
                                                     },
                                                   );
@@ -662,7 +728,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                             //     BoxDecoration(border: Border.all()),
                                             child: TextButton(
                                               onPressed: () {},
-                                              child: Text(
+                                              child: const Text(
                                                 "Sample pdf",
                                                 style: TextStyle(
                                                     color: Colors.black,
@@ -693,13 +759,20 @@ class _BuiltUpState extends State<BuiltUp> {
                                                       var design2Percent = double
                                                           .parse(ar_design[1][
                                                               'design_percent']);
-                                                      D3Requirment =
-                                                          ConceptRequirment;
 
-                                                      // D3Requirment = value;
-                                                      D3NotRequire =
-                                                          ConceptNotRequire;
-                                                      // D3NotRequire = false;
+                                                      if (ConceptRequirment ==
+                                                          true) {
+                                                        D3Requirment = value;
+                                                      } else {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder: (context) =>
+                                                                alertBox(
+                                                                    context));
+                                                      }
+
+                                                      D3NotRequire = false;
+
                                                       d3Cost =
                                                           conceptualAndThreeDCost(
                                                               totalBuild);
@@ -724,7 +797,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                             color: Colors.white,
                                             child: TextButton(
                                               onPressed: () {},
-                                              child: Text(
+                                              child: const Text(
                                                 "Sample pdf",
                                                 style: TextStyle(
                                                     color: Colors.black,
@@ -756,7 +829,54 @@ class _BuiltUpState extends State<BuiltUp> {
                                                           .parse(ar_design[2][
                                                               'design_percent']);
                                                       // print('$design3Percent');
-                                                      WorkingRequirment = value;
+                                                      if (ConceptRequirment ==
+                                                          true) {
+                                                        WorkingRequirment =
+                                                            value;
+                                                      } else {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (context) =>
+                                                                    AlertDialog(
+                                                                      title: Text(
+                                                                          'Alert'),
+                                                                      content: Text(
+                                                                          'Kindly finallize Conceptual and Elevation plan to proceed further!'),
+                                                                      actions: [
+                                                                        Align(
+                                                                          alignment:
+                                                                              Alignment.bottomCenter,
+                                                                          child:
+                                                                              Container(
+                                                                            height:
+                                                                                45,
+                                                                            width:
+                                                                                90,
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                52,
+                                                                                52,
+                                                                                52),
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: const EdgeInsets.only(right: 8.0, bottom: 8),
+                                                                              child: Center(
+                                                                                child: TextButton(
+                                                                                    onPressed: () {
+                                                                                      Navigator.pop(context);
+                                                                                    },
+                                                                                    child: Text(
+                                                                                      'Okay',
+                                                                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                                                                    )),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ));
+                                                      }
                                                       WorkingNotRequire = false;
                                                       worCost =
                                                           remainingFeesCost(
@@ -786,7 +906,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                             color: Colors.white,
                                             child: TextButton(
                                               onPressed: () {},
-                                              child: Text(
+                                              child: const Text(
                                                 "Sample pdf",
                                                 style: TextStyle(
                                                     color: Colors.black,
@@ -818,8 +938,54 @@ class _BuiltUpState extends State<BuiltUp> {
                                                           .parse(ar_design[3][
                                                               'design_percent']);
                                                       // print('$design4Percent');
-
-                                                      OpeningRequirment = value;
+                                                      if (ConceptRequirment ==
+                                                          true) {
+                                                        OpeningRequirment =
+                                                            value;
+                                                      } else {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (context) =>
+                                                                    AlertDialog(
+                                                                      title: Text(
+                                                                          'Alert'),
+                                                                      content: Text(
+                                                                          'Kindly finallize Conceptual and Elevation plan to proceed further!'),
+                                                                      actions: [
+                                                                        Align(
+                                                                          alignment:
+                                                                              Alignment.bottomCenter,
+                                                                          child:
+                                                                              Container(
+                                                                            height:
+                                                                                45,
+                                                                            width:
+                                                                                90,
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                52,
+                                                                                52,
+                                                                                52),
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: const EdgeInsets.only(right: 8.0, bottom: 8),
+                                                                              child: Center(
+                                                                                child: TextButton(
+                                                                                    onPressed: () {
+                                                                                      Navigator.pop(context);
+                                                                                    },
+                                                                                    child: Text(
+                                                                                      'Okay',
+                                                                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                                                                    )),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ));
+                                                      }
                                                       OpeningNotRequire = false;
                                                       opeCost =
                                                           remainingFeesCost(
@@ -829,10 +995,10 @@ class _BuiltUpState extends State<BuiltUp> {
 
                                                       if (OpeningRequirment ==
                                                           true) {
+                                                        print(opeCost);
                                                       } else {
                                                         opeCost = 0;
                                                       }
-                                                      print(opeCost);
                                                     },
                                                   );
                                                 }),
@@ -848,7 +1014,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                             color: Colors.white,
                                             child: TextButton(
                                               onPressed: () {},
-                                              child: Text(
+                                              child: const Text(
                                                 "Sample pdf",
                                                 style: TextStyle(
                                                     color: Colors.black,
@@ -879,8 +1045,53 @@ class _BuiltUpState extends State<BuiltUp> {
                                                       var design5Percent = double
                                                           .parse(ar_design[4][
                                                               'design_percent']);
-
-                                                      GrillRequirment = value;
+                                                      if (ConceptRequirment ==
+                                                          true) {
+                                                        GrillRequirment = value;
+                                                      } else {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (context) =>
+                                                                    AlertDialog(
+                                                                      title: Text(
+                                                                          'Alert'),
+                                                                      content: Text(
+                                                                          'Kindly finallize Conceptual and Elevation plan to proceed further!'),
+                                                                      actions: [
+                                                                        Align(
+                                                                          alignment:
+                                                                              Alignment.bottomCenter,
+                                                                          child:
+                                                                              Container(
+                                                                            height:
+                                                                                45,
+                                                                            width:
+                                                                                90,
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                52,
+                                                                                52,
+                                                                                52),
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: const EdgeInsets.only(right: 8.0, bottom: 8),
+                                                                              child: Center(
+                                                                                child: TextButton(
+                                                                                    onPressed: () {
+                                                                                      Navigator.pop(context);
+                                                                                    },
+                                                                                    child: Text(
+                                                                                      'Okay',
+                                                                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                                                                    )),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ));
+                                                      }
                                                       GrillNotRequire = false;
                                                       griCost =
                                                           remainingFeesCost(
@@ -908,7 +1119,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                             color: Colors.white,
                                             child: TextButton(
                                               onPressed: () {},
-                                              child: Text(
+                                              child: const Text(
                                                 "Sample pdf",
                                                 style: TextStyle(
                                                     color: Colors.black,
@@ -940,8 +1151,54 @@ class _BuiltUpState extends State<BuiltUp> {
                                                           .parse(ar_design[5][
                                                               'design_percent']);
                                                       // print('$design6Percent');
-                                                      BuildingRequirment =
-                                                          value;
+                                                      if (ConceptRequirment ==
+                                                          true) {
+                                                        BuildingRequirment =
+                                                            value;
+                                                      } else {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (context) =>
+                                                                    AlertDialog(
+                                                                      title: Text(
+                                                                          'Alert'),
+                                                                      content: Text(
+                                                                          'Kindly finallize Conceptual and Elevation plan to proceed further!'),
+                                                                      actions: [
+                                                                        Align(
+                                                                          alignment:
+                                                                              Alignment.bottomCenter,
+                                                                          child:
+                                                                              Container(
+                                                                            height:
+                                                                                45,
+                                                                            width:
+                                                                                90,
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                52,
+                                                                                52,
+                                                                                52),
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: const EdgeInsets.only(right: 8.0, bottom: 8),
+                                                                              child: Center(
+                                                                                child: TextButton(
+                                                                                    onPressed: () {
+                                                                                      Navigator.pop(context);
+                                                                                    },
+                                                                                    child: Text(
+                                                                                      'Okay',
+                                                                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                                                                    )),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ));
+                                                      }
                                                       BuildingNotRequire =
                                                           false;
                                                       builCost =
@@ -970,7 +1227,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                             color: Colors.white,
                                             child: TextButton(
                                               onPressed: () {},
-                                              child: Text(
+                                              child: const Text(
                                                 "Sample pdf",
                                                 style: TextStyle(
                                                     color: Colors.black,
@@ -1002,7 +1259,53 @@ class _BuiltUpState extends State<BuiltUp> {
                                                           .parse(ar_design[6][
                                                               'design_percent']);
                                                       // print('$design7Percent');
-                                                      D2Requirment = value;
+                                                      if (ConceptRequirment ==
+                                                          true) {
+                                                        D2Requirment = value;
+                                                      } else {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (context) =>
+                                                                    AlertDialog(
+                                                                      title: Text(
+                                                                          'Alert'),
+                                                                      content: Text(
+                                                                          'Kindly finallize Conceptual and Elevation plan to proceed further!'),
+                                                                      actions: [
+                                                                        Align(
+                                                                          alignment:
+                                                                              Alignment.bottomCenter,
+                                                                          child:
+                                                                              Container(
+                                                                            height:
+                                                                                45,
+                                                                            width:
+                                                                                90,
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                52,
+                                                                                52,
+                                                                                52),
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: const EdgeInsets.only(right: 8.0, bottom: 8),
+                                                                              child: Center(
+                                                                                child: TextButton(
+                                                                                    onPressed: () {
+                                                                                      Navigator.pop(context);
+                                                                                    },
+                                                                                    child: Text(
+                                                                                      'Okay',
+                                                                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                                                                    )),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ));
+                                                      }
                                                       D2NotRequire = false;
                                                       d2Cost =
                                                           remainingFeesCost(
@@ -1030,7 +1333,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                             color: Colors.white,
                                             child: TextButton(
                                               onPressed: () {},
-                                              child: Text(
+                                              child: const Text(
                                                 "Sample pdf",
                                                 style: TextStyle(
                                                     color: Colors.black,
@@ -1062,8 +1365,54 @@ class _BuiltUpState extends State<BuiltUp> {
                                                           .parse(ar_design[7][
                                                               'design_percent']);
                                                       // print('$design8Percent');
-                                                      BoundaryRequirment =
-                                                          value;
+                                                      if (ConceptRequirment ==
+                                                          true) {
+                                                        BoundaryRequirment =
+                                                            value;
+                                                      } else {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (context) =>
+                                                                    AlertDialog(
+                                                                      title: Text(
+                                                                          'Alert'),
+                                                                      content: Text(
+                                                                          'Kindly finallize Conceptual and Elevation plan to proceed further!'),
+                                                                      actions: [
+                                                                        Align(
+                                                                          alignment:
+                                                                              Alignment.bottomCenter,
+                                                                          child:
+                                                                              Container(
+                                                                            height:
+                                                                                45,
+                                                                            width:
+                                                                                90,
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                52,
+                                                                                52,
+                                                                                52),
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: const EdgeInsets.only(right: 8.0, bottom: 8),
+                                                                              child: Center(
+                                                                                child: TextButton(
+                                                                                    onPressed: () {
+                                                                                      Navigator.pop(context);
+                                                                                    },
+                                                                                    child: Text(
+                                                                                      'Okay',
+                                                                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                                                                    )),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ));
+                                                      }
                                                       BoundaryNotRequire =
                                                           false;
                                                       bouCost =
@@ -1092,7 +1441,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                             color: Colors.white,
                                             child: TextButton(
                                               onPressed: () {},
-                                              child: Text(
+                                              child: const Text(
                                                 "Sample pdf",
                                                 style: TextStyle(
                                                     color: Colors.black,
@@ -1124,7 +1473,54 @@ class _BuiltUpState extends State<BuiltUp> {
                                                           .parse(ar_design[8][
                                                               'design_percent']);
                                                       // print('$design9Percent');
-                                                      RailingRequirment = value;
+                                                      if (ConceptRequirment ==
+                                                          true) {
+                                                        RailingRequirment =
+                                                            value;
+                                                      } else {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (context) =>
+                                                                    AlertDialog(
+                                                                      title: Text(
+                                                                          'Alert'),
+                                                                      content: Text(
+                                                                          'Kindly finallize Conceptual and Elevation plan to proceed further!'),
+                                                                      actions: [
+                                                                        Align(
+                                                                          alignment:
+                                                                              Alignment.bottomCenter,
+                                                                          child:
+                                                                              Container(
+                                                                            height:
+                                                                                45,
+                                                                            width:
+                                                                                90,
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                52,
+                                                                                52,
+                                                                                52),
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: const EdgeInsets.only(right: 8.0, bottom: 8),
+                                                                              child: Center(
+                                                                                child: TextButton(
+                                                                                    onPressed: () {
+                                                                                      Navigator.pop(context);
+                                                                                    },
+                                                                                    child: Text(
+                                                                                      'Okay',
+                                                                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                                                                    )),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ));
+                                                      }
                                                       RailingNotRequire = false;
                                                       raiCost =
                                                           remainingFeesCost(
@@ -1152,7 +1548,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                             color: Colors.white,
                                             child: TextButton(
                                               onPressed: () {},
-                                              child: Text(
+                                              child: const Text(
                                                 "Sample pdf",
                                                 style: TextStyle(
                                                     color: Colors.black,
@@ -1185,8 +1581,54 @@ class _BuiltUpState extends State<BuiltUp> {
                                                                   9][
                                                               'design_percent']);
                                                       // print('$design10Percent');
-                                                      EntranceRequirment =
-                                                          value;
+                                                      if (ConceptRequirment ==
+                                                          true) {
+                                                        EntranceRequirment =
+                                                            value;
+                                                      } else {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (context) =>
+                                                                    AlertDialog(
+                                                                      title: Text(
+                                                                          'Alert'),
+                                                                      content: Text(
+                                                                          'Kindly finallize Conceptual and Elevation plan to proceed further!'),
+                                                                      actions: [
+                                                                        Align(
+                                                                          alignment:
+                                                                              Alignment.bottomCenter,
+                                                                          child:
+                                                                              Container(
+                                                                            height:
+                                                                                45,
+                                                                            width:
+                                                                                90,
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                52,
+                                                                                52,
+                                                                                52),
+                                                                            child:
+                                                                                Padding(
+                                                                              padding: const EdgeInsets.only(right: 8.0, bottom: 8),
+                                                                              child: Center(
+                                                                                child: TextButton(
+                                                                                    onPressed: () {
+                                                                                      Navigator.pop(context);
+                                                                                    },
+                                                                                    child: Text(
+                                                                                      'Okay',
+                                                                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                                                                    )),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ));
+                                                      }
                                                       EntranceNotRequire =
                                                           false;
                                                       entCost =
@@ -1194,9 +1636,8 @@ class _BuiltUpState extends State<BuiltUp> {
                                                               arcRemainingFees);
                                                       entCost =
                                                           entCost * 5 ~/ 100;
-                                                      if (GrillRequirment ==
+                                                      if (EntranceRequirment ==
                                                           true) {
-                                                        print(entCost);
                                                       } else {
                                                         entCost = 0;
                                                       }
@@ -1215,7 +1656,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                             color: Colors.white,
                                             child: TextButton(
                                               onPressed: () {},
-                                              child: Text(
+                                              child: const Text(
                                                 "Sample pdf",
                                                 style: TextStyle(
                                                     color: Colors.black,
@@ -1261,7 +1702,25 @@ class _BuiltUpState extends State<BuiltUp> {
                                                           .parse(str_design[0][
                                                               'design_percent']);
 
-                                                      LayoutRequirment = value;
+                                                      if (SuperRequirment == true ||
+                                                          BasicRequirment ==
+                                                              true ||
+                                                          StandardRequirment ==
+                                                              true ||
+                                                          PremiumRequirment ==
+                                                              true) {
+                                                        LayoutRequirment =
+                                                            value;
+                                                      } else {
+                                                        Fluttertoast.showToast(
+                                                            backgroundColor:
+                                                                Colors.white,
+                                                            textColor:
+                                                                Colors.black87,
+                                                            msg:
+                                                                'Kindly Select Specification First');
+                                                      }
+
                                                       LayoutNotRequire = false;
                                                       layCost =
                                                           structuralDesing(
@@ -1315,8 +1774,26 @@ class _BuiltUpState extends State<BuiltUp> {
                                                       var strDesign2 = double
                                                           .parse(str_design[1][
                                                               'design_percent']);
-                                                      FoundationPlanRequirment =
-                                                          value;
+
+                                                      if (SuperRequirment == true ||
+                                                          BasicRequirment ==
+                                                              true ||
+                                                          StandardRequirment ==
+                                                              true ||
+                                                          PremiumRequirment ==
+                                                              true) {
+                                                        FoundationPlanRequirment =
+                                                            value;
+                                                      } else {
+                                                        Fluttertoast.showToast(
+                                                            backgroundColor:
+                                                                Colors.white,
+                                                            textColor:
+                                                                Colors.black87,
+                                                            msg:
+                                                                'Kindly Select Specification First');
+                                                      }
+
                                                       FoundationPlanNotRequire =
                                                           false;
                                                       fppCost =
@@ -1372,8 +1849,26 @@ class _BuiltUpState extends State<BuiltUp> {
                                                       var strDesign3 = double
                                                           .parse(str_design[2][
                                                               'design_percent']);
-                                                      FoundationDetailsRequirment =
-                                                          value;
+
+                                                      if (SuperRequirment == true ||
+                                                          BasicRequirment ==
+                                                              true ||
+                                                          StandardRequirment ==
+                                                              true ||
+                                                          PremiumRequirment ==
+                                                              true) {
+                                                        FoundationDetailsRequirment =
+                                                            value;
+                                                      } else {
+                                                        Fluttertoast.showToast(
+                                                            backgroundColor:
+                                                                Colors.white,
+                                                            textColor:
+                                                                Colors.black87,
+                                                            msg:
+                                                                'Kindly Select Specification First');
+                                                      }
+
                                                       FoundationDetailsNotRequire =
                                                           false;
                                                       fouCost =
@@ -1428,7 +1923,24 @@ class _BuiltUpState extends State<BuiltUp> {
                                                       var strDesign4 = double
                                                           .parse(str_design[3][
                                                               'design_percent']);
-                                                      ColumnRequirment = value;
+                                                      if (SuperRequirment == true ||
+                                                          BasicRequirment ==
+                                                              true ||
+                                                          StandardRequirment ==
+                                                              true ||
+                                                          PremiumRequirment ==
+                                                              true) {
+                                                        ColumnRequirment =
+                                                            value;
+                                                      } else {
+                                                        Fluttertoast.showToast(
+                                                            backgroundColor:
+                                                                Colors.white,
+                                                            textColor:
+                                                                Colors.black87,
+                                                            msg:
+                                                                'Kindly Select Specification First');
+                                                      }
                                                       ColumnNotRequire = false;
                                                       colCost =
                                                           structuralDesing(
@@ -1482,7 +1994,24 @@ class _BuiltUpState extends State<BuiltUp> {
                                                       var strDesign5 = double
                                                           .parse(str_design[4][
                                                               'design_percent']);
-                                                      RccRequirment = value;
+
+                                                      if (SuperRequirment == true ||
+                                                          BasicRequirment ==
+                                                              true ||
+                                                          StandardRequirment ==
+                                                              true ||
+                                                          PremiumRequirment ==
+                                                              true) {
+                                                        RccRequirment = value;
+                                                      } else {
+                                                        Fluttertoast.showToast(
+                                                            backgroundColor:
+                                                                Colors.white,
+                                                            textColor:
+                                                                Colors.black87,
+                                                            msg:
+                                                                'Kindly Select Specification First');
+                                                      }
                                                       RccNotRequire = false;
                                                       rccCost =
                                                           structuralDesing(
@@ -1536,7 +2065,28 @@ class _BuiltUpState extends State<BuiltUp> {
                                                       var strDesign6 = double
                                                           .parse(str_design[5][
                                                               'design_percent']);
-                                                      StairsRequirment = value;
+                                                      if (SuperRequirment == true ||
+                                                          BasicRequirment ==
+                                                              true ||
+                                                          StandardRequirment ==
+                                                              true ||
+                                                          PremiumRequirment ==
+                                                              true) {
+                                                        StairsRequirment =
+                                                            value;
+                                                      } else {
+                                                        Fluttertoast.showToast(
+                                                            backgroundColor:
+                                                                Colors.white,
+                                                            textColor:
+                                                                Color.fromARGB(
+                                                                    221,
+                                                                    37,
+                                                                    37,
+                                                                    37),
+                                                            msg:
+                                                                'Kindly Select Specification First');
+                                                      }
                                                       StairsNotRequire = false;
                                                       staCost =
                                                           structuralDesing(
@@ -1896,7 +2446,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                   ),
                                   DropdownButton<String>(
                                       hint: headingFont('Jabalpur'),
-                                      icon: Icon(
+                                      icon: const Icon(
                                         Icons.arrow_drop_down,
                                         size: 30,
                                         color: Colors.black,
@@ -2093,9 +2643,6 @@ class _BuiltUpState extends State<BuiltUp> {
                                                 onChanged: (value) {
                                                   setState(
                                                     () {
-                                                      var intD4 = double.parse(
-                                                          int_design[3][
-                                                              'design_percent']);
                                                       ElectricalRequirment =
                                                           value;
                                                       ElectricalNotRequire =
@@ -2104,17 +2651,22 @@ class _BuiltUpState extends State<BuiltUp> {
                                                           interiorCost);
                                                       edpCost =
                                                           edpCost * 5 ~/ 100;
-                                                      if (ElectricRequirment ==
+                                                      if (ElectricalRequirment ==
                                                           true) {
                                                         print(edpCost);
                                                       } else {
-                                                        edpCost;
+                                                        edpCost = 0;
                                                       }
                                                     },
                                                   );
                                                 }),
-                                            requirementText(
-                                                int_design[3]['design']),
+                                            InkWell(
+                                              child: requirementText(
+                                                  int_design[3]['design']),
+                                              onTap: () {
+                                                print(edpCost);
+                                              },
+                                            ),
                                           ],
                                         ),
                                         Padding(
@@ -2426,10 +2978,10 @@ class _BuiltUpState extends State<BuiltUp> {
                               Column(children: [Text('$conCost')]),
                             ]),
                             TableRow(children: [
-                              Column(children: const [Text('2.')]),
+                              Column(children: [const Text('2.')]),
                               Column(
-                                  children: const [Text('3D Front Elevation')]),
-                              Column(children: const [Text('7 Days')]),
+                                  children: [const Text('3D Front Elevation')]),
+                              Column(children: [const Text('7 Days')]),
                               Column(children: [
                                 Checkbox(
                                     value: D3FrontRequirment,
@@ -2438,6 +2990,15 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           D3FrontRequirment = value;
                                           D3FrontNotRequire = false;
+                                          // payDesFees =
+                                          //     payDesignFees(payDesFees);
+                                          // payDesFees + d3Cost;
+                                          // if (D3FrontRequirment == true) {
+                                          //   payDesFees + d3Cost;
+                                          // } else if (D3FrontRequirment ==
+                                          //     false) {
+                                          //   payDesFees - d3Cost;
+                                          // }
                                         },
                                       );
                                     }),
@@ -2446,8 +3007,11 @@ class _BuiltUpState extends State<BuiltUp> {
                             ]),
                             TableRow(children: [
                               Column(children: const [Text('3.')]),
-                              Column(children: const [
-                                Text('Drawing UpTo Plinth')
+                              Column(children: [
+                                InkWell(
+                                  child: const Text('Drawing UpTo Plinth'),
+                                  onTap: () {},
+                                )
                               ]),
                               Column(children: const [Text('7 Days')]),
                               Column(children: [
@@ -2462,7 +3026,9 @@ class _BuiltUpState extends State<BuiltUp> {
                                       );
                                     }),
                               ]),
-                              Column(children: [Text('$worCost')]),
+                              Column(children: [
+                                Text('${drawingDesign(drawingValue)}')
+                              ]),
                             ]),
                             TableRow(children: [
                               Column(children: const [Text('4.')]),
@@ -2482,7 +3048,9 @@ class _BuiltUpState extends State<BuiltUp> {
                                       );
                                     }),
                               ]),
-                              Column(children: const [Text('38335')]),
+                              Column(children: [
+                                Text('${setsOfDrawingFees(setsOfDrawing)}')
+                              ]),
                             ]),
                             TableRow(children: [
                               Column(children: const [Text('5.')]),
@@ -2501,7 +3069,9 @@ class _BuiltUpState extends State<BuiltUp> {
                                       );
                                     }),
                               ]),
-                              Column(children: const [Text('30214')]),
+                              Column(children: [
+                                Text('${handingOverFees(handingOver)}')
+                              ]),
                             ]),
                             TableRow(children: [
                               Column(children: const [Text('6.')]),
@@ -2520,7 +3090,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                       );
                                     }),
                               ]),
-                              Column(children: const [Text('')]),
+                              Column(children: [Text('$superCost')]),
                             ]),
                           ],
                         ),
@@ -2532,7 +3102,8 @@ class _BuiltUpState extends State<BuiltUp> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 requirementText('Design Fees (Part A)'),
-                                requirementText('125891'),
+                                requirementText(
+                                    '${(designFeesPartA(designFeesA))}'),
                               ],
                             ),
                           ),
@@ -2557,7 +3128,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                       );
                                     }),
                               ]),
-                              Column(children: const [Text('9442')]),
+                              Column(children: [Text('$flpCost')]),
                             ]),
                             TableRow(children: [
                               Column(children: const [Text('2.')]),
@@ -2577,7 +3148,8 @@ class _BuiltUpState extends State<BuiltUp> {
                                       );
                                     }),
                               ]),
-                              Column(children: const [Text('23605')]),
+                              Column(
+                                  children: [Text('${(fcdCost + floCost)} ')]),
                             ]),
                             TableRow(children: [
                               Column(children: const [Text('3.')]),
@@ -2597,7 +3169,9 @@ class _BuiltUpState extends State<BuiltUp> {
                                       );
                                     }),
                               ]),
-                              Column(children: const [Text('23605')]),
+                              Column(children: [
+                                Text('${(edpCost + tddCost + ssdCost)}')
+                              ]),
                             ]),
                             TableRow(children: [
                               Column(children: const [Text('4.')]),
@@ -2617,7 +3191,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                       );
                                     }),
                               ]),
-                              Column(children: const [Text('28326')]),
+                              Column(children: [Text('$eswCost')]),
                             ]),
                             TableRow(children: [
                               Column(children: const [Text('5.')]),
@@ -2632,11 +3206,17 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           MaterialSelectionRequirment = value;
                                           MaterialSelectionNotRequire = false;
+                                          // if (MaterialSelectionRequirment =
+                                          //     true) {
+                                          //   // Text("${} ")
+                                          // } else {
+                                          //   print('0');
+                                          // }
                                         },
                                       );
                                     }),
                               ]),
-                              Column(children: const [Text('9442')]),
+                              Column(children: [Text('$mscCost')]),
                             ]),
                           ],
                         ),
@@ -2648,7 +3228,8 @@ class _BuiltUpState extends State<BuiltUp> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 requirementText('Interior Desing (Part B)'),
-                                requirementText('94420'),
+                                requirementText(
+                                    '${(designFeesPartB(designFeesB))} '),
                               ],
                             ),
                           ),
@@ -2669,7 +3250,18 @@ class _BuiltUpState extends State<BuiltUp> {
                           children: [
                             requirementText(
                                 'Design and Drawing Fee \n(Part A + B)'),
-                            requirementText('220311')
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 50.0),
+                                  child: requirementText(
+                                      '${payDesignFees(payDesFees)}'),
+                                ),
+                                requirementText(
+                                    '${(designFeesPartA(designFeesA) + designFeesPartB(designFeesB) + superCost)} '),
+                              ],
+                            )
                           ],
                         ),
                       ),
@@ -2685,7 +3277,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                   color: Colors.blue,
                                   child: TextButton(
                                       onPressed: () {},
-                                      child: Text(
+                                      child: const Text(
                                         'SAVE',
                                         style: TextStyle(
                                             color: Color.fromARGB(
@@ -2701,7 +3293,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                   //     borderRadius: BorderRadius.circular(5)),
                                   child: TextButton(
                                       onPressed: () {},
-                                      child: Text(
+                                      child: const Text(
                                         'CONTINUE TO PAY',
                                         style: TextStyle(
                                             color: Color.fromARGB(
@@ -2719,33 +3311,184 @@ class _BuiltUpState extends State<BuiltUp> {
           );
   }
 
+  void projectCostCalculation() {
+    if (SuperRequirment == true) {
+      projectCost = totalBuild * superService;
+      // int value = projectCost * 2 ~/ 100 * 50 ~/ 100 - conCost - d3Cost;
+      // return 1;
+    } else if (PremiumRequirment == true) {
+      projectCost = totalBuild * premiumService;
+      // return 2;
+
+    } else if (StandardRequirment == true) {
+      projectCost = totalBuild * standardService;
+      // return 3;
+    } else if (BasicRequirment == true) {
+      projectCost = totalBuild * basicService;
+      // return 4;
+    } else {
+      projectCost = 0;
+    }
+  }
+
+  AlertDialog alertBox(BuildContext context) {
+    return AlertDialog(
+      title: Text('Alert'),
+      content: Text('Kindly finallize Conceptual plan to proceed further!'),
+      actions: [
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: 45,
+            width: 90,
+            color: Color.fromARGB(255, 52, 52, 52),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 8.0, bottom: 8),
+              child: Center(
+                child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      'Okay',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    )),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
   int conceptualAndThreeDCost(totalBuild) {
-    int cost = totalBuild * 1800 * 2 ~/ 100 * 15 ~/ 100;
-    return cost;
+    int value = totalBuild * 1800 * 2 ~/ 100 * 15 ~/ 100;
+    return value;
   }
 
   int remainingFeesCost(arcRemainingFees) {
-    int fees = projectCost * 2 ~/ 100 * 50 ~/ 100 - conCost - d3Cost;
-    return fees;
+    // if()
+    int value = projectCost * 2 ~/ 100 * 50 ~/ 100 - conCost - d3Cost;
+    // print('Proje $projectCost');
+    // print('jhkjbb $value');
+    return value;
   }
 
   int structuralDesing(structuralCost) {
-    int strFees = projectCost * 2 ~/ 100 * 35 ~/ 100;
-    return strFees;
+    int value = projectCost * 2 ~/ 100 * 35 ~/ 100;
+    return value;
   }
 
   int buildingDesign(buildingCost) {
-    int buildingfees = projectCost * 2 ~/ 100 * 15 ~/ 100;
-    return buildingfees;
+    int value = projectCost * 2 ~/ 100 * 15 ~/ 100;
+    return value;
   }
 
   int superVisionDesign(superCost) {
-    int superVisionFees = projectCost * 0.25 ~/ 100;
-    return superVisionFees;
+    int value = projectCost * 0.25 ~/ 100;
+    return value;
   }
 
   int interiorDesign(interiorCost) {
-    int interiorFees = (projectCost * 1.5 ~/ 100);
-    return interiorFees;
+    int value = (projectCost * 1.5 ~/ 100);
+    return value;
   }
+
+  int drawingDesign(drawingValue) {
+    int value = ((worCost ~/ 2) +
+        layCost +
+        flpCost +
+        fouCost +
+        colCost +
+        rccCost +
+        pbpCost);
+    return value;
+  }
+
+  int setsOfDrawingFees(setsOfDrawing) {
+    int value = ((worCost ~/ 2) +
+        opeCost +
+        griCost +
+        builCost +
+        d2Cost +
+        staCost +
+        linCost +
+        efpCost);
+    return value;
+  }
+
+  int handingOverFees(handingOver) {
+    int value = (bouCost + raiCost + entCost + slaCost + pspCost + hvacCost);
+    return value;
+  }
+
+  int designFeesPartA(designFeesA) {
+    int value = conCost +
+        d3Cost +
+        drawingDesign(drawingValue) +
+        setsOfDrawingFees(setsOfDrawing) +
+        handingOverFees(handingOver);
+    return value;
+  }
+
+  int designFeesPartB(designFeesB) {
+    int value = flpCost +
+        fcdCost +
+        floCost +
+        edpCost +
+        tddCost +
+        ssdCost +
+        eswCost +
+        mscCost;
+    return value;
+  }
+
+  int payDesignFees(payDesFees) {
+    payDesFees = conCost;
+
+    if (D3FrontRequirment == true) {
+      payDesFees = payDesFees + d3Cost;
+    }
+
+    if (DrawingRequirment == true) {
+      payDesFees = payDesFees + drawingDesign(drawingValue);
+    }
+
+    if (SetofRequirment == true) {
+      payDesFees = payDesFees + setsOfDrawingFees(setsOfDrawing);
+    }
+
+    if (HandingRequirment == true) {
+      payDesFees = payDesFees + handingOverFees(handingOver);
+    }
+
+    if (WithSuperRequirment == true) {
+      payDesFees = payDesFees + superCost;
+    }
+
+    if (FurnitureLayoutRequirment == true) {
+      payDesFees = payDesFees + flpCost;
+    }
+
+    if (CeilingRequirment == true) {
+      payDesFees = payDesFees + fcdCost + floCost;
+    }
+
+    if (ToiletDadoRequirment == true) {
+      payDesFees = payDesFees + edpCost + tddCost + ssdCost;
+    }
+
+    if (EachRequirment == true) {
+      payDesFees = payDesFees + eswCost;
+    }
+
+    if (MaterialSelectionRequirment == true) {
+      payDesFees = payDesFees + mscCost;
+    }
+
+    return (payDesFees);
+  }
+  // int () {}
+
 }

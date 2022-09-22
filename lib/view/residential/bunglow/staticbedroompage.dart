@@ -6384,6 +6384,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
               _value[jsonEncode("project_id")] = jsonEncode(87);
 
               List<Bedtypes> bedData = [
+                
                 if (masterBedroom == true)
                   Bedtypes(
                     bedroomLength: masterLength,
