@@ -5,16 +5,16 @@ import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/model/requirementmodel.dart';
 import 'package:flutter/material.dart';
-import '../../../const.dart';
+import '../../../../const.dart';
 import 'package:http/http.dart' as http;
 
-class Requirement extends StatefulWidget {
+class Step_1 extends StatefulWidget {
   static const namedRoute = "/intrestedNext";
   @override
-  State<Requirement> createState() => _RequirementState();
+  State<Step_1> createState() => _Step_1State();
 }
 
-class _RequirementState extends State<Requirement> {
+class _Step_1State extends State<Step_1> {
   late Future<RequirementModel> futureRequirement;
   String nameController = '';
   String lastNameController = "";
@@ -1098,7 +1098,7 @@ class _RequirementState extends State<Requirement> {
                             const BorderRadius.all(Radius.circular(5)),
                         child: SizedBox(
                           height: height * 0.04,
-                          width: width * 0.22,
+                          width: width * 0.2,
                           child: TextFormField(
                             // controller: nameController,
                             initialValue: printData["project"]
@@ -1173,7 +1173,7 @@ class _RequirementState extends State<Requirement> {
                             const BorderRadius.all(Radius.circular(5)),
                         child: SizedBox(
                           height: height * 0.04,
-                          width: width * 0.22,
+                          width: width * 0.18,
                           child: TextFormField(
                             // controller: nameController,
                             initialValue: printData["project"]
@@ -1246,7 +1246,7 @@ class _RequirementState extends State<Requirement> {
                             const BorderRadius.all(Radius.circular(5)),
                         child: SizedBox(
                           height: height * 0.04,
-                          width: width * 0.22,
+                          width: width * 0.18,
                           child: TextFormField(
                             // controller: nameController,
                             initialValue: printData["project"]
@@ -1321,7 +1321,7 @@ class _RequirementState extends State<Requirement> {
                             const BorderRadius.all(Radius.circular(5)),
                         child: SizedBox(
                           height: height * 0.04,
-                          width: width * 0.22,
+                          width: width * 0.18,
                           child: TextFormField(
                             // controller: nameController,
                             initialValue: printData["project"]

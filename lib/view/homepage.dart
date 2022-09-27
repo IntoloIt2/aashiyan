@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 import '../components/project_category.dart';
 import '../controller/api_services.dart';
 
-
 class HomePage extends StatefulWidget {
-   HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -19,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    
+
     return Column(
       children: [
         Expanded(
@@ -38,8 +37,8 @@ class _HomePageState extends State<HomePage> {
                 ),
                 centerTitle: true,
                 bottom: PreferredSize(
-                  child:  Container(
-                    margin:  EdgeInsets.only(bottom: 10),
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 10),
                     child: Text(
                       "Premium Architecture Engineering",
                       style: TextStyle(
@@ -70,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                               width: width * 0.9,
                               child: Image.asset(
                                 "assets/images/Screen.png",
-                                 fit: BoxFit.fill,
+                                fit: BoxFit.fill,
                               ),
                             ),
                             // CustomPaint(
@@ -288,7 +287,6 @@ class _HomePageState extends State<HomePage> {
       alignment: Alignment.center,
       children: [
         Container(
-          
           height: MediaQuery.of(context).size.height * 0.13,
           width: MediaQuery.of(context).size.width * 0.2,
           child: CustomPaint(

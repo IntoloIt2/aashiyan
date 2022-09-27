@@ -106,7 +106,6 @@ Color expansionColor = HexColor("#E8F6F3");
 //   );
 // }
 
-
 // SingleChildScrollView buildSteps(BuildContext context) {
 //   return SingleChildScrollView(
 //     padding: EdgeInsets.all(10),
@@ -197,29 +196,28 @@ BottomNavigationBar buildBottomNav() {
 //   );
 // }
 
-
- Row living(var height , var width){
-  return   Row(
-                  children: [
-                    requirementText("Length"),
-                    SizedBox(
-                      width: width * 0.015,
-                    ),
-                    requirementTextField(height, width, 0.04, 0.15, "length"),
-                    valueContainer(height, width, size, 0.04, 0.05),
-                    SizedBox(
-                      width: width * 0.02,
-                    ),
-                    requirementText("Width"),
-                    SizedBox(
-                      width: width * 0.015,
-                    ),
-                    requirementTextField(height, width, 0.04, 0.15, "Width"),
-                    valueContainer(height, width, size, 0.04, 0.05),
-                    SizedBox(
-                      width: width * 0.01,
-                    ),
-                    requirementText("help ?")
-                  ],
-                );
-                }     
+Row living(var height, var width) {
+  return Row(
+    children: [
+      requirementText("Length"),
+      SizedBox(
+        width: width * 0.015,
+      ),
+      requirementTextField(height, width, 0.04, 0.15, "length"),
+      valueContainer(height, width, size, 0.04, 0.05),
+      SizedBox(
+        width: width * 0.02,
+      ),
+      requirementText("Width"),
+      SizedBox(
+        width: width * 0.015,
+      ),
+      requirementTextField(height, width, 0.04, 0.15, "Width"),
+      valueContainer(height, width, size, 0.04, 0.05),
+      SizedBox(
+        width: width * 0.01,
+      ),
+      requirementText("help ?")
+    ],
+  );
+}
