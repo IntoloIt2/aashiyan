@@ -7,6 +7,7 @@ import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:flutter/material.dart';
 import '../view/residential/bunglow/bedroom.dart';
 
+import '../view/residential/bunglow/builtup.dart';
 import '../view/residential/bunglow/entrance.dart';
 import '../view/residential/bunglow/staticbedroompage.dart';
 import 'steps_container.dart';
@@ -120,7 +121,7 @@ class _BunglowStepsState extends State<BunglowSteps> {
                 onTap: () {
                   setState(() {
                     index = 7;
-                    st = "Basement";
+                    st = "BuiltUp";
                   });
                 },
                 child: stepsContainer("step8"),
@@ -140,7 +141,8 @@ List Pages = [
   PantryDetail(),
   FloorStore(),
   StaticBedroomPage(),
-  Basement()
+  Basement(),
+  BuiltUp()
 ];
 
 class StepPages extends StatefulWidget {
@@ -186,6 +188,7 @@ class _StepPagesState extends State<StepPages> {
                             setState(() {
                               index = 1;
                               st = "Entrance";
+                            
                             });
                           },
                           child: stepsContainer("Step 2"),
@@ -254,8 +257,8 @@ class _StepPagesState extends State<StepPages> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              index = 6;
-                              st = "Basement";
+                              index = 7;
+                              st = "Built Up";
                             });
                           },
                           child: stepsContainer("step8"),
