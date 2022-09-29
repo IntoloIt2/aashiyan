@@ -25,6 +25,7 @@ class User {
   List roomRequirement;
   String roomOtherRequirement;
   String dressReqText;
+
   User({
     this.personBedRoom = '',
     this.length = '',
@@ -51,6 +52,15 @@ class StaticBedroomPage extends StatefulWidget {
 }
 
 class _StaticBedroomPageState extends State<StaticBedroomPage> {
+  int? mi;
+  int? si;
+  int? di;
+  int? pi;
+  int? gi;
+  int? o1i;
+  int? o2i;
+  int? o3i;
+
   void multiSelected(result, l1, l2) async {
     print(l1);
     if (result != null) {
@@ -119,10 +129,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
   @override
   void initState() {
     //Initialize with 1 item
-
     super.initState();
     _values;
-    // getData();
+    getData();
   }
 
   List<String> otherFacilities = [];
@@ -182,23 +191,568 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
     "Ground Floor",
   ];
 
+  List<String>? masterRFac;
+  List<String>? masterDFac;
+
+  List<String>? sonRFac;
+  List<String>? sonDFac;
+
+  List<String>? daughterRFac;
+  List<String>? daughterDFac;
+
+  List<String>? guestRFac;
+  List<String>? guestDFac;
+
+  List<String>? parentRFac;
+  List<String>? parentDFac;
+
+  List<String>? other1RFac;
+  List<String>? other1DFac;
+
+  List<String>? other2DFac;
+  List<String>? other2RFac;
+
+  List<String>? other3RFac;
+  List<String>? other3DFac;
+
   var printData;
+  int project_id = 179;
 
   Future<void> getData() async {
     try {
       var response = await http.get(
         Uri.parse(
-          "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-bedroom/87",
+          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-bedroom/$project_id",
         ),
       );
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        setState(() {
-          print(jsonResponse);
-          printData = jsonResponse["bungalow_bedroom"] as List;
-          print(printData);
-        });
+        setState(
+          () {
+            // if (jsonResponse != null) {
+            //   print(mi);
+            //   mi = int.parse(
+            //       jsonResponse['bungalow_bedroom']['bedroom'].toString());
+
+            //   print(mi);
+            //   print(si);
+
+            //   si = int.parse(printData['bedroom'].toString());
+
+            //   print(si);
+            //   print(di);
+
+            //   di = int.parse(printData['bedroom'].toString());
+
+            //   print(di);
+
+            //   pi = int.parse(printData['bedroom'].toString());
+
+            //   gi = int.parse(printData['bedroom'].toString());
+
+            //   o1i = int.parse(printData['bedroom'].toString());
+
+            //   o2i = int.parse(printData['bedroom'].toString());
+
+            //   o3i = int.parse(printData['bedroom'].toString());
+            // }
+
+            //printData = jsonResponse
+            printData = jsonResponse["bungalow_bedroom"];
+
+            // if (printData != null) {
+            //   print(mi);
+
+            //   mi = printData.asMap().containsKey(0)
+            //       ? int.parse(
+            //           jsonResponse['bungalow_bedroom']['bedroom'].toString())
+            //       : null;
+
+            //   print(mi);
+            //   print(si);
+
+            //   si = printData.asMap().containsKey(1)
+            //       ? int.parse(printData['bedroom'].toString())
+            //       : null;
+
+            //   print(si);
+            //   print(di);
+
+            //   di = printData.asMap().containsKey(2)
+            //       ? int.parse(printData['bedroom'].toString())
+            //       : null;
+
+            //   print(di);
+
+            //   pi = printData.asMap().containsKey(3)
+            //       ? int.parse(printData['bedroom'].toString())
+            //       : null;
+
+            //   gi = printData.asMap().containsKey(4)
+            //       ? int.parse(printData['bedroom'].toString())
+            //       : null;
+
+            //   o1i = printData.asMap().containsKey(5)
+            //       ? int.parse(printData['bedroom'].toString())
+            //       : null;
+
+            //   o2i = printData.asMap().containsKey(6)
+            //       ? int.parse(printData['bedroom'].toString())
+            //       : null;
+
+            //   o3i = printData.asMap().containsKey(7)
+            //       ? int.parse(printData['bedroom'].toString())
+            //       : null;
+            // }
+
+            print(printData);
+            print('first Index ${printData[0]}');
+
+            if (printData.asMap().containsKey(0)) {
+              masterLength = printData[0]['bedroom_length'] != null
+                  ? int.parse(printData[0]['bedroom_length'].toString())
+                  : 0;
+              masterWidth = printData[0]['bedroom_width'] != null
+                  ? int.parse(printData[0]['bedroom_width'].toString())
+                  : 0;
+              masterToiletLength = printData[0]['bedroom_toilet_length'] != null
+                  ? int.parse(printData[0]['bedroom_toilet_length'].toString())
+                  : 0;
+              masterToiletWidth = printData[0]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[0]['bedroom_toilet_width'].toString())
+                  : 0;
+              masterDressLength = printData[0]['bedroom_dress_length'] != null
+                  ? int.parse(printData[0]['bedroom_dress_length'].toString())
+                  : 0;
+              masterLocation = printData[0]['bedroom_floor'] != null
+                  ? int.parse(printData[0]['bedroom_floor'].toString())
+                  : 0;
+              masterDressWidth = printData[0]['bedroom_dress_width'] != null
+                  ? int.parse(printData[0]['bedroom_dress_width'].toString())
+                  : 0;
+              masterDressInt = printData[0]['bedroom_dress_req'] != null
+                  ? int.parse(printData[0]['bedroom_dress_req'].toString())
+                  : 0;
+              masterToiletFacility =
+                  printData[0]['bedroom_toilet_req_text'] != null
+                      ? printData[0]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              masterDresstext = printData[0]['bedroom_dress_req_text'] != null
+                  ? printData[0]['bedroom_dress_req_text'].toString()
+                  : " ";
+              masterOtherRequirement =
+                  printData[0]['bedroom_facility_req_text'] != null
+                      ? printData[0]['bedroom_facility_req_text'].toString()
+                      : " ";
+              masterDressFacility = printData[0]['bedroom_dress_facility'] !=
+                      null
+                  ? printData[0]['bedroom_dress_facility'].toString().split(',')
+                  : [];
+              masterRoomFacility = printData[0]['bedroom_facility'] != null
+                  ? printData[0]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+            if (printData.asMap().containsKey(1)) {
+              sonLength = printData[1]['bedroom_length'] != null
+                  ? int.parse(printData[1]['bedroom_length'].toString())
+                  : 0;
+              sonWidth = printData[1]['bedroom_width'] != null
+                  ? int.parse(printData[1]['bedroom_width'].toString())
+                  : 0;
+              sonToiletLength = printData[1]['bedroom_toilet_length'] != null
+                  ? int.parse(printData[1]['bedroom_toilet_length'].toString())
+                  : 0;
+              sonToiletWidth = printData[1]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[1]['bedroom_toilet_width'].toString())
+                  : 0;
+              sonDressLength = printData[1]['bedroom_dress_length'] != null
+                  ? int.parse(printData[1]['bedroom_dress_length'].toString())
+                  : 0;
+              sonLocation = printData[1]['bedroom_floor'] != null
+                  ? int.parse(printData[1]['bedroom_floor'].toString())
+                  : 0;
+              sonDressWidth = printData[1]['bedroom_dress_width'] != null
+                  ? int.parse(printData[1]['bedroom_dress_width'].toString())
+                  : 0;
+              sonDressInt = printData[1]['bedroom_dress_req'] != null
+                  ? int.parse(printData[1]['bedroom_dress_req'].toString())
+                  : 0;
+              sonToiletFacility =
+                  printData[1]['bedroom_toilet_req_text'] != null
+                      ? printData[1]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              sonDresstext = printData[1]['bedroom_dress_req_text'] != null
+                  ? printData[1]['bedroom_dress_req_text'].toString()
+                  : " ";
+              sonOtherRequirement =
+                  printData[1]['bedroom_facility_req_text'] != null
+                      ? printData[1]['bedroom_facility_req_text'].toString()
+                      : " ";
+              sonDressFacility = printData[1]['bedroom_dress_facility'] != null
+                  ? printData[1]['bedroom_dress_facility'].toString().split(',')
+                  : [];
+              sonRoomFacility = printData[1]['bedroom_facility'] != null
+                  ? printData[1]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+            if (printData.asMap().containsKey(2)) {
+              daughterLength = printData[2]['bedroom_length'] != null
+                  ? int.parse(printData[2]['bedroom_length'].toString())
+                  : 0;
+              daughterWidth = printData[2]['bedroom_width'] != null
+                  ? int.parse(printData[2]['bedroom_width'].toString())
+                  : 0;
+              daughterToiletLength = printData[2]['bedroom_toilet_length'] !=
+                      null
+                  ? int.parse(printData[2]['bedroom_toilet_length'].toString())
+                  : 0;
+              daughterToiletWidth = printData[2]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[2]['bedroom_toilet_width'].toString())
+                  : 0;
+              daughterDressLength = printData[2]['bedroom_dress_length'] != null
+                  ? int.parse(printData[2]['bedroom_dress_length'].toString())
+                  : 0;
+              daughterLocation = printData[2]['bedroom_floor'] != null
+                  ? int.parse(printData[2]['bedroom_floor'].toString())
+                  : 0;
+              daughterDressWidth = printData[2]['bedroom_dress_width'] != null
+                  ? int.parse(printData[2]['bedroom_dress_width'].toString())
+                  : 0;
+              daughterDressInt = printData[2]['bedroom_dress_req'] != null
+                  ? int.parse(printData[2]['bedroom_dress_req'].toString())
+                  : 0;
+              daughterToiletFacility =
+                  printData[2]['bedroom_toilet_req_text'] != null
+                      ? printData[2]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              daughterDresstext = printData[2]['bedroom_dress_req_text'] != null
+                  ? printData[2]['bedroom_dress_req_text'].toString()
+                  : " ";
+              daughterOtherRequirement =
+                  printData[2]['bedroom_facility_req_text'] != null
+                      ? printData[2]['bedroom_facility_req_text'].toString()
+                      : " ";
+              daughterDressFacility = printData[2]['bedroom_dress_facility'] !=
+                      null
+                  ? printData[2]['bedroom_dress_facility'].toString().split(',')
+                  : [];
+              daughterRoomFacility = printData[2]['bedroom_facility'] != null
+                  ? printData[2]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+            if (printData.asMap().containsKey(3)) {
+              parentLength = printData[3]['bedroom_length'] != null
+                  ? int.parse(printData[3]['bedroom_length'].toString())
+                  : 0;
+              parentWidth = printData[3]['bedroom_width'] != null
+                  ? int.parse(printData[3]['bedroom_width'].toString())
+                  : 0;
+              parentToiletLength = printData[3]['bedroom_toilet_length'] != null
+                  ? int.parse(printData[3]['bedroom_toilet_length'].toString())
+                  : 0;
+              parentToiletWidth = printData[3]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[3]['bedroom_toilet_width'].toString())
+                  : 0;
+              parentDressLength = printData[3]['bedroom_dress_length'] != null
+                  ? int.parse(printData[3]['bedroom_dress_length'].toString())
+                  : 0;
+              parentLocation = printData[3]['bedroom_floor'] != null
+                  ? int.parse(printData[3]['bedroom_floor'].toString())
+                  : 0;
+              parentDressWidth = printData[3]['bedroom_dress_width'] != null
+                  ? int.parse(printData[3]['bedroom_dress_width'].toString())
+                  : 0;
+              parentDressInt = printData[3]['bedroom_dress_req'] != null
+                  ? int.parse(printData[3]['bedroom_dress_req'].toString())
+                  : 0;
+              parentToiletFacility =
+                  printData[3]['bedroom_toilet_req_text'] != null
+                      ? printData[3]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              parentDresstext = printData[3]['bedroom_dress_req_text'] != null
+                  ? printData[3]['bedroom_dress_req_text'].toString()
+                  : " ";
+              parentOtherRequirement =
+                  printData[3]['bedroom_facility_req_text'] != null
+                      ? printData[3]['bedroom_facility_req_text'].toString()
+                      : " ";
+              parentDressFacility = printData[3]['bedroom_dress_facility'] !=
+                      null
+                  ? printData[3]['bedroom_dress_facility'].toString().split(',')
+                  : [];
+              parentRoomFacility = printData[3]['bedroom_facility'] != null
+                  ? printData[3]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+            if (printData.asMap().containsKey(4)) {
+              guestLength = printData[4]['bedroom_length'] != null
+                  ? int.parse(printData[4]['bedroom_length'].toString())
+                  : 0;
+              guestWidth = printData[4]['bedroom_width'] != null
+                  ? int.parse(printData[4]['bedroom_width'].toString())
+                  : 0;
+              guestToiletLength = printData[4]['bedroom_toilet_length'] != null
+                  ? int.parse(printData[4]['bedroom_toilet_length'].toString())
+                  : 0;
+              guestToiletWidth = printData[4]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[4]['bedroom_toilet_width'].toString())
+                  : 0;
+              guestDressLength = printData[4]['bedroom_dress_length'] != null
+                  ? int.parse(printData[4]['bedroom_dress_length'].toString())
+                  : 0;
+              guestLocation = printData[4]['bedroom_floor'] != null
+                  ? int.parse(printData[4]['bedroom_floor'].toString())
+                  : 0;
+              guestDressWidth = printData[4]['bedroom_dress_width'] != null
+                  ? int.parse(printData[4]['bedroom_dress_width'].toString())
+                  : 0;
+              guestDressInt = printData[4]['bedroom_dress_req'] != null
+                  ? int.parse(printData[4]['bedroom_dress_req'].toString())
+                  : 0;
+              guestToiletFacility =
+                  printData[4]['bedroom_toilet_req_text'] != null
+                      ? printData[4]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              guestDresstext = printData[4]['bedroom_dress_req_text'] != null
+                  ? printData[4]['bedroom_dress_req_text'].toString()
+                  : " ";
+              guestOtherRequirement =
+                  printData[4]['bedroom_facility_req_text'] != null
+                      ? printData[4]['bedroom_facility_req_text'].toString()
+                      : " ";
+              guestDressFacility = printData[4]['bedroom_dress_facility'] !=
+                      null
+                  ? printData[4]['bedroom_dress_facility'].toString().split(',')
+                  : [];
+              guestRoomFacility = printData[4]['bedroom_facility'] != null
+                  ? printData[4]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+            if (printData.asMap().containsKey(5)) {
+              other1Length = printData[5]['bedroom_length'] != null
+                  ? int.parse(printData[5]['bedroom_length'].toString())
+                  : 0;
+              other1Width = printData[5]['bedroom_width'] != null
+                  ? int.parse(printData[5]['bedroom_width'].toString())
+                  : 0;
+              other1ToiletLength = printData[5]['bedroom_toilet_length'] != null
+                  ? int.parse(printData[5]['bedroom_toilet_length'].toString())
+                  : 0;
+              other1ToiletWidth = printData[5]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[5]['bedroom_toilet_width'].toString())
+                  : 0;
+              other1DressLength = printData[5]['bedroom_dress_length'] != null
+                  ? int.parse(printData[5]['bedroom_dress_length'].toString())
+                  : 0;
+              other1Location = printData[5]['bedroom_floor'] != null
+                  ? int.parse(printData[5]['bedroom_floor'].toString())
+                  : 0;
+              other1DressWidth = printData[5]['bedroom_dress_width'] != null
+                  ? int.parse(printData[5]['bedroom_dress_width'].toString())
+                  : 0;
+              other1DressInt = printData[5]['bedroom_dress_req'] != null
+                  ? int.parse(printData[5]['bedroom_dress_req'].toString())
+                  : 0;
+              other1ToiletFacility =
+                  printData[5]['bedroom_toilet_req_text'] != null
+                      ? printData[5]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              other1Dresstext = printData[5]['bedroom_dress_req_text'] != null
+                  ? printData[5]['bedroom_dress_req_text'].toString()
+                  : " ";
+              other1OtherRequirement =
+                  printData[5]['bedroom_facility_req_text'] != null
+                      ? printData[5]['bedroom_facility_req_text'].toString()
+                      : " ";
+              other1DressFacility = printData[5]['bedroom_dress_facility'] !=
+                      null
+                  ? printData[5]['bedroom_dress_facility'].toString().split(',')
+                  : [];
+              other1RoomFacility = printData[5]['bedroom_facility'] != null
+                  ? printData[5]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+            if (printData.asMap().containsKey(6)) {
+              other2Length = printData[6]['bedroom_length'] != null
+                  ? int.parse(printData[6]['bedroom_length'].toString())
+                  : 0;
+              other2Width = printData[6]['bedroom_width'] != null
+                  ? int.parse(printData[6]['bedroom_width'].toString())
+                  : 0;
+              other2ToiletLength = printData[6]['bedroom_toilet_length'] != null
+                  ? int.parse(printData[6]['bedroom_toilet_length'].toString())
+                  : 0;
+              other2ToiletWidth = printData[6]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[6]['bedroom_toilet_width'].toString())
+                  : 0;
+              other2DressLength = printData[6]['bedroom_dress_length'] != null
+                  ? int.parse(printData[6]['bedroom_dress_length'].toString())
+                  : 0;
+              other2Location = printData[6]['bedroom_floor'] != null
+                  ? int.parse(printData[6]['bedroom_floor'].toString())
+                  : 0;
+              other2DressWidth = printData[6]['bedroom_dress_width'] != null
+                  ? int.parse(printData[6]['bedroom_dress_width'].toString())
+                  : 0;
+              other2DressInt = printData[6]['bedroom_dress_req'] != null
+                  ? int.parse(printData[6]['bedroom_dress_req'].toString())
+                  : 0;
+              other2ToiletFacility =
+                  printData[6]['bedroom_toilet_req_text'] != null
+                      ? printData[6]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              other2Dresstext = printData[6]['bedroom_dress_req_text'] != null
+                  ? printData[6]['bedroom_dress_req_text'].toString()
+                  : " ";
+              other2OtherRequirement =
+                  printData[6]['bedroom_facility_req_text'] != null
+                      ? printData[6]['bedroom_facility_req_text'].toString()
+                      : " ";
+              other2DressFacility = printData[6]['bedroom_dress_facility'] !=
+                      null
+                  ? printData[6]['bedroom_dress_facility'].toString().split(',')
+                  : [];
+              other2RoomFacility = printData[6]['bedroom_facility'] != null
+                  ? printData[6]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+            if (printData.asMap().containsKey(7)) {
+              other3Length = printData[7]['bedroom_length'] != null
+                  ? int.parse(printData[7]['bedroom_length'].toString())
+                  : 0;
+              other3Width = printData[7]['bedroom_width'] != null
+                  ? int.parse(printData[7]['bedroom_width'].toString())
+                  : 0;
+              other3ToiletLength = printData[7]['bedroom_toilet_length'] != null
+                  ? int.parse(printData[7]['bedroom_toilet_length'].toString())
+                  : 0;
+              other3ToiletWidth = printData[7]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[7]['bedroom_toilet_width'].toString())
+                  : 0;
+              other3DressLength = printData[7]['bedroom_dress_length'] != null
+                  ? int.parse(printData[7]['bedroom_dress_length'].toString())
+                  : 0;
+              other3Location = printData[7]['bedroom_floor'] != null
+                  ? int.parse(printData[7]['bedroom_floor'].toString())
+                  : 0;
+              other3DressWidth = printData[7]['bedroom_dress_width'] != null
+                  ? int.parse(printData[7]['bedroom_dress_width'].toString())
+                  : 0;
+              other3DressInt = printData[7]['bedroom_dress_req'] != null
+                  ? int.parse(printData[7]['bedroom_dress_req'].toString())
+                  : 0;
+              other3ToiletFacility =
+                  printData[7]['bedroom_toilet_req_text'] != null
+                      ? printData[7]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              other3Dresstext = printData[7]['bedroom_dress_req_text'] != null
+                  ? printData[7]['bedroom_dress_req_text'].toString()
+                  : " ";
+              other3OtherRequirement =
+                  printData[7]['bedroom_facility_req_text'] != null
+                      ? printData[7]['bedroom_facility_req_text'].toString()
+                      : " ";
+              other3DressFacility = printData[7]['bedroom_dress_facility'] !=
+                      null
+                  ? printData[7]['bedroom_dress_facility'].toString().split(',')
+                  : [];
+              other3RoomFacility = printData[7]['bedroom_facility'] != null
+                  ? printData[7]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+
+            if (printData != null) {
+              if (printData[0]['bedroom_facility'] != null) {
+                masterRFac = printData[0]['bedroom_facility'] != null
+                    ? printData[0]['bedroom_facility'].toString().split(',')
+                    : [];
+              }
+
+              if (printData[0]['bedroom_dress_facility'] != null) {
+                masterDFac = printData[0]['bedroom_dress_facility'] != null
+                    ? printData[0]['bedroom_dress_facility']
+                        .toString()
+                        .split(',')
+                    : [];
+              }
+
+              if (printData[1] != null) {
+                if (printData[1]['bedroom_facility'] != null) {
+                  sonRFac = printData[1]['bedroom_facility'] != null
+                      ? printData[1]['bedroom_facility'].toString().split(',')
+                      : [];
+                }
+                if (printData[1]['bedroom_dress_facility'] != null) {
+                  sonDFac = printData[1]['bedroom_facility'] != null
+                      ? printData[1]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+                }
+              }
+
+              if (printData[2] != null) {
+                if (printData[2]['bedroom_facility'] != null) {
+                  daughterRFac = printData[2]['bedroom_facility'].split(',');
+                }
+                if (printData[2]['bedroom_dress_facility'] != null) {
+                  daughterDFac =
+                      printData[2]['bedroom_dress_facility'].split(',');
+                }
+              }
+
+              if (printData[3] != null) {
+                if (printData[3]['bedroom_facility'] != null) {
+                  parentRFac = printData[3]['bedroom_facility'].split(',');
+                }
+                if (printData[3]['bedroom_dress_facility'] != null) {
+                  parentDFac =
+                      printData[3]['bedroom_dress_facility'].split(',');
+                }
+              }
+
+              if (printData[4] != null) {
+                if (printData[4]['bedroom_facility'] != null) {
+                  guestRFac = printData[4]['bedroom_facility'].split(',');
+                }
+                if (printData[4]['bedroom_dress_facility'] != null) {
+                  guestDFac = printData[4]['bedroom_dress_facility'].split(',');
+                }
+              }
+
+              if (printData[5] != null) {
+                if (printData[5]['bedroom_facility'] != null) {
+                  other1RFac = printData[5]['bedroom_facility'].split(',');
+                }
+                if (printData[5]['bedroom_dress_facility'] != null) {
+                  other1DFac =
+                      printData[5]['bedroom_dress_facility'].split(',');
+                }
+              }
+
+              if (printData[6] != null) {
+                if (printData[6]['bedroom_facility'] != null) {
+                  other2RFac = printData[6]['bedroom_facility'].split(',');
+                }
+                if (printData[6]['bedroom_dress_facility'] != null) {
+                  other2DFac =
+                      printData[6]['bedroom_dress_facility'].split(',');
+                }
+              }
+
+              if (printData[7] != null) {
+                if (printData[7]['bedroom_facility'] != null) {
+                  other3RFac = printData[7]['bedroom_facility'].split(',');
+                }
+                if (printData[7]['bedroom_dress_facility'] != null) {
+                  other3DFac =
+                      printData[7]['bedroom_dress_facility'].split(',');
+                }
+              }
+            }
+          },
+        );
       }
     } catch (e) {
       print(e.toString());
@@ -207,21 +761,19 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
   List<Map<String, dynamic>> _values = [];
 
-  String masterDressReq = '0';
   int? masterLength;
   int? masterWidth;
   int? masterLocation = 0;
   int? masterToiletLength;
   int? masterToiletWidth;
-  String masterToiletFacility = '';
-  int masterDressInt = 0;
+  String? masterToiletFacility = ' ';
+  int? masterDressInt = 0;
   int? masterDressLength;
   int? masterDressWidth;
   var masterDressFacility = [];
   var masterRoomFacility = [];
-  String masterRoomOtherRequirement = '';
-  String masterOtherRequirement = '';
-  String masterDresstext = '';
+  String? masterOtherRequirement;
+  String? masterDresstext = '';
 
   String sonDressReq = '0';
   int? sonLength;
@@ -235,7 +787,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
   int? sonDressWidth;
   var sonDressFacility = [];
   var sonRoomFacility = [];
-  String sonRoomOtherRequirement = '';
   String sonOtherRequirement = '';
   String sonDresstext = '';
 
@@ -251,7 +802,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
   int? daughterDressWidth;
   var daughterDressFacility = [];
   var daughterRoomFacility = [];
-  String daughterRoomOtherRequirement = '';
   String daughterOtherRequirement = '';
   String daughterDresstext = '';
 
@@ -267,7 +817,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
   int? parentDressWidth;
   var parentDressFacility = [];
   var parentRoomFacility = [];
-  String parentRoomOtherRequirement = '';
   String parentOtherRequirement = '';
   String parentDresstext = '';
 
@@ -283,7 +832,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
   int? guestDressWidth;
   var guestDressFacility = [];
   var guestRoomFacility = [];
-  String guestRoomOtherRequirement = '';
   String guestOtherRequirement = '';
   String guestDresstext = '';
 
@@ -299,7 +847,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
   int? other1DressWidth;
   var other1DressFacility = [];
   var other1RoomFacility = [];
-  String other1RoomOtherRequirement = '';
   String other1OtherRequirement = '';
   String other1Dresstext = '';
 
@@ -315,7 +862,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
   int? other2DressWidth;
   var other2DressFacility = [];
   var other2RoomFacility = [];
-  String other2RoomOtherRequirement = '';
   String other2OtherRequirement = '';
   String other2Dresstext = '';
 
@@ -331,7 +877,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
   int? other3DressWidth;
   var other3DressFacility = [];
   var other3RoomFacility = [];
-  String other3RoomOtherRequirement = '';
   String other3OtherRequirement = '';
   String other3Dresstext = '';
 
@@ -350,8 +895,14 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-
     var width = MediaQuery.of(context).size.width;
+
+    // print(printData[0]['bedroom_toilet_req_text']);
+
+    print(masterToiletFacility);
+
+    // print(printData[1]['bedroom_facility']);
+
     return printData == null
         ? Container(child: CircularProgressIndicator())
         : Column(
@@ -376,14 +927,33 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: Checkbox(
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
-                                          value: masterBedroom,
+                                          value: printData
+                                                  .asMap()
+                                                  .containsKey(0)
+                                              ? printData[0]['bedroom'] == '1'
+                                                  ? true
+                                                  : masterBedroom
+                                              : masterBedroom,
                                           onChanged: (value) {
                                             setState(
                                               () {
                                                 masterBedroom = value!;
-                                                if (masterBedroom == true) {
-                                                  masterState = false;
+                                                if (printData
+                                                    .asMap()
+                                                    .containsKey(0)) {
+                                                  if (masterBedroom == true) {
+                                                    printData[0]['bedroom'] =
+                                                        "1";
+                                                  } else if (masterBedroom ==
+                                                      false) {
+                                                    printData[0]['bedroom'] =
+                                                        "10";
+                                                  }
                                                 }
+
+                                                // if (masterBedroom == true) {
+                                                //   masterState = false;
+                                                // }
                                               },
                                             );
                                           }),
@@ -410,14 +980,33 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       height: height * 0.03,
                                       width: width * 0.07,
                                       child: Checkbox(
-                                          activeColor: checkColor,
-                                          checkColor: Colors.white,
-                                          value: sonBedRoom,
-                                          onChanged: (value) {
-                                            setState(() {
+                                        activeColor: checkColor,
+                                        checkColor: Colors.white,
+                                        value: printData.asMap().containsKey(1)
+                                            ? printData[1]['bedroom'] == '2'
+                                                ? true
+                                                : sonBedRoom
+                                            : sonBedRoom,
+                                        onChanged: (value) {
+                                          setState(
+                                            () {
                                               sonBedRoom = value!;
-                                            });
-                                          }),
+                                              print(sonBedRoom);
+                                              if (printData
+                                                  .asMap()
+                                                  .containsKey(2)) {
+                                                if (sonBedRoom == true) {
+                                                  printData[1]['bedroom'] = "2";
+                                                } else if (sonBedRoom ==
+                                                    false) {
+                                                  printData[1]['bedroom'] =
+                                                      "10";
+                                                }
+                                              }
+                                            },
+                                          );
+                                        },
+                                      ),
                                     ),
                                     requirementText("Son's Bed Room "),
                                   ],
@@ -450,11 +1039,29 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: Checkbox(
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
-                                          value: daughterBedRoom,
+                                          value: printData
+                                                  .asMap()
+                                                  .containsKey(2)
+                                              ? printData[2]['bedroom'] == '3'
+                                                  ? true
+                                                  : daughterBedRoom
+                                              : daughterBedRoom,
                                           onChanged: (value) {
                                             setState(
                                               () {
                                                 daughterBedRoom = value!;
+                                                if (printData
+                                                    .asMap()
+                                                    .containsKey(2)) {
+                                                  if (daughterBedRoom == true) {
+                                                    printData[2]['bedroom'] =
+                                                        "3";
+                                                  } else if (daughterBedRoom ==
+                                                      false) {
+                                                    printData[2]['bedroom'] =
+                                                        "10";
+                                                  }
+                                                }
                                               },
                                             );
                                           }),
@@ -483,10 +1090,27 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: Checkbox(
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
-                                          value: parentBedRoom,
+                                          value: printData
+                                                  .asMap()
+                                                  .containsKey(3)
+                                              ? printData[3]['bedroom'] == '4'
+                                                  ? true
+                                                  : parentBedRoom
+                                              : parentBedRoom,
                                           onChanged: (value) {
                                             setState(() {
                                               parentBedRoom = value!;
+                                              if (printData
+                                                  .asMap()
+                                                  .containsKey(3)) {
+                                                if (parentBedRoom == true) {
+                                                  printData[3]['bedroom'] = "4";
+                                                } else if (parentBedRoom ==
+                                                    false) {
+                                                  printData[3]['bedroom'] =
+                                                      "10";
+                                                }
+                                              }
                                             });
                                           }),
                                     ),
@@ -521,11 +1145,31 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: Checkbox(
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
-                                          value: guestBedRoom,
+                                          value: printData
+                                                  .asMap()
+                                                  .containsKey(4)
+                                              ? printData[4]['bedroom'] == '5'
+                                                  ? true
+                                                  : guestBedRoom
+                                              : guestBedRoom,
                                           onChanged: (value) {
                                             setState(
                                               () {
                                                 guestBedRoom = value!;
+                                                if (printData
+                                                    .asMap()
+                                                    .containsKey(4)) {
+                                                  guestBedRoom = value;
+
+                                                  if (guestBedRoom == true) {
+                                                    printData[4]['bedroom'] =
+                                                        "5";
+                                                  } else if (guestBedRoom ==
+                                                      false) {
+                                                    printData[4]['bedroom'] =
+                                                        "10";
+                                                  }
+                                                }
                                               },
                                             );
                                           }),
@@ -554,11 +1198,32 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: Checkbox(
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
-                                          value: other1BedRoom,
+                                          value: printData
+                                                  .asMap()
+                                                  .containsKey(5)
+                                              ? printData[5]['bedroom'] == '6'
+                                                  ? true
+                                                  : other1BedRoom
+                                              : other1BedRoom,
                                           onChanged: (value) {
                                             setState(
                                               () {
                                                 other1BedRoom = value!;
+
+                                                if (printData
+                                                    .asMap()
+                                                    .containsKey(5)) {
+                                                  other1BedRoom = value;
+
+                                                  if (other1BedRoom == true) {
+                                                    printData[5]['bedroom'] =
+                                                        "6";
+                                                  } else if (other1BedRoom ==
+                                                      false) {
+                                                    printData[5]['bedroom'] =
+                                                        "10";
+                                                  }
+                                                }
                                               },
                                             );
                                           }),
@@ -594,11 +1259,30 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: Checkbox(
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
-                                          value: other2BedRoom,
+                                          value: printData
+                                                  .asMap()
+                                                  .containsKey(6)
+                                              ? printData[6]['bedroom'] == '7'
+                                                  ? true
+                                                  : other2BedRoom
+                                              : other2BedRoom,
                                           onChanged: (value) {
                                             setState(
                                               () {
                                                 other2BedRoom = value!;
+
+                                                if (printData
+                                                    .asMap()
+                                                    .containsKey(6)) {
+                                                  if (other2BedRoom == true) {
+                                                    printData[6]['bedroom'] =
+                                                        "7";
+                                                  } else if (other2BedRoom ==
+                                                      false) {
+                                                    printData[6]['bedroom'] =
+                                                        "10";
+                                                  }
+                                                }
                                               },
                                             );
                                           }),
@@ -627,10 +1311,27 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: Checkbox(
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
-                                          value: other3BedRoom,
+                                          value: printData
+                                                  .asMap()
+                                                  .containsKey(7)
+                                              ? printData[7]['bedroom'] == '8'
+                                                  ? true
+                                                  : other3BedRoom
+                                              : other3BedRoom,
                                           onChanged: (value) {
                                             setState(() {
                                               other3BedRoom = value!;
+                                              if (printData
+                                                  .asMap()
+                                                  .containsKey(7)) {
+                                                if (other3BedRoom == true) {
+                                                  printData[7]['bedroom'] = "8";
+                                                } else if (other3BedRoom ==
+                                                    false) {
+                                                  printData[7]['bedroom'] =
+                                                      "10";
+                                                }
+                                              }
                                             });
                                           }),
                                     ),
@@ -651,8 +1352,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
               Column(
                 children: [
-                  if (masterBedroom == true ||
-                      printData[0]['bedroom'] == "1") ...[
+                  if (masterBedroom == true || printData.asMap().containsKey(1)
+                      ? printData[0]['bedroom'] == "1"
+                      : masterBedroom) ...[
                     SizedBox(
                       height: height * 0.01,
                     ),
@@ -683,7 +1385,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                         ),
                         children: [
                           Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             width: width * 1,
                             color: color3,
                             child: Column(
@@ -707,6 +1409,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue: printData[0]
+                                                      ['bedroom_length'] !=
+                                                  null
+                                              ? printData[0]['bedroom_length']
+                                              : null,
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -718,11 +1425,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               contentPadding: EdgeInsets.all(8)
                                               //fillColor: Colors.green
                                               ),
-                                          onChanged: (value) {
+                                          onChanged: (text) {
                                             setState(
                                               () {
                                                 masterLength =
-                                                    int.parse(value.toString());
+                                                    int.parse(text.toString());
                                               },
                                             );
                                           },
@@ -746,6 +1453,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue: printData[0]
+                                              ['bedroom_width'],
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                               hintText: "width",
@@ -776,8 +1485,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                          padding: EdgeInsets.all(5),
-                                          constraints: BoxConstraints(),
+                                          padding: const EdgeInsets.all(5),
+                                          constraints: const BoxConstraints(),
                                           onPressed: () {},
                                           icon: Icon(
                                             Icons.help,
@@ -809,13 +1518,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            // "select Floor",
-                                            // "Ground Floor",
-                                            // "1st Floor",
-                                            // "2nd Floor",
-                                            // "3rd Floor",
-                                            // "other",
-                                            value: selectedFloor,
+                                            hint: printData[0]
+                                                        ['bedroom_floor'] !=
+                                                    null
+                                                ? Text(floorItems[printData[0]
+                                                    ['bedroom_floor']])
+                                                : Text(selectedFloor!),
                                             elevation: 16,
                                             items: floorItems
                                                 .map((it) =>
@@ -836,10 +1544,17 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   print(selectedFloor);
                                                   if (selectedFloor ==
                                                       "Ground Floor") {
+                                                    printData[0]
+                                                            ['bedroom_floor'] =
+                                                        null;
+
                                                     masterLocation = 0;
                                                   }
                                                   if (selectedFloor ==
                                                       "1st Floor") {
+                                                    printData[0]
+                                                            ['bedroom_floor'] =
+                                                        null;
                                                     masterLocation = 1;
                                                   }
                                                 },
@@ -876,6 +1591,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue: printData[0]
+                                              ['bedroom_toilet_length'],
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -913,6 +1630,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue: printData[0]
+                                              ['bedroom_toilet_width'],
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -936,7 +1655,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       ),
                                     ),
                                     valueContainer(
-                                        height, width, size, 0.04, 0.05),
+                                      height,
+                                      width,
+                                      size,
+                                      0.04,
+                                      0.05,
+                                    ),
                                     SizedBox(
                                       width: width * 0.08,
                                     ),
@@ -970,6 +1694,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue: printData[0]
+                                          ['bedroom_toilet_req_text'],
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -1009,10 +1735,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value:
-                                                          masterRequiredDress,
+                                                      value: printData[0][
+                                                                  'bedroom_dress_req'] ==
+                                                              1
+                                                          ? true
+                                                          : masterRequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
+                                                          printData[0][
+                                                              'bedroom_dress_req'] = 4;
                                                           masterRequiredDress =
                                                               value;
                                                           masterNotRequiredDress =
@@ -1055,16 +1786,20 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                     activeColor: checkColor,
                                                     checkColor: Colors.white,
-                                                    value:
-                                                        masterNotRequiredDress,
+                                                    value: printData[0][
+                                                                'bedroom_dress_req'] ==
+                                                            0
+                                                        ? true
+                                                        : masterNotRequiredDress,
                                                     onChanged: (value) {
                                                       setState(
                                                         () {
-                                                          masterRequiredDress =
+                                                          masterNotRequiredDress =
                                                               value;
                                                           masterRequiredDress =
                                                               false;
-
+                                                          printData[0][
+                                                              'bedroom_dress_req'] = 4;
                                                           if (masterRequiredDress ==
                                                               true) {
                                                             masterDressInt = 1;
@@ -1106,10 +1841,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
+                                            initialValue: printData[0]
+                                                ['bedroom_dress_length'],
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
-                                              hintText: "lenght",
+                                              hintText: "length",
                                               hintStyle:
                                                   TextStyle(fontSize: 14),
                                               border: OutlineInputBorder(
@@ -1147,6 +1884,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
+                                            initialValue: printData[0]
+                                                ['bedroom_dress_width'],
                                             decoration: const InputDecoration(
                                               hintText: "width",
                                               hintStyle:
@@ -1215,39 +1954,55 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             borderRadius:
                                                 BorderRadius.circular(5),
                                           ),
-                                          child: Column(
-                                            children: [
-                                              InkWell(
-                                                onTap: () async {
-                                                  final List<String> otherIt = [
-                                                    "Walk in Cupboard",
-                                                    "Vanity",
-                                                    "Cupboard",
-                                                  ];
+                                          child: Column(children: [
+                                            InkWell(
+                                              onTap: () async {
+                                                final List<String> otherIt = [
+                                                  "Walk in Cupboard",
+                                                  "Vanity",
+                                                  "Cupboard",
+                                                ];
+                                                final List<String> ab =
+                                                    await showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return MultiSelect(
+                                                        items: otherIt);
+                                                  },
+                                                );
 
-                                                  final List<String> ab =
-                                                      await showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return MultiSelect(
-                                                          items: otherIt);
-                                                    },
-                                                  );
-                                                  setState(() {
-                                                    masterDressFacility = ab;
-                                                  });
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                  ),
-                                                  child:
-                                                      Text("Office Facility"),
+                                                setState(() {
+                                                  masterDressFacility = ab;
+                                                  printData[0][
+                                                          'bedroom_dress_facility'] =
+                                                      null;
+                                                });
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
                                                 ),
+                                                child: Text("Office Facility"),
                                               ),
+                                            ),
+                                            if (printData[0][
+                                                    'bedroom_dress_facility'] !=
+                                                null) ...[
+                                              for (int i = 0;
+                                                  i < sonDFac!.length;
+                                                  i++)
+                                                Wrap(children: [
+                                                  Chip(
+                                                    label: Text(
+                                                        sonDFac![i].toString()),
+                                                  )
+                                                ])
+                                            ],
+                                            if (printData[0][
+                                                    'bedroom_dress_facility'] ==
+                                                null) ...[
                                               Wrap(
                                                 children: masterDressFacility
                                                     .map((e) => Chip(
@@ -1255,8 +2010,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         ))
                                                     .toList(),
                                               )
-                                            ],
-                                          ),
+                                            ]
+                                          ]),
                                         ),
                                       ),
                                       SizedBox(
@@ -1272,6 +2027,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
+                                              initialValue: printData[0]
+                                                  ['bedroom_dress_req_text'],
                                               style:
                                                   const TextStyle(fontSize: 14),
                                               decoration: const InputDecoration(
@@ -1299,7 +2056,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                SizedBox(height: height * 0.01),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
                                 Material(
                                   elevation: 10,
                                   child: Container(
@@ -1436,6 +2195,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(() {
                                               masterRoomFacility = result;
                                               print(masterDressFacility);
+                                              printData[0]['bedroom_facility'] =
+                                                  null;
                                             });
                                           },
                                           child: Container(
@@ -1446,13 +2207,33 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: Text("Room Facility"),
                                           ),
                                         ),
-                                        Wrap(
-                                          children: masterRoomFacility
-                                              .map((e) => Chip(
-                                                    label: Text(e),
-                                                  ))
-                                              .toList(),
-                                        )
+                                        if (printData
+                                            .asMap()
+                                            .containsKey(1)) ...[
+                                          if (printData[0]
+                                                  ['bedroom_facility'] !=
+                                              null) ...[
+                                            for (int i = 0;
+                                                i < masterRFac!.length;
+                                                i++)
+                                              Wrap(children: [
+                                                Chip(
+                                                  label: Text(masterRFac![i]
+                                                      .toString()),
+                                                )
+                                              ])
+                                          ],
+                                        ],
+                                        if (printData[0]['bedroom_facility'] ==
+                                            null) ...[
+                                          Wrap(
+                                            children: masterRoomFacility
+                                                .map((e) => Chip(
+                                                      label: Text(e),
+                                                    ))
+                                                .toList(),
+                                          )
+                                        ]
                                       ],
                                     ),
                                   ),
@@ -1468,6 +2249,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue: printData[0]
+                                          ['bedroom_facility_req_text'],
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -1555,7 +2338,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
               Column(
                 children: [
-                  if (sonBedRoom == true) ...[
+                  if ((sonBedRoom == true) || printData.asMap().containsKey(1)
+                      ? printData[1]['bedroom'] == "2"
+                      : sonBedRoom == true) ...[
                     SizedBox(
                       height: height * 0.01,
                     ),
@@ -1564,7 +2349,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                       child: ExpansionTile(
                         maintainState: true,
                         title: const Text(
-                          'Sons\'s BedRoom Details',
+                          'Son\'s BedRoom Details',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -1572,7 +2357,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                         ),
                         children: [
                           Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             width: width * 1,
                             color: color3,
                             child: Column(
@@ -1596,6 +2381,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue: printData
+                                                  .asMap()
+                                                  .containsKey(1)
+                                              ? printData[1]['bedroom_length']
+                                              : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -1610,7 +2400,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           onChanged: (value) {
                                             setState(
                                               () {
-                                                print("$sonLength");
                                                 sonLength =
                                                     int.parse(value.toString());
                                               },
@@ -1636,6 +2425,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue: printData
+                                                  .asMap()
+                                                  .containsKey(1)
+                                              ? printData[1]['bedroom_width']
+                                              : '',
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                               hintText: "width",
@@ -1666,13 +2460,14 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
-                                            onPressed: () {},
-                                            icon: Icon(
-                                              Icons.help,
-                                              size: height * 0.03,
-                                            ))
+                                          padding: const EdgeInsets.all(5),
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.help,
+                                            size: height * 0.03,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -1698,13 +2493,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            // "select Floor",
-                                            // "Ground Floor",
-                                            // "1st Floor",
-                                            // "2nd Floor",
-                                            // "3rd Floor",
-                                            // "other",
-                                            value: selectedFloorSon,
+                                            hint: printData
+                                                    .asMap()
+                                                    .containsKey(1)
+                                                ? Text(floorItems[printData[1]
+                                                    ['bedroom_floor']])
+                                                : Text(selectedFloorSon!),
                                             elevation: 16,
                                             items: floorItemsSon
                                                 .map((it) =>
@@ -1721,29 +2515,22 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             onChanged: (it) {
                                               setState(
                                                 () {
+                                                  if (printData
+                                                      .asMap()
+                                                      .containsKey(1)) {
+                                                    printData[1]
+                                                            ['bedroom_floor'] =
+                                                        null;
+                                                  }
                                                   selectedFloorSon = it;
                                                   print(selectedFloorSon);
-                                                  if (selectedFloorSon ==
+                                                  if (selectedFloor ==
                                                       "Ground Floor") {
                                                     sonLocation = 0;
                                                   }
                                                   if (selectedFloorSon ==
                                                       "1st Floor") {
                                                     sonLocation = 1;
-                                                  }
-                                                  if (selectedFloorSon ==
-                                                      "2nd Floor") {
-                                                    sonLocation = 2;
-                                                  }
-                                                  if (selectedFloorSon ==
-                                                      "3rd Floor") {
-                                                    sonLocation = 3;
-                                                  }
-                                                  if (selectedFloorSon ==
-                                                      "other") {
-                                                    setState(() {
-                                                      sonLocation = 4;
-                                                    });
                                                   }
                                                 },
                                               );
@@ -1755,37 +2542,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     SizedBox(
                                       width: width * 0.01,
                                     ),
-                                    if (masterLocation == 4) ...[
-                                      Material(
-                                        elevation: 5,
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(5)),
-                                        child: SizedBox(
-                                          height: height * 0.04,
-                                          width: width * 0.15,
-                                          child: TextFormField(
-                                            style:
-                                                const TextStyle(fontSize: 14),
-                                            decoration: const InputDecoration(
-                                                hintText: "more",
-                                                hintStyle:
-                                                    TextStyle(fontSize: 14),
-                                                border: OutlineInputBorder(
-                                                  borderSide: BorderSide.none,
-                                                ),
-                                                isDense: true,
-                                                contentPadding:
-                                                    EdgeInsets.all(8)
-                                                //fillColor: Colors.green
-                                                ),
-                                            onChanged: ((value) {
-                                              sonLocation =
-                                                  int.parse(value.toString());
-                                            }),
-                                          ),
-                                        ),
-                                      )
-                                    ]
                                   ],
                                 ),
                                 SizedBox(
@@ -1810,6 +2566,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue:
+                                              printData.asMap().containsKey(1)
+                                                  ? printData[1]
+                                                      ['bedroom_toilet_length']
+                                                  : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -1847,6 +2608,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue:
+                                              printData.asMap().containsKey(1)
+                                                  ? printData[1]
+                                                      ['bedroom_toilet_width']
+                                                  : "",
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -1870,7 +2636,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       ),
                                     ),
                                     valueContainer(
-                                        height, width, size, 0.04, 0.05),
+                                      height,
+                                      width,
+                                      size,
+                                      0.04,
+                                      0.05,
+                                    ),
                                     SizedBox(
                                       width: width * 0.08,
                                     ),
@@ -1904,6 +2675,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue:
+                                          printData.asMap().containsKey(1)
+                                              ? printData[1]
+                                                  ['bedroom_toilet_req_text']
+                                              : ' ',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -1943,12 +2719,26 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value: sonRequiredDress,
+                                                      value: printData
+                                                              .asMap()
+                                                              .containsKey(1)
+                                                          ? printData[1][
+                                                                      'bedroom_dress_req'] ==
+                                                                  1
+                                                              ? true
+                                                              : sonRequiredDress
+                                                          : sonRequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
+                                                          if (printData
+                                                              .asMap()
+                                                              .containsKey(1)) {
+                                                            printData[1][
+                                                                'bedroom_dress_req'] = 4;
+                                                          }
                                                           sonRequiredDress =
                                                               value;
-                                                          sonNotRequiredDress =
+                                                          masterNotRequiredDress =
                                                               false;
 
                                                           if (sonRequiredDress ==
@@ -1988,7 +2778,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                     activeColor: checkColor,
                                                     checkColor: Colors.white,
-                                                    value: sonNotRequiredDress,
+                                                    value: printData
+                                                            .asMap()
+                                                            .containsKey(1)
+                                                        ? printData[1][
+                                                                    'bedroom_dress_req'] ==
+                                                                0
+                                                            ? true
+                                                            : sonNotRequiredDress
+                                                        : sonNotRequiredDress,
                                                     onChanged: (value) {
                                                       setState(
                                                         () {
@@ -1996,7 +2794,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               value;
                                                           sonRequiredDress =
                                                               false;
-
+                                                          if (printData
+                                                              .asMap()
+                                                              .containsKey(1)) {
+                                                            printData[1][
+                                                                'bedroom_dress_req'] = 4;
+                                                          }
                                                           if (sonRequiredDress ==
                                                               true) {
                                                             sonDressInt = 1;
@@ -2023,7 +2826,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (sonRequiredDress == true) ...[
+                                if (printData.asMap().containsKey(1)
+                                    ? printData[1]['bedroom'] == "2"
+                                    : sonRequiredDress == true) ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -2038,10 +2843,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
+                                            initialValue:
+                                                printData.asMap().containsKey(1)
+                                                    ? printData[1]
+                                                        ['bedroom_dress_length']
+                                                    : '',
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
-                                              hintText: "lenght",
+                                              hintText: "length",
                                               hintStyle:
                                                   TextStyle(fontSize: 14),
                                               border: OutlineInputBorder(
@@ -2061,7 +2871,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         ),
                                       ),
                                       valueContainer(
-                                          height, width, size, 0.04, 0.05),
+                                        height,
+                                        width,
+                                        size,
+                                        0.04,
+                                        0.05,
+                                      ),
                                       SizedBox(
                                         width: width * 0.02,
                                       ),
@@ -2079,6 +2894,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
+                                            initialValue:
+                                                printData.asMap().containsKey(1)
+                                                    ? printData[1]
+                                                        ['bedroom_dress_width']
+                                                    : '',
                                             decoration: const InputDecoration(
                                               hintText: "width",
                                               hintStyle:
@@ -2110,8 +2930,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         children: [
                                           requirementText("help"),
                                           IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -2147,48 +2967,71 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             borderRadius:
                                                 BorderRadius.circular(5),
                                           ),
-                                          child: Column(
-                                            children: [
-                                              InkWell(
-                                                onTap: () async {
-                                                  final List<String> otherIt = [
-                                                    "Walk in Cupboard",
-                                                    "Vanity",
-                                                    "Cupboard",
-                                                  ];
+                                          child: Column(children: [
+                                            InkWell(
+                                              onTap: () async {
+                                                final List<String> otherIt = [
+                                                  "Walk in Cupboard",
+                                                  "Vanity",
+                                                  "Cupboard",
+                                                ];
+                                                final List<String> ab =
+                                                    await showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return MultiSelect(
+                                                        items: otherIt);
+                                                  },
+                                                );
 
-                                                  final List<String> ab =
-                                                      await showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return MultiSelect(
-                                                          items: otherIt);
-                                                    },
-                                                  );
-                                                  setState(() {
-                                                    sonDressFacility = ab;
-                                                  });
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                  ),
-                                                  child:
-                                                      Text("Office Facility"),
+                                                setState(() {
+                                                  sonDressFacility = ab;
+                                                  if (printData
+                                                      .asMap()
+                                                      .containsKey(1)) {
+                                                    printData[1][
+                                                            'bedroom_dress_facility'] =
+                                                        null;
+                                                  }
+                                                });
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
                                                 ),
+                                                child: Text("Office Facility"),
                                               ),
+                                            ),
+                                            if (printData
+                                                .asMap()
+                                                .containsKey(1)) ...[
+                                              for (int i = 0;
+                                                  i < masterDFac!.length;
+                                                  i++)
+                                                Wrap(children: [
+                                                  Chip(
+                                                    label: Text(masterDFac![i]
+                                                        .toString()),
+                                                  )
+                                                ])
+                                            ],
+                                            if (printData
+                                                    .asMap()
+                                                    .containsKey(1) ==
+                                                false) ...[
                                               Wrap(
                                                 children: sonDressFacility
-                                                    .map((e) => Chip(
-                                                          label: Text(e),
-                                                        ))
+                                                    .map(
+                                                      (e) => Chip(
+                                                        label: Text(e),
+                                                      ),
+                                                    )
                                                     .toList(),
                                               )
-                                            ],
-                                          ),
+                                            ]
+                                          ]),
                                         ),
                                       ),
                                       SizedBox(
@@ -2204,6 +3047,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
+                                              initialValue: printData
+                                                      .asMap()
+                                                      .containsKey(1)
+                                                  ? printData[1]
+                                                      ['bedroom_dress_req_text']
+                                                  : '',
                                               style:
                                                   const TextStyle(fontSize: 14),
                                               decoration: const InputDecoration(
@@ -2231,7 +3080,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                SizedBox(height: height * 0.01),
                                 Material(
                                   elevation: 10,
                                   child: Container(
@@ -2368,6 +3216,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(() {
                                               sonRoomFacility = result;
                                               print(sonDressFacility);
+                                              if (printData
+                                                  .asMap()
+                                                  .containsKey(1)) {
+                                                printData[1]
+                                                    ['bedroom_facility'] = null;
+                                              }
                                             });
                                           },
                                           child: Container(
@@ -2378,13 +3232,30 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: Text("Room Facility"),
                                           ),
                                         ),
-                                        Wrap(
-                                          children: sonRoomFacility
-                                              .map((e) => Chip(
-                                                    label: Text(e),
-                                                  ))
-                                              .toList(),
-                                        )
+                                        if (printData.asMap().containsKey(1)
+                                        // ? printData[1]['bedroom_facility'] !=
+                                        //     null :
+                                        ) ...[
+                                          for (int i = 0;
+                                              i < sonRFac!.length;
+                                              i++)
+                                            Wrap(children: [
+                                              Chip(
+                                                label: Text(
+                                                    sonRFac![i].toString()),
+                                              )
+                                            ])
+                                        ],
+                                        if (printData.asMap().containsKey(1) ==
+                                            false) ...[
+                                          Wrap(
+                                            children: sonRoomFacility
+                                                .map((e) => Chip(
+                                                      label: Text(e),
+                                                    ))
+                                                .toList(),
+                                          )
+                                        ]
                                       ],
                                     ),
                                   ),
@@ -2400,6 +3271,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue:
+                                          printData.asMap().containsKey(1)
+                                              ? printData[1]
+                                                  ['bedroom_facility_req_text']
+                                              : '',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -2487,7 +3363,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
               Column(
                 children: [
-                  if (daughterBedRoom == true) ...[
+                  if (daughterBedRoom == true ||
+                          printData.asMap().containsKey(2)
+                      ? printData[2]['bedroom'] == "3"
+                      : daughterBedRoom == true) ...[
                     SizedBox(
                       height: height * 0.01,
                     ),
@@ -2517,7 +3396,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                         ),
                         children: [
                           Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             width: width * 1,
                             color: color3,
                             child: Column(
@@ -2541,6 +3420,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue: printData[2]
+                                              ['bedroom_length'],
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -2553,8 +3434,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               //fillColor: Colors.green
                                               ),
                                           onChanged: (value) {
-                                            daughterLength =
-                                                int.parse(value.toString());
+                                            setState(
+                                              () {
+                                                daughterLength =
+                                                    int.parse(value.toString());
+                                              },
+                                            );
                                           },
                                         ),
                                       ),
@@ -2576,6 +3461,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue: printData[2]
+                                              ['bedroom_width'],
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                               hintText: "width",
@@ -2606,13 +3493,14 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
-                                            onPressed: () {},
-                                            icon: Icon(
-                                              Icons.help,
-                                              size: height * 0.03,
-                                            ))
+                                          padding: const EdgeInsets.all(5),
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.help,
+                                            size: height * 0.03,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -2638,13 +3526,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            // "select Floor",
-                                            // "Ground Floor",
-                                            // "1st Floor",
-                                            // "2nd Floor",
-                                            // "3rd Floor",
-                                            // "other",
-                                            value: selectedFloorDaughter,
+                                            hint: printData[2]
+                                                        ['bedroom_floor'] !=
+                                                    null
+                                                ? Text(floorItemsDaughter[
+                                                    printData[2]
+                                                        ['bedroom_floor']])
+                                                : Text(selectedFloorSon!),
                                             elevation: 16,
                                             items: floorItemsDaughter
                                                 .map((it) =>
@@ -2661,6 +3549,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             onChanged: (it) {
                                               setState(
                                                 () {
+                                                  printData[2]
+                                                      ['bedroom_floor'] = null;
                                                   selectedFloorDaughter = it;
                                                   print(selectedFloorDaughter);
                                                   if (selectedFloorDaughter ==
@@ -2670,18 +3560,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   if (selectedFloorDaughter ==
                                                       "1st Floor") {
                                                     daughterLocation = 1;
-                                                  }
-                                                  if (selectedFloorDaughter ==
-                                                      "2nd Floor") {
-                                                    daughterLocation = 2;
-                                                  }
-                                                  if (selectedFloorDaughter ==
-                                                      "3rd Floor") {
-                                                    daughterLocation = 3;
-                                                  }
-                                                  if (selectedFloorDaughter ==
-                                                      "other") {
-                                                    daughterLocation = 4;
                                                   }
                                                 },
                                               );
@@ -2693,37 +3571,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     SizedBox(
                                       width: width * 0.01,
                                     ),
-                                    if (selectedFloorDaughter == 4) ...[
-                                      Material(
-                                        elevation: 5,
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(5)),
-                                        child: SizedBox(
-                                          height: height * 0.04,
-                                          width: width * 0.15,
-                                          child: TextFormField(
-                                            style:
-                                                const TextStyle(fontSize: 14),
-                                            decoration: const InputDecoration(
-                                                hintText: "more",
-                                                hintStyle:
-                                                    TextStyle(fontSize: 14),
-                                                border: OutlineInputBorder(
-                                                  borderSide: BorderSide.none,
-                                                ),
-                                                isDense: true,
-                                                contentPadding:
-                                                    EdgeInsets.all(8)
-                                                //fillColor: Colors.green
-                                                ),
-                                            onChanged: ((value) {
-                                              daughterLocation =
-                                                  int.parse(value.toString());
-                                            }),
-                                          ),
-                                        ),
-                                      )
-                                    ]
                                   ],
                                 ),
                                 SizedBox(
@@ -2748,6 +3595,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue: printData[2]
+                                              ['bedroom_toilet_length'],
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -2785,6 +3634,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue: printData[2]
+                                              ['bedroom_toilet_width'],
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -2808,7 +3659,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       ),
                                     ),
                                     valueContainer(
-                                        height, width, size, 0.04, 0.05),
+                                      height,
+                                      width,
+                                      size,
+                                      0.04,
+                                      0.05,
+                                    ),
                                     SizedBox(
                                       width: width * 0.08,
                                     ),
@@ -2842,6 +3698,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue: printData[2]
+                                          ['bedroom_toilet_req_text'],
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -2881,10 +3739,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value:
-                                                          daughterRequiredDress,
+                                                      value: printData[2][
+                                                                  'bedroom_dress_req'] ==
+                                                              1
+                                                          ? true
+                                                          : daughterRequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
+                                                          printData[2][
+                                                              'bedroom_dress_req'] = 4;
                                                           daughterRequiredDress =
                                                               value;
                                                           daughterNotRequiredDress =
@@ -2929,8 +3792,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                     activeColor: checkColor,
                                                     checkColor: Colors.white,
-                                                    value:
-                                                        daughterNotRequiredDress,
+                                                    value: printData[2][
+                                                                'bedroom_dress_req'] ==
+                                                            0
+                                                        ? true
+                                                        : daughterNotRequiredDress,
                                                     onChanged: (value) {
                                                       setState(
                                                         () {
@@ -2938,7 +3804,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               value;
                                                           daughterRequiredDress =
                                                               false;
-
+                                                          printData[2][
+                                                              'bedroom_dress_req'] = 4;
                                                           if (daughterRequiredDress ==
                                                               true) {
                                                             daughterDressInt =
@@ -2967,7 +3834,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (daughterRequiredDress == true) ...[
+                                if (sonRequiredDress == true ||
+                                    printData[2]['bedroom'] == "1") ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -2982,10 +3850,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
+                                            initialValue: printData[2]
+                                                ['bedroom_dress_length'],
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
-                                              hintText: "lenght",
+                                              hintText: "length",
                                               hintStyle:
                                                   TextStyle(fontSize: 14),
                                               border: OutlineInputBorder(
@@ -3005,7 +3875,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         ),
                                       ),
                                       valueContainer(
-                                          height, width, size, 0.04, 0.05),
+                                        height,
+                                        width,
+                                        size,
+                                        0.04,
+                                        0.05,
+                                      ),
                                       SizedBox(
                                         width: width * 0.02,
                                       ),
@@ -3023,6 +3898,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
+                                            initialValue: printData[2]
+                                                ['bedroom_dress_width'],
                                             decoration: const InputDecoration(
                                               hintText: "width",
                                               hintStyle:
@@ -3054,8 +3931,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         children: [
                                           requirementText("help"),
                                           IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -3085,54 +3962,72 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         borderRadius: BorderRadius.circular(5),
                                         elevation: 5,
                                         child: Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 5),
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(5),
                                           ),
-                                          child: Column(
-                                            children: [
-                                              InkWell(
-                                                onTap: () async {
-                                                  final List<String> otherIt = [
-                                                    "Walk in Cupboard",
-                                                    "Vanity",
-                                                    "Cupboard",
-                                                  ];
+                                          child: Column(children: [
+                                            InkWell(
+                                              onTap: () async {
+                                                final List<String> otherIt = [
+                                                  "Walk in Cupboard",
+                                                  "Vanity",
+                                                  "Cupboard",
+                                                ];
+                                                final List<String> ab =
+                                                    await showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return MultiSelect(
+                                                        items: otherIt);
+                                                  },
+                                                );
 
-                                                  final List<String> ab =
-                                                      await showDialog(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return MultiSelect(
-                                                          items: otherIt);
-                                                    },
-                                                  );
-                                                  setState(() {
-                                                    daughterDressFacility = ab;
-                                                  });
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                  ),
-                                                  child:
-                                                      Text("Office Facility"),
+                                                setState(() {
+                                                  daughterDressFacility = ab;
+                                                  printData[2][
+                                                          'bedroom_dress_facility'] =
+                                                      null;
+                                                });
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
                                                 ),
+                                                child: Text("Office Facility"),
                                               ),
+                                            ),
+                                            if (printData[2][
+                                                    'bedroom_dress_facility'] !=
+                                                null) ...[
+                                              for (int i = 0;
+                                                  i < daughterDFac!.length;
+                                                  i++)
+                                                Wrap(children: [
+                                                  Chip(
+                                                    label: Text(daughterDFac![i]
+                                                        .toString()),
+                                                  )
+                                                ])
+                                            ],
+                                            if (printData[2][
+                                                    'bedroom_dress_facility'] ==
+                                                null) ...[
                                               Wrap(
                                                 children: daughterDressFacility
-                                                    .map((e) => Chip(
-                                                          label: Text(e),
-                                                        ))
+                                                    .map(
+                                                      (e) => Chip(
+                                                        label: Text(e),
+                                                      ),
+                                                    )
                                                     .toList(),
                                               )
-                                            ],
-                                          ),
+                                            ]
+                                          ]),
                                         ),
                                       ),
                                       SizedBox(
@@ -3148,6 +4043,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
+                                              initialValue: printData[2]
+                                                  ['bedroom_dress_req_text'],
                                               style:
                                                   const TextStyle(fontSize: 14),
                                               decoration: const InputDecoration(
@@ -3186,43 +4083,44 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       width: width * 9,
                                       height: height * 0.3,
                                       child: FutureBuilder(
-                                          future: getRecent(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Container(
-                                                child: const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                ),
-                                              );
-                                            } else {
-                                              return CarouselSlider.builder(
-                                                itemCount: bunglowPageRecentList
-                                                    .length,
-                                                itemBuilder: (context, i, id) {
-                                                  return Container(
-                                                    height: height * 0.4,
-                                                    width: width * 0.9,
-                                                    child: Image.network(
-                                                      imageUrl +
-                                                          bunglowPageRecentList[
-                                                              i]["img_path"],
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  );
-                                                },
-                                                options: CarouselOptions(
-                                                  autoPlay: true,
-                                                  enableInfiniteScroll: true,
-                                                  autoPlayAnimationDuration:
-                                                      const Duration(
-                                                          milliseconds: 800),
-                                                  viewportFraction: 1,
-                                                ),
-                                              );
-                                            }
-                                          }),
+                                        future: getRecent(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Container(
+                                              child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          } else {
+                                            return CarouselSlider.builder(
+                                              itemCount:
+                                                  bunglowPageRecentList.length,
+                                              itemBuilder: (context, i, id) {
+                                                return Container(
+                                                  height: height * 0.4,
+                                                  width: width * 0.9,
+                                                  child: Image.network(
+                                                    imageUrl +
+                                                        bunglowPageRecentList[i]
+                                                            ["img_path"],
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                );
+                                              },
+                                              options: CarouselOptions(
+                                                autoPlay: true,
+                                                enableInfiniteScroll: true,
+                                                autoPlayAnimationDuration:
+                                                    const Duration(
+                                                        milliseconds: 800),
+                                                viewportFraction: 1,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -3312,6 +4210,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(() {
                                               daughterRoomFacility = result;
                                               print(daughterDressFacility);
+                                              printData[2]['bedroom_facility'] =
+                                                  null;
                                             });
                                           },
                                           child: Container(
@@ -3322,13 +4222,28 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: Text("Room Facility"),
                                           ),
                                         ),
-                                        Wrap(
-                                          children: daughterRoomFacility
-                                              .map((e) => Chip(
-                                                    label: Text(e),
-                                                  ))
-                                              .toList(),
-                                        )
+                                        if (printData[2]['bedroom_facility'] !=
+                                            null) ...[
+                                          for (int i = 0;
+                                              i < daughterRFac!.length;
+                                              i++)
+                                            Wrap(children: [
+                                              Chip(
+                                                label: Text(daughterRFac![i]
+                                                    .toString()),
+                                              )
+                                            ])
+                                        ],
+                                        if (printData[2]['bedroom_facility'] ==
+                                            null) ...[
+                                          Wrap(
+                                            children: daughterRoomFacility
+                                                .map((e) => Chip(
+                                                      label: Text(e),
+                                                    ))
+                                                .toList(),
+                                          )
+                                        ]
                                       ],
                                     ),
                                   ),
@@ -3344,6 +4259,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue: printData[2]
+                                          ['bedroom_facility_req_text'],
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -3431,7 +4348,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
               Column(
                 children: [
-                  if (parentBedRoom == true) ...[
+                  if (parentBedRoom == true || printData.asMap().containsKey(3)
+                      ? printData[3]['bedroom'] == "4"
+                      : parentBedRoom == true) ...[
                     SizedBox(
                       height: height * 0.01,
                     ),
@@ -3461,7 +4380,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                         ),
                         children: [
                           Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             width: width * 1,
                             color: color3,
                             child: Column(
@@ -3485,6 +4404,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue: printData[3]
+                                              ['bedroom_length'],
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -3497,8 +4418,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               //fillColor: Colors.green
                                               ),
                                           onChanged: (value) {
-                                            parentLength =
-                                                int.parse(value.toString());
+                                            setState(
+                                              () {
+                                                parentLength =
+                                                    int.parse(value.toString());
+                                              },
+                                            );
                                           },
                                         ),
                                       ),
@@ -3520,6 +4445,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue: printData[3]
+                                              ['bedroom_width'],
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                               hintText: "width",
@@ -3550,13 +4477,14 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
-                                            onPressed: () {},
-                                            icon: Icon(
-                                              Icons.help,
-                                              size: height * 0.03,
-                                            ))
+                                          padding: const EdgeInsets.all(5),
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.help,
+                                            size: height * 0.03,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -3582,13 +4510,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            // "select Floor",
-                                            // "Ground Floor",
-                                            // "1st Floor",
-                                            // "2nd Floor",
-                                            // "3rd Floor",
-                                            // "other",
-                                            value: selectedFloorParent,
+                                            hint: printData[3]
+                                                        ['bedroom_floor'] !=
+                                                    null
+                                                ? Text(floorItemsDaughter[
+                                                    printData[3]
+                                                        ['bedroom_floor']])
+                                                : Text(selectedFloorParent!),
                                             elevation: 16,
                                             items: floorItemsParent
                                                 .map((it) =>
@@ -3605,7 +4533,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             onChanged: (it) {
                                               setState(
                                                 () {
+                                                  printData[3]
+                                                      ['bedroom_floor'] = null;
                                                   selectedFloorParent = it;
+                                                  print(selectedFloorParent);
                                                   if (selectedFloorParent ==
                                                       "Ground Floor") {
                                                     parentLocation = 0;
@@ -3613,20 +4544,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   if (selectedFloorParent ==
                                                       "1st Floor") {
                                                     parentLocation = 1;
-                                                  }
-                                                  if (selectedFloorParent ==
-                                                      "2nd Floor") {
-                                                    parentLocation = 2;
-                                                  }
-                                                  if (selectedFloorParent ==
-                                                      "3rd Floor") {
-                                                    parentLocation = 3;
-                                                  }
-                                                  if (selectedFloorParent ==
-                                                      "other") {
-                                                    setState(() {
-                                                      parentLocation = 4;
-                                                    });
                                                   }
                                                 },
                                               );
@@ -3638,37 +4555,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     SizedBox(
                                       width: width * 0.01,
                                     ),
-                                    if (parentLocation == 4) ...[
-                                      Material(
-                                        elevation: 5,
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(5)),
-                                        child: SizedBox(
-                                          height: height * 0.04,
-                                          width: width * 0.15,
-                                          child: TextFormField(
-                                            style:
-                                                const TextStyle(fontSize: 14),
-                                            decoration: const InputDecoration(
-                                                hintText: "more",
-                                                hintStyle:
-                                                    TextStyle(fontSize: 14),
-                                                border: OutlineInputBorder(
-                                                  borderSide: BorderSide.none,
-                                                ),
-                                                isDense: true,
-                                                contentPadding:
-                                                    EdgeInsets.all(8)
-                                                //fillColor: Colors.green
-                                                ),
-                                            onChanged: ((value) {
-                                              parentLocation =
-                                                  int.parse(value.toString());
-                                            }),
-                                          ),
-                                        ),
-                                      ),
-                                    ]
                                   ],
                                 ),
                                 SizedBox(
@@ -3693,6 +4579,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue: printData[3]
+                                              ['bedroom_toilet_length'],
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -3730,6 +4618,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue: printData[3]
+                                              ['bedroom_toilet_width'],
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -3753,7 +4643,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       ),
                                     ),
                                     valueContainer(
-                                        height, width, size, 0.04, 0.05),
+                                      height,
+                                      width,
+                                      size,
+                                      0.04,
+                                      0.05,
+                                    ),
                                     SizedBox(
                                       width: width * 0.08,
                                     ),
@@ -3787,6 +4682,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue: printData[3]
+                                          ['bedroom_toilet_req_text'],
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -3826,10 +4723,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value:
-                                                          parentsRequiredDress,
+                                                      value: printData[3][
+                                                                  'bedroom_dress_req'] ==
+                                                              1
+                                                          ? true
+                                                          : parentsRequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
+                                                          printData[3][
+                                                              'bedroom_dress_req'] = 4;
                                                           parentsRequiredDress =
                                                               value;
                                                           parentsNotRequiredDress =
@@ -3872,8 +4774,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                     activeColor: checkColor,
                                                     checkColor: Colors.white,
-                                                    value:
-                                                        parentsNotRequiredDress,
+                                                    value: printData[3][
+                                                                'bedroom_dress_req'] ==
+                                                            0
+                                                        ? true
+                                                        : parentsNotRequiredDress,
                                                     onChanged: (value) {
                                                       setState(
                                                         () {
@@ -3881,7 +4786,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               value;
                                                           parentsRequiredDress =
                                                               false;
-
+                                                          printData[3][
+                                                              'bedroom_dress_req'] = 4;
                                                           if (parentsRequiredDress ==
                                                               true) {
                                                             parentDressInt = 1;
@@ -3908,7 +4814,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (parentsRequiredDress == true) ...[
+                                if (parentsRequiredDress == true ||
+                                    printData[3]['bedroom'] == "1") ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -3923,10 +4830,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
+                                            initialValue: printData[3]
+                                                ['bedroom_dress_length'],
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
-                                              hintText: "lenght",
+                                              hintText: "length",
                                               hintStyle:
                                                   TextStyle(fontSize: 14),
                                               border: OutlineInputBorder(
@@ -3946,7 +4855,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         ),
                                       ),
                                       valueContainer(
-                                          height, width, size, 0.04, 0.05),
+                                        height,
+                                        width,
+                                        size,
+                                        0.04,
+                                        0.05,
+                                      ),
                                       SizedBox(
                                         width: width * 0.02,
                                       ),
@@ -3964,6 +4878,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
+                                            initialValue: printData[3]
+                                                ['bedroom_dress_width'],
                                             decoration: const InputDecoration(
                                               hintText: "width",
                                               hintStyle:
@@ -3987,16 +4903,23 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         ),
                                       ),
                                       valueContainer(
-                                          height, width, size, 0.04, 0.05),
+                                        height,
+                                        width,
+                                        size,
+                                        0.04,
+                                        0.05,
+                                      ),
                                       SizedBox(
                                         width: width * 0.08,
                                       ),
                                       Row(
                                         children: [
-                                          requirementText("help"),
+                                          requirementText(
+                                            "help",
+                                          ),
                                           IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -4026,7 +4949,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         borderRadius: BorderRadius.circular(5),
                                         elevation: 5,
                                         child: Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 5),
                                           decoration: BoxDecoration(
                                             borderRadius:
@@ -4041,7 +4964,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     "Vanity",
                                                     "Cupboard",
                                                   ];
-
                                                   final List<String> ab =
                                                       await showDialog(
                                                     context: context,
@@ -4051,8 +4973,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                           items: otherIt);
                                                     },
                                                   );
+
                                                   setState(() {
                                                     parentDressFacility = ab;
+                                                    printData[3][
+                                                            'bedroom_dress_facility'] =
+                                                        null;
                                                   });
                                                 },
                                                 child: Container(
@@ -4065,13 +4991,34 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       Text("Office Facility"),
                                                 ),
                                               ),
-                                              Wrap(
-                                                children: parentDressFacility
-                                                    .map((e) => Chip(
+                                              if (printData[3][
+                                                      'bedroom_dress_facility'] !=
+                                                  null) ...[
+                                                for (int i = 0;
+                                                    i < parentDFac!.length;
+                                                    i++)
+                                                  Wrap(children: [
+                                                    Chip(
+                                                      label: Text(
+                                                        parentDFac![i]
+                                                            .toString(),
+                                                      ),
+                                                    )
+                                                  ])
+                                              ],
+                                              if (printData[3][
+                                                      'bedroom_dress_facility'] ==
+                                                  null) ...[
+                                                Wrap(
+                                                  children: parentDressFacility
+                                                      .map(
+                                                        (e) => Chip(
                                                           label: Text(e),
-                                                        ))
-                                                    .toList(),
-                                              )
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                                )
+                                              ]
                                             ],
                                           ),
                                         ),
@@ -4089,6 +5036,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
+                                              initialValue: printData[3]
+                                                  ['bedroom_dress_req_text'],
                                               style:
                                                   const TextStyle(fontSize: 14),
                                               decoration: const InputDecoration(
@@ -4127,43 +5076,44 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       width: width * 9,
                                       height: height * 0.3,
                                       child: FutureBuilder(
-                                          future: getRecent(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Container(
-                                                child: const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                ),
-                                              );
-                                            } else {
-                                              return CarouselSlider.builder(
-                                                itemCount: bunglowPageRecentList
-                                                    .length,
-                                                itemBuilder: (context, i, id) {
-                                                  return Container(
-                                                    height: height * 0.4,
-                                                    width: width * 0.9,
-                                                    child: Image.network(
-                                                      imageUrl +
-                                                          bunglowPageRecentList[
-                                                              i]["img_path"],
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  );
-                                                },
-                                                options: CarouselOptions(
-                                                  autoPlay: true,
-                                                  enableInfiniteScroll: true,
-                                                  autoPlayAnimationDuration:
-                                                      const Duration(
-                                                          milliseconds: 800),
-                                                  viewportFraction: 1,
-                                                ),
-                                              );
-                                            }
-                                          }),
+                                        future: getRecent(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Container(
+                                              child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          } else {
+                                            return CarouselSlider.builder(
+                                              itemCount:
+                                                  bunglowPageRecentList.length,
+                                              itemBuilder: (context, i, id) {
+                                                return Container(
+                                                  height: height * 0.4,
+                                                  width: width * 0.9,
+                                                  child: Image.network(
+                                                    imageUrl +
+                                                        bunglowPageRecentList[i]
+                                                            ["img_path"],
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                );
+                                              },
+                                              options: CarouselOptions(
+                                                autoPlay: true,
+                                                enableInfiniteScroll: true,
+                                                autoPlayAnimationDuration:
+                                                    const Duration(
+                                                        milliseconds: 800),
+                                                viewportFraction: 1,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -4250,10 +5200,14 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               },
                                             );
 
-                                            setState(() {
-                                              parentRoomFacility = result;
-                                              print(parentDressFacility);
-                                            });
+                                            setState(
+                                              () {
+                                                parentRoomFacility = result;
+                                                print(parentDressFacility);
+                                                printData[3]
+                                                    ['bedroom_facility'] = null;
+                                              },
+                                            );
                                           },
                                           child: Container(
                                             decoration: BoxDecoration(
@@ -4263,13 +5217,28 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: Text("Room Facility"),
                                           ),
                                         ),
-                                        Wrap(
-                                          children: parentRoomFacility
-                                              .map((e) => Chip(
-                                                    label: Text(e),
-                                                  ))
-                                              .toList(),
-                                        )
+                                        if (printData[2]['bedroom_facility'] !=
+                                            null) ...[
+                                          for (int i = 0;
+                                              i < parentRFac!.length;
+                                              i++)
+                                            Wrap(children: [
+                                              Chip(
+                                                label: Text(
+                                                    parentRFac![i].toString()),
+                                              )
+                                            ])
+                                        ],
+                                        if (printData[3]['bedroom_facility'] ==
+                                            null) ...[
+                                          Wrap(
+                                            children: parentRoomFacility
+                                                .map((e) => Chip(
+                                                      label: Text(e),
+                                                    ))
+                                                .toList(),
+                                          )
+                                        ]
                                       ],
                                     ),
                                   ),
@@ -4285,6 +5254,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue: printData[3]
+                                          ['bedroom_facility_req_text'],
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -4372,7 +5343,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
               Column(
                 children: [
-                  if (guestBedRoom == true) ...[
+                  if (guestBedRoom == true || printData.asMap().containsKey(4)
+                      ? printData[4]['bedroom'] == "5"
+                      : guestBedRoom == true) ...[
                     SizedBox(
                       height: height * 0.01,
                     ),
@@ -4389,7 +5362,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                         ),
                         children: [
                           Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             width: width * 1,
                             color: color3,
                             child: Column(
@@ -4413,6 +5386,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue: printData[4]
+                                              ['bedroom_length'],
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -4425,10 +5400,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               //fillColor: Colors.green
                                               ),
                                           onChanged: (value) {
-                                            guestLength =
-                                                int.parse(value.toString());
-                                            // _onUpdate(1, value, '', '', '', '', '', '',
-                                            //     '', '', '', '');
+                                            setState(
+                                              () {
+                                                guestLength =
+                                                    int.parse(value.toString());
+                                              },
+                                            );
                                           },
                                         ),
                                       ),
@@ -4450,6 +5427,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue: printData[4]
+                                              ['bedroom_width'],
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                               hintText: "width",
@@ -4480,13 +5459,14 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
-                                            onPressed: () {},
-                                            icon: Icon(
-                                              Icons.help,
-                                              size: height * 0.03,
-                                            ))
+                                          padding: const EdgeInsets.all(5),
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.help,
+                                            size: height * 0.03,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -4512,13 +5492,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            // "select Floor",
-                                            // "Ground Floor",
-                                            // "1st Floor",
-                                            // "2nd Floor",
-                                            // "3rd Floor",
-                                            // "other",
-                                            value: selectedFloorGuest,
+                                            hint: printData[4]
+                                                        ['bedroom_floor'] !=
+                                                    null
+                                                ? Text(floorItemsGuest[
+                                                    printData[4]
+                                                        ['bedroom_floor']])
+                                                : Text(selectedFloorGuest!),
                                             elevation: 16,
                                             items: floorItemsGuest
                                                 .map((it) =>
@@ -4533,17 +5513,22 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         )))
                                                 .toList(),
                                             onChanged: (it) {
-                                              setState(() {
-                                                selectedFloorGuest = it;
-                                                if (selectedFloorGuest ==
-                                                    "Ground Floor") {
-                                                  guestLocation = 0;
-                                                }
-                                                if (selectedFloorGuest ==
-                                                    "1st Floor") {
-                                                  guestLocation = 1;
-                                                }
-                                              });
+                                              setState(
+                                                () {
+                                                  printData[4]
+                                                      ['bedroom_floor'] = null;
+                                                  selectedFloorGuest = it;
+                                                  print(selectedFloorGuest);
+                                                  if (selectedFloorGuest ==
+                                                      "Ground Floor") {
+                                                    guestLocation = 0;
+                                                  }
+                                                  if (selectedFloorGuest ==
+                                                      "1st Floor") {
+                                                    guestLocation = 1;
+                                                  }
+                                                },
+                                              );
                                             },
                                           ),
                                         ),
@@ -4576,6 +5561,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue: printData[4]
+                                              ['bedroom_toilet_length'],
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -4613,6 +5600,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue: printData[4]
+                                              ['bedroom_toilet_width'],
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -4636,7 +5625,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       ),
                                     ),
                                     valueContainer(
-                                        height, width, size, 0.04, 0.05),
+                                      height,
+                                      width,
+                                      size,
+                                      0.04,
+                                      0.05,
+                                    ),
                                     SizedBox(
                                       width: width * 0.08,
                                     ),
@@ -4670,6 +5664,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue: printData[4]
+                                          ['bedroom_toilet_req_text'],
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -4709,9 +5705,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value: guestRequiredDress,
+                                                      value: printData[4][
+                                                                  'bedroom_dress_req'] ==
+                                                              1
+                                                          ? true
+                                                          : guestRequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
+                                                          printData[4][
+                                                              'bedroom_dress_req'] = 4;
                                                           guestRequiredDress =
                                                               value;
                                                           guestNotRequiredDress =
@@ -4754,8 +5756,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                     activeColor: checkColor,
                                                     checkColor: Colors.white,
-                                                    value:
-                                                        guestNotRequiredDress,
+                                                    value: printData[4][
+                                                                'bedroom_dress_req'] ==
+                                                            0
+                                                        ? true
+                                                        : parentsNotRequiredDress,
                                                     onChanged: (value) {
                                                       setState(
                                                         () {
@@ -4763,7 +5768,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               value;
                                                           guestRequiredDress =
                                                               false;
-
+                                                          printData[3][
+                                                              'bedroom_dress_req'] = 4;
                                                           if (guestRequiredDress ==
                                                               true) {
                                                             guestDressInt = 1;
@@ -4790,7 +5796,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (guestRequiredDress == true) ...[
+                                if (guestRequiredDress == true ||
+                                    printData[4]['bedroom'] == "1") ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -4805,10 +5812,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
+                                            initialValue: printData[4]
+                                                ['bedroom_dress_length'],
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
-                                              hintText: "lenght",
+                                              hintText: "length",
                                               hintStyle:
                                                   TextStyle(fontSize: 14),
                                               border: OutlineInputBorder(
@@ -4828,7 +5837,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         ),
                                       ),
                                       valueContainer(
-                                          height, width, size, 0.04, 0.05),
+                                        height,
+                                        width,
+                                        size,
+                                        0.04,
+                                        0.05,
+                                      ),
                                       SizedBox(
                                         width: width * 0.02,
                                       ),
@@ -4846,6 +5860,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
+                                            initialValue: printData[4]
+                                                ['bedroom_dress_width'],
+
                                             decoration: const InputDecoration(
                                               hintText: "width",
                                               hintStyle:
@@ -4869,16 +5886,23 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         ),
                                       ),
                                       valueContainer(
-                                          height, width, size, 0.04, 0.05),
+                                        height,
+                                        width,
+                                        size,
+                                        0.04,
+                                        0.05,
+                                      ),
                                       SizedBox(
                                         width: width * 0.08,
                                       ),
                                       Row(
                                         children: [
-                                          requirementText("help"),
+                                          requirementText(
+                                            "help",
+                                          ),
                                           IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -4908,7 +5932,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         borderRadius: BorderRadius.circular(5),
                                         elevation: 5,
                                         child: Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 5),
                                           decoration: BoxDecoration(
                                             borderRadius:
@@ -4923,7 +5947,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     "Vanity",
                                                     "Cupboard",
                                                   ];
-
                                                   final List<String> ab =
                                                       await showDialog(
                                                     context: context,
@@ -4933,8 +5956,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                           items: otherIt);
                                                     },
                                                   );
+
                                                   setState(() {
                                                     guestDressFacility = ab;
+                                                    printData[4][
+                                                            'bedroom_dress_facility'] =
+                                                        null;
                                                   });
                                                 },
                                                 child: Container(
@@ -4947,13 +5974,33 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       Text("Office Facility"),
                                                 ),
                                               ),
-                                              Wrap(
-                                                children: guestDressFacility
-                                                    .map((e) => Chip(
-                                                          label: Text(e),
-                                                        ))
-                                                    .toList(),
-                                              )
+                                              if (printData[4][
+                                                      'bedroom_dress_facility'] !=
+                                                  null) ...[
+                                                for (int i = 0;
+                                                    i < parentDFac!.length;
+                                                    i++)
+                                                  Wrap(children: [
+                                                    Chip(
+                                                      label: Text(parentDFac![i]
+                                                          .toString()),
+                                                    )
+                                                  ])
+                                              ],
+                                              if (printData[4][
+                                                      'bedroom_dress_facility'] ==
+                                                  null) ...[
+                                                Wrap(
+                                                  children:
+                                                      daughterDressFacility
+                                                          .map(
+                                                            (e) => Chip(
+                                                              label: Text(e),
+                                                            ),
+                                                          )
+                                                          .toList(),
+                                                ),
+                                              ]
                                             ],
                                           ),
                                         ),
@@ -4971,6 +6018,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
+                                              initialValue: printData[4]
+                                                  ['bedroom_dress_req_text'],
                                               style:
                                                   const TextStyle(fontSize: 14),
                                               decoration: const InputDecoration(
@@ -5009,43 +6058,44 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       width: width * 9,
                                       height: height * 0.3,
                                       child: FutureBuilder(
-                                          future: getRecent(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Container(
-                                                child: const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                ),
-                                              );
-                                            } else {
-                                              return CarouselSlider.builder(
-                                                itemCount: bunglowPageRecentList
-                                                    .length,
-                                                itemBuilder: (context, i, id) {
-                                                  return Container(
-                                                    height: height * 0.4,
-                                                    width: width * 0.9,
-                                                    child: Image.network(
-                                                      imageUrl +
-                                                          bunglowPageRecentList[
-                                                              i]["img_path"],
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  );
-                                                },
-                                                options: CarouselOptions(
-                                                  autoPlay: true,
-                                                  enableInfiniteScroll: true,
-                                                  autoPlayAnimationDuration:
-                                                      const Duration(
-                                                          milliseconds: 800),
-                                                  viewportFraction: 1,
-                                                ),
-                                              );
-                                            }
-                                          }),
+                                        future: getRecent(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Container(
+                                              child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          } else {
+                                            return CarouselSlider.builder(
+                                              itemCount:
+                                                  bunglowPageRecentList.length,
+                                              itemBuilder: (context, i, id) {
+                                                return Container(
+                                                  height: height * 0.4,
+                                                  width: width * 0.9,
+                                                  child: Image.network(
+                                                    imageUrl +
+                                                        bunglowPageRecentList[i]
+                                                            ["img_path"],
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                );
+                                              },
+                                              options: CarouselOptions(
+                                                autoPlay: true,
+                                                enableInfiniteScroll: true,
+                                                autoPlayAnimationDuration:
+                                                    const Duration(
+                                                        milliseconds: 800),
+                                                viewportFraction: 1,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -5134,8 +6184,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                             setState(() {
                                               guestRoomFacility = result;
-
                                               print(guestDressFacility);
+                                              printData[4]['bedroom_facility'] =
+                                                  null;
                                             });
                                           },
                                           child: Container(
@@ -5146,13 +6197,30 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: Text("Room Facility"),
                                           ),
                                         ),
-                                        Wrap(
-                                          children: guestRoomFacility
-                                              .map((e) => Chip(
-                                                    label: Text(e),
-                                                  ))
-                                              .toList(),
-                                        )
+                                        if (printData[4]['bedroom_facility'] !=
+                                            null) ...[
+                                          for (int i = 0;
+                                              i < guestRFac!.length;
+                                              i++)
+                                            Wrap(
+                                              children: [
+                                                Chip(
+                                                  label: Text(
+                                                      guestRFac![i].toString()),
+                                                )
+                                              ],
+                                            )
+                                        ],
+                                        if (printData[4]['bedroom_facility'] ==
+                                            null) ...[
+                                          Wrap(
+                                            children: guestRoomFacility
+                                                .map((e) => Chip(
+                                                      label: Text(e),
+                                                    ))
+                                                .toList(),
+                                          )
+                                        ]
                                       ],
                                     ),
                                   ),
@@ -5168,6 +6236,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue: printData[4]
+                                          ['bedroom_facility_req_text'],
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -5181,7 +6251,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       onChanged: (value) {
                                         setState(
                                           () {
-                                            guestOtherRequirement = value;
+                                            parentOtherRequirement = value;
                                           },
                                         );
                                       },
@@ -5255,7 +6325,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
               Column(
                 children: [
-                  if (other1BedRoom == true) ...[
+                  if (other1BedRoom == true || printData.asMap().containsKey(5)
+                      ? printData[5]['bedroom'] == "6"
+                      : other1BedRoom == true) ...[
                     SizedBox(
                       height: height * 0.01,
                     ),
@@ -5278,7 +6350,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                       child: ExpansionTile(
                         maintainState: true,
                         title: const Text(
-                          'Other\'s BedRoom Details',
+                          'Other\'s 1 BedRoom Details',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -5286,7 +6358,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                         ),
                         children: [
                           Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             width: width * 1,
                             color: color3,
                             child: Column(
@@ -5310,6 +6382,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue: printData[5]
+                                              ['bedroom_length'],
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -5322,10 +6396,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               //fillColor: Colors.green
                                               ),
                                           onChanged: (value) {
-                                            other1Length =
-                                                int.parse(value.toString());
-                                            // _onUpdate(1, value, '', '', '', '', '', '',
-                                            //     '', '', '', '');
+                                            setState(
+                                              () {
+                                                other1Length =
+                                                    int.parse(value.toString());
+                                              },
+                                            );
                                           },
                                         ),
                                       ),
@@ -5347,6 +6423,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue: printData[5]
+                                              ['bedroom_width'],
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                               hintText: "width",
@@ -5377,13 +6455,14 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
-                                            onPressed: () {},
-                                            icon: Icon(
-                                              Icons.help,
-                                              size: height * 0.03,
-                                            ))
+                                          padding: const EdgeInsets.all(5),
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.help,
+                                            size: height * 0.03,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -5399,7 +6478,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       borderRadius: BorderRadius.circular(5),
                                       child: Container(
                                         height: height * 0.03,
-                                        width: width * 0.6,
+                                        width: width * 0.5,
                                         margin: const EdgeInsets.all(
                                           3,
                                         ),
@@ -5409,9 +6488,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            value: selectedFloorOther1,
+                                            hint: printData[5]
+                                                        ['bedroom_floor'] !=
+                                                    null
+                                                ? Text(floorItemsGuest[
+                                                    printData[5]
+                                                        ['bedroom_floor']])
+                                                : Text(selectedFloorGuest!),
                                             elevation: 16,
-                                            items: floorItemsOther1
+                                            items: floorItemsGuest
                                                 .map((it) =>
                                                     DropdownMenuItem<String>(
                                                         value: it,
@@ -5424,16 +6509,18 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         )))
                                                 .toList(),
                                             onChanged: (it) {
-                                              setState(() {
-                                                other1Location = 0;
-                                              });
-
                                               setState(
                                                 () {
+                                                  printData[5]
+                                                      ['bedroom_floor'] = null;
                                                   selectedFloorOther1 = it;
                                                   print(selectedFloorOther1);
                                                   if (selectedFloorOther1 ==
                                                       "Ground Floor") {
+                                                    other1Location = 0;
+                                                  }
+                                                  if (selectedFloorOther1 ==
+                                                      "1st Floor") {
                                                     other1Location = 1;
                                                   }
                                                 },
@@ -5442,6 +6529,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           ),
                                         ),
                                       ),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.01,
                                     ),
                                   ],
                                 ),
@@ -5467,6 +6557,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue: printData[5]
+                                              ['bedroom_toilet_length'],
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -5504,6 +6596,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue: printData[5]
+                                              ['bedroom_toilet_width'],
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -5527,7 +6621,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       ),
                                     ),
                                     valueContainer(
-                                        height, width, size, 0.04, 0.05),
+                                      height,
+                                      width,
+                                      size,
+                                      0.04,
+                                      0.05,
+                                    ),
                                     SizedBox(
                                       width: width * 0.08,
                                     ),
@@ -5561,6 +6660,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue: printData[5]
+                                          ['bedroom_toilet_req_text'],
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -5600,10 +6701,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value:
-                                                          other1RequiredDress,
+                                                      value: printData[5][
+                                                                  'bedroom_dress_req'] ==
+                                                              1
+                                                          ? true
+                                                          : other1RequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
+                                                          printData[5][
+                                                              'bedroom_dress_req'] = 4;
                                                           other1RequiredDress =
                                                               value;
                                                           other1NotRequiredDress =
@@ -5646,15 +6752,20 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                     activeColor: checkColor,
                                                     checkColor: Colors.white,
-                                                    value: other1RequiredDress,
+                                                    value: printData[5][
+                                                                'bedroom_dress_req'] ==
+                                                            0
+                                                        ? true
+                                                        : other1NotRequiredDress,
                                                     onChanged: (value) {
                                                       setState(
                                                         () {
-                                                          other1RequiredDress =
+                                                          other1NotRequiredDress =
                                                               value;
                                                           other1RequiredDress =
                                                               false;
-
+                                                          printData[5][
+                                                              'bedroom_dress_req'] = 4;
                                                           if (other1RequiredDress ==
                                                               true) {
                                                             other1DressInt = 1;
@@ -5681,7 +6792,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (other1RequiredDress == true) ...[
+                                if (other1RequiredDress == true ||
+                                    printData[5]['bedroom'] == "1") ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -5696,10 +6808,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
+                                            initialValue: printData[5]
+                                                ['bedroom_dress_length'],
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
-                                              hintText: "lenght",
+                                              hintText: "length",
                                               hintStyle:
                                                   TextStyle(fontSize: 14),
                                               border: OutlineInputBorder(
@@ -5709,17 +6823,24 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               contentPadding: EdgeInsets.all(8),
                                             ),
                                             onChanged: (value) {
-                                              setState(() {
-                                                other1DressLength =
-                                                    int.parse(value.toString());
-                                              });
+                                              setState(
+                                                () {
+                                                  other1DressLength = int.parse(
+                                                      value.toString());
+                                                },
+                                              );
                                             },
                                             onFieldSubmitted: (value) {},
                                           ),
                                         ),
                                       ),
                                       valueContainer(
-                                          height, width, size, 0.04, 0.05),
+                                        height,
+                                        width,
+                                        size,
+                                        0.04,
+                                        0.05,
+                                      ),
                                       SizedBox(
                                         width: width * 0.02,
                                       ),
@@ -5737,6 +6858,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
+                                            initialValue: printData[5]
+                                                ['bedroom_dress_width'],
+
                                             decoration: const InputDecoration(
                                               hintText: "width",
                                               hintStyle:
@@ -5760,7 +6884,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         ),
                                       ),
                                       valueContainer(
-                                          height, width, size, 0.04, 0.05),
+                                        height,
+                                        width,
+                                        size,
+                                        0.04,
+                                        0.05,
+                                      ),
                                       SizedBox(
                                         width: width * 0.08,
                                       ),
@@ -5768,8 +6897,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         children: [
                                           requirementText("help"),
                                           IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -5799,7 +6928,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         borderRadius: BorderRadius.circular(5),
                                         elevation: 5,
                                         child: Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 5),
                                           decoration: BoxDecoration(
                                             borderRadius:
@@ -5814,7 +6943,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     "Vanity",
                                                     "Cupboard",
                                                   ];
-
                                                   final List<String> ab =
                                                       await showDialog(
                                                     context: context,
@@ -5824,8 +6952,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                           items: otherIt);
                                                     },
                                                   );
+
                                                   setState(() {
                                                     other1DressFacility = ab;
+                                                    printData[5][
+                                                            'bedroom_dress_facility'] =
+                                                        null;
                                                   });
                                                 },
                                                 child: Container(
@@ -5838,13 +6970,32 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       Text("Office Facility"),
                                                 ),
                                               ),
-                                              Wrap(
-                                                children: other1DressFacility
-                                                    .map((e) => Chip(
+                                              if (printData[5][
+                                                      'bedroom_dress_facility'] !=
+                                                  null) ...[
+                                                for (int i = 0;
+                                                    i < other1DFac!.length;
+                                                    i++)
+                                                  Wrap(children: [
+                                                    Chip(
+                                                      label: Text(other1DFac![i]
+                                                          .toString()),
+                                                    )
+                                                  ])
+                                              ],
+                                              if (printData[5][
+                                                      'bedroom_dress_facility'] ==
+                                                  null) ...[
+                                                Wrap(
+                                                  children: other1DressFacility
+                                                      .map(
+                                                        (e) => Chip(
                                                           label: Text(e),
-                                                        ))
-                                                    .toList(),
-                                              )
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                                ),
+                                              ]
                                             ],
                                           ),
                                         ),
@@ -5862,6 +7013,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
+                                              initialValue: printData[5]
+                                                  ['bedroom_dress_req_text'],
                                               style:
                                                   const TextStyle(fontSize: 14),
                                               decoration: const InputDecoration(
@@ -5900,43 +7053,44 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       width: width * 9,
                                       height: height * 0.3,
                                       child: FutureBuilder(
-                                          future: getRecent(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Container(
-                                                child: const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                ),
-                                              );
-                                            } else {
-                                              return CarouselSlider.builder(
-                                                itemCount: bunglowPageRecentList
-                                                    .length,
-                                                itemBuilder: (context, i, id) {
-                                                  return Container(
-                                                    height: height * 0.4,
-                                                    width: width * 0.9,
-                                                    child: Image.network(
-                                                      imageUrl +
-                                                          bunglowPageRecentList[
-                                                              i]["img_path"],
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  );
-                                                },
-                                                options: CarouselOptions(
-                                                  autoPlay: true,
-                                                  enableInfiniteScroll: true,
-                                                  autoPlayAnimationDuration:
-                                                      const Duration(
-                                                          milliseconds: 800),
-                                                  viewportFraction: 1,
-                                                ),
-                                              );
-                                            }
-                                          }),
+                                        future: getRecent(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Container(
+                                              child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          } else {
+                                            return CarouselSlider.builder(
+                                              itemCount:
+                                                  bunglowPageRecentList.length,
+                                              itemBuilder: (context, i, id) {
+                                                return Container(
+                                                  height: height * 0.4,
+                                                  width: width * 0.9,
+                                                  child: Image.network(
+                                                    imageUrl +
+                                                        bunglowPageRecentList[i]
+                                                            ["img_path"],
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                );
+                                              },
+                                              options: CarouselOptions(
+                                                autoPlay: true,
+                                                enableInfiniteScroll: true,
+                                                autoPlayAnimationDuration:
+                                                    const Duration(
+                                                        milliseconds: 800),
+                                                viewportFraction: 1,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -6026,6 +7180,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(() {
                                               other1RoomFacility = result;
                                               print(other1DressFacility);
+                                              printData[5]['bedroom_facility'] =
+                                                  null;
                                             });
                                           },
                                           child: Container(
@@ -6036,13 +7192,30 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: Text("Room Facility"),
                                           ),
                                         ),
-                                        Wrap(
-                                          children: other1RoomFacility
-                                              .map((e) => Chip(
-                                                    label: Text(e),
-                                                  ))
-                                              .toList(),
-                                        )
+                                        if (printData[5]['bedroom_facility'] !=
+                                            null) ...[
+                                          for (int i = 0;
+                                              i < other1RFac!.length;
+                                              i++)
+                                            Wrap(
+                                              children: [
+                                                Chip(
+                                                  label: Text(other1RFac![i]
+                                                      .toString()),
+                                                )
+                                              ],
+                                            )
+                                        ],
+                                        if (printData[5]['bedroom_facility'] ==
+                                            null) ...[
+                                          Wrap(
+                                            children: other1RoomFacility
+                                                .map((e) => Chip(
+                                                      label: Text(e),
+                                                    ))
+                                                .toList(),
+                                          )
+                                        ]
                                       ],
                                     ),
                                   ),
@@ -6058,6 +7231,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue: printData[5]
+                                          ['bedroom_facility_req_text'],
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -6145,7 +7320,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
               Column(
                 children: [
-                  if (other2BedRoom == true) ...{
+                  if (other2BedRoom == true || printData.asMap().containsKey(6)
+                      ? printData[6]['bedroom'] == "7"
+                      : other2BedRoom == true) ...{
                     SizedBox(
                       height: height * 0.01,
                     ),
@@ -6162,7 +7339,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                         ),
                         children: [
                           Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             width: width * 1,
                             color: color3,
                             child: Column(
@@ -6186,6 +7363,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue: printData[6]
+                                              ['bedroom_length'],
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -6198,8 +7377,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               //fillColor: Colors.green
                                               ),
                                           onChanged: (value) {
-                                            other2Length =
-                                                int.parse(value.toString());
+                                            setState(
+                                              () {
+                                                other2Length =
+                                                    int.parse(value.toString());
+                                              },
+                                            );
                                           },
                                         ),
                                       ),
@@ -6221,6 +7404,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue: printData[6]
+                                              ['bedroom_width'],
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                               hintText: "width",
@@ -6251,13 +7436,14 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
-                                            onPressed: () {},
-                                            icon: Icon(
-                                              Icons.help,
-                                              size: height * 0.03,
-                                            ))
+                                          padding: const EdgeInsets.all(5),
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.help,
+                                            size: height * 0.03,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -6273,7 +7459,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       borderRadius: BorderRadius.circular(5),
                                       child: Container(
                                         height: height * 0.03,
-                                        width: width * 0.6,
+                                        width: width * 0.5,
                                         margin: const EdgeInsets.all(
                                           3,
                                         ),
@@ -6283,7 +7469,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            value: selectedFloorOther2,
+                                            hint: printData[6]
+                                                        ['bedroom_floor'] !=
+                                                    null
+                                                ? Text(floorItemsOther2[
+                                                    printData[6]
+                                                        ['bedroom_floor']])
+                                                : Text(selectedFloorOther2!),
                                             elevation: 16,
                                             items: floorItemsOther2
                                                 .map((it) =>
@@ -6298,17 +7490,29 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         )))
                                                 .toList(),
                                             onChanged: (it) {
-                                              selectedFloorOther2 = it;
-                                              print(selectedFloorOther1);
-
-                                              if (selectedFloorOther2 ==
-                                                  "Ground Floor") {
-                                                other2Location = 1;
-                                              }
+                                              setState(
+                                                () {
+                                                  printData[6]
+                                                      ['bedroom_floor'] = null;
+                                                  selectedFloorOther2 = it;
+                                                  print(selectedFloorOther2);
+                                                  if (selectedFloorOther2 ==
+                                                      "Ground Floor") {
+                                                    other2Location = 0;
+                                                  }
+                                                  if (selectedFloorOther2 ==
+                                                      "1st Floor") {
+                                                    other2Location = 1;
+                                                  }
+                                                },
+                                              );
                                             },
                                           ),
                                         ),
                                       ),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.01,
                                     ),
                                   ],
                                 ),
@@ -6334,6 +7538,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue: printData[6]
+                                              ['bedroom_toilet_length'],
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -6371,6 +7577,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue: printData[6]
+                                              ['bedroom_toilet_width'],
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -6394,7 +7602,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       ),
                                     ),
                                     valueContainer(
-                                        height, width, size, 0.04, 0.05),
+                                      height,
+                                      width,
+                                      size,
+                                      0.04,
+                                      0.05,
+                                    ),
                                     SizedBox(
                                       width: width * 0.08,
                                     ),
@@ -6428,6 +7641,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue: printData[6]
+                                          ['bedroom_toilet_req_text'],
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -6467,10 +7682,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value:
-                                                          other2RequiredDress,
+                                                      value: printData[6][
+                                                                  'bedroom_dress_req'] ==
+                                                              1
+                                                          ? true
+                                                          : other2RequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
+                                                          printData[6][
+                                                              'bedroom_dress_req'] = 4;
                                                           other2RequiredDress =
                                                               value;
                                                           other2NotRequiredDress =
@@ -6513,8 +7733,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                     activeColor: checkColor,
                                                     checkColor: Colors.white,
-                                                    value:
-                                                        other2NotRequiredDress,
+                                                    value: printData[6][
+                                                                'bedroom_dress_req'] ==
+                                                            0
+                                                        ? true
+                                                        : other2NotRequiredDress,
                                                     onChanged: (value) {
                                                       setState(
                                                         () {
@@ -6522,7 +7745,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               value;
                                                           other2RequiredDress =
                                                               false;
-
+                                                          printData[6][
+                                                              'bedroom_dress_req'] = 4;
                                                           if (other2RequiredDress ==
                                                               true) {
                                                             other2DressInt = 1;
@@ -6549,7 +7773,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (other2RequiredDress == true) ...[
+                                if (other2RequiredDress == true ||
+                                    printData[6]['bedroom'] == "1") ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -6564,10 +7789,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
+                                            initialValue: printData[6]
+                                                ['bedroom_dress_length'],
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
-                                              hintText: "lenght",
+                                              hintText: "length",
                                               hintStyle:
                                                   TextStyle(fontSize: 14),
                                               border: OutlineInputBorder(
@@ -6577,17 +7804,24 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               contentPadding: EdgeInsets.all(8),
                                             ),
                                             onChanged: (value) {
-                                              setState(() {
-                                                other2DressLength =
-                                                    int.parse(value.toString());
-                                              });
+                                              setState(
+                                                () {
+                                                  other2DressLength = int.parse(
+                                                      value.toString());
+                                                },
+                                              );
                                             },
                                             onFieldSubmitted: (value) {},
                                           ),
                                         ),
                                       ),
                                       valueContainer(
-                                          height, width, size, 0.04, 0.05),
+                                        height,
+                                        width,
+                                        size,
+                                        0.04,
+                                        0.05,
+                                      ),
                                       SizedBox(
                                         width: width * 0.02,
                                       ),
@@ -6605,6 +7839,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
+                                            initialValue: printData[6]
+                                                ['bedroom_dress_width'],
+
                                             decoration: const InputDecoration(
                                               hintText: "width",
                                               hintStyle:
@@ -6628,7 +7865,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         ),
                                       ),
                                       valueContainer(
-                                          height, width, size, 0.04, 0.05),
+                                        height,
+                                        width,
+                                        size,
+                                        0.04,
+                                        0.05,
+                                      ),
                                       SizedBox(
                                         width: width * 0.08,
                                       ),
@@ -6636,8 +7878,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         children: [
                                           requirementText("help"),
                                           IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -6667,7 +7909,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         borderRadius: BorderRadius.circular(5),
                                         elevation: 5,
                                         child: Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 5),
                                           decoration: BoxDecoration(
                                             borderRadius:
@@ -6682,7 +7924,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     "Vanity",
                                                     "Cupboard",
                                                   ];
-
                                                   final List<String> ab =
                                                       await showDialog(
                                                     context: context,
@@ -6692,8 +7933,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                           items: otherIt);
                                                     },
                                                   );
+
                                                   setState(() {
                                                     other2DressFacility = ab;
+                                                    printData[6][
+                                                            'bedroom_dress_facility'] =
+                                                        null;
                                                   });
                                                 },
                                                 child: Container(
@@ -6706,13 +7951,32 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       Text("Office Facility"),
                                                 ),
                                               ),
-                                              Wrap(
-                                                children: other2DressFacility
-                                                    .map((e) => Chip(
+                                              if (printData[6][
+                                                      'bedroom_dress_facility'] !=
+                                                  null) ...[
+                                                for (int i = 0;
+                                                    i < other2DFac!.length;
+                                                    i++)
+                                                  Wrap(children: [
+                                                    Chip(
+                                                      label: Text(other2DFac![i]
+                                                          .toString()),
+                                                    )
+                                                  ])
+                                              ],
+                                              if (printData[6][
+                                                      'bedroom_dress_facility'] ==
+                                                  null) ...[
+                                                Wrap(
+                                                  children: other2DressFacility
+                                                      .map(
+                                                        (e) => Chip(
                                                           label: Text(e),
-                                                        ))
-                                                    .toList(),
-                                              )
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                                ),
+                                              ]
                                             ],
                                           ),
                                         ),
@@ -6730,6 +7994,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
+                                              initialValue: printData[6]
+                                                  ['bedroom_dress_req_text'],
                                               style:
                                                   const TextStyle(fontSize: 14),
                                               decoration: const InputDecoration(
@@ -6768,43 +8034,44 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       width: width * 9,
                                       height: height * 0.3,
                                       child: FutureBuilder(
-                                          future: getRecent(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Container(
-                                                child: const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                ),
-                                              );
-                                            } else {
-                                              return CarouselSlider.builder(
-                                                itemCount: bunglowPageRecentList
-                                                    .length,
-                                                itemBuilder: (context, i, id) {
-                                                  return Container(
-                                                    height: height * 0.4,
-                                                    width: width * 0.9,
-                                                    child: Image.network(
-                                                      imageUrl +
-                                                          bunglowPageRecentList[
-                                                              i]["img_path"],
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  );
-                                                },
-                                                options: CarouselOptions(
-                                                  autoPlay: true,
-                                                  enableInfiniteScroll: true,
-                                                  autoPlayAnimationDuration:
-                                                      const Duration(
-                                                          milliseconds: 800),
-                                                  viewportFraction: 1,
-                                                ),
-                                              );
-                                            }
-                                          }),
+                                        future: getRecent(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Container(
+                                              child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          } else {
+                                            return CarouselSlider.builder(
+                                              itemCount:
+                                                  bunglowPageRecentList.length,
+                                              itemBuilder: (context, i, id) {
+                                                return Container(
+                                                  height: height * 0.4,
+                                                  width: width * 0.9,
+                                                  child: Image.network(
+                                                    imageUrl +
+                                                        bunglowPageRecentList[i]
+                                                            ["img_path"],
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                );
+                                              },
+                                              options: CarouselOptions(
+                                                autoPlay: true,
+                                                enableInfiniteScroll: true,
+                                                autoPlayAnimationDuration:
+                                                    const Duration(
+                                                        milliseconds: 800),
+                                                viewportFraction: 1,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -6894,6 +8161,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(() {
                                               other2RoomFacility = result;
                                               print(other2DressFacility);
+                                              printData[6]['bedroom_facility'] =
+                                                  null;
                                             });
                                           },
                                           child: Container(
@@ -6904,13 +8173,30 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: Text("Room Facility"),
                                           ),
                                         ),
-                                        Wrap(
-                                          children: other2RoomFacility
-                                              .map((e) => Chip(
-                                                    label: Text(e),
-                                                  ))
-                                              .toList(),
-                                        )
+                                        if (printData[6]['bedroom_facility'] !=
+                                            null) ...[
+                                          for (int i = 0;
+                                              i < other2RFac!.length;
+                                              i++)
+                                            Wrap(
+                                              children: [
+                                                Chip(
+                                                  label: Text(other2RFac![i]
+                                                      .toString()),
+                                                )
+                                              ],
+                                            )
+                                        ],
+                                        if (printData[6]['bedroom_facility'] ==
+                                            null) ...[
+                                          Wrap(
+                                            children: other2RoomFacility
+                                                .map((e) => Chip(
+                                                      label: Text(e),
+                                                    ))
+                                                .toList(),
+                                          )
+                                        ]
                                       ],
                                     ),
                                   ),
@@ -6926,6 +8212,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue: printData[6]
+                                          ['bedroom_facility_req_text'],
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -7013,7 +8301,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
               Column(
                 children: [
-                  if (other3BedRoom == true) ...{
+                  if (other3BedRoom == true || printData.asMap().containsKey(7)
+                      ? printData[7]['bedroom'] == "8"
+                      : other3BedRoom == true) ...{
                     SizedBox(
                       height: height * 0.01,
                     ),
@@ -7044,7 +8334,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                         ),
                         children: [
                           Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             width: width * 1,
                             color: color3,
                             child: Column(
@@ -7068,6 +8358,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue: printData[7]
+                                              ['bedroom_length'],
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -7080,10 +8372,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               //fillColor: Colors.green
                                               ),
                                           onChanged: (value) {
-                                            other3Length =
-                                                int.parse(value.toString());
-                                            // _onUpdate(1, value, '', '', '', '', '', '',
-                                            //     '', '', '', '');
+                                            setState(
+                                              () {
+                                                other3Length =
+                                                    int.parse(value.toString());
+                                              },
+                                            );
                                           },
                                         ),
                                       ),
@@ -7105,6 +8399,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue: printData[7]
+                                              ['bedroom_width'],
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                               hintText: "width",
@@ -7135,13 +8431,14 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
-                                            onPressed: () {},
-                                            icon: Icon(
-                                              Icons.help,
-                                              size: height * 0.03,
-                                            ))
+                                          padding: const EdgeInsets.all(5),
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.help,
+                                            size: height * 0.03,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -7157,7 +8454,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       borderRadius: BorderRadius.circular(5),
                                       child: Container(
                                         height: height * 0.03,
-                                        width: width * 0.6,
+                                        width: width * 0.5,
                                         margin: const EdgeInsets.all(
                                           3,
                                         ),
@@ -7167,9 +8464,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            value: selectedFloorOther3,
+                                            hint: printData[7]
+                                                        ['bedroom_floor'] !=
+                                                    null
+                                                ? Text(floorItemsGuest[
+                                                    printData[7]
+                                                        ['bedroom_floor']])
+                                                : Text(selectedFloorGuest!),
                                             elevation: 16,
-                                            items: floorItemsOther3
+                                            items: floorItemsGuest
                                                 .map((it) =>
                                                     DropdownMenuItem<String>(
                                                         value: it,
@@ -7182,16 +8485,29 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         )))
                                                 .toList(),
                                             onChanged: (it) {
-                                              selectedFloorOther3 = it;
-                                              print(selectedFloorOther1);
-                                              if (selectedFloorOther3 ==
-                                                  "Ground Floor") {
-                                                other3Location = 1;
-                                              }
+                                              setState(
+                                                () {
+                                                  printData[7]
+                                                      ['bedroom_floor'] = null;
+                                                  selectedFloorOther3 = it;
+                                                  print(selectedFloorOther3);
+                                                  if (selectedFloorOther3 ==
+                                                      "Ground Floor") {
+                                                    other3Location = 0;
+                                                  }
+                                                  if (selectedFloorOther3 ==
+                                                      "1st Floor") {
+                                                    other3Location = 1;
+                                                  }
+                                                },
+                                              );
                                             },
                                           ),
                                         ),
                                       ),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.01,
                                     ),
                                   ],
                                 ),
@@ -7217,6 +8533,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
+                                          initialValue: printData[7]
+                                              ['bedroom_toilet_length'],
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -7254,6 +8572,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
+                                          initialValue: printData[7]
+                                              ['bedroom_toilet_width'],
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -7277,7 +8597,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       ),
                                     ),
                                     valueContainer(
-                                        height, width, size, 0.04, 0.05),
+                                      height,
+                                      width,
+                                      size,
+                                      0.04,
+                                      0.05,
+                                    ),
                                     SizedBox(
                                       width: width * 0.08,
                                     ),
@@ -7311,6 +8636,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue: printData[5]
+                                          ['bedroom_toilet_req_text'],
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -7350,10 +8677,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value:
-                                                          other3RequiredDress,
+                                                      value: printData[7][
+                                                                  'bedroom_dress_req'] ==
+                                                              1
+                                                          ? true
+                                                          : other3RequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
+                                                          printData[7][
+                                                              'bedroom_dress_req'] = 4;
                                                           other3RequiredDress =
                                                               value;
                                                           other3NotRequiredDress =
@@ -7396,8 +8728,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                     activeColor: checkColor,
                                                     checkColor: Colors.white,
-                                                    value:
-                                                        other3NotRequiredDress,
+                                                    value: printData[7][
+                                                                'bedroom_dress_req'] ==
+                                                            0
+                                                        ? true
+                                                        : other3NotRequiredDress,
                                                     onChanged: (value) {
                                                       setState(
                                                         () {
@@ -7405,7 +8740,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               value;
                                                           other3RequiredDress =
                                                               false;
-
+                                                          printData[7][
+                                                              'bedroom_dress_req'] = 4;
                                                           if (other3RequiredDress ==
                                                               true) {
                                                             other3DressInt = 1;
@@ -7432,7 +8768,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (other3RequiredDress == true) ...[
+                                if (other3RequiredDress == true ||
+                                    printData[7]['bedroom'] == "1") ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -7447,10 +8784,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
+                                            initialValue: printData[7]
+                                                ['bedroom_dress_length'],
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
-                                              hintText: "lenght",
+                                              hintText: "length",
                                               hintStyle:
                                                   TextStyle(fontSize: 14),
                                               border: OutlineInputBorder(
@@ -7460,17 +8799,24 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               contentPadding: EdgeInsets.all(8),
                                             ),
                                             onChanged: (value) {
-                                              setState(() {
-                                                other3DressLength =
-                                                    int.parse(value.toString());
-                                              });
+                                              setState(
+                                                () {
+                                                  other3DressLength = int.parse(
+                                                      value.toString());
+                                                },
+                                              );
                                             },
                                             onFieldSubmitted: (value) {},
                                           ),
                                         ),
                                       ),
                                       valueContainer(
-                                          height, width, size, 0.04, 0.05),
+                                        height,
+                                        width,
+                                        size,
+                                        0.04,
+                                        0.05,
+                                      ),
                                       SizedBox(
                                         width: width * 0.02,
                                       ),
@@ -7488,6 +8834,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
+                                            initialValue: printData[7]
+                                                ['bedroom_dress_width'],
+
                                             decoration: const InputDecoration(
                                               hintText: "width",
                                               hintStyle:
@@ -7511,7 +8860,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         ),
                                       ),
                                       valueContainer(
-                                          height, width, size, 0.04, 0.05),
+                                        height,
+                                        width,
+                                        size,
+                                        0.04,
+                                        0.05,
+                                      ),
                                       SizedBox(
                                         width: width * 0.08,
                                       ),
@@ -7519,8 +8873,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         children: [
                                           requirementText("help"),
                                           IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -7550,7 +8904,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         borderRadius: BorderRadius.circular(5),
                                         elevation: 5,
                                         child: Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 5),
                                           decoration: BoxDecoration(
                                             borderRadius:
@@ -7565,7 +8919,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     "Vanity",
                                                     "Cupboard",
                                                   ];
-
                                                   final List<String> ab =
                                                       await showDialog(
                                                     context: context,
@@ -7575,8 +8928,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                           items: otherIt);
                                                     },
                                                   );
+
                                                   setState(() {
                                                     other3DressFacility = ab;
+                                                    printData[7][
+                                                            'bedroom_dress_facility'] =
+                                                        null;
                                                   });
                                                 },
                                                 child: Container(
@@ -7589,13 +8946,32 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       Text("Office Facility"),
                                                 ),
                                               ),
-                                              Wrap(
-                                                children: other3DressFacility
-                                                    .map((e) => Chip(
+                                              if (printData[7][
+                                                      'bedroom_dress_facility'] !=
+                                                  null) ...[
+                                                for (int i = 0;
+                                                    i < other3DFac!.length;
+                                                    i++)
+                                                  Wrap(children: [
+                                                    Chip(
+                                                      label: Text(other3DFac![i]
+                                                          .toString()),
+                                                    )
+                                                  ])
+                                              ],
+                                              if (printData[7][
+                                                      'bedroom_dress_facility'] ==
+                                                  null) ...[
+                                                Wrap(
+                                                  children: other3DressFacility
+                                                      .map(
+                                                        (e) => Chip(
                                                           label: Text(e),
-                                                        ))
-                                                    .toList(),
-                                              )
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                                ),
+                                              ]
                                             ],
                                           ),
                                         ),
@@ -7613,6 +8989,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
+                                              initialValue: printData[7]
+                                                  ['bedroom_dress_req_text'],
                                               style:
                                                   const TextStyle(fontSize: 14),
                                               decoration: const InputDecoration(
@@ -7651,43 +9029,44 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       width: width * 9,
                                       height: height * 0.3,
                                       child: FutureBuilder(
-                                          future: getRecent(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return Container(
-                                                child: const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                ),
-                                              );
-                                            } else {
-                                              return CarouselSlider.builder(
-                                                itemCount: bunglowPageRecentList
-                                                    .length,
-                                                itemBuilder: (context, i, id) {
-                                                  return Container(
-                                                    height: height * 0.4,
-                                                    width: width * 0.9,
-                                                    child: Image.network(
-                                                      imageUrl +
-                                                          bunglowPageRecentList[
-                                                              i]["img_path"],
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  );
-                                                },
-                                                options: CarouselOptions(
-                                                  autoPlay: true,
-                                                  enableInfiniteScroll: true,
-                                                  autoPlayAnimationDuration:
-                                                      const Duration(
-                                                          milliseconds: 800),
-                                                  viewportFraction: 1,
-                                                ),
-                                              );
-                                            }
-                                          }),
+                                        future: getRecent(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Container(
+                                              child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          } else {
+                                            return CarouselSlider.builder(
+                                              itemCount:
+                                                  bunglowPageRecentList.length,
+                                              itemBuilder: (context, i, id) {
+                                                return Container(
+                                                  height: height * 0.4,
+                                                  width: width * 0.9,
+                                                  child: Image.network(
+                                                    imageUrl +
+                                                        bunglowPageRecentList[i]
+                                                            ["img_path"],
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                );
+                                              },
+                                              options: CarouselOptions(
+                                                autoPlay: true,
+                                                enableInfiniteScroll: true,
+                                                autoPlayAnimationDuration:
+                                                    const Duration(
+                                                        milliseconds: 800),
+                                                viewportFraction: 1,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -7777,6 +9156,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(() {
                                               other3RoomFacility = result;
                                               print(other3DressFacility);
+                                              printData[7]['bedroom_facility'] =
+                                                  null;
                                             });
                                           },
                                           child: Container(
@@ -7787,13 +9168,30 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: Text("Room Facility"),
                                           ),
                                         ),
-                                        Wrap(
-                                          children: other3RoomFacility
-                                              .map((e) => Chip(
-                                                    label: Text(e),
-                                                  ))
-                                              .toList(),
-                                        )
+                                        if (printData[7]['bedroom_facility'] !=
+                                            null) ...[
+                                          for (int i = 0;
+                                              i < other3RFac!.length;
+                                              i++)
+                                            Wrap(
+                                              children: [
+                                                Chip(
+                                                  label: Text(other3RFac![i]
+                                                      .toString()),
+                                                )
+                                              ],
+                                            )
+                                        ],
+                                        if (printData[7]['bedroom_facility'] ==
+                                            null) ...[
+                                          Wrap(
+                                            children: other3RoomFacility
+                                                .map((e) => Chip(
+                                                      label: Text(e),
+                                                    ))
+                                                .toList(),
+                                          )
+                                        ]
                                       ],
                                     ),
                                   ),
@@ -7809,6 +9207,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
+                                      initialValue: printData[7]
+                                          ['bedroom_facility_req_text'],
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -7904,10 +9304,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                     Map<dynamic, dynamic> _value = {};
                     _value["dimension"] = 1;
-                    _value["project_id"] = 87;
+                    _value["project_id"] = project_id;
 
                     List<Bedtypes> bedData = [
-                      if (masterBedroom == true)
+                      if (masterBedroom == true ||
+                          printData[0]['bedroom'] == "1")
                         Bedtypes(
                           bedroomLength: masterLength,
                           bedRoomFloor: masterLocation,
@@ -7925,7 +9326,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressText: masterDresstext,
                           bedroomText: masterOtherRequirement,
                         ),
-                      if (sonBedRoom == true)
+                      if (printData.asMap().containsKey(1)
+                          ? printData[1]['bedroom'] == "2"
+                          : sonBedRoom == true)
                         Bedtypes(
                           bedroomLength: sonLength,
                           bedRoomFloor: sonLocation,
@@ -7943,7 +9346,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressText: sonDresstext,
                           bedroomText: sonOtherRequirement,
                         ),
-                      if (daughterBedRoom == true)
+                      if (printData.asMap().containsKey(2)
+                          ? printData[2]['bedroom'] == "3"
+                          : daughterBedRoom == true)
                         Bedtypes(
                           bedroomLength: daughterLength,
                           bedRoomFloor: daughterLocation,
@@ -7961,7 +9366,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressText: daughterDresstext,
                           bedroomText: daughterOtherRequirement,
                         ),
-                      if (parentBedRoom == true)
+                      if (printData.asMap().containsKey(3)
+                          ? printData[3]['bedroom'] == "4"
+                          : parentBedRoom == true)
                         Bedtypes(
                           bedroomLength: parentLength,
                           bedRoomFloor: parentLocation,
@@ -7979,7 +9386,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressText: parentDresstext,
                           bedroomText: parentOtherRequirement,
                         ),
-                      if (guestBedRoom == true)
+                      if (printData.asMap().containsKey(4)
+                          ? printData[4]['bedroom'] == "5"
+                          : guestBedRoom == true)
                         Bedtypes(
                           bedroomLength: guestLength,
                           bedRoomFloor: guestLocation,
@@ -7997,7 +9406,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressText: guestDresstext,
                           bedroomText: guestOtherRequirement,
                         ),
-                      if (other1BedRoom == true)
+                      if (printData.asMap().containsKey(5)
+                          ? printData[5]['bedroom'] == "6"
+                          : other1BedRoom == true)
                         Bedtypes(
                           bedroomLength: other1Length,
                           bedRoomFloor: other1Location,
@@ -8015,7 +9426,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressText: other1Dresstext,
                           bedroomText: other1OtherRequirement,
                         ),
-                      if (other2BedRoom == true)
+                      if (printData.asMap().containsKey(6)
+                          ? printData[6]['bedroom'] == "7"
+                          : other2BedRoom == true)
                         Bedtypes(
                           bedroomLength: other2Length,
                           bedRoomFloor: other2Location,
@@ -8033,7 +9446,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressText: other2Dresstext,
                           bedroomText: other2OtherRequirement,
                         ),
-                      if (other3BedRoom == true)
+                      if (printData.asMap().containsKey(7)
+                          ? printData[7]['bedroom'] == "8"
+                          : other3BedRoom == true)
                         Bedtypes(
                           bedroomLength: other3Length,
                           bedRoomFloor: other3Location,
@@ -8060,25 +9475,38 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                     for (int i = 0; i < bedData.length; i++) {
                       jsonUser.add(bedData[i]);
                     }
-                    _value["bedrooms"] = jsonUser;
-                    // _value.putIfAbsent("bedrooms", () => jsonUser);
 
+                    _value["bedrooms"] = jsonUser;
                     print(jsonEncode(_value));
+                    // _value.putIfAbsent("bedrooms", () => jsonUser);
+                    // print(jsonEncode(_value));
                     // print(_values[0]["bedroom_length"]);
                     //  print(masterLength);
                     // print({'dimension': 1, "project_id": 567, "bedrooms": jsonUser});
 
-                    final response = await http.post(
-                      Uri.parse(
-                          'http://192.168.1.99:8080/sdplserver/api/bungalow-bedroom'),
-                      headers: <String, String>{
-                        'Content-Type': 'application/json; charset=UTF-8',
-                      },
-                      body: jsonEncode(_value),
-                      // body: _value
-                    );
-
-                    print(response.body);
+                    if (project_id == null) {
+                      final update = await http.post(
+                        Uri.parse(
+                            'http://192.168.0.99:8080/sdplserver/api/bungalow-bedroom'),
+                        headers: <String, String>{
+                          'Content-Type': 'application/json; charset=UTF-8',
+                        },
+                        body: jsonEncode(_value),
+                        // body: _valu
+                      );
+                      // print(update.body);
+                    } else {
+                      print(jsonEncode(_value));
+                      // final submit = await http.post(
+                      //   Uri.parse(
+                      //   'http://192.168.0.99:8080/sdplserver/api/update-bungalow-bedroom/$project_id'),
+                      //   headers: <String, String>{
+                      //   'Content-Type': 'application/json; charset=UTF-8',
+                      //   },
+                      //   body: jsonEncode(_value),
+                      //   );
+                      //   print(submit.body);
+                    }
                   },
                   child: Container(
                     height: height * 0.04,
