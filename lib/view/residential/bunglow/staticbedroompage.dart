@@ -302,7 +302,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
             //       : null;
 
             //   o3i = printData.asMap().containsKey(7)
-            //       ? int.parse(printData['bedroom'].toString())
+            //       ? int.parse(printData['bedroom'].toString()
             //       : null;
             // }
 
