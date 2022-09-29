@@ -41,15 +41,17 @@ class _BasementState extends State<Basement> {
   TextEditingController additionalParkingLength = TextEditingController();
   TextEditingController additionalParkingWidth = TextEditingController();
   TextEditingController additionalCarsController = TextEditingController();
-  TextEditingController additionalParkingSpecificController = TextEditingController();
+  TextEditingController additionalParkingSpecificController =
+      TextEditingController();
   TextEditingController indoorPlayLengthController = TextEditingController();
   TextEditingController indoorPlayWidtController = TextEditingController();
   TextEditingController indoorPlaySpecificRequirement = TextEditingController();
   TextEditingController barLengthController = TextEditingController();
   TextEditingController barWidthController = TextEditingController();
-  TextEditingController barSpecificRequiremrnt =          TextEditingController();
-  TextEditingController swimmingPoolLengthController =    TextEditingController();
-  TextEditingController swimmingPoolSpecificRequirement = TextEditingController();
+  TextEditingController barSpecificRequiremrnt = TextEditingController();
+  TextEditingController swimmingPoolLengthController = TextEditingController();
+  TextEditingController swimmingPoolSpecificRequirement =
+      TextEditingController();
   TextEditingController swimmingPoolWidthController = TextEditingController();
   TextEditingController gymLengthController = TextEditingController();
   TextEditingController gymWidthController = TextEditingController();
@@ -2570,7 +2572,6 @@ class _BasementState extends State<Basement> {
                 ),
               ],
             ),
-            
             SizedBox(
               height: height * 0.01,
             ),
@@ -2701,7 +2702,7 @@ class _BasementState extends State<Basement> {
                     }
                   }
                   if (AdditionalRequirement == true) {
-                    additionalReqInt = 1;                  
+                    additionalReqInt = 1;
                   }
                   print(
                       "indoor play width controller ${indoorPlayWidtController.text}");
