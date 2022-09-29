@@ -12,15 +12,13 @@ class LivingHall extends StatefulWidget {
 
   @override
   State<LivingHall> createState() => _LivingHallState();
-
 }
 
 class _LivingHallState extends State<LivingHall> {
-
   List<String> otherFeatures = [];
   List livingHall = [];
 
-void multiSelected() async {
+  void multiSelected() async {
     final List<String> otherItems = ["Double Height", "Powder Toilet"];
 
     final List<String> result = await showDialog(
@@ -99,7 +97,7 @@ void multiSelected() async {
     "3rd Floor",
     "other"
   ];
-  
+
   List<String> kitchenFunctionItems = [
     "Selecting dining function",
     "full open to dining ",
@@ -149,7 +147,7 @@ void multiSelected() async {
 
       http: //sdplweb.com/sdpl/api/edit-bungalow-drawing-hall/project_id
       var response = await http.get(Uri.parse(
-          "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-drawing-hall/179"));
+          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-drawing-hall/179"));
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
@@ -195,7 +193,6 @@ void multiSelected() async {
                   height: height * 0.01,
                 ),
                 Align(
-                  
                   alignment: Alignment.topLeft,
                   child: requirementText("Living hall/family lounge"),
                 ),
@@ -1163,7 +1160,8 @@ void multiSelected() async {
                         child: TextFormField(
                           initialValue: printData['bungalow_drawing_hall']
                                       ['kitchen_length'] ==
-                                  null ? ""
+                                  null
+                              ? ""
                               : printData['bungalow_drawing_hall']
                                   ['kitchen_length'],
                           style: const TextStyle(fontSize: 14),
@@ -1942,7 +1940,7 @@ void multiSelected() async {
 
                       if (selectedKitchenFunction == "partial open to dining") {
                         kitchenDiningFunction = "2";
-                        }
+                      }
                       if (selectedKitchenFunction ==
                           "open with a reasonable opening") {
                         kitchenDiningFunction = "3";
@@ -2011,5 +2009,6 @@ void multiSelected() async {
                 ),
               ],
             ),
-          ); }
+          );
+  }
 }

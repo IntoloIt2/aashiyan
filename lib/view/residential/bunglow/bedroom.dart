@@ -9,15 +9,12 @@ import 'package:get/get.dart';
 import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
 
-
-
 class MultiForm extends StatefulWidget {
   @override
   State<MultiForm> createState() => _MultiFormState();
 }
 
 class _MultiFormState extends State<MultiForm> {
-
   final StateManagement cont = Get.put(StateManagement());
 
   bool isloading = false;
@@ -37,7 +34,6 @@ class _MultiFormState extends State<MultiForm> {
   // @override
   @override
   Widget build(BuildContext context) {
-
     // if (printData != null) {
     //   isloading = true;
     //   listLen = printData["bungalow_bedroom"].length;
@@ -55,11 +51,8 @@ class _MultiFormState extends State<MultiForm> {
     print("hello");
 
     return SingleChildScrollView(
-
       scrollDirection: Axis.vertical,
-      
-      child:
-      Column(
+      child: Column(
         children: [
           OutlinedButton(
             onPressed: cont.onAddForm,
@@ -106,25 +99,24 @@ class _MultiFormState extends State<MultiForm> {
                 "project_id",
                 () => "349",
               );
-              _value.putIfAbsent( "dimension", () => dimenInt);
+              _value.putIfAbsent("dimension", () => dimenInt);
               for (int i = 0; i < userdata.length; i++) {
-                Map<String, dynamic> json = {  
-
-                  "bedroom":                   cont.users[i].user!.personBedRoom,
-                  "bedroom_length":            cont.users[i].user!.length,
-                  "bedroom_width":             cont.users[i].user!.width,
-                  "bedroom_dress_length":      cont.users[i].user!.dressLenght,
-                  "bedroom_dress_width":       cont.users[i].user!.dressWidth,
-                  "bedroom_dress_req_text":    cont.users[i].user!.dressReqText,
-                  "bedroom_dress_req":         cont.users[i].user!.dressReq,
-                  "bedroom_floor":             cont.users[i].user!.selectedFloor,
-                  "bedroom_toilet_length":     cont.users[i].user!.toiletLength,
-                  "bedroom_toilet_width":      cont.users[i].user!.toiletWidth,
-                  "bedroom_dress_facility":    cont.users[i].user!.dressFacility,
-                  "bedroom_toilet_req_text":   cont.users[i].user!.toiletFacility,
-                  "bedroom_facility":          cont.users[i].user!.roomRequirement,
-                  "bedroom_facility_req_text": cont.users[i].user!.roomOtherRequirement,
-
+                Map<String, dynamic> json = {
+                  "bedroom": cont.users[i].user!.personBedRoom,
+                  "bedroom_length": cont.users[i].user!.length,
+                  "bedroom_width": cont.users[i].user!.width,
+                  "bedroom_dress_length": cont.users[i].user!.dressLenght,
+                  "bedroom_dress_width": cont.users[i].user!.dressWidth,
+                  "bedroom_dress_req_text": cont.users[i].user!.dressReqText,
+                  "bedroom_dress_req": cont.users[i].user!.dressReq,
+                  "bedroom_floor": cont.users[i].user!.selectedFloor,
+                  "bedroom_toilet_length": cont.users[i].user!.toiletLength,
+                  "bedroom_toilet_width": cont.users[i].user!.toiletWidth,
+                  "bedroom_dress_facility": cont.users[i].user!.dressFacility,
+                  "bedroom_toilet_req_text": cont.users[i].user!.toiletFacility,
+                  "bedroom_facility": cont.users[i].user!.roomRequirement,
+                  "bedroom_facility_req_text":
+                      cont.users[i].user!.roomOtherRequirement,
                 };
                 val.add(json);
               }
@@ -135,7 +127,8 @@ class _MultiFormState extends State<MultiForm> {
               // print(finalResponse);
               final response = await http.post(
                 // Uri.parse(baseUrlLocal + "project"),
-                Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-bedroom'),
+                Uri.parse(
+                    'http://192.168.0.99:8080/sdplserver/api/bungalow-bedroom'),
                 headers: <String, String>{
                   'Content-Type': 'application/json; charset=UTF-8',
                 },
@@ -269,15 +262,14 @@ class _BedRoomState extends State<BedRoom> {
       "Mini Bar",
     ];
 
-   final List<String> result = await showDialog(
+    final List<String> result = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return MultiSelect(items: otherItems);
-
       },
     );
 
-    if(result != null) {
+    if (result != null) {
       setState(
         () {
           otherFacilities = result;
@@ -285,7 +277,6 @@ class _BedRoomState extends State<BedRoom> {
         },
       );
     }
-
   }
 
   void multi() async {

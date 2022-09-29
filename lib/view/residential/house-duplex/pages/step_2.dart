@@ -116,16 +116,24 @@ class _Step_2State extends State<Step_2> {
               children: [
                 Text("Ground Floor requirement",
                     style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.w700))
+                        color: Colors.black, fontWeight: FontWeight.w700)),
+                SizedBox(
+                  height: height * 0.05,
+                ),
               ],
             ),
             Row(
               children: [
-                SizedBox(
-                  height: height * 0.05,
+                Container(
+                  margin: EdgeInsets.only(top: 20),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("Porch"),
+                      //
+                    ],
+                  ),
                 ),
-                Text("Porch"),
-                //
               ],
             ),
             Row(
@@ -152,30 +160,70 @@ class _Step_2State extends State<Step_2> {
                         color: Colors.black, fontWeight: FontWeight.w500))
               ],
             ),
-            Row(
-              children: [
-                Text("Length"),
-                Material(
-                  borderRadius: BorderRadius.circular(5),
-                  elevation: 5,
-                  child: Container(
-                      // height: height * 0.18,
-                      width: width * 0.15,
-                      child: TextFormField(
-                        textAlign: TextAlign.center,
-                        decoration: const InputDecoration(
-                            hintText: "Length",
-                            hintStyle: TextStyle(fontSize: 14),
-                            isDense: true,
-                            contentPadding: EdgeInsets.all(1)),
-                        initialValue: porchLength.toString(),
-                        onChanged: (value) {
-                          porchLength = int.parse(value);
-                        },
-                      )),
-                )
-              ],
-            )
+            porchRequired
+                ? Container(
+                    margin: EdgeInsets.only(right: width * 0.2),
+                    padding: EdgeInsets.all(1),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text("Length"),
+                            SizedBox(
+                              width: width * 0.02,
+                            ),
+                            Material(
+                              borderRadius: BorderRadius.circular(5),
+                              elevation: 1,
+                              child: Container(
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    textAlign: TextAlign.center,
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(0)),
+                                    initialValue: porchLength.toString(),
+                                    onChanged: (value) {
+                                      porchLength = int.parse(value);
+                                    },
+                                  )),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("Width"),
+                            Material(
+                              borderRadius: BorderRadius.circular(5),
+                              elevation: 1,
+                              child: Container(
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    textAlign: TextAlign.center,
+                                    decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(1)),
+                                    initialValue: porchLength.toString(),
+                                    onChanged: (value) {
+                                      porchLength = int.parse(value);
+                                    },
+                                  )),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: width * 0.05,
+                        ),
+                        Text("Help")
+                      ],
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),

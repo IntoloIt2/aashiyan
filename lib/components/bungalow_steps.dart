@@ -188,7 +188,6 @@ class _StepPagesState extends State<StepPages> {
                             setState(() {
                               index = 1;
                               st = "Entrance";
-                            
                             });
                           },
                           child: stepsContainer("Step 2"),

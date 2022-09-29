@@ -188,7 +188,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
     try {
       var response = await http.get(
         Uri.parse(
-          "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-bedroom/87",
+          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-bedroom/87",
         ),
       );
 

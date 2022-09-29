@@ -93,7 +93,6 @@ class _FloorStoreState extends State<FloorStore> {
 
   bool isloading = false;
 
-
   var printData;
 
   Future<void> getData() async {
@@ -104,7 +103,7 @@ class _FloorStoreState extends State<FloorStore> {
 
       var response = await http.get(
         Uri.parse(
-          "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-floor-store/179",
+          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-floor-store/179",
         ),
       );
 
@@ -328,7 +327,7 @@ class _FloorStoreState extends State<FloorStore> {
                       SizedBox(
                         width: width * 0.02,
                       ),
-                      if (selectedFloor == "other" ) ...[
+                      if (selectedFloor == "other") ...[
                         Material(
                           elevation: 5,
                           borderRadius:
@@ -564,8 +563,7 @@ class _FloorStoreState extends State<FloorStore> {
                     child: SizedBox(
                       width: width * 9,
                       height: height * 0.3,
-                      child: 
-                      FutureBuilder(
+                      child: FutureBuilder(
                         future: getRecent(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==

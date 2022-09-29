@@ -8,6 +8,7 @@ import '../../bunglow/requirement.dart';
 import '../pages/index.dart';
 
 int? index = 0;
+String? st = "Requirement";
 
 class PageNav extends StatefulWidget {
   const PageNav({super.key});
@@ -33,6 +34,13 @@ class _PageNavState extends State<PageNav> {
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
+        // appBar: appBar(st!),
+        title: Text(
+          st!,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -50,6 +58,7 @@ class _PageNavState extends State<PageNav> {
                           onTap: () {
                             setState(() {
                               index = 0;
+                              st = "Requirement";
                             });
                           },
                           child: houseStepsContainer('Step 1')),
@@ -64,6 +73,7 @@ class _PageNavState extends State<PageNav> {
                           onTap: () {
                             setState(() {
                               index = 1;
+                              st = "Entrance";
                             });
                           },
                           child: houseStepsContainer('Step 2')),
@@ -76,6 +86,10 @@ class _PageNavState extends State<PageNav> {
                       // elevation: 5,
                       child: GestureDetector(
                           onTap: () {
+                            setState(() {
+                              index = 2;
+                              st = "Living Hall";
+                            });
                             // Navigator.pushNamed(context, );
                           },
                           child: houseStepsContainer('Step 3')),
@@ -88,6 +102,10 @@ class _PageNavState extends State<PageNav> {
                       // elevation: 5,
                       child: GestureDetector(
                           onTap: () {
+                            setState(() {
+                              index = 3;
+                              st = "Pantry";
+                            });
                             // Navigator.pushNamed(context, );
                           },
                           child: houseStepsContainer('Step 4')),
@@ -100,6 +118,10 @@ class _PageNavState extends State<PageNav> {
                       // elevation: 5,
                       child: GestureDetector(
                           onTap: () {
+                            setState(() {
+                              index = 4;
+                              st = "Floor Store";
+                            });
                             // Navigator.pushNamed(context, );
                           },
                           child: houseStepsContainer('Step 5')),
@@ -112,6 +134,10 @@ class _PageNavState extends State<PageNav> {
                       // elevation: 5,
                       child: GestureDetector(
                           onTap: () {
+                            setState(() {
+                              index = 5;
+                              st = "Bed Room";
+                            });
                             // Navigator.pushNamed(context, );
                           },
                           child: houseStepsContainer('Step 6')),
@@ -124,6 +150,10 @@ class _PageNavState extends State<PageNav> {
                       // elevation: 5,
                       child: GestureDetector(
                           onTap: () {
+                            setState(() {
+                              index = 6;
+                              st = "Basement";
+                            });
                             // Navigator.pushNamed(context, );
                           },
                           child: houseStepsContainer('Step 7')),
@@ -136,6 +166,10 @@ class _PageNavState extends State<PageNav> {
                       // elevation: 5,
                       child: GestureDetector(
                           onTap: () {
+                            setState(() {
+                              index = 7;
+                              st = "Built Up";
+                            });
                             // Navigator.pushNamed(context, );
                           },
                           child: houseStepsContainer('Step 8')),
