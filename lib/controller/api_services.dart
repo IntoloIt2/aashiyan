@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/model/requirementmodel.dart';
 import 'package:http/http.dart' as http;
+
 var baseUrl = 'http://sdplweb.com/sdpl/api/';
 var baseUrlLocal = 'http://192.168.1.99:8080/sdplserver/api/';
 var imageUrl = 'http://sdplweb.com/sdpl/storage/app/public/';
@@ -166,7 +167,7 @@ Future<void> residentailRecent() async {
 //   return RequirementModel.fromJson(jsonDecode(response.body));
 // }
 
-Future<RequirementModel> requirementPost(
+Future<void> requirementPost(
   int userId,
   int projectGroupId,
   int ProjectTypeId,
@@ -237,16 +238,14 @@ Future<RequirementModel> requirementPost(
 
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.1.99:8080/sdplserver/api/project'),
+    Uri.parse('http://192.168.0.99:8080/sdplserver/api/project'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
-
   print(response.body);
-
-  return RequirementModel.fromJson(jsonDecode(response.body));
+  var temp = jsonDecode(response.body);
 }
 
 Future<void> entrancePost(
@@ -322,7 +321,7 @@ Future<void> entrancePost(
 
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-entrance'),
+    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-entrance'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

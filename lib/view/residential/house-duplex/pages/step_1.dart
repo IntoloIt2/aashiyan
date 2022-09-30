@@ -15,7 +15,7 @@ class Step_1 extends StatefulWidget {
 }
 
 class _Step_1State extends State<Step_1> {
-  late Future<RequirementModel> futureRequirement;
+  // late Future<RequirementModel> futureRequirement;
   String nameController = '';
   String lastNameController = "";
   String emailController = "";
@@ -81,6 +81,7 @@ class _Step_1State extends State<Step_1> {
 
   List cityData = [];
   List stateData = [];
+  // List requirementDataByUserId = [];
 
   int plotWidth = 0;
   int plotLenght = 0;
@@ -173,7 +174,44 @@ class _Step_1State extends State<Step_1> {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
-          // print(printData);
+          print(printData);
+          if (printData != null) {
+            nameController = printData["project"]['first_name'] != null
+                ? printData["project"]['first_name'].toString()
+                : '';
+            lastNameController = printData["project"]["last_name"] != null
+                ? printData["project"][""].toString()
+                : "";
+            emailController = printData["project"]["email"] != null
+                ? printData["project"][""].toString()
+                : "";
+            addressController = printData["project"]["country"] != null
+                ? printData["project"][""].toString()
+                : "";
+            diagonal1Controller = printData["project"]["diagonal_1"] != null
+                ? printData["project"][""].toString()
+                : '';
+            diagonal2Controller = printData["project"]["diagonal_2"] != null
+                ? printData["project"][""].toString()
+                : '';
+            eastController = printData["project"]["east_property"] != null
+                ? printData["project"][""].toString()
+                : "";
+            westController = printData["project"]["west_property"] != null
+                ? printData["project"][""].toString()
+                : "";
+            northController = printData["project"]["north_property"] != null
+                ? printData["project"][""].toString()
+                : "";
+            southController = printData["project"]["south_property"] != null
+                ? printData["project"][""].toString()
+                : "";
+            levelController = printData["project"]["level"] != null
+                ? printData["project"][""].toString()
+                : "";
+            //  widthController = printData["project"][]!=null?printData[][].toString():'';
+            //  lengthController = printData["project"][]!=null?printData[][].toString():'';
+          }
         });
       }
     } catch (e) {
@@ -197,6 +235,7 @@ class _Step_1State extends State<Step_1> {
   void initState() {
     super.initState();
     getData();
+    // updateDataByProjectId();
     getCities();
     getState();
     plotValue.addListener(() => setState(() {}));
@@ -245,9 +284,11 @@ class _Step_1State extends State<Step_1> {
                             icon: const Icon(Icons.keyboard_arrow_down_sharp),
                             elevation: 16,
                             items: items
+                                .asMap()
+                                .entries
                                 .map((it) => DropdownMenuItem<String>(
-                                      value: it,
-                                      child: Text(it,
+                                      value: it.value,
+                                      child: Text(it.value,
                                           style: TextStyle(
                                               fontSize: height * 0.02)),
                                     ))
@@ -261,7 +302,9 @@ class _Step_1State extends State<Step_1> {
                                 } else if (it == "MS") {
                                   selectedItemInt = 3;
                                 }
+                                print(items.indexOf(it!));
                                 selectedItems = it!;
+                                // selectedItems = items.indexOf(it);
                               },
                             ),
                           ),
@@ -279,7 +322,10 @@ class _Step_1State extends State<Step_1> {
                         width: width * 0.25,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue: printData["project"]['first_name'],
+                          initialValue: printData["project"]['first_name'] !=
+                                  null
+                              ? printData["project"]['first_name'].toString()
+                              : nameController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "First name",
@@ -308,7 +354,10 @@ class _Step_1State extends State<Step_1> {
                         width: width * 0.19,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue: printData["project"]['last_name'],
+                          initialValue:
+                              printData["project"]['last_name'] != null
+                                  ? printData["project"]['last_name'].toString()
+                                  : lastNameController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "last name",
@@ -345,7 +394,9 @@ class _Step_1State extends State<Step_1> {
                         width: width * 0.6,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue: printData["project"]['email'],
+                          initialValue: printData["project"]['email'] != null
+                              ? printData["project"]['email'].toString()
+                              : emailController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "Email",
@@ -383,7 +434,9 @@ class _Step_1State extends State<Step_1> {
                         width: width * 0.6,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue: printData["project"]['address'],
+                          initialValue: printData["project"]['address'] != null
+                              ? printData["project"]['address'].toString()
+                              : addressController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "Email",
@@ -1593,9 +1646,9 @@ class _Step_1State extends State<Step_1> {
                         }
                       },
                     );
-                    print("d1 ${diagonal1Controller}");
-                    print("d2 ${diagonal2Controller}");
-                    futureRequirement = requirementPost(
+                    // print("d1 ${diagonal1Controller}");
+                    // print("d2 ${diagonal2Controller}");
+                    requirementPost(
                       2342,
                       978,
                       098,
