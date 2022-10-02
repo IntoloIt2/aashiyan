@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:core';
-import 'dart:io';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -10,43 +9,42 @@ import '../../../controller/api_services.dart';
 import '../../../model/bedtype.dart';
 import 'package:http/http.dart' as http;
 
-class User {
-  String personBedRoom;
-  String length;
-  String width;
-  int selectedFloor;
-  String toiletLength;
-  String toiletWidth;
-  String toiletFacility;
-  int dressReq;
-  String dressLenght;
-  String dressWidth;
-  List dressFacility;
-  List roomRequirement;
-  String roomOtherRequirement;
-  String dressReqText;
+// class User {
+//   String personBedR o
+//   String length;
+//   String width;
+//   int selectedFloor;
+//   String toiletLength;
+//   String toiletWidth;
+//   String toiletFacility;
+//   int dressReq;
+//   String dressLenght;
+//   String dressWidth;
+//   List dressFacility;
+//   List roomRequirement;
+//   String roomOtherRequirement;
+//   String dressReqText;
 
-  User({
-    this.personBedRoom = '',
-    this.length = '',
-    this.width = '',
-    this.selectedFloor = 0,
-    this.toiletLength = '',
-    this.toiletWidth = '',
-    this.toiletFacility = '',
-    this.dressReq = 0,
-    this.dressLenght = '',
-    this.dressWidth = '',
-    this.dressFacility = const [],
-    this.roomRequirement = const [],
-    this.roomOtherRequirement = '',
-    this.dressReqText = '',
-  });
-}
+//   User({
+//     this.personBedRoom = '',
+//     this.length = '',
+//     this.width = '',
+//     this.selectedFloor = 0,
+//     this.toiletLength = '',
+//     this.toiletWidth = '',
+//     this.toiletFacility = '',
+//     this.dressReq = 0,
+//     this.dressLenght = '',
+//     this.dressWidth = '',
+//     this.dressFacility = const [],
+//     this.roomRequirement = const [],
+//     this.roomOtherRequirement = '',
+//     this.dressReqText = '',
+//   });
+// }
 
 class StaticBedroomPage extends StatefulWidget {
   const StaticBedroomPage({Key? key}) : super(key: key);
-
   @override
   State<StaticBedroomPage> createState() => _StaticBedroomPageState();
 }
@@ -215,7 +213,30 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
   List<String>? other3RFac;
   List<String>? other3DFac;
 
+  var bdfields = {
+    "project_id": '',
+    "bedroom": "",
+    "bedroom_floor": '',
+    "bedroom_length": "",
+    "bedroom_width": "",
+    "bedroom_toilet_length": "",
+    "bedroom_toilet_width": "",
+    "bedroom_toilet_req_text": "",
+    "bedroom_dress_req": '',
+    "bedroom_dress_length": "",
+    "bedroom_dress_width": "",
+    "bedroom_dress_facility": "",
+    "bedroom_dress_req_text": "",
+    "bedroom_img": '',
+    "bedroom_facility": "",
+    "bedroom_facility_req_text": "",
+    "bedroom_length_feet": "",
+  };
+
   var printData;
+
+  var get = [];
+
   int project_id = 179;
 
   Future<void> getData() async {
@@ -230,524 +251,514 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
         final jsonResponse = jsonDecode(response.body);
         setState(
           () {
-            // if (jsonResponse != null) {
-            //   print(mi);
-            //   mi = int.parse(
-            //       jsonResponse['bungalow_bedroom']['bedroom'].toString());
-
-            //   print(mi);
-            //   print(si);
-
-            //   si = int.parse(printData['bedroom'].toString());
-
-            //   print(si);
-            //   print(di);
-
-            //   di = int.parse(printData['bedroom'].toString());
-
-            //   print(di);
-
-            //   pi = int.parse(printData['bedroom'].toString());
-
-            //   gi = int.parse(printData['bedroom'].toString());
-
-            //   o1i = int.parse(printData['bedroom'].toString());
-
-            //   o2i = int.parse(printData['bedroom'].toString());
-
-            //   o3i = int.parse(printData['bedroom'].toString());
-            // }
-
-            //printData = jsonResponse
             printData = jsonResponse["bungalow_bedroom"];
 
-            // if (printData != null) {
-            //   print(mi);
+            for (int i = 0; i < printData.length; i++) {
+              if (printData[i]["bedroom"] == "1") {
+                mi = i;
+                print("master $mi");
+              }
+              if (printData[i]["bedroom"] == "2") {
+                si = i;
+                print("son $si");
+              }
+              if (printData[i]["bedroom"] == "3") {
+                di = i;
+                print("daughter $di");
+              }
+              if (printData[i]["bedroom"] == "4") {
+                pi = i;
+                print("parent $pi");
+              }
+              if (printData[i]["bedroom"] == "5") {
+                gi = i;
+                print("guest $gi");
+              }
+              if (printData[i]["bedroom"] == "6") {
+                o2i = i;
+                print("ohter1 $o1i");
+              }
+              if (printData[i]["bedroom"] == "7") {
+                o2i = i;
+                print("other2 $o2i");
+              }
+              if (printData[i]["bedroom"] == "8") {
+                o3i = i;
+                print("other3 $o3i");
+              }
+            }
 
-            //   mi = printData.asMap().containsKey(0)
-            //       ? int.parse(
-            //           jsonResponse['bungalow_bedroom']['bedroom'].toString())
-            //       : null;
+            print('Data ${printData}');
 
-            //   print(mi);
-            //   print(si);
-
-            //   si = printData.asMap().containsKey(1)
-            //       ? int.parse(printData['bedroom'].toString())
-            //       : null;
-
-            //   print(si);
-            //   print(di);
-
-            //   di = printData.asMap().containsKey(2)
-            //       ? int.parse(printData['bedroom'].toString())
-            //       : null;
-
-            //   print(di);
-
-            //   pi = printData.asMap().containsKey(3)
-            //       ? int.parse(printData['bedroom'].toString())
-            //       : null;
-
-            //   gi = printData.asMap().containsKey(4)
-            //       ? int.parse(printData['bedroom'].toString())
-            //       : null;
-
-            //   o1i = printData.asMap().containsKey(5)
-            //       ? int.parse(printData['bedroom'].toString())
-            //       : null;
-
-            //   o2i = printData.asMap().containsKey(6)
-            //       ? int.parse(printData['bedroom'].toString())
-            //       : null;
-
-            //   o3i = printData.asMap().containsKey(7)
-            //       ? int.parse(printData['bedroom'].toString()
-            //       : null;
-            // }
-
-            print(printData);
-            print('first Index ${printData[0]}');
-
-            if (printData.asMap().containsKey(0)) {
-              masterLength = printData[0]['bedroom_length'] != null
-                  ? int.parse(printData[0]['bedroom_length'].toString())
+            if (printData.asMap().containsKey(mi)) {
+              masterLength = printData[mi]['bedroom_length'] != null
+                  ? int.parse(printData[mi]['bedroom_length'].toString())
                   : 0;
-              masterWidth = printData[0]['bedroom_width'] != null
-                  ? int.parse(printData[0]['bedroom_width'].toString())
+              masterWidth = printData[mi]['bedroom_width'] != null
+                  ? int.parse(printData[mi]['bedroom_width'].toString())
                   : 0;
-              masterToiletLength = printData[0]['bedroom_toilet_length'] != null
-                  ? int.parse(printData[0]['bedroom_toilet_length'].toString())
+              masterToiletLength = printData[mi]['bedroom_toilet_length'] !=
+                      null
+                  ? int.parse(printData[mi]['bedroom_toilet_length'].toString())
                   : 0;
-              masterToiletWidth = printData[0]['bedroom_toilet_width'] != null
-                  ? int.parse(printData[0]['bedroom_toilet_width'].toString())
+              masterToiletWidth = printData[mi]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[mi]['bedroom_toilet_width'].toString())
                   : 0;
-              masterDressLength = printData[0]['bedroom_dress_length'] != null
-                  ? int.parse(printData[0]['bedroom_dress_length'].toString())
+              masterDressLength = printData[mi]['bedroom_dress_length'] != null
+                  ? int.parse(printData[mi]['bedroom_dress_length'].toString())
                   : 0;
-              masterLocation = printData[0]['bedroom_floor'] != null
-                  ? int.parse(printData[0]['bedroom_floor'].toString())
+              masterLocation = printData[mi]['bedroom_floor'] != null
+                  ? int.parse(printData[mi]['bedroom_floor'].toString())
                   : 0;
-              masterDressWidth = printData[0]['bedroom_dress_width'] != null
-                  ? int.parse(printData[0]['bedroom_dress_width'].toString())
+              masterDressWidth = printData[mi]['bedroom_dress_width'] != null
+                  ? int.parse(printData[mi]['bedroom_dress_width'].toString())
                   : 0;
-              masterDressInt = printData[0]['bedroom_dress_req'] != null
-                  ? int.parse(printData[0]['bedroom_dress_req'].toString())
+              masterDressInt = printData[mi]['bedroom_dress_req'] != null
+                  ? int.parse(printData[mi]['bedroom_dress_req'].toString())
                   : 0;
               masterToiletFacility =
-                  printData[0]['bedroom_toilet_req_text'] != null
-                      ? printData[0]['bedroom_toilet_req_text'].toString()
+                  printData[mi]['bedroom_toilet_req_text'] != null
+                      ? printData[mi]['bedroom_toilet_req_text'].toString()
                       : " ";
-              masterDresstext = printData[0]['bedroom_dress_req_text'] != null
-                  ? printData[0]['bedroom_dress_req_text'].toString()
+              masterDresstext = printData[mi]['bedroom_dress_req_text'] != null
+                  ? printData[mi]['bedroom_dress_req_text'].toString()
                   : " ";
               masterOtherRequirement =
-                  printData[0]['bedroom_facility_req_text'] != null
-                      ? printData[0]['bedroom_facility_req_text'].toString()
+                  printData[mi]['bedroom_facility_req_text'] != null
+                      ? printData[mi]['bedroom_facility_req_text'].toString()
                       : " ";
-              masterDressFacility = printData[0]['bedroom_dress_facility'] !=
-                      null
-                  ? printData[0]['bedroom_dress_facility'].toString().split(',')
-                  : [];
-              masterRoomFacility = printData[0]['bedroom_facility'] != null
-                  ? printData[0]['bedroom_facility'].toString().split(',')
+              masterDressFacility =
+                  printData[mi]['bedroom_dress_facility'] != null
+                      ? printData[mi]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+              masterRoomFacility = printData[mi]['bedroom_facility'] != null
+                  ? printData[mi]['bedroom_facility'].toString().split(',')
                   : [];
             }
-            if (printData.asMap().containsKey(1)) {
-              sonLength = printData[1]['bedroom_length'] != null
-                  ? int.parse(printData[1]['bedroom_length'].toString())
+            if (printData.asMap().containsKey(si)) {
+              sonLength = printData[si]['bedroom_length'] != null
+                  ? int.parse(printData[si]['bedroom_length'].toString())
                   : 0;
-              sonWidth = printData[1]['bedroom_width'] != null
-                  ? int.parse(printData[1]['bedroom_width'].toString())
+              sonWidth = printData[si]['bedroom_width'] != null
+                  ? int.parse(printData[si]['bedroom_width'].toString())
                   : 0;
-              sonToiletLength = printData[1]['bedroom_toilet_length'] != null
-                  ? int.parse(printData[1]['bedroom_toilet_length'].toString())
+              sonToiletLength = printData[si]['bedroom_toilet_length'] != null
+                  ? int.parse(printData[si]['bedroom_toilet_length'].toString())
                   : 0;
-              sonToiletWidth = printData[1]['bedroom_toilet_width'] != null
-                  ? int.parse(printData[1]['bedroom_toilet_width'].toString())
+              sonToiletWidth = printData[si]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[si]['bedroom_toilet_width'].toString())
                   : 0;
-              sonDressLength = printData[1]['bedroom_dress_length'] != null
-                  ? int.parse(printData[1]['bedroom_dress_length'].toString())
+              sonDressLength = printData[si]['bedroom_dress_length'] != null
+                  ? int.parse(printData[si]['bedroom_dress_length'].toString())
                   : 0;
-              sonLocation = printData[1]['bedroom_floor'] != null
-                  ? int.parse(printData[1]['bedroom_floor'].toString())
+              sonLocation = printData[si]['bedroom_floor'] != null
+                  ? int.parse(printData[si]['bedroom_floor'].toString())
                   : 0;
-              sonDressWidth = printData[1]['bedroom_dress_width'] != null
-                  ? int.parse(printData[1]['bedroom_dress_width'].toString())
+              sonDressWidth = printData[si]['bedroom_dress_width'] != null
+                  ? int.parse(printData[si]['bedroom_dress_width'].toString())
                   : 0;
-              sonDressInt = printData[1]['bedroom_dress_req'] != null
-                  ? int.parse(printData[1]['bedroom_dress_req'].toString())
+              sonDressInt = printData[si]['bedroom_dress_req'] != null
+                  ? int.parse(printData[si]['bedroom_dress_req'].toString())
                   : 0;
               sonToiletFacility =
-                  printData[1]['bedroom_toilet_req_text'] != null
-                      ? printData[1]['bedroom_toilet_req_text'].toString()
+                  printData[si]['bedroom_toilet_req_text'] != null
+                      ? printData[si]['bedroom_toilet_req_text'].toString()
                       : " ";
-              sonDresstext = printData[1]['bedroom_dress_req_text'] != null
-                  ? printData[1]['bedroom_dress_req_text'].toString()
+              sonDresstext = printData[si]['bedroom_dress_req_text'] != null
+                  ? printData[si]['bedroom_dress_req_text'].toString()
                   : " ";
               sonOtherRequirement =
-                  printData[1]['bedroom_facility_req_text'] != null
-                      ? printData[1]['bedroom_facility_req_text'].toString()
+                  printData[si]['bedroom_facility_req_text'] != null
+                      ? printData[si]['bedroom_facility_req_text'].toString()
                       : " ";
-              sonDressFacility = printData[1]['bedroom_dress_facility'] != null
-                  ? printData[1]['bedroom_dress_facility'].toString().split(',')
+              sonDressFacility = printData[si]['bedroom_dress_facility'] != null
+                  ? printData[si]['bedroom_dress_facility']
+                      .toString()
+                      .split(',')
                   : [];
-              sonRoomFacility = printData[1]['bedroom_facility'] != null
-                  ? printData[1]['bedroom_facility'].toString().split(',')
+              sonRoomFacility = printData[si]['bedroom_facility'] != null
+                  ? printData[si]['bedroom_facility'].toString().split(',')
                   : [];
             }
-            if (printData.asMap().containsKey(2)) {
-              daughterLength = printData[2]['bedroom_length'] != null
-                  ? int.parse(printData[2]['bedroom_length'].toString())
+            if (printData.asMap().containsKey(di)) {
+              daughterLength = printData[di]['bedroom_length'] != null
+                  ? int.parse(printData[di]['bedroom_length'].toString())
                   : 0;
-              daughterWidth = printData[2]['bedroom_width'] != null
-                  ? int.parse(printData[2]['bedroom_width'].toString())
+              daughterWidth = printData[di]['bedroom_width'] != null
+                  ? int.parse(printData[di]['bedroom_width'].toString())
                   : 0;
-              daughterToiletLength = printData[2]['bedroom_toilet_length'] !=
+              daughterToiletLength = printData[di]['bedroom_toilet_length'] !=
                       null
-                  ? int.parse(printData[2]['bedroom_toilet_length'].toString())
+                  ? int.parse(printData[di]['bedroom_toilet_length'].toString())
                   : 0;
-              daughterToiletWidth = printData[2]['bedroom_toilet_width'] != null
-                  ? int.parse(printData[2]['bedroom_toilet_width'].toString())
+              daughterToiletWidth = printData[di]['bedroom_toilet_width'] !=
+                      null
+                  ? int.parse(printData[di]['bedroom_toilet_width'].toString())
                   : 0;
-              daughterDressLength = printData[2]['bedroom_dress_length'] != null
-                  ? int.parse(printData[2]['bedroom_dress_length'].toString())
+              daughterDressLength = printData[di]['bedroom_dress_length'] !=
+                      null
+                  ? int.parse(printData[di]['bedroom_dress_length'].toString())
                   : 0;
-              daughterLocation = printData[2]['bedroom_floor'] != null
-                  ? int.parse(printData[2]['bedroom_floor'].toString())
+              daughterLocation = printData[di]['bedroom_floor'] != null
+                  ? int.parse(printData[di]['bedroom_floor'].toString())
                   : 0;
-              daughterDressWidth = printData[2]['bedroom_dress_width'] != null
-                  ? int.parse(printData[2]['bedroom_dress_width'].toString())
+              daughterDressWidth = printData[di]['bedroom_dress_width'] != null
+                  ? int.parse(printData[di]['bedroom_dress_width'].toString())
                   : 0;
-              daughterDressInt = printData[2]['bedroom_dress_req'] != null
-                  ? int.parse(printData[2]['bedroom_dress_req'].toString())
+              daughterDressInt = printData[di]['bedroom_dress_req'] != null
+                  ? int.parse(printData[di]['bedroom_dress_req'].toString())
                   : 0;
               daughterToiletFacility =
-                  printData[2]['bedroom_toilet_req_text'] != null
-                      ? printData[2]['bedroom_toilet_req_text'].toString()
+                  printData[di]['bedroom_toilet_req_text'] != null
+                      ? printData[di]['bedroom_toilet_req_text'].toString()
                       : " ";
-              daughterDresstext = printData[2]['bedroom_dress_req_text'] != null
-                  ? printData[2]['bedroom_dress_req_text'].toString()
-                  : " ";
+              daughterDresstext =
+                  printData[di]['bedroom_dress_req_text'] != null
+                      ? printData[di]['bedroom_dress_req_text'].toString()
+                      : " ";
               daughterOtherRequirement =
-                  printData[2]['bedroom_facility_req_text'] != null
-                      ? printData[2]['bedroom_facility_req_text'].toString()
+                  printData[di]['bedroom_facility_req_text'] != null
+                      ? printData[di]['bedroom_facility_req_text'].toString()
                       : " ";
-              daughterDressFacility = printData[2]['bedroom_dress_facility'] !=
-                      null
-                  ? printData[2]['bedroom_dress_facility'].toString().split(',')
-                  : [];
-              daughterRoomFacility = printData[2]['bedroom_facility'] != null
-                  ? printData[2]['bedroom_facility'].toString().split(',')
+              daughterDressFacility =
+                  printData[di]['bedroom_dress_facility'] != null
+                      ? printData[di]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+              daughterRoomFacility = printData[di]['bedroom_facility'] != null
+                  ? printData[di]['bedroom_facility'].toString().split(',')
                   : [];
             }
-            if (printData.asMap().containsKey(3)) {
-              parentLength = printData[3]['bedroom_length'] != null
-                  ? int.parse(printData[3]['bedroom_length'].toString())
+            if (printData.asMap().containsKey(pi)) {
+              parentLength = printData[pi]['bedroom_length'] != null
+                  ? int.parse(printData[pi]['bedroom_length'].toString())
                   : 0;
-              parentWidth = printData[3]['bedroom_width'] != null
-                  ? int.parse(printData[3]['bedroom_width'].toString())
+              parentWidth = printData[pi]['bedroom_width'] != null
+                  ? int.parse(printData[pi]['bedroom_width'].toString())
                   : 0;
-              parentToiletLength = printData[3]['bedroom_toilet_length'] != null
-                  ? int.parse(printData[3]['bedroom_toilet_length'].toString())
+              parentToiletLength = printData[pi]['bedroom_toilet_length'] !=
+                      null
+                  ? int.parse(printData[pi]['bedroom_toilet_length'].toString())
                   : 0;
-              parentToiletWidth = printData[3]['bedroom_toilet_width'] != null
-                  ? int.parse(printData[3]['bedroom_toilet_width'].toString())
+              parentToiletWidth = printData[pi]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[pi]['bedroom_toilet_width'].toString())
                   : 0;
-              parentDressLength = printData[3]['bedroom_dress_length'] != null
-                  ? int.parse(printData[3]['bedroom_dress_length'].toString())
+              parentDressLength = printData[pi]['bedroom_dress_length'] != null
+                  ? int.parse(printData[pi]['bedroom_dress_length'].toString())
                   : 0;
-              parentLocation = printData[3]['bedroom_floor'] != null
-                  ? int.parse(printData[3]['bedroom_floor'].toString())
+              parentLocation = printData[pi]['bedroom_floor'] != null
+                  ? int.parse(printData[pi]['bedroom_floor'].toString())
                   : 0;
-              parentDressWidth = printData[3]['bedroom_dress_width'] != null
-                  ? int.parse(printData[3]['bedroom_dress_width'].toString())
+              parentDressWidth = printData[pi]['bedroom_dress_width'] != null
+                  ? int.parse(printData[pi]['bedroom_dress_width'].toString())
                   : 0;
-              parentDressInt = printData[3]['bedroom_dress_req'] != null
-                  ? int.parse(printData[3]['bedroom_dress_req'].toString())
+              parentDressInt = printData[pi]['bedroom_dress_req'] != null
+                  ? int.parse(printData[pi]['bedroom_dress_req'].toString())
                   : 0;
               parentToiletFacility =
-                  printData[3]['bedroom_toilet_req_text'] != null
-                      ? printData[3]['bedroom_toilet_req_text'].toString()
+                  printData[pi]['bedroom_toilet_req_text'] != null
+                      ? printData[pi]['bedroom_toilet_req_text'].toString()
                       : " ";
-              parentDresstext = printData[3]['bedroom_dress_req_text'] != null
-                  ? printData[3]['bedroom_dress_req_text'].toString()
+              parentDresstext = printData[pi]['bedroom_dress_req_text'] != null
+                  ? printData[pi]['bedroom_dress_req_text'].toString()
                   : " ";
               parentOtherRequirement =
-                  printData[3]['bedroom_facility_req_text'] != null
-                      ? printData[3]['bedroom_facility_req_text'].toString()
+                  printData[pi]['bedroom_facility_req_text'] != null
+                      ? printData[pi]['bedroom_facility_req_text'].toString()
                       : " ";
-              parentDressFacility = printData[3]['bedroom_dress_facility'] !=
-                      null
-                  ? printData[3]['bedroom_dress_facility'].toString().split(',')
-                  : [];
-              parentRoomFacility = printData[3]['bedroom_facility'] != null
-                  ? printData[3]['bedroom_facility'].toString().split(',')
+              parentDressFacility =
+                  printData[pi]['bedroom_dress_facility'] != null
+                      ? printData[pi]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+              parentRoomFacility = printData[pi]['bedroom_facility'] != null
+                  ? printData[pi]['bedroom_facility'].toString().split(',')
                   : [];
             }
-            if (printData.asMap().containsKey(4)) {
-              guestLength = printData[4]['bedroom_length'] != null
-                  ? int.parse(printData[4]['bedroom_length'].toString())
+            if (printData.asMap().containsKey(gi)) {
+              guestLength = printData[gi]['bedroom_length'] != null
+                  ? int.parse(printData[gi]['bedroom_length'].toString())
                   : 0;
-              guestWidth = printData[4]['bedroom_width'] != null
-                  ? int.parse(printData[4]['bedroom_width'].toString())
+              guestWidth = printData[gi]['bedroom_width'] != null
+                  ? int.parse(printData[gi]['bedroom_width'].toString())
                   : 0;
-              guestToiletLength = printData[4]['bedroom_toilet_length'] != null
-                  ? int.parse(printData[4]['bedroom_toilet_length'].toString())
+              guestToiletLength = printData[gi]['bedroom_toilet_length'] != null
+                  ? int.parse(printData[gi]['bedroom_toilet_length'].toString())
                   : 0;
-              guestToiletWidth = printData[4]['bedroom_toilet_width'] != null
-                  ? int.parse(printData[4]['bedroom_toilet_width'].toString())
+              guestToiletWidth = printData[gi]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[gi]['bedroom_toilet_width'].toString())
                   : 0;
-              guestDressLength = printData[4]['bedroom_dress_length'] != null
-                  ? int.parse(printData[4]['bedroom_dress_length'].toString())
+              guestDressLength = printData[gi]['bedroom_dress_length'] != null
+                  ? int.parse(printData[gi]['bedroom_dress_length'].toString())
                   : 0;
-              guestLocation = printData[4]['bedroom_floor'] != null
-                  ? int.parse(printData[4]['bedroom_floor'].toString())
+              guestLocation = printData[gi]['bedroom_floor'] != null
+                  ? int.parse(printData[gi]['bedroom_floor'].toString())
                   : 0;
-              guestDressWidth = printData[4]['bedroom_dress_width'] != null
-                  ? int.parse(printData[4]['bedroom_dress_width'].toString())
+              guestDressWidth = printData[gi]['bedroom_dress_width'] != null
+                  ? int.parse(printData[gi]['bedroom_dress_width'].toString())
                   : 0;
-              guestDressInt = printData[4]['bedroom_dress_req'] != null
-                  ? int.parse(printData[4]['bedroom_dress_req'].toString())
+              guestDressInt = printData[gi]['bedroom_dress_req'] != null
+                  ? int.parse(printData[gi]['bedroom_dress_req'].toString())
                   : 0;
               guestToiletFacility =
-                  printData[4]['bedroom_toilet_req_text'] != null
-                      ? printData[4]['bedroom_toilet_req_text'].toString()
+                  printData[gi]['bedroom_toilet_req_text'] != null
+                      ? printData[gi]['bedroom_toilet_req_text'].toString()
                       : " ";
-              guestDresstext = printData[4]['bedroom_dress_req_text'] != null
-                  ? printData[4]['bedroom_dress_req_text'].toString()
+              guestDresstext = printData[gi]['bedroom_dress_req_text'] != null
+                  ? printData[gi]['bedroom_dress_req_text'].toString()
                   : " ";
               guestOtherRequirement =
-                  printData[4]['bedroom_facility_req_text'] != null
-                      ? printData[4]['bedroom_facility_req_text'].toString()
+                  printData[gi]['bedroom_facility_req_text'] != null
+                      ? printData[gi]['bedroom_facility_req_text'].toString()
                       : " ";
-              guestDressFacility = printData[4]['bedroom_dress_facility'] !=
-                      null
-                  ? printData[4]['bedroom_dress_facility'].toString().split(',')
-                  : [];
-              guestRoomFacility = printData[4]['bedroom_facility'] != null
-                  ? printData[4]['bedroom_facility'].toString().split(',')
+              guestDressFacility =
+                  printData[gi]['bedroom_dress_facility'] != null
+                      ? printData[gi]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+              guestRoomFacility = printData[gi]['bedroom_facility'] != null
+                  ? printData[gi]['bedroom_facility'].toString().split(',')
                   : [];
             }
-            if (printData.asMap().containsKey(5)) {
-              other1Length = printData[5]['bedroom_length'] != null
-                  ? int.parse(printData[5]['bedroom_length'].toString())
+            if (printData.asMap().containsKey(o1i)) {
+              other1Length = printData[o1i]['bedroom_length'] != null
+                  ? int.parse(printData[o1i]['bedroom_length'].toString())
                   : 0;
-              other1Width = printData[5]['bedroom_width'] != null
-                  ? int.parse(printData[5]['bedroom_width'].toString())
+              other1Width = printData[o1i]['bedroom_width'] != null
+                  ? int.parse(printData[o1i]['bedroom_width'].toString())
                   : 0;
-              other1ToiletLength = printData[5]['bedroom_toilet_length'] != null
-                  ? int.parse(printData[5]['bedroom_toilet_length'].toString())
+              other1ToiletLength =
+                  printData[o1i]['bedroom_toilet_length'] != null
+                      ? int.parse(
+                          printData[o1i]['bedroom_toilet_length'].toString())
+                      : 0;
+              other1ToiletWidth = printData[o1i]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[o1i]['bedroom_toilet_width'].toString())
                   : 0;
-              other1ToiletWidth = printData[5]['bedroom_toilet_width'] != null
-                  ? int.parse(printData[5]['bedroom_toilet_width'].toString())
+              other1DressLength = printData[o1i]['bedroom_dress_length'] != null
+                  ? int.parse(printData[o1i]['bedroom_dress_length'].toString())
                   : 0;
-              other1DressLength = printData[5]['bedroom_dress_length'] != null
-                  ? int.parse(printData[5]['bedroom_dress_length'].toString())
+              other1Location = printData[o1i]['bedroom_floor'] != null
+                  ? int.parse(printData[o1i]['bedroom_floor'].toString())
                   : 0;
-              other1Location = printData[5]['bedroom_floor'] != null
-                  ? int.parse(printData[5]['bedroom_floor'].toString())
+              other1DressWidth = printData[o1i]['bedroom_dress_width'] != null
+                  ? int.parse(printData[o1i]['bedroom_dress_width'].toString())
                   : 0;
-              other1DressWidth = printData[5]['bedroom_dress_width'] != null
-                  ? int.parse(printData[5]['bedroom_dress_width'].toString())
-                  : 0;
-              other1DressInt = printData[5]['bedroom_dress_req'] != null
-                  ? int.parse(printData[5]['bedroom_dress_req'].toString())
+              other1DressInt = printData[o1i]['bedroom_dress_req'] != null
+                  ? int.parse(printData[o1i]['bedroom_dress_req'].toString())
                   : 0;
               other1ToiletFacility =
-                  printData[5]['bedroom_toilet_req_text'] != null
-                      ? printData[5]['bedroom_toilet_req_text'].toString()
+                  printData[o1i]['bedroom_toilet_req_text'] != null
+                      ? printData[o1i]['bedroom_toilet_req_text'].toString()
                       : " ";
-              other1Dresstext = printData[5]['bedroom_dress_req_text'] != null
-                  ? printData[5]['bedroom_dress_req_text'].toString()
+              other1Dresstext = printData[o1i]['bedroom_dress_req_text'] != null
+                  ? printData[o1i]['bedroom_dress_req_text'].toString()
                   : " ";
               other1OtherRequirement =
-                  printData[5]['bedroom_facility_req_text'] != null
-                      ? printData[5]['bedroom_facility_req_text'].toString()
+                  printData[o1i]['bedroom_facility_req_text'] != null
+                      ? printData[o1i]['bedroom_facility_req_text'].toString()
                       : " ";
-              other1DressFacility = printData[5]['bedroom_dress_facility'] !=
-                      null
-                  ? printData[5]['bedroom_dress_facility'].toString().split(',')
-                  : [];
-              other1RoomFacility = printData[5]['bedroom_facility'] != null
-                  ? printData[5]['bedroom_facility'].toString().split(',')
+              other1DressFacility =
+                  printData[o1i]['bedroom_dress_facility'] != null
+                      ? printData[o1i]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+              other1RoomFacility = printData[o1i]['bedroom_facility'] != null
+                  ? printData[o1i]['bedroom_facility'].toString().split(',')
                   : [];
             }
-            if (printData.asMap().containsKey(6)) {
-              other2Length = printData[6]['bedroom_length'] != null
-                  ? int.parse(printData[6]['bedroom_length'].toString())
+            if (printData.asMap().containsKey(o2i)) {
+              other2Length = printData[o2i]['bedroom_length'] != null
+                  ? int.parse(printData[o2i]['bedroom_length'].toString())
                   : 0;
-              other2Width = printData[6]['bedroom_width'] != null
-                  ? int.parse(printData[6]['bedroom_width'].toString())
+              other2Width = printData[o2i]['bedroom_width'] != null
+                  ? int.parse(printData[o2i]['bedroom_width'].toString())
                   : 0;
-              other2ToiletLength = printData[6]['bedroom_toilet_length'] != null
-                  ? int.parse(printData[6]['bedroom_toilet_length'].toString())
+              other2ToiletLength =
+                  printData[o2i]['bedroom_toilet_length'] != null
+                      ? int.parse(
+                          printData[o2i]['bedroom_toilet_length'].toString())
+                      : 0;
+              other2ToiletWidth = printData[o2i]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[o2i]['bedroom_toilet_width'].toString())
                   : 0;
-              other2ToiletWidth = printData[6]['bedroom_toilet_width'] != null
-                  ? int.parse(printData[6]['bedroom_toilet_width'].toString())
+              other2DressLength = printData[o2i]['bedroom_dress_length'] != null
+                  ? int.parse(printData[o2i]['bedroom_dress_length'].toString())
                   : 0;
-              other2DressLength = printData[6]['bedroom_dress_length'] != null
-                  ? int.parse(printData[6]['bedroom_dress_length'].toString())
+              other2Location = printData[o2i]['bedroom_floor'] != null
+                  ? int.parse(printData[o2i]['bedroom_floor'].toString())
                   : 0;
-              other2Location = printData[6]['bedroom_floor'] != null
-                  ? int.parse(printData[6]['bedroom_floor'].toString())
+              other2DressWidth = printData[o2i]['bedroom_dress_width'] != null
+                  ? int.parse(printData[o2i]['bedroom_dress_width'].toString())
                   : 0;
-              other2DressWidth = printData[6]['bedroom_dress_width'] != null
-                  ? int.parse(printData[6]['bedroom_dress_width'].toString())
-                  : 0;
-              other2DressInt = printData[6]['bedroom_dress_req'] != null
-                  ? int.parse(printData[6]['bedroom_dress_req'].toString())
+              other2DressInt = printData[o2i]['bedroom_dress_req'] != null
+                  ? int.parse(printData[o2i]['bedroom_dress_req'].toString())
                   : 0;
               other2ToiletFacility =
-                  printData[6]['bedroom_toilet_req_text'] != null
-                      ? printData[6]['bedroom_toilet_req_text'].toString()
+                  printData[o2i]['bedroom_toilet_req_text'] != null
+                      ? printData[o2i]['bedroom_toilet_req_text'].toString()
                       : " ";
-              other2Dresstext = printData[6]['bedroom_dress_req_text'] != null
-                  ? printData[6]['bedroom_dress_req_text'].toString()
+              other2Dresstext = printData[o2i]['bedroom_dress_req_text'] != null
+                  ? printData[o2i]['bedroom_dress_req_text'].toString()
                   : " ";
               other2OtherRequirement =
-                  printData[6]['bedroom_facility_req_text'] != null
-                      ? printData[6]['bedroom_facility_req_text'].toString()
+                  printData[o2i]['bedroom_facility_req_text'] != null
+                      ? printData[o2i]['bedroom_facility_req_text'].toString()
                       : " ";
-              other2DressFacility = printData[6]['bedroom_dress_facility'] !=
-                      null
-                  ? printData[6]['bedroom_dress_facility'].toString().split(',')
-                  : [];
-              other2RoomFacility = printData[6]['bedroom_facility'] != null
-                  ? printData[6]['bedroom_facility'].toString().split(',')
+              other2DressFacility =
+                  printData[o2i]['bedroom_dress_facility'] != null
+                      ? printData[o2i]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+              other2RoomFacility = printData[o2i]['bedroom_facility'] != null
+                  ? printData[o2i]['bedroom_facility'].toString().split(',')
                   : [];
             }
-            if (printData.asMap().containsKey(7)) {
-              other3Length = printData[7]['bedroom_length'] != null
-                  ? int.parse(printData[7]['bedroom_length'].toString())
+            if (printData.asMap().containsKey(o3i)) {
+              other3Length = printData[o3i]['bedroom_length'] != null
+                  ? int.parse(printData[o3i]['bedroom_length'].toString())
                   : 0;
-              other3Width = printData[7]['bedroom_width'] != null
-                  ? int.parse(printData[7]['bedroom_width'].toString())
+              other3Width = printData[o3i]['bedroom_width'] != null
+                  ? int.parse(printData[o3i]['bedroom_width'].toString())
                   : 0;
-              other3ToiletLength = printData[7]['bedroom_toilet_length'] != null
-                  ? int.parse(printData[7]['bedroom_toilet_length'].toString())
+              other3ToiletLength =
+                  printData[o3i]['bedroom_toilet_length'] != null
+                      ? int.parse(
+                          printData[o3i]['bedroom_toilet_length'].toString())
+                      : 0;
+              other3ToiletWidth = printData[o3i]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[o3i]['bedroom_toilet_width'].toString())
                   : 0;
-              other3ToiletWidth = printData[7]['bedroom_toilet_width'] != null
-                  ? int.parse(printData[7]['bedroom_toilet_width'].toString())
+              other3DressLength = printData[o3i]['bedroom_dress_length'] != null
+                  ? int.parse(printData[o3i]['bedroom_dress_length'].toString())
                   : 0;
-              other3DressLength = printData[7]['bedroom_dress_length'] != null
-                  ? int.parse(printData[7]['bedroom_dress_length'].toString())
+              other3Location = printData[o3i]['bedroom_floor'] != null
+                  ? int.parse(printData[o3i]['bedroom_floor'].toString())
                   : 0;
-              other3Location = printData[7]['bedroom_floor'] != null
-                  ? int.parse(printData[7]['bedroom_floor'].toString())
+              other3DressWidth = printData[o3i]['bedroom_dress_width'] != null
+                  ? int.parse(printData[o3i]['bedroom_dress_width'].toString())
                   : 0;
-              other3DressWidth = printData[7]['bedroom_dress_width'] != null
-                  ? int.parse(printData[7]['bedroom_dress_width'].toString())
-                  : 0;
-              other3DressInt = printData[7]['bedroom_dress_req'] != null
-                  ? int.parse(printData[7]['bedroom_dress_req'].toString())
+              other3DressInt = printData[o3i]['bedroom_dress_req'] != null
+                  ? int.parse(printData[o3i]['bedroom_dress_req'].toString())
                   : 0;
               other3ToiletFacility =
-                  printData[7]['bedroom_toilet_req_text'] != null
-                      ? printData[7]['bedroom_toilet_req_text'].toString()
+                  printData[o3i]['bedroom_toilet_req_text'] != null
+                      ? printData[o3i]['bedroom_toilet_req_text'].toString()
                       : " ";
-              other3Dresstext = printData[7]['bedroom_dress_req_text'] != null
-                  ? printData[7]['bedroom_dress_req_text'].toString()
+              other3Dresstext = printData[o3i]['bedroom_dress_req_text'] != null
+                  ? printData[o3i]['bedroom_dress_req_text'].toString()
                   : " ";
               other3OtherRequirement =
-                  printData[7]['bedroom_facility_req_text'] != null
-                      ? printData[7]['bedroom_facility_req_text'].toString()
+                  printData[o3i]['bedroom_facility_req_text'] != null
+                      ? printData[o3i]['bedroom_facility_req_text'].toString()
                       : " ";
-              other3DressFacility = printData[7]['bedroom_dress_facility'] !=
-                      null
-                  ? printData[7]['bedroom_dress_facility'].toString().split(',')
-                  : [];
-              other3RoomFacility = printData[7]['bedroom_facility'] != null
-                  ? printData[7]['bedroom_facility'].toString().split(',')
+              other3DressFacility =
+                  printData[o3i]['bedroom_dress_facility'] != null
+                      ? printData[o3i]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+              other3RoomFacility = printData[o3i]['bedroom_facility'] != null
+                  ? printData[o3i]['bedroom_facility'].toString().split(',')
                   : [];
             }
 
             if (printData != null) {
-              if (printData[0]['bedroom_facility'] != null) {
-                masterRFac = printData[0]['bedroom_facility'] != null
-                    ? printData[0]['bedroom_facility'].toString().split(',')
-                    : [];
-              }
-
-              if (printData[0]['bedroom_dress_facility'] != null) {
-                masterDFac = printData[0]['bedroom_dress_facility'] != null
-                    ? printData[0]['bedroom_dress_facility']
-                        .toString()
-                        .split(',')
-                    : [];
-              }
-
-              if (printData[1] != null) {
-                if (printData[1]['bedroom_facility'] != null) {
-                  sonRFac = printData[1]['bedroom_facility'] != null
-                      ? printData[1]['bedroom_facility'].toString().split(',')
+              if (mi != null) {
+                if (printData[mi]['bedroom_facility'] != null) {
+                  masterRFac = printData[mi]['bedroom_facility'] != null
+                      ? printData[mi]['bedroom_facility'].toString().split(',')
                       : [];
                 }
-                if (printData[1]['bedroom_dress_facility'] != null) {
-                  sonDFac = printData[1]['bedroom_facility'] != null
-                      ? printData[1]['bedroom_dress_facility']
+
+                if (printData[mi]['bedroom_dress_facility'] != null) {
+                  masterDFac = printData[mi]['bedroom_dress_facility'] != null
+                      ? printData[mi]['bedroom_dress_facility']
                           .toString()
                           .split(',')
                       : [];
                 }
               }
 
-              if (printData[2] != null) {
-                if (printData[2]['bedroom_facility'] != null) {
-                  daughterRFac = printData[2]['bedroom_facility'].split(',');
+              if (si != null) {
+                if (printData[si]['bedroom_facility'] != null) {
+                  sonRFac = printData[si]['bedroom_facility'] != null
+                      ? printData[si]['bedroom_facility'].toString().split(',')
+                      : [];
                 }
-                if (printData[2]['bedroom_dress_facility'] != null) {
+                if (printData[si]['bedroom_dress_facility'] != null) {
+                  sonDFac = printData[si]['bedroom_facility'] != null
+                      ? printData[si]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+                }
+              }
+
+              if (di != null) {
+                if (printData[di]['bedroom_facility'] != null) {
+                  daughterRFac = printData[di]['bedroom_facility'].split(',');
+                }
+                if (printData[di]['bedroom_dress_facility'] != null) {
                   daughterDFac =
-                      printData[2]['bedroom_dress_facility'].split(',');
+                      printData[di]['bedroom_dress_facility'].split(',');
                 }
               }
 
-              if (printData[3] != null) {
-                if (printData[3]['bedroom_facility'] != null) {
-                  parentRFac = printData[3]['bedroom_facility'].split(',');
+              if (pi != null) {
+                if (printData[pi]['bedroom_facility'] != null) {
+                  parentRFac = printData[pi]['bedroom_facility'].split(',');
                 }
-                if (printData[3]['bedroom_dress_facility'] != null) {
+                if (printData[pi]['bedroom_dress_facility'] != null) {
                   parentDFac =
-                      printData[3]['bedroom_dress_facility'].split(',');
+                      printData[pi]['bedroom_dress_facility'].split(',');
                 }
               }
 
-              if (printData[4] != null) {
-                if (printData[4]['bedroom_facility'] != null) {
-                  guestRFac = printData[4]['bedroom_facility'].split(',');
+              if (gi != null) {
+                if (printData[gi]['bedroom_facility'] != null) {
+                  guestRFac = printData[gi]['bedroom_facility'].split(',');
                 }
-                if (printData[4]['bedroom_dress_facility'] != null) {
-                  guestDFac = printData[4]['bedroom_dress_facility'].split(',');
+                if (printData[gi]['bedroom_dress_facility'] != null) {
+                  guestDFac =
+                      printData[gi]['bedroom_dress_facility'].split(',');
                 }
               }
 
-              if (printData[5] != null) {
-                if (printData[5]['bedroom_facility'] != null) {
-                  other1RFac = printData[5]['bedroom_facility'].split(',');
+              if (o1i != null) {
+                if (printData[o1i]['bedroom_facility'] != null) {
+                  other1RFac = printData[o1i]['bedroom_facility'].split(',');
                 }
-                if (printData[5]['bedroom_dress_facility'] != null) {
+                if (printData[o1i]['bedroom_dress_facility'] != null) {
                   other1DFac =
-                      printData[5]['bedroom_dress_facility'].split(',');
+                      printData[o1i]['bedroom_dress_facility'].split(',');
                 }
               }
 
-              if (printData[6] != null) {
-                if (printData[6]['bedroom_facility'] != null) {
-                  other2RFac = printData[6]['bedroom_facility'].split(',');
+              if (o2i != null) {
+                if (printData[o2i]['bedroom_facility'] != null) {
+                  other2RFac = printData[o2i]['bedroom_facility'].split(',');
                 }
-                if (printData[6]['bedroom_dress_facility'] != null) {
+                if (printData[o2i]['bedroom_dress_facility'] != null) {
                   other2DFac =
-                      printData[6]['bedroom_dress_facility'].split(',');
+                      printData[o2i]['bedroom_dress_facility'].split(',');
                 }
               }
 
-              if (printData[7] != null) {
-                if (printData[7]['bedroom_facility'] != null) {
-                  other3RFac = printData[7]['bedroom_facility'].split(',');
+              if (o3i != null) {
+                if (printData[o3i]['bedroom_facility'] != null) {
+                  other3RFac = printData[o3i]['bedroom_facility'].split(',');
                 }
-                if (printData[7]['bedroom_dress_facility'] != null) {
+                if (printData[o3i]['bedroom_dress_facility'] != null) {
                   other3DFac =
-                      printData[7]['bedroom_dress_facility'].split(',');
+                      printData[o3i]['bedroom_dress_facility'].split(',');
                 }
               }
             }
@@ -899,7 +910,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
     // print(printData[0]['bedroom_toilet_req_text']);
 
-    print(masterToiletFacility);
+    print(daughterToiletFacility);
 
     // print(printData[1]['bedroom_facility']);
 
@@ -927,10 +938,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: Checkbox(
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
-                                          value: printData
-                                                  .asMap()
-                                                  .containsKey(0)
-                                              ? printData[0]['bedroom'] == '1'
+                                          value: mi != null
+                                              ? printData[mi]['bedroom'] == '1'
                                                   ? true
                                                   : masterBedroom
                                               : masterBedroom,
@@ -938,15 +947,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(
                                               () {
                                                 masterBedroom = value!;
-                                                if (printData
-                                                    .asMap()
-                                                    .containsKey(0)) {
+                                                if (mi != null) {
                                                   if (masterBedroom == true) {
-                                                    printData[0]['bedroom'] =
+                                                    printData[mi]['bedroom'] =
                                                         "1";
                                                   } else if (masterBedroom ==
                                                       false) {
-                                                    printData[0]['bedroom'] =
+                                                    printData[mi]['bedroom'] =
                                                         "10";
                                                   }
                                                 }
@@ -982,8 +989,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: Checkbox(
                                         activeColor: checkColor,
                                         checkColor: Colors.white,
-                                        value: printData.asMap().containsKey(1)
-                                            ? printData[1]['bedroom'] == '2'
+                                        value: si != null
+                                            ? printData[si]['bedroom'] == '2'
                                                 ? true
                                                 : sonBedRoom
                                             : sonBedRoom,
@@ -992,14 +999,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             () {
                                               sonBedRoom = value!;
                                               print(sonBedRoom);
-                                              if (printData
-                                                  .asMap()
-                                                  .containsKey(2)) {
+                                              if (si != null) {
                                                 if (sonBedRoom == true) {
-                                                  printData[1]['bedroom'] = "2";
+                                                  printData[si]['bedroom'] =
+                                                      "2";
                                                 } else if (sonBedRoom ==
                                                     false) {
-                                                  printData[1]['bedroom'] =
+                                                  printData[si]['bedroom'] =
                                                       "10";
                                                 }
                                               }
@@ -1039,10 +1045,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: Checkbox(
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
-                                          value: printData
-                                                  .asMap()
-                                                  .containsKey(2)
-                                              ? printData[2]['bedroom'] == '3'
+                                          value: di != null
+                                              ? printData[di]['bedroom'] == '3'
                                                   ? true
                                                   : daughterBedRoom
                                               : daughterBedRoom,
@@ -1050,15 +1054,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(
                                               () {
                                                 daughterBedRoom = value!;
-                                                if (printData
-                                                    .asMap()
-                                                    .containsKey(2)) {
+                                                if (di != null) {
                                                   if (daughterBedRoom == true) {
-                                                    printData[2]['bedroom'] =
+                                                    printData[di]['bedroom'] =
                                                         "3";
                                                   } else if (daughterBedRoom ==
                                                       false) {
-                                                    printData[2]['bedroom'] =
+                                                    printData[di]['bedroom'] =
                                                         "10";
                                                   }
                                                 }
@@ -1090,24 +1092,21 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: Checkbox(
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
-                                          value: printData
-                                                  .asMap()
-                                                  .containsKey(3)
-                                              ? printData[3]['bedroom'] == '4'
+                                          value: pi != null
+                                              ? printData[pi]['bedroom'] == '4'
                                                   ? true
                                                   : parentBedRoom
                                               : parentBedRoom,
                                           onChanged: (value) {
                                             setState(() {
                                               parentBedRoom = value!;
-                                              if (printData
-                                                  .asMap()
-                                                  .containsKey(3)) {
+                                              if (pi != null) {
                                                 if (parentBedRoom == true) {
-                                                  printData[3]['bedroom'] = "4";
+                                                  printData[pi]['bedroom'] =
+                                                      "4";
                                                 } else if (parentBedRoom ==
                                                     false) {
-                                                  printData[3]['bedroom'] =
+                                                  printData[pi]['bedroom'] =
                                                       "10";
                                                 }
                                               }
@@ -1145,10 +1144,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: Checkbox(
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
-                                          value: printData
-                                                  .asMap()
-                                                  .containsKey(4)
-                                              ? printData[4]['bedroom'] == '5'
+                                          value: gi != null
+                                              ? printData[gi]['bedroom'] == '5'
                                                   ? true
                                                   : guestBedRoom
                                               : guestBedRoom,
@@ -1156,17 +1153,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(
                                               () {
                                                 guestBedRoom = value!;
-                                                if (printData
-                                                    .asMap()
-                                                    .containsKey(4)) {
+                                                if (gi != null) {
                                                   guestBedRoom = value;
 
                                                   if (guestBedRoom == true) {
-                                                    printData[4]['bedroom'] =
+                                                    printData[gi]['bedroom'] =
                                                         "5";
                                                   } else if (guestBedRoom ==
                                                       false) {
-                                                    printData[4]['bedroom'] =
+                                                    printData[gi]['bedroom'] =
                                                         "10";
                                                   }
                                                 }
@@ -1198,10 +1193,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: Checkbox(
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
-                                          value: printData
-                                                  .asMap()
-                                                  .containsKey(5)
-                                              ? printData[5]['bedroom'] == '6'
+                                          value: o1i != null
+                                              ? printData[o1i]['bedroom'] == '6'
                                                   ? true
                                                   : other1BedRoom
                                               : other1BedRoom,
@@ -1210,17 +1203,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               () {
                                                 other1BedRoom = value!;
 
-                                                if (printData
-                                                    .asMap()
-                                                    .containsKey(5)) {
+                                                if (o1i != null) {
                                                   other1BedRoom = value;
 
                                                   if (other1BedRoom == true) {
-                                                    printData[5]['bedroom'] =
+                                                    printData[o1i]['bedroom'] =
                                                         "6";
                                                   } else if (other1BedRoom ==
                                                       false) {
-                                                    printData[5]['bedroom'] =
+                                                    printData[o1i]['bedroom'] =
                                                         "10";
                                                   }
                                                 }
@@ -1259,10 +1250,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: Checkbox(
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
-                                          value: printData
-                                                  .asMap()
-                                                  .containsKey(6)
-                                              ? printData[6]['bedroom'] == '7'
+                                          value: o2i != null
+                                              ? printData[o2i]['bedroom'] == '7'
                                                   ? true
                                                   : other2BedRoom
                                               : other2BedRoom,
@@ -1271,15 +1260,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               () {
                                                 other2BedRoom = value!;
 
-                                                if (printData
-                                                    .asMap()
-                                                    .containsKey(6)) {
+                                                if (o2i != null) {
                                                   if (other2BedRoom == true) {
-                                                    printData[6]['bedroom'] =
+                                                    printData[o3i]['bedroom'] =
                                                         "7";
                                                   } else if (other2BedRoom ==
                                                       false) {
-                                                    printData[6]['bedroom'] =
+                                                    printData[o3i]['bedroom'] =
                                                         "10";
                                                   }
                                                 }
@@ -1311,24 +1298,21 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: Checkbox(
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
-                                          value: printData
-                                                  .asMap()
-                                                  .containsKey(7)
-                                              ? printData[7]['bedroom'] == '8'
+                                          value: o3i != null
+                                              ? printData[o3i]['bedroom'] == '8'
                                                   ? true
                                                   : other3BedRoom
                                               : other3BedRoom,
                                           onChanged: (value) {
                                             setState(() {
                                               other3BedRoom = value!;
-                                              if (printData
-                                                  .asMap()
-                                                  .containsKey(7)) {
+                                              if (o3i != null) {
                                                 if (other3BedRoom == true) {
-                                                  printData[7]['bedroom'] = "8";
+                                                  printData[o3i]['bedroom'] =
+                                                      "8";
                                                 } else if (other3BedRoom ==
                                                     false) {
-                                                  printData[7]['bedroom'] =
+                                                  printData[o3i]['bedroom'] =
                                                       "10";
                                                 }
                                               }
@@ -1348,12 +1332,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                 ],
               ),
 
-              // ----------------------------- masterbedroom --------------------------------//
+              // ------------------------------masterbedroom--------------------------------//
 
               Column(
                 children: [
-                  if (masterBedroom == true || printData.asMap().containsKey(1)
-                      ? printData[0]['bedroom'] == "1"
+                  if (mi != null
+                      ? printData[mi]['bedroom'] == "1"
                       : masterBedroom) ...[
                     SizedBox(
                       height: height * 0.01,
@@ -1409,11 +1393,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue: printData[0]
-                                                      ['bedroom_length'] !=
-                                                  null
-                                              ? printData[0]['bedroom_length']
-                                              : null,
+                                          initialValue: mi != null
+                                              ? printData[mi]['bedroom_length']
+                                              : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -1430,6 +1412,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               () {
                                                 masterLength =
                                                     int.parse(text.toString());
+                                                print(masterLength);
                                               },
                                             );
                                           },
@@ -1453,8 +1436,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue: printData[0]
-                                              ['bedroom_width'],
+                                          initialValue: mi != null
+                                              ? printData[mi]['bedroom_width']
+                                              : '',
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                               hintText: "width",
@@ -1518,10 +1502,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            hint: printData[0]
-                                                        ['bedroom_floor'] !=
-                                                    null
-                                                ? Text(floorItems[printData[0]
+                                            hint: mi != null
+                                                ? Text(floorItems[printData[mi]
                                                     ['bedroom_floor']])
                                                 : Text(selectedFloor!),
                                             elevation: 16,
@@ -1544,7 +1526,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   print(selectedFloor);
                                                   if (selectedFloor ==
                                                       "Ground Floor") {
-                                                    printData[0]
+                                                    printData[mi]
                                                             ['bedroom_floor'] =
                                                         null;
 
@@ -1552,7 +1534,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   }
                                                   if (selectedFloor ==
                                                       "1st Floor") {
-                                                    printData[0]
+                                                    printData[mi]
                                                             ['bedroom_floor'] =
                                                         null;
                                                     masterLocation = 1;
@@ -1591,8 +1573,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue: printData[0]
-                                              ['bedroom_toilet_length'],
+                                          initialValue: mi != null
+                                              ? printData[mi]
+                                                  ['bedroom_toilet_length']
+                                              : "",
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -1630,8 +1614,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue: printData[0]
-                                              ['bedroom_toilet_width'],
+                                          initialValue: mi != null
+                                              ? printData[mi]
+                                                  ['bedroom_toilet_width']
+                                              : "",
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -1694,8 +1680,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue: printData[0]
-                                          ['bedroom_toilet_req_text'],
+                                      initialValue: mi != null
+                                          ? printData[0]
+                                              ['bedroom_toilet_req_text']
+                                          : " ",
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -1735,15 +1723,19 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value: printData[0][
-                                                                  'bedroom_dress_req'] ==
-                                                              1
-                                                          ? true
+                                                      value: mi != null
+                                                          ? printData[mi][
+                                                                      'bedroom_dress_req'] ==
+                                                                  1
+                                                              ? true
+                                                              : masterRequiredDress
                                                           : masterRequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
-                                                          printData[0][
-                                                              'bedroom_dress_req'] = 4;
+                                                          if (mi != null) {
+                                                            printData[mi][
+                                                                'bedroom_dress_req'] = 1;
+                                                          }
                                                           masterRequiredDress =
                                                               value;
                                                           masterNotRequiredDress =
@@ -1786,20 +1778,25 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                     activeColor: checkColor,
                                                     checkColor: Colors.white,
-                                                    value: printData[0][
-                                                                'bedroom_dress_req'] ==
-                                                            0
-                                                        ? true
+                                                    value: mi != null
+                                                        ? printData[mi][
+                                                                    'bedroom_dress_req'] ==
+                                                                0
+                                                            ? true
+                                                            : masterNotRequiredDress
                                                         : masterNotRequiredDress,
                                                     onChanged: (value) {
                                                       setState(
                                                         () {
+                                                          if (mi != null) {
+                                                            printData[mi][
+                                                                'bedroom_dress_req'] = 2;
+                                                          }
                                                           masterNotRequiredDress =
                                                               value;
                                                           masterRequiredDress =
                                                               false;
-                                                          printData[0][
-                                                              'bedroom_dress_req'] = 4;
+
                                                           if (masterRequiredDress ==
                                                               true) {
                                                             masterDressInt = 1;
@@ -1826,7 +1823,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (masterRequiredDress == true) ...[
+                                if (masterRequiredDress == true || mi != null
+                                    ? printData[mi]["bedroom_dress_req"] == 1
+                                    : masterRequiredDress == true) ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -1841,8 +1840,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
-                                            initialValue: printData[0]
-                                                ['bedroom_dress_length'],
+                                            initialValue: mi != null
+                                                ? printData[0]
+                                                    ['bedroom_dress_length']
+                                                : '',
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
@@ -1884,8 +1885,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
-                                            initialValue: printData[0]
-                                                ['bedroom_dress_width'],
+                                            initialValue: mi != null
+                                                ? printData[mi]
+                                                    ['bedroom_dress_width']
+                                                : '',
                                             decoration: const InputDecoration(
                                               hintText: "width",
                                               hintStyle:
@@ -1948,7 +1951,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         borderRadius: BorderRadius.circular(5),
                                         elevation: 5,
                                         child: Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 5),
                                           decoration: BoxDecoration(
                                             borderRadius:
@@ -1974,7 +1977,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                 setState(() {
                                                   masterDressFacility = ab;
-                                                  printData[0][
+                                                  printData[mi][
                                                           'bedroom_dress_facility'] =
                                                       null;
                                                 });
@@ -1987,9 +1990,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 child: Text("Office Facility"),
                                               ),
                                             ),
-                                            if (printData[0][
-                                                    'bedroom_dress_facility'] !=
-                                                null) ...[
+                                            if (mi != null &&
+                                                sonDFac != null) ...[
                                               for (int i = 0;
                                                   i < sonDFac!.length;
                                                   i++)
@@ -2000,9 +2002,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   )
                                                 ])
                                             ],
-                                            if (printData[0][
-                                                    'bedroom_dress_facility'] ==
-                                                null) ...[
+                                            if (printData[mi][
+                                                        'bedroom_dress_facility'] ==
+                                                    null ||
+                                                sonDFac == null) ...[
                                               Wrap(
                                                 children: masterDressFacility
                                                     .map((e) => Chip(
@@ -2027,8 +2030,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
-                                              initialValue: printData[0]
-                                                  ['bedroom_dress_req_text'],
+                                              initialValue: mi != null
+                                                  ? printData[0]
+                                                      ['bedroom_dress_req_text']
+                                                  : '',
                                               style:
                                                   const TextStyle(fontSize: 14),
                                               decoration: const InputDecoration(
@@ -2195,8 +2200,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(() {
                                               masterRoomFacility = result;
                                               print(masterDressFacility);
-                                              printData[0]['bedroom_facility'] =
-                                                  null;
+                                              if (mi != null) {
+                                                printData[mi]
+                                                    ['bedroom_facility'] = null;
+                                              }
                                             });
                                           },
                                           child: Container(
@@ -2210,9 +2217,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         if (printData
                                             .asMap()
                                             .containsKey(1)) ...[
-                                          if (printData[0]
-                                                  ['bedroom_facility'] !=
-                                              null) ...[
+                                          if (masterDFac != null || mi != null
+                                              ? printData[mi]
+                                                      ['bedroom_facility'] !=
+                                                  null
+                                              : masterRFac != null) ...[
                                             for (int i = 0;
                                                 i < masterRFac!.length;
                                                 i++)
@@ -2224,8 +2233,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               ])
                                           ],
                                         ],
-                                        if (printData[0]['bedroom_facility'] ==
-                                            null) ...[
+                                        if (masterRFac == null || mi != null
+                                            ? printData[mi]
+                                                    ['bedroom_facility'] ==
+                                                null
+                                            : masterRFac == null) ...[
                                           Wrap(
                                             children: masterRoomFacility
                                                 .map((e) => Chip(
@@ -2249,8 +2261,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue: printData[0]
-                                          ['bedroom_facility_req_text'],
+                                      initialValue: mi != null
+                                          ? printData[0]
+                                              ['bedroom_facility_req_text']
+                                          : '',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -2334,13 +2348,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                 ],
               ),
 
-              // ----------------------------- sonbedroom --------------------------------//
+              // ------------------------------sonbedroom--------------------------------//
 
               Column(
                 children: [
-                  if ((sonBedRoom == true) || printData.asMap().containsKey(1)
-                      ? printData[1]['bedroom'] == "2"
-                      : sonBedRoom == true) ...[
+                  if (si == null
+                      ? sonBedRoom == true
+                      : printData[si]['bedroom'] == "2") ...[
                     SizedBox(
                       height: height * 0.01,
                     ),
@@ -2381,10 +2395,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue: printData
-                                                  .asMap()
-                                                  .containsKey(1)
-                                              ? printData[1]['bedroom_length']
+                                          initialValue: si != null
+                                              ? printData[si]['bedroom_length']
                                               : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
@@ -2425,10 +2437,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue: printData
-                                                  .asMap()
-                                                  .containsKey(1)
-                                              ? printData[1]['bedroom_width']
+                                          initialValue: si != null
+                                              ? printData[si]['bedroom_width']
                                               : '',
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
@@ -2493,10 +2503,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            hint: printData
-                                                    .asMap()
-                                                    .containsKey(1)
-                                                ? Text(floorItems[printData[1]
+                                            hint: si != null
+                                                ? Text(floorItems[printData[si]
                                                     ['bedroom_floor']])
                                                 : Text(selectedFloorSon!),
                                             elevation: 16,
@@ -2515,10 +2523,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             onChanged: (it) {
                                               setState(
                                                 () {
-                                                  if (printData
-                                                      .asMap()
-                                                      .containsKey(1)) {
-                                                    printData[1]
+                                                  if (si != null) {
+                                                    printData[si]
                                                             ['bedroom_floor'] =
                                                         null;
                                                   }
@@ -2566,11 +2572,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue:
-                                              printData.asMap().containsKey(1)
-                                                  ? printData[1]
-                                                      ['bedroom_toilet_length']
-                                                  : '',
+                                          initialValue: si != null
+                                              ? printData[si]
+                                                  ['bedroom_toilet_length']
+                                              : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -2608,11 +2613,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue:
-                                              printData.asMap().containsKey(1)
-                                                  ? printData[1]
-                                                      ['bedroom_toilet_width']
-                                                  : "",
+                                          initialValue: si != null
+                                              ? printData[si]
+                                                  ['bedroom_toilet_width']
+                                              : "",
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -2675,11 +2679,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue:
-                                          printData.asMap().containsKey(1)
-                                              ? printData[1]
-                                                  ['bedroom_toilet_req_text']
-                                              : ' ',
+                                      initialValue: si != null
+                                          ? printData[si]
+                                              ['bedroom_toilet_req_text']
+                                          : ' ',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -2719,10 +2722,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value: printData
-                                                              .asMap()
-                                                              .containsKey(1)
-                                                          ? printData[1][
+                                                      value: si != null
+                                                          ? printData[si][
                                                                       'bedroom_dress_req'] ==
                                                                   1
                                                               ? true
@@ -2730,10 +2731,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                           : sonRequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
-                                                          if (printData
-                                                              .asMap()
-                                                              .containsKey(1)) {
-                                                            printData[1][
+                                                          if (si != null) {
+                                                            printData[si][
                                                                 'bedroom_dress_req'] = 4;
                                                           }
                                                           sonRequiredDress =
@@ -2778,10 +2777,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                     activeColor: checkColor,
                                                     checkColor: Colors.white,
-                                                    value: printData
-                                                            .asMap()
-                                                            .containsKey(1)
-                                                        ? printData[1][
+                                                    value: si != null
+                                                        ? printData[si][
                                                                     'bedroom_dress_req'] ==
                                                                 0
                                                             ? true
@@ -2794,10 +2791,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               value;
                                                           sonRequiredDress =
                                                               false;
-                                                          if (printData
-                                                              .asMap()
-                                                              .containsKey(1)) {
-                                                            printData[1][
+                                                          if (si != null) {
+                                                            printData[si][
                                                                 'bedroom_dress_req'] = 4;
                                                           }
                                                           if (sonRequiredDress ==
@@ -2826,9 +2821,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (printData.asMap().containsKey(1)
-                                    ? printData[1]['bedroom'] == "2"
-                                    : sonRequiredDress == true) ...[
+                                if (si == null
+                                    ? sonRequiredDress == true
+                                    : printData[si]['bedroom'] == "2") ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -2843,11 +2838,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
-                                            initialValue:
-                                                printData.asMap().containsKey(1)
-                                                    ? printData[1]
-                                                        ['bedroom_dress_length']
-                                                    : '',
+                                            initialValue: si != null
+                                                ? printData[si]
+                                                    ['bedroom_dress_length']
+                                                : '',
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
@@ -2894,11 +2888,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
-                                            initialValue:
-                                                printData.asMap().containsKey(1)
-                                                    ? printData[1]
-                                                        ['bedroom_dress_width']
-                                                    : '',
+                                            initialValue: si != null
+                                                ? printData[si]
+                                                    ['bedroom_dress_width']
+                                                : '',
                                             decoration: const InputDecoration(
                                               hintText: "width",
                                               hintStyle:
@@ -2961,7 +2954,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         borderRadius: BorderRadius.circular(5),
                                         elevation: 5,
                                         child: Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 10, vertical: 5),
                                           decoration: BoxDecoration(
                                             borderRadius:
@@ -2987,10 +2980,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                 setState(() {
                                                   sonDressFacility = ab;
-                                                  if (printData
-                                                      .asMap()
-                                                      .containsKey(1)) {
-                                                    printData[1][
+                                                  if (si != null) {
+                                                    printData[si][
                                                             'bedroom_dress_facility'] =
                                                         null;
                                                   }
@@ -3004,23 +2995,26 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 child: Text("Office Facility"),
                                               ),
                                             ),
-                                            if (printData
-                                                .asMap()
-                                                .containsKey(1)) ...[
+                                            if (si != null
+                                                ? printData[si][
+                                                        'bedroom_dress_facility'] !=
+                                                    null
+                                                : sonRFac != null) ...[
                                               for (int i = 0;
-                                                  i < masterDFac!.length;
+                                                  i < sonDFac!.length;
                                                   i++)
                                                 Wrap(children: [
                                                   Chip(
-                                                    label: Text(masterDFac![i]
-                                                        .toString()),
+                                                    label: Text(
+                                                        sonDFac![i].toString()),
                                                   )
                                                 ])
                                             ],
-                                            if (printData
-                                                    .asMap()
-                                                    .containsKey(1) ==
-                                                false) ...[
+                                            if (si != null
+                                                ? printData[si][
+                                                        'bedroom_dress_facility'] ==
+                                                    null
+                                                : sonRFac == null) ...[
                                               Wrap(
                                                 children: sonDressFacility
                                                     .map(
@@ -3047,10 +3041,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
-                                              initialValue: printData
-                                                      .asMap()
-                                                      .containsKey(1)
-                                                  ? printData[1]
+                                              initialValue: si != null
+                                                  ? printData[si]
                                                       ['bedroom_dress_req_text']
                                                   : '',
                                               style:
@@ -3216,10 +3208,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(() {
                                               sonRoomFacility = result;
                                               print(sonDressFacility);
-                                              if (printData
-                                                  .asMap()
-                                                  .containsKey(1)) {
-                                                printData[1]
+                                              if (si != null) {
+                                                printData[si]
                                                     ['bedroom_facility'] = null;
                                               }
                                             });
@@ -3232,10 +3222,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: Text("Room Facility"),
                                           ),
                                         ),
-                                        if (printData.asMap().containsKey(1)
-                                        // ? printData[1]['bedroom_facility'] !=
-                                        //     null :
-                                        ) ...[
+                                        if (si != null
+                                            ? printData[si]
+                                                    ['bedroom_facility'] !=
+                                                null
+                                            : sonRFac != null) ...[
                                           for (int i = 0;
                                               i < sonRFac!.length;
                                               i++)
@@ -3246,8 +3237,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               )
                                             ])
                                         ],
-                                        if (printData.asMap().containsKey(1) ==
-                                            false) ...[
+                                        if (si != null
+                                            ? printData[si]
+                                                    ['bedroom_facility'] ==
+                                                null
+                                            : sonRFac == null) ...[
                                           Wrap(
                                             children: sonRoomFacility
                                                 .map((e) => Chip(
@@ -3271,11 +3265,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue:
-                                          printData.asMap().containsKey(1)
-                                              ? printData[1]
-                                                  ['bedroom_facility_req_text']
-                                              : '',
+                                      initialValue: si != null
+                                          ? printData[1]
+                                              ['bedroom_facility_req_text']
+                                          : '',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -3359,13 +3352,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                 ],
               ),
 
-              // ----------------------------- daughterbedroom  --------------------------------//
+              // ------------------------------daughterbedroom--------------------------------//
 
               Column(
                 children: [
-                  if (daughterBedRoom == true ||
-                          printData.asMap().containsKey(2)
-                      ? printData[2]['bedroom'] == "3"
+                  if (di != null
+                      ? printData[di]['bedroom'] == "3"
                       : daughterBedRoom == true) ...[
                     SizedBox(
                       height: height * 0.01,
@@ -3420,8 +3412,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue: printData[2]
-                                              ['bedroom_length'],
+                                          initialValue: di != null
+                                              ? printData[di]['bedroom_length']
+                                              : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -3461,8 +3454,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue: printData[2]
-                                              ['bedroom_width'],
+                                          initialValue: di != null
+                                              ? printData[di]['bedroom_width']
+                                              : '',
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                               hintText: "width",
@@ -3526,12 +3520,14 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            hint: printData[2]
-                                                        ['bedroom_floor'] !=
-                                                    null
-                                                ? Text(floorItemsDaughter[
-                                                    printData[2]
-                                                        ['bedroom_floor']])
+                                            hint: di != null
+                                                ? printData[di]
+                                                            ['bedroom_floor'] !=
+                                                        null
+                                                    ? Text(floorItemsDaughter[
+                                                        printData[di]
+                                                            ['bedroom_floor']])
+                                                    : Text(selectedFloorSon!)
                                                 : Text(selectedFloorSon!),
                                             elevation: 16,
                                             items: floorItemsDaughter
@@ -3549,8 +3545,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             onChanged: (it) {
                                               setState(
                                                 () {
-                                                  printData[2]
-                                                      ['bedroom_floor'] = null;
+                                                  if (di != null) {
+                                                    printData[2]
+                                                        ['bedroom_floor'] = 3;
+                                                  }
                                                   selectedFloorDaughter = it;
                                                   print(selectedFloorDaughter);
                                                   if (selectedFloorDaughter ==
@@ -3595,8 +3593,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue: printData[2]
-                                              ['bedroom_toilet_length'],
+                                          initialValue: di != null
+                                              ? printData[di]
+                                                  ['bedroom_toilet_length']
+                                              : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -3634,8 +3634,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue: printData[2]
-                                              ['bedroom_toilet_width'],
+                                          initialValue: di != null
+                                              ? printData[2]
+                                                  ['bedroom_toilet_width']
+                                              : '',
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -3698,8 +3700,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue: printData[2]
-                                          ['bedroom_toilet_req_text'],
+                                      initialValue: di != null
+                                          ? printData[di]
+                                              ['bedroom_toilet_req_text']
+                                          : '',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -3739,15 +3743,19 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value: printData[2][
-                                                                  'bedroom_dress_req'] ==
-                                                              1
-                                                          ? true
+                                                      value: di != null
+                                                          ? printData[di][
+                                                                      'bedroom_dress_req'] ==
+                                                                  1
+                                                              ? true
+                                                              : daughterRequiredDress
                                                           : daughterRequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
-                                                          printData[2][
-                                                              'bedroom_dress_req'] = 4;
+                                                          if (di != null) {
+                                                            printData[2][
+                                                                'bedroom_dress_req'] = 4;
+                                                          }
                                                           daughterRequiredDress =
                                                               value;
                                                           daughterNotRequiredDress =
@@ -3792,10 +3800,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                     activeColor: checkColor,
                                                     checkColor: Colors.white,
-                                                    value: printData[2][
-                                                                'bedroom_dress_req'] ==
-                                                            0
-                                                        ? true
+                                                    value: di != null
+                                                        ? printData[di][
+                                                                    'bedroom_dress_req'] ==
+                                                                0
+                                                            ? true
+                                                            : daughterNotRequiredDress
                                                         : daughterNotRequiredDress,
                                                     onChanged: (value) {
                                                       setState(
@@ -3804,8 +3814,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               value;
                                                           daughterRequiredDress =
                                                               false;
-                                                          printData[2][
-                                                              'bedroom_dress_req'] = 4;
+                                                          if (di != null) {
+                                                            printData[di][
+                                                                'bedroom_dress_req'] = 4;
+                                                          }
                                                           if (daughterRequiredDress ==
                                                               true) {
                                                             daughterDressInt =
@@ -3834,8 +3846,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (sonRequiredDress == true ||
-                                    printData[2]['bedroom'] == "1") ...[
+                                if (di != null
+                                    ? printData[di]['bedroom'] == "1"
+                                    : daughterRequiredDress == true) ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -3850,8 +3863,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
-                                            initialValue: printData[2]
-                                                ['bedroom_dress_length'],
+                                            initialValue: di != null
+                                                ? printData[di]
+                                                    ['bedroom_dress_length']
+                                                : '',
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
@@ -3898,8 +3913,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
-                                            initialValue: printData[2]
-                                                ['bedroom_dress_width'],
+                                            initialValue: di != null
+                                                ? printData[di]
+                                                    ['bedroom_dress_width']
+                                                : '',
                                             decoration: const InputDecoration(
                                               hintText: "width",
                                               hintStyle:
@@ -3988,9 +4005,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                 setState(() {
                                                   daughterDressFacility = ab;
-                                                  printData[2][
-                                                          'bedroom_dress_facility'] =
-                                                      null;
+                                                  if (di != null) {
+                                                    printData[2][
+                                                            'bedroom_dress_facility'] =
+                                                        null;
+                                                  }
                                                 });
                                               },
                                               child: Container(
@@ -4001,9 +4020,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 child: Text("Office Facility"),
                                               ),
                                             ),
-                                            if (printData[2][
-                                                    'bedroom_dress_facility'] !=
-                                                null) ...[
+                                            if (di != null
+                                                ? printData[di][
+                                                        'bedroom_dress_facility'] !=
+                                                    null
+                                                : daughterDFac != null) ...[
                                               for (int i = 0;
                                                   i < daughterDFac!.length;
                                                   i++)
@@ -4014,9 +4035,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   )
                                                 ])
                                             ],
-                                            if (printData[2][
-                                                    'bedroom_dress_facility'] ==
-                                                null) ...[
+                                            if (di != null
+                                                ? printData[di][
+                                                        'bedroom_dress_facility'] ==
+                                                    null
+                                                : daughterDFac == null) ...[
                                               Wrap(
                                                 children: daughterDressFacility
                                                     .map(
@@ -4043,8 +4066,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
-                                              initialValue: printData[2]
-                                                  ['bedroom_dress_req_text'],
+                                              initialValue: di != null
+                                                  ? printData[2]
+                                                      ['bedroom_dress_req_text']
+                                                  : '',
                                               style:
                                                   const TextStyle(fontSize: 14),
                                               decoration: const InputDecoration(
@@ -4210,8 +4235,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(() {
                                               daughterRoomFacility = result;
                                               print(daughterDressFacility);
-                                              printData[2]['bedroom_facility'] =
-                                                  null;
+                                              if (di != null) {
+                                                printData[di]
+                                                    ['bedroom_facility'] = null;
+                                              }
                                             });
                                           },
                                           child: Container(
@@ -4222,8 +4249,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: Text("Room Facility"),
                                           ),
                                         ),
-                                        if (printData[2]['bedroom_facility'] !=
-                                            null) ...[
+                                        if (di != null
+                                            ? printData[di]
+                                                    ['bedroom_facility'] !=
+                                                null
+                                            : daughterRFac != null) ...[
                                           for (int i = 0;
                                               i < daughterRFac!.length;
                                               i++)
@@ -4234,8 +4264,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               )
                                             ])
                                         ],
-                                        if (printData[2]['bedroom_facility'] ==
-                                            null) ...[
+                                        if (di != null
+                                            ? printData[di]
+                                                    ['bedroom_facility'] !=
+                                                null
+                                            : daughterRFac != null) ...[
                                           Wrap(
                                             children: daughterRoomFacility
                                                 .map((e) => Chip(
@@ -4259,8 +4292,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue: printData[2]
-                                          ['bedroom_facility_req_text'],
+                                      initialValue: di != null
+                                          ? printData[di]
+                                              ['bedroom_facility_req_text']
+                                          : '',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -4344,11 +4379,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                 ],
               ),
 
-              // -----------------------------------------parentbedroom  -----------------------------------------//
+              // ------------------------------parentbedroom-----------------------------------------//
 
               Column(
                 children: [
-                  if (parentBedRoom == true || printData.asMap().containsKey(3)
+                  if (pi != null
                       ? printData[3]['bedroom'] == "4"
                       : parentBedRoom == true) ...[
                     SizedBox(
@@ -4404,8 +4439,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue: printData[3]
-                                              ['bedroom_length'],
+                                          initialValue: pi != null
+                                              ? printData[3]['bedroom_length']
+                                              : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -4445,8 +4481,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue: printData[3]
-                                              ['bedroom_width'],
+                                          initialValue: pi != null
+                                              ? printData[3]['bedroom_width']
+                                              : '',
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                               hintText: "width",
@@ -4510,11 +4547,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            hint: printData[3]
-                                                        ['bedroom_floor'] !=
-                                                    null
+                                            hint: pi != null
                                                 ? Text(floorItemsDaughter[
-                                                    printData[3]
+                                                    printData[pi]
                                                         ['bedroom_floor']])
                                                 : Text(selectedFloorParent!),
                                             elevation: 16,
@@ -4533,8 +4568,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             onChanged: (it) {
                                               setState(
                                                 () {
-                                                  printData[3]
-                                                      ['bedroom_floor'] = null;
+                                                  if (pi != null) {
+                                                    printData[pi]
+                                                            ['bedroom_floor'] =
+                                                        null;
+                                                  }
                                                   selectedFloorParent = it;
                                                   print(selectedFloorParent);
                                                   if (selectedFloorParent ==
@@ -4579,8 +4617,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue: printData[3]
-                                              ['bedroom_toilet_length'],
+                                          initialValue: pi != null
+                                              ? printData[pi]
+                                                  ['bedroom_toilet_length']
+                                              : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -4618,8 +4658,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue: printData[3]
-                                              ['bedroom_toilet_width'],
+                                          initialValue: pi != null
+                                              ? printData[pi]
+                                                  ['bedroom_toilet_width']
+                                              : '',
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -4682,8 +4724,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue: printData[3]
-                                          ['bedroom_toilet_req_text'],
+                                      initialValue: pi != null
+                                          ? printData[pi]
+                                              ['bedroom_toilet_req_text']
+                                          : '',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -4723,15 +4767,20 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value: printData[3][
-                                                                  'bedroom_dress_req'] ==
-                                                              1
-                                                          ? true
+                                                      value: pi != null
+                                                          ? printData[pi][
+                                                                      'bedroom_dress_req'] ==
+                                                                  1
+                                                              ? true
+                                                              : parentsRequiredDress
                                                           : parentsRequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
-                                                          printData[3][
-                                                              'bedroom_dress_req'] = 4;
+                                                          if (pi != null) {
+                                                            printData[pi][
+                                                                'bedroom_dress_req'] = 4;
+                                                          }
+
                                                           parentsRequiredDress =
                                                               value;
                                                           parentsNotRequiredDress =
@@ -4773,11 +4822,14 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   height: height * 0.04,
                                                   child: Checkbox(
                                                     activeColor: checkColor,
-                                                    checkColor: Colors.white,
-                                                    value: printData[3][
-                                                                'bedroom_dress_req'] ==
-                                                            0
-                                                        ? true
+                                                    checkColor: Color.fromRGBO(
+                                                        255, 255, 255, 1),
+                                                    value: pi != null
+                                                        ? printData[pi][
+                                                                    'bedroom_dress_req'] ==
+                                                                0
+                                                            ? true
+                                                            : parentsNotRequiredDress
                                                         : parentsNotRequiredDress,
                                                     onChanged: (value) {
                                                       setState(
@@ -4786,8 +4838,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               value;
                                                           parentsRequiredDress =
                                                               false;
-                                                          printData[3][
-                                                              'bedroom_dress_req'] = 4;
+                                                          if (pi != null) {
+                                                            printData[pi][
+                                                                'bedroom_dress_req'] = 4;
+                                                          }
                                                           if (parentsRequiredDress ==
                                                               true) {
                                                             parentDressInt = 1;
@@ -4814,8 +4868,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (parentsRequiredDress == true ||
-                                    printData[3]['bedroom'] == "1") ...[
+                                if (pi != null
+                                    ? printData[pi]['bedroom_dress_req'] == "1"
+                                    : parentsRequiredDress == true) ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -4830,8 +4885,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
-                                            initialValue: printData[3]
-                                                ['bedroom_dress_length'],
+                                            initialValue: pi != null
+                                                ? printData[pi]
+                                                    ['bedroom_dress_length']
+                                                : '',
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
@@ -4878,8 +4935,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
-                                            initialValue: printData[3]
-                                                ['bedroom_dress_width'],
+                                            initialValue: pi != null
+                                                ? printData[3]
+                                                    ['bedroom_dress_width']
+                                                : '',
                                             decoration: const InputDecoration(
                                               hintText: "width",
                                               hintStyle:
@@ -4976,9 +5035,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                   setState(() {
                                                     parentDressFacility = ab;
-                                                    printData[3][
-                                                            'bedroom_dress_facility'] =
-                                                        null;
+                                                    if (pi != null) {
+                                                      printData[pi][
+                                                              'bedroom_dress_facility'] =
+                                                          null;
+                                                    }
                                                   });
                                                 },
                                                 child: Container(
@@ -4991,9 +5052,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       Text("Office Facility"),
                                                 ),
                                               ),
-                                              if (printData[3][
-                                                      'bedroom_dress_facility'] !=
-                                                  null) ...[
+                                              if (pi != null
+                                                  ? printData[pi][
+                                                          'bedroom_dress_facility'] !=
+                                                      null
+                                                  : parentDFac != null) ...[
                                                 for (int i = 0;
                                                     i < parentDFac!.length;
                                                     i++)
@@ -5006,9 +5069,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     )
                                                   ])
                                               ],
-                                              if (printData[3][
-                                                      'bedroom_dress_facility'] ==
-                                                  null) ...[
+                                              if (pi != null
+                                                  ? printData[pi][
+                                                          'bedroom_dress_facility'] ==
+                                                      null
+                                                  : parentDFac == null) ...[
                                                 Wrap(
                                                   children: parentDressFacility
                                                       .map(
@@ -5036,8 +5101,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
-                                              initialValue: printData[3]
-                                                  ['bedroom_dress_req_text'],
+                                              initialValue: pi != null
+                                                  ? printData[pi]
+                                                      ['bedroom_dress_req_text']
+                                                  : '',
                                               style:
                                                   const TextStyle(fontSize: 14),
                                               decoration: const InputDecoration(
@@ -5204,8 +5271,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               () {
                                                 parentRoomFacility = result;
                                                 print(parentDressFacility);
-                                                printData[3]
-                                                    ['bedroom_facility'] = null;
+                                                if (pi != null) {
+                                                  printData[pi]
+                                                          ['bedroom_facility'] =
+                                                      null;
+                                                }
                                               },
                                             );
                                           },
@@ -5217,8 +5287,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: Text("Room Facility"),
                                           ),
                                         ),
-                                        if (printData[2]['bedroom_facility'] !=
-                                            null) ...[
+                                        if (pi != null
+                                            ? printData[pi]
+                                                    ['bedroom_facility'] !=
+                                                null
+                                            : parentRFac != null) ...[
                                           for (int i = 0;
                                               i < parentRFac!.length;
                                               i++)
@@ -5229,8 +5302,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               )
                                             ])
                                         ],
-                                        if (printData[3]['bedroom_facility'] ==
-                                            null) ...[
+                                        if (pi != null
+                                            ? printData[pi]
+                                                    ['bedroom_facility'] ==
+                                                null
+                                            : parentRFac == null) ...[
                                           Wrap(
                                             children: parentRoomFacility
                                                 .map((e) => Chip(
@@ -5254,8 +5330,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue: printData[3]
-                                          ['bedroom_facility_req_text'],
+                                      initialValue: pi != null
+                                          ? printData[pi]
+                                              ['bedroom_facility_req_text']
+                                          : '',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -5339,12 +5417,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                 ],
               ),
 
-              // ------------------ guestbedroom  -------------------------//
+              // ------------------------------guestbedroom-------------------------//
 
               Column(
                 children: [
-                  if (guestBedRoom == true || printData.asMap().containsKey(4)
-                      ? printData[4]['bedroom'] == "5"
+                  if (gi != null
+                      ? printData[gi]['bedroom'] == "5"
                       : guestBedRoom == true) ...[
                     SizedBox(
                       height: height * 0.01,
@@ -5386,8 +5464,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue: printData[4]
-                                              ['bedroom_length'],
+                                          initialValue: gi != null
+                                              ? printData[gi]['bedroom_length']
+                                              : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -5427,8 +5506,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue: printData[4]
-                                              ['bedroom_width'],
+                                          initialValue: gi != null
+                                              ? printData[gi]['bedroom_width']
+                                              : '',
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                               hintText: "width",
@@ -5492,11 +5572,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            hint: printData[4]
-                                                        ['bedroom_floor'] !=
-                                                    null
+                                            hint: gi != null
                                                 ? Text(floorItemsGuest[
-                                                    printData[4]
+                                                    printData[gi]
                                                         ['bedroom_floor']])
                                                 : Text(selectedFloorGuest!),
                                             elevation: 16,
@@ -5515,8 +5593,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             onChanged: (it) {
                                               setState(
                                                 () {
-                                                  printData[4]
-                                                      ['bedroom_floor'] = null;
+                                                  if (gi != null) {
+                                                    printData[gi]
+                                                            ['bedroom_floor'] =
+                                                        null;
+                                                  }
                                                   selectedFloorGuest = it;
                                                   print(selectedFloorGuest);
                                                   if (selectedFloorGuest ==
@@ -5561,8 +5642,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue: printData[4]
-                                              ['bedroom_toilet_length'],
+                                          initialValue: gi != null
+                                              ? printData[gi]
+                                                  ['bedroom_toilet_length']
+                                              : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -5600,8 +5683,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue: printData[4]
-                                              ['bedroom_toilet_width'],
+                                          initialValue: gi != null
+                                              ? printData[4]
+                                                  ['bedroom_toilet_width']
+                                              : '',
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -5664,8 +5749,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue: printData[4]
-                                          ['bedroom_toilet_req_text'],
+                                      initialValue: gi != null
+                                          ? printData[4]
+                                              ['bedroom_toilet_req_text']
+                                          : '',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -5705,15 +5792,19 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value: printData[4][
-                                                                  'bedroom_dress_req'] ==
-                                                              1
-                                                          ? true
+                                                      value: gi != null
+                                                          ? printData[gi][
+                                                                      'bedroom_dress_req'] ==
+                                                                  1
+                                                              ? true
+                                                              : guestRequiredDress
                                                           : guestRequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
-                                                          printData[4][
-                                                              'bedroom_dress_req'] = 4;
+                                                          if (gi != null) {
+                                                            printData[gi][
+                                                                'bedroom_dress_req'] = 4;
+                                                          }
                                                           guestRequiredDress =
                                                               value;
                                                           guestNotRequiredDress =
@@ -5756,11 +5847,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                     activeColor: checkColor,
                                                     checkColor: Colors.white,
-                                                    value: printData[4][
-                                                                'bedroom_dress_req'] ==
-                                                            0
-                                                        ? true
-                                                        : parentsNotRequiredDress,
+                                                    value: gi != null
+                                                        ? printData[gi][
+                                                                    'bedroom_dress_req'] ==
+                                                                0
+                                                            ? true
+                                                            : guestNotRequiredDress
+                                                        : guestNotRequiredDress,
                                                     onChanged: (value) {
                                                       setState(
                                                         () {
@@ -5768,8 +5861,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               value;
                                                           guestRequiredDress =
                                                               false;
-                                                          printData[3][
-                                                              'bedroom_dress_req'] = 4;
+                                                          if (gi != null) {
+                                                            printData[gi][
+                                                                'bedroom_dress_req'] = 4;
+                                                          }
                                                           if (guestRequiredDress ==
                                                               true) {
                                                             guestDressInt = 1;
@@ -5796,8 +5891,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (guestRequiredDress == true ||
-                                    printData[4]['bedroom'] == "1") ...[
+                                if (gi == null
+                                    ? guestRequiredDress == true
+                                    : printData[gi]['bedroom'] == "1") ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -5812,8 +5908,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
-                                            initialValue: printData[4]
-                                                ['bedroom_dress_length'],
+                                            initialValue: gi != null
+                                                ? printData[gi]
+                                                    ['bedroom_dress_length']
+                                                : '',
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
@@ -5860,8 +5958,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
-                                            initialValue: printData[4]
-                                                ['bedroom_dress_width'],
+                                            initialValue: gi != null
+                                                ? printData[gi]
+                                                    ['bedroom_dress_width']
+                                                : '',
 
                                             decoration: const InputDecoration(
                                               hintText: "width",
@@ -5959,9 +6059,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                   setState(() {
                                                     guestDressFacility = ab;
-                                                    printData[4][
-                                                            'bedroom_dress_facility'] =
-                                                        null;
+                                                    if (gi != null) {
+                                                      printData[gi][
+                                                              'bedroom_dress_facility'] =
+                                                          null;
+                                                    }
                                                   });
                                                 },
                                                 child: Container(
@@ -5974,9 +6076,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       Text("Office Facility"),
                                                 ),
                                               ),
-                                              if (printData[4][
-                                                      'bedroom_dress_facility'] !=
-                                                  null) ...[
+                                              if (gi != null
+                                                  ? printData[gi][
+                                                          'bedroom_dress_facility'] !=
+                                                      null
+                                                  : parentDFac != null) ...[
                                                 for (int i = 0;
                                                     i < parentDFac!.length;
                                                     i++)
@@ -5987,9 +6091,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     )
                                                   ])
                                               ],
-                                              if (printData[4][
-                                                      'bedroom_dress_facility'] ==
-                                                  null) ...[
+                                              if (gi != null
+                                                  ? printData[gi][
+                                                          'bedroom_dress_facility'] ==
+                                                      null
+                                                  : parentDFac == null) ...[
                                                 Wrap(
                                                   children:
                                                       daughterDressFacility
@@ -6018,8 +6124,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
-                                              initialValue: printData[4]
-                                                  ['bedroom_dress_req_text'],
+                                              initialValue: gi != null
+                                                  ? printData[gi]
+                                                      ['bedroom_dress_req_text']
+                                                  : '',
                                               style:
                                                   const TextStyle(fontSize: 14),
                                               decoration: const InputDecoration(
@@ -6185,8 +6293,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(() {
                                               guestRoomFacility = result;
                                               print(guestDressFacility);
-                                              printData[4]['bedroom_facility'] =
-                                                  null;
+                                              if (gi != null) {
+                                                printData[gi]
+                                                    ['bedroom_facility'] = null;
+                                              }
                                             });
                                           },
                                           child: Container(
@@ -6197,8 +6307,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: Text("Room Facility"),
                                           ),
                                         ),
-                                        if (printData[4]['bedroom_facility'] !=
-                                            null) ...[
+                                        if (gi != null
+                                            ? printData[gi]
+                                                    ['bedroom_facility'] !=
+                                                null
+                                            : guestRFac != null) ...[
                                           for (int i = 0;
                                               i < guestRFac!.length;
                                               i++)
@@ -6211,8 +6324,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               ],
                                             )
                                         ],
-                                        if (printData[4]['bedroom_facility'] ==
-                                            null) ...[
+                                        if (gi != null
+                                            ? printData[gi]
+                                                    ['bedroom_facility'] ==
+                                                null
+                                            : guestRFac == null) ...[
                                           Wrap(
                                             children: guestRoomFacility
                                                 .map((e) => Chip(
@@ -6236,8 +6352,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue: printData[4]
-                                          ['bedroom_facility_req_text'],
+                                      initialValue: gi != null
+                                          ? printData[4]
+                                              ['bedroom_facility_req_text']
+                                          : '',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -6321,12 +6439,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                 ],
               ),
 
-              // ------------------------- other1bedroom  ------------------------------//
+              // ------------------------------other1bedroom------------------------------//
 
               Column(
                 children: [
-                  if (other1BedRoom == true || printData.asMap().containsKey(5)
-                      ? printData[5]['bedroom'] == "6"
+                  if (o1i != null
+                      ? printData[o1i]['bedroom'] == "6"
                       : other1BedRoom == true) ...[
                     SizedBox(
                       height: height * 0.01,
@@ -6382,8 +6500,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue: printData[5]
-                                              ['bedroom_length'],
+                                          initialValue: o1i != null
+                                              ? printData[o1i]['bedroom_length']
+                                              : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -6423,8 +6542,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue: printData[5]
-                                              ['bedroom_width'],
+                                          initialValue: o1i != null
+                                              ? printData[o1i]['bedroom_width']
+                                              : '',
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                               hintText: "width",
@@ -6488,11 +6608,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            hint: printData[5]
-                                                        ['bedroom_floor'] !=
-                                                    null
+                                            hint: o1i != null
                                                 ? Text(floorItemsGuest[
-                                                    printData[5]
+                                                    printData[o1i]
                                                         ['bedroom_floor']])
                                                 : Text(selectedFloorGuest!),
                                             elevation: 16,
@@ -6511,8 +6629,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             onChanged: (it) {
                                               setState(
                                                 () {
-                                                  printData[5]
-                                                      ['bedroom_floor'] = null;
+                                                  if (o1i != null) {
+                                                    printData[o1i]
+                                                            ['bedroom_floor'] =
+                                                        null;
+                                                  }
                                                   selectedFloorOther1 = it;
                                                   print(selectedFloorOther1);
                                                   if (selectedFloorOther1 ==
@@ -6557,8 +6678,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue: printData[5]
-                                              ['bedroom_toilet_length'],
+                                          initialValue: o1i != null
+                                              ? printData[o1i]
+                                                  ['bedroom_toilet_length']
+                                              : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -6596,8 +6719,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue: printData[5]
-                                              ['bedroom_toilet_width'],
+                                          initialValue: o1i != null
+                                              ? printData[o1i]
+                                                  ['bedroom_toilet_width']
+                                              : '',
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -6660,8 +6785,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue: printData[5]
-                                          ['bedroom_toilet_req_text'],
+                                      initialValue: o1i != null
+                                          ? printData[o1i]
+                                              ['bedroom_toilet_req_text']
+                                          : '',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -6701,15 +6828,19 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value: printData[5][
-                                                                  'bedroom_dress_req'] ==
-                                                              1
-                                                          ? true
+                                                      value: o1i != null
+                                                          ? printData[o1i][
+                                                                      'bedroom_dress_req'] ==
+                                                                  1
+                                                              ? true
+                                                              : other1RequiredDress
                                                           : other1RequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
-                                                          printData[5][
-                                                              'bedroom_dress_req'] = 4;
+                                                          if (o1i != null) {
+                                                            printData[o1i][
+                                                                'bedroom_dress_req'] = 4;
+                                                          }
                                                           other1RequiredDress =
                                                               value;
                                                           other1NotRequiredDress =
@@ -6752,10 +6883,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                     activeColor: checkColor,
                                                     checkColor: Colors.white,
-                                                    value: printData[5][
-                                                                'bedroom_dress_req'] ==
-                                                            0
-                                                        ? true
+                                                    value: o1i != null
+                                                        ? printData[o1i][
+                                                                    'bedroom_dress_req'] ==
+                                                                0
+                                                            ? true
+                                                            : other1NotRequiredDress
                                                         : other1NotRequiredDress,
                                                     onChanged: (value) {
                                                       setState(
@@ -6764,8 +6897,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               value;
                                                           other1RequiredDress =
                                                               false;
-                                                          printData[5][
-                                                              'bedroom_dress_req'] = 4;
+                                                          if (o1i != null) {
+                                                            printData[o1i][
+                                                                'bedroom_dress_req'] = 4;
+                                                          }
                                                           if (other1RequiredDress ==
                                                               true) {
                                                             other1DressInt = 1;
@@ -6792,8 +6927,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (other1RequiredDress == true ||
-                                    printData[5]['bedroom'] == "1") ...[
+                                if (o1i == null
+                                    ? other1RequiredDress == true
+                                    : printData[o1i]['bedroom'] == "1") ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -6808,8 +6944,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
-                                            initialValue: printData[5]
-                                                ['bedroom_dress_length'],
+                                            initialValue: o1i != null
+                                                ? printData[o1i]
+                                                    ['bedroom_dress_length']
+                                                : '',
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
@@ -6858,8 +6996,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
-                                            initialValue: printData[5]
-                                                ['bedroom_dress_width'],
+                                            initialValue: o1i != null
+                                                ? printData[o1i]
+                                                    ['bedroom_dress_width']
+                                                : '',
 
                                             decoration: const InputDecoration(
                                               hintText: "width",
@@ -6955,9 +7095,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                   setState(() {
                                                     other1DressFacility = ab;
-                                                    printData[5][
-                                                            'bedroom_dress_facility'] =
-                                                        null;
+                                                    if (o1i != null) {
+                                                      printData[o1i][
+                                                              'bedroom_dress_facility'] =
+                                                          null;
+                                                    }
                                                   });
                                                 },
                                                 child: Container(
@@ -6970,9 +7112,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       Text("Office Facility"),
                                                 ),
                                               ),
-                                              if (printData[5][
-                                                      'bedroom_dress_facility'] !=
-                                                  null) ...[
+                                              if (o1i != null
+                                                  ? printData[o1i][
+                                                          'bedroom_dress_facility'] !=
+                                                      null
+                                                  : other1DFac != null) ...[
                                                 for (int i = 0;
                                                     i < other1DFac!.length;
                                                     i++)
@@ -6983,9 +7127,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     )
                                                   ])
                                               ],
-                                              if (printData[5][
-                                                      'bedroom_dress_facility'] ==
-                                                  null) ...[
+                                              if (o1i != null
+                                                  ? printData[o1i][
+                                                          'bedroom_dress_facility'] ==
+                                                      null
+                                                  : other1DFac == null) ...[
                                                 Wrap(
                                                   children: other1DressFacility
                                                       .map(
@@ -7013,8 +7159,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
-                                              initialValue: printData[5]
-                                                  ['bedroom_dress_req_text'],
+                                              initialValue: o1i != null
+                                                  ? printData[o1i]
+                                                      ['bedroom_dress_req_text']
+                                                  : '',
                                               style:
                                                   const TextStyle(fontSize: 14),
                                               decoration: const InputDecoration(
@@ -7180,8 +7328,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(() {
                                               other1RoomFacility = result;
                                               print(other1DressFacility);
-                                              printData[5]['bedroom_facility'] =
-                                                  null;
+                                              if (o1i != null) {
+                                                printData[o1i]
+                                                    ['bedroom_facility'] = null;
+                                              }
                                             });
                                           },
                                           child: Container(
@@ -7192,8 +7342,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: Text("Room Facility"),
                                           ),
                                         ),
-                                        if (printData[5]['bedroom_facility'] !=
-                                            null) ...[
+                                        if (o1i != null
+                                            ? printData[o1i]
+                                                    ['bedroom_facility'] !=
+                                                null
+                                            : other1RFac != null) ...[
                                           for (int i = 0;
                                               i < other1RFac!.length;
                                               i++)
@@ -7206,8 +7359,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               ],
                                             )
                                         ],
-                                        if (printData[5]['bedroom_facility'] ==
-                                            null) ...[
+                                        if (o1i != null
+                                            ? printData[o1i]
+                                                    ['bedroom_facility'] ==
+                                                null
+                                            : other1RFac == null) ...[
                                           Wrap(
                                             children: other1RoomFacility
                                                 .map((e) => Chip(
@@ -7231,8 +7387,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue: printData[5]
-                                          ['bedroom_facility_req_text'],
+                                      initialValue: o1i != null
+                                          ? printData[o1i]
+                                              ['bedroom_facility_req_text']
+                                          : "",
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -7316,12 +7474,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                 ],
               ),
 
-              // -------------------------------- other2BedRoom  ---------------------------------------//
+              // ------------------------------other2BedRoom  ---------------------------------------//
 
               Column(
                 children: [
-                  if (other2BedRoom == true || printData.asMap().containsKey(6)
-                      ? printData[6]['bedroom'] == "7"
+                  if (o2i != null
+                      ? printData[o2i]['bedroom'] == "7"
                       : other2BedRoom == true) ...{
                     SizedBox(
                       height: height * 0.01,
@@ -7363,8 +7521,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue: printData[6]
-                                              ['bedroom_length'],
+                                          initialValue: o2i != null
+                                              ? printData[o2i]['bedroom_length']
+                                              : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -7404,8 +7563,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue: printData[6]
-                                              ['bedroom_width'],
+                                          initialValue: o2i != null
+                                              ? printData[o2i]['bedroom_width']
+                                              : '',
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                               hintText: "width",
@@ -7469,11 +7629,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            hint: printData[6]
-                                                        ['bedroom_floor'] !=
-                                                    null
+                                            hint: o2i != null
                                                 ? Text(floorItemsOther2[
-                                                    printData[6]
+                                                    printData[o2i]
                                                         ['bedroom_floor']])
                                                 : Text(selectedFloorOther2!),
                                             elevation: 16,
@@ -7492,10 +7650,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             onChanged: (it) {
                                               setState(
                                                 () {
-                                                  printData[6]
-                                                      ['bedroom_floor'] = null;
+                                                  if (o2i != null) {
+                                                    printData[o2i]
+                                                            ['bedroom_floor'] =
+                                                        null;
+                                                  }
+
                                                   selectedFloorOther2 = it;
-                                                  print(selectedFloorOther2);
                                                   if (selectedFloorOther2 ==
                                                       "Ground Floor") {
                                                     other2Location = 0;
@@ -7538,8 +7699,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue: printData[6]
-                                              ['bedroom_toilet_length'],
+                                          initialValue: o2i != null
+                                              ? printData[o2i]
+                                                  ['bedroom_toilet_length']
+                                              : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -7577,8 +7740,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue: printData[6]
-                                              ['bedroom_toilet_width'],
+                                          initialValue: o2i != null
+                                              ? printData[o2i]
+                                                  ['bedroom_toilet_width']
+                                              : '',
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -7641,8 +7806,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue: printData[6]
-                                          ['bedroom_toilet_req_text'],
+                                      initialValue: o2i != null
+                                          ? printData[o2i]
+                                              ['bedroom_toilet_req_text']
+                                          : '',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -7682,15 +7849,19 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value: printData[6][
-                                                                  'bedroom_dress_req'] ==
-                                                              1
-                                                          ? true
+                                                      value: o2i != null
+                                                          ? printData[o2i][
+                                                                      'bedroom_dress_req'] ==
+                                                                  1
+                                                              ? true
+                                                              : other2RequiredDress
                                                           : other2RequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
-                                                          printData[6][
-                                                              'bedroom_dress_req'] = 4;
+                                                          if (o2i != null) {
+                                                            printData[o2i][
+                                                                'bedroom_dress_req'] = 4;
+                                                          }
                                                           other2RequiredDress =
                                                               value;
                                                           other2NotRequiredDress =
@@ -7733,10 +7904,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                     activeColor: checkColor,
                                                     checkColor: Colors.white,
-                                                    value: printData[6][
-                                                                'bedroom_dress_req'] ==
-                                                            0
-                                                        ? true
+                                                    value: o2i != null
+                                                        ? printData[o2i][
+                                                                    'bedroom_dress_req'] ==
+                                                                0
+                                                            ? true
+                                                            : other2NotRequiredDress
                                                         : other2NotRequiredDress,
                                                     onChanged: (value) {
                                                       setState(
@@ -7745,8 +7918,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               value;
                                                           other2RequiredDress =
                                                               false;
-                                                          printData[6][
-                                                              'bedroom_dress_req'] = 4;
+                                                          if (o2i != null) {
+                                                            printData[o2i][
+                                                                'bedroom_dress_req'] = 4;
+                                                          }
                                                           if (other2RequiredDress ==
                                                               true) {
                                                             other2DressInt = 1;
@@ -7773,8 +7948,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (other2RequiredDress == true ||
-                                    printData[6]['bedroom'] == "1") ...[
+                                if (o2i != null
+                                    ? printData[o2i]['bedroom'] == "1"
+                                    : other2RequiredDress == true) ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -7789,8 +7965,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
-                                            initialValue: printData[6]
-                                                ['bedroom_dress_length'],
+                                            initialValue: o2i != null
+                                                ? printData[o2i]
+                                                    ['bedroom_dress_length']
+                                                : '',
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
@@ -7839,8 +8017,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
-                                            initialValue: printData[6]
-                                                ['bedroom_dress_width'],
+                                            initialValue: o2i != null
+                                                ? printData[6]
+                                                    ['bedroom_dress_width']
+                                                : '',
 
                                             decoration: const InputDecoration(
                                               hintText: "width",
@@ -7936,9 +8116,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                   setState(() {
                                                     other2DressFacility = ab;
-                                                    printData[6][
-                                                            'bedroom_dress_facility'] =
-                                                        null;
+                                                    if (o2i != null) {
+                                                      printData[o2i][
+                                                              'bedroom_dress_facility'] =
+                                                          null;
+                                                    }
                                                   });
                                                 },
                                                 child: Container(
@@ -7951,9 +8133,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       Text("Office Facility"),
                                                 ),
                                               ),
-                                              if (printData[6][
-                                                      'bedroom_dress_facility'] !=
-                                                  null) ...[
+                                              if (o2i != null
+                                                  ? printData[o2i][
+                                                          'bedroom_dress_facility'] !=
+                                                      null
+                                                  : other2DFac != null) ...[
                                                 for (int i = 0;
                                                     i < other2DFac!.length;
                                                     i++)
@@ -7964,9 +8148,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     )
                                                   ])
                                               ],
-                                              if (printData[6][
-                                                      'bedroom_dress_facility'] ==
-                                                  null) ...[
+                                              if (o2i != null
+                                                  ? printData[o2i][
+                                                          'bedroom_dress_facility'] ==
+                                                      null
+                                                  : other2DFac == null) ...[
                                                 Wrap(
                                                   children: other2DressFacility
                                                       .map(
@@ -7994,8 +8180,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
-                                              initialValue: printData[6]
-                                                  ['bedroom_dress_req_text'],
+                                              initialValue: o2i != null
+                                                  ? printData[o2i]
+                                                      ['bedroom_dress_req_text']
+                                                  : '',
                                               style:
                                                   const TextStyle(fontSize: 14),
                                               decoration: const InputDecoration(
@@ -8161,8 +8349,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(() {
                                               other2RoomFacility = result;
                                               print(other2DressFacility);
-                                              printData[6]['bedroom_facility'] =
-                                                  null;
+                                              if (o2i != null) {
+                                                printData[o2i]
+                                                    ['bedroom_facility'] = null;
+                                              }
                                             });
                                           },
                                           child: Container(
@@ -8173,8 +8363,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: Text("Room Facility"),
                                           ),
                                         ),
-                                        if (printData[6]['bedroom_facility'] !=
-                                            null) ...[
+                                        if (o2i != null
+                                            ? printData[o2i]
+                                                    ['bedroom_facility'] !=
+                                                null
+                                            : other2RFac != null) ...[
                                           for (int i = 0;
                                               i < other2RFac!.length;
                                               i++)
@@ -8187,8 +8380,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               ],
                                             )
                                         ],
-                                        if (printData[6]['bedroom_facility'] ==
-                                            null) ...[
+                                        if (o2i != null
+                                            ? printData[o2i]
+                                                    ['bedroom_facility'] ==
+                                                null
+                                            : other2RFac == null) ...[
                                           Wrap(
                                             children: other2RoomFacility
                                                 .map((e) => Chip(
@@ -8212,8 +8408,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue: printData[6]
-                                          ['bedroom_facility_req_text'],
+                                      initialValue: o2i != null
+                                          ? printData[o2i]
+                                              ['bedroom_facility_req_text']
+                                          : '',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -8297,12 +8495,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                 ],
               ),
 
-              // ----------------- other3bedroom   -----------------------------//
+              // ------------------------------other3bedroom   -----------------------------//
 
               Column(
                 children: [
-                  if (other3BedRoom == true || printData.asMap().containsKey(7)
-                      ? printData[7]['bedroom'] == "8"
+                  if (o3i != null
+                      ? printData[o3i]['bedroom'] == "8"
                       : other3BedRoom == true) ...{
                     SizedBox(
                       height: height * 0.01,
@@ -8358,8 +8556,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue: printData[7]
-                                              ['bedroom_length'],
+                                          initialValue: o3i != null
+                                              ? printData[o3i]['bedroom_length']
+                                              : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -8399,8 +8598,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue: printData[7]
-                                              ['bedroom_width'],
+                                          initialValue: o3i != null
+                                              ? printData[o3i]['bedroom_width']
+                                              : '',
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                               hintText: "width",
@@ -8464,11 +8664,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            hint: printData[7]
-                                                        ['bedroom_floor'] !=
-                                                    null
+                                            hint: o3i != null
                                                 ? Text(floorItemsGuest[
-                                                    printData[7]
+                                                    printData[o3i]
                                                         ['bedroom_floor']])
                                                 : Text(selectedFloorGuest!),
                                             elevation: 16,
@@ -8487,8 +8685,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             onChanged: (it) {
                                               setState(
                                                 () {
-                                                  printData[7]
-                                                      ['bedroom_floor'] = null;
+                                                  // printData[7]
+                                                  //     ['bedroom_floor'] = null;
                                                   selectedFloorOther3 = it;
                                                   print(selectedFloorOther3);
                                                   if (selectedFloorOther3 ==
@@ -8533,8 +8731,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         width: width * 0.15,
                                         child: TextFormField(
                                           style: const TextStyle(fontSize: 14),
-                                          initialValue: printData[7]
-                                              ['bedroom_toilet_length'],
+                                          initialValue: o3i != null
+                                              ? printData[o3i]
+                                                  ['bedroom_toilet_length']
+                                              : '',
                                           decoration: const InputDecoration(
                                               hintText: "Length",
                                               hintStyle:
@@ -8572,8 +8772,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         height: height * 0.04,
                                         width: width * 0.15,
                                         child: TextFormField(
-                                          initialValue: printData[7]
-                                              ['bedroom_toilet_width'],
+                                          initialValue: o3i != null
+                                              ? printData[o3i]
+                                                  ['bedroom_toilet_width']
+                                              : '',
                                           style: const TextStyle(fontSize: 14),
                                           decoration: const InputDecoration(
                                             hintText: "width",
@@ -8636,8 +8838,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue: printData[5]
-                                          ['bedroom_toilet_req_text'],
+                                      initialValue: o1i != null
+                                          ? printData[5]
+                                              ['bedroom_toilet_req_text']
+                                          : '',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                           hintText: "Other Toilet Facility",
@@ -8677,15 +8881,19 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
-                                                      value: printData[7][
-                                                                  'bedroom_dress_req'] ==
-                                                              1
-                                                          ? true
+                                                      value: o3i != null
+                                                          ? printData[o3i][
+                                                                      'bedroom_dress_req'] ==
+                                                                  1
+                                                              ? true
+                                                              : other3RequiredDress
                                                           : other3RequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
-                                                          printData[7][
-                                                              'bedroom_dress_req'] = 4;
+                                                          if (o3i != null) {
+                                                            printData[o3i][
+                                                                'bedroom_dress_req'] = 4;
+                                                          }
                                                           other3RequiredDress =
                                                               value;
                                                           other3NotRequiredDress =
@@ -8728,10 +8936,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   child: Checkbox(
                                                     activeColor: checkColor,
                                                     checkColor: Colors.white,
-                                                    value: printData[7][
-                                                                'bedroom_dress_req'] ==
-                                                            0
-                                                        ? true
+                                                    value: o3i != null
+                                                        ? printData[o3i][
+                                                                    'bedroom_dress_req'] ==
+                                                                0
+                                                            ? true
+                                                            : other3NotRequiredDress
                                                         : other3NotRequiredDress,
                                                     onChanged: (value) {
                                                       setState(
@@ -8740,8 +8950,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               value;
                                                           other3RequiredDress =
                                                               false;
-                                                          printData[7][
-                                                              'bedroom_dress_req'] = 4;
+                                                          if (o3i != null) {
+                                                            printData[o3i][
+                                                                'bedroom_dress_req'] = 4;
+                                                          }
                                                           if (other3RequiredDress ==
                                                               true) {
                                                             other3DressInt = 1;
@@ -8768,8 +8980,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (other3RequiredDress == true ||
-                                    printData[7]['bedroom'] == "1") ...[
+                                if (o3i != null
+                                    ? printData[o3i]['bedroom_dress_req'] == "1"
+                                    : other3RequiredDress == true) ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -8784,8 +8997,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           height: height * 0.04,
                                           width: width * 0.15,
                                           child: TextFormField(
-                                            initialValue: printData[7]
-                                                ['bedroom_dress_length'],
+                                            initialValue: o3i != null
+                                                ? printData[o3i]
+                                                    ['bedroom_dress_length']
+                                                : '',
                                             style:
                                                 const TextStyle(fontSize: 14),
                                             decoration: const InputDecoration(
@@ -8834,8 +9049,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: TextFormField(
                                             style:
                                                 const TextStyle(fontSize: 14),
-                                            initialValue: printData[7]
-                                                ['bedroom_dress_width'],
+                                            initialValue: o3i != null
+                                                ? printData[o3i]
+                                                    ['bedroom_dress_width']
+                                                : "",
 
                                             decoration: const InputDecoration(
                                               hintText: "width",
@@ -8931,9 +9148,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                   setState(() {
                                                     other3DressFacility = ab;
-                                                    printData[7][
-                                                            'bedroom_dress_facility'] =
-                                                        null;
+                                                    if (o3i != null) {
+                                                      printData[o3i][
+                                                              'bedroom_dress_facility'] =
+                                                          null;
+                                                    }
                                                   });
                                                 },
                                                 child: Container(
@@ -8946,9 +9165,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       Text("Office Facility"),
                                                 ),
                                               ),
-                                              if (printData[7][
-                                                      'bedroom_dress_facility'] !=
-                                                  null) ...[
+                                              if (o3i != null
+                                                  ? printData[o3i][
+                                                          'bedroom_dress_facility'] !=
+                                                      null
+                                                  : other3DFac != null) ...[
                                                 for (int i = 0;
                                                     i < other3DFac!.length;
                                                     i++)
@@ -8959,9 +9180,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     )
                                                   ])
                                               ],
-                                              if (printData[7][
-                                                      'bedroom_dress_facility'] ==
-                                                  null) ...[
+                                              if (o3i != null
+                                                  ? printData[o3i][
+                                                          'bedroom_dress_facility'] ==
+                                                      null
+                                                  : other3DressFacility !=
+                                                      null) ...[
                                                 Wrap(
                                                   children: other3DressFacility
                                                       .map(
@@ -8989,8 +9213,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             height: height * 0.04,
                                             width: width,
                                             child: TextFormField(
-                                              initialValue: printData[7]
-                                                  ['bedroom_dress_req_text'],
+                                              initialValue: o3i != null
+                                                  ? printData[o3i]
+                                                      ['bedroom_dress_req_text']
+                                                  : "",
                                               style:
                                                   const TextStyle(fontSize: 14),
                                               decoration: const InputDecoration(
@@ -9156,8 +9382,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(() {
                                               other3RoomFacility = result;
                                               print(other3DressFacility);
-                                              printData[7]['bedroom_facility'] =
-                                                  null;
+                                              if (o3i != null) {
+                                                printData[o3i]
+                                                    ['bedroom_facility'] = null;
+                                              }
                                             });
                                           },
                                           child: Container(
@@ -9168,8 +9396,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: Text("Room Facility"),
                                           ),
                                         ),
-                                        if (printData[7]['bedroom_facility'] !=
-                                            null) ...[
+                                        if (o3i != null
+                                            ? printData[o3i]
+                                                    ['bedroom_facility'] !=
+                                                null
+                                            : other3RFac != null) ...[
                                           for (int i = 0;
                                               i < other3RFac!.length;
                                               i++)
@@ -9182,8 +9413,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               ],
                                             )
                                         ],
-                                        if (printData[7]['bedroom_facility'] ==
-                                            null) ...[
+                                        if (o3i != null
+                                            ? printData[o3i]
+                                                    ['bedroom_facility'] ==
+                                                null
+                                            : other3RoomFacility == null) ...[
                                           Wrap(
                                             children: other3RoomFacility
                                                 .map((e) => Chip(
@@ -9207,8 +9441,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                     height: height * 0.04,
                                     width: width,
                                     child: TextFormField(
-                                      initialValue: printData[7]
-                                          ['bedroom_facility_req_text'],
+                                      initialValue: o3i != null
+                                          ? printData[o3i]
+                                              ['bedroom_facility_req_text']
+                                          : '',
                                       style: const TextStyle(fontSize: 14),
                                       decoration: const InputDecoration(
                                         hintText: "other requirement",
@@ -9307,8 +9543,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                     _value["project_id"] = project_id;
 
                     List<Bedtypes> bedData = [
-                      if (masterBedroom == true ||
-                          printData[0]['bedroom'] == "1")
+                      if (mi != null
+                          ? printData[mi]['bedroom'] == "1"
+                          : masterBedroom == true)
                         Bedtypes(
                           bedroomLength: masterLength,
                           bedRoomFloor: masterLocation,
@@ -9326,8 +9563,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressText: masterDresstext,
                           bedroomText: masterOtherRequirement,
                         ),
-                      if (printData.asMap().containsKey(1)
-                          ? printData[1]['bedroom'] == "2"
+                      if (si != null
+                          ? printData[si]['bedroom'] == "2"
                           : sonBedRoom == true)
                         Bedtypes(
                           bedroomLength: sonLength,
@@ -9346,8 +9583,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressText: sonDresstext,
                           bedroomText: sonOtherRequirement,
                         ),
-                      if (printData.asMap().containsKey(2)
-                          ? printData[2]['bedroom'] == "3"
+                      if (di != null
+                          ? printData[si]['bedroom'] == "3"
                           : daughterBedRoom == true)
                         Bedtypes(
                           bedroomLength: daughterLength,
@@ -9366,9 +9603,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressText: daughterDresstext,
                           bedroomText: daughterOtherRequirement,
                         ),
-                      if (printData.asMap().containsKey(3)
-                          ? printData[3]['bedroom'] == "4"
-                          : parentBedRoom == true)
+                      if (pi != null
+                          ? printData[pi]['bedroom'] == "4"
+                          : sonBedRoom == true)
                         Bedtypes(
                           bedroomLength: parentLength,
                           bedRoomFloor: parentLocation,
@@ -9386,7 +9623,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressText: parentDresstext,
                           bedroomText: parentOtherRequirement,
                         ),
-                      if (printData.asMap().containsKey(4)
+                      if (di != null
                           ? printData[4]['bedroom'] == "5"
                           : guestBedRoom == true)
                         Bedtypes(
@@ -9406,7 +9643,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressText: guestDresstext,
                           bedroomText: guestOtherRequirement,
                         ),
-                      if (printData.asMap().containsKey(5)
+                      if (o1i != null
                           ? printData[5]['bedroom'] == "6"
                           : other1BedRoom == true)
                         Bedtypes(
@@ -9426,7 +9663,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressText: other1Dresstext,
                           bedroomText: other1OtherRequirement,
                         ),
-                      if (printData.asMap().containsKey(6)
+                      if (o2i != null
                           ? printData[6]['bedroom'] == "7"
                           : other2BedRoom == true)
                         Bedtypes(
@@ -9446,8 +9683,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressText: other2Dresstext,
                           bedroomText: other2OtherRequirement,
                         ),
-                      if (printData.asMap().containsKey(7)
-                          ? printData[7]['bedroom'] == "8"
+                      if (o3i != null
+                          ? printData[o3i]['bedroom'] == "8"
                           : other3BedRoom == true)
                         Bedtypes(
                           bedroomLength: other3Length,
@@ -9477,7 +9714,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                     }
 
                     _value["bedrooms"] = jsonUser;
+
                     print(jsonEncode(_value));
+
                     // _value.putIfAbsent("bedrooms", () => jsonUser);
                     // print(jsonEncode(_value));
                     // print(_values[0]["bedroom_length"]);
@@ -9497,15 +9736,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                       // print(update.body);
                     } else {
                       print(jsonEncode(_value));
-                      // final submit = await http.post(
-                      //   Uri.parse(
-                      //   'http://192.168.0.99:8080/sdplserver/api/update-bungalow-bedroom/$project_id'),
-                      //   headers: <String, String>{
-                      //   'Content-Type': 'application/json; charset=UTF-8',
-                      //   },
-                      //   body: jsonEncode(_value),
-                      //   );
-                      //   print(submit.body);
+                      final submit = await http.post(
+                        Uri.parse(
+                            'http://192.168.0.99:8080/sdplserver/api/update-bungalow-bedroom/$project_id'),
+                        headers: <String, String>{
+                          'Content-Type': 'application/json; charset=UTF-8',
+                        },
+                        body: jsonEncode(_value),
+                      );
+                      print(submit.body);
                     }
                   },
                   child: Container(
