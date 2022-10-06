@@ -1,3 +1,5 @@
+import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:aashiyan/components/bungalow_steps.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/controller/api_services.dart';
@@ -17,12 +19,16 @@ import 'package:aashiyan/view/residential/house-duplex/houseduplex.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:provider/provider.dart';
 
 import 'view/residential/bunglow/bedpratise.dart';
 import 'view/residential/house-duplex/pages/pageNav.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  await dotenv.load(fileName: ".env");
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => PageNavProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

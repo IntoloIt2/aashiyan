@@ -6,21 +6,22 @@ import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import '../../../../const.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
 class Step_4 extends StatefulWidget {
-  static const namedRoute = "/pantrydetails";
+  static const namedRoute = "/floorstore";
   @override
   State<Step_4> createState() => _Step_4State();
 }
 
 class _Step_4State extends State<Step_4> {
-  List<String> diningFaciltiy = [];
-  List diningFeaturesList = [];
-  String diningFloor = " ";
-  String diningLocation = " ";
+  // List<String> diningFaciltiy = [];
+  // List diningFeaturesList = [];
+  // String diningFloor = " ";
+  // String diningLocation = " ";
   dynamic _pickImageError;
   bool previewImageStatus = false;
 
@@ -28,6 +29,7 @@ class _Step_4State extends State<Step_4> {
   var _imageFileList;
 
   String selectedStairItem = "select stair";
+  int? stairItem;
   List<String> stairCase = [
     "select stair",
     "U-shaped",
@@ -35,50 +37,42 @@ class _Step_4State extends State<Step_4> {
     "Semi Circular"
   ];
 
-  void multiSelected() async {
-    final List<String> otherItems = [
-      "With crockery storage",
-      "Without crockery storage",
-      "Double Height",
-      "Near By Basin",
-    ];
+  // void multiSelected() async {
+  //   final List<String> otherItems = [
+  //     "With crockery storage",
+  //     "Without crockery storage",
+  //     "Double Height",
+  //     "Near By Basin",
+  //   ];
 
-    final List<String> result = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return MultiSelect(items: otherItems);
-        });
-    if (result != null) {
-      setState(() {
-        diningFaciltiy = result;
-      });
-    }
-  }
+  //   final List<String> result = await showDialog(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return MultiSelect(items: otherItems);
+  //       });
+  //   if (result != null) {
+  //     setState(() {
+  //       diningFaciltiy = result;
+  //     });
+  //   }
+  // }
 
-  String pantryArea = "";
-  String diningArea = "";
-  String diningLocationController = " ";
-  String floorLocationController = " ";
-  String pantryLengthController = " ";
-  String pantrywidthController = " ";
-  String specificRequestController = " ";
-  String diningLengthController = " ";
-  String diningWidthController = " ";
-  String diningFloorLocation = " ";
-  String diningRequirements = " ";
-
-  String? selectedDiningSeats = "select dining seat";
-  List<String> diningSeatsItems = [
-    "select dining seat",
-    "6",
-    "8",
-    "10",
-    "more",
-  ];
+  // String? selectedDiningSeats = "select dining seat";
+  // List<String> diningSeatsItems = [
+  //   "select dining seat",
+  //   "6",
+  //   "8",
+  //   "10",
+  //   "more",
+  // ];
 
   String selectedFloor = "select floor";
-  String pantryFloor = "";
-  List<String> pantryItems = [
+  String selectedType = "select room type";
+  int? poojaFloor;
+  String poojaType = "";
+
+  bool? poojaRoomRequiredValue;
+  List<String> poojaFloorItems = [
     "select floor",
     "Ground floor",
     "1st floor",
@@ -87,38 +81,46 @@ class _Step_4State extends State<Step_4> {
     "other"
   ];
 
-  String? selectedDiningFloor = "select floor";
-  List<String> diningItems = [
-    "select floor",
-    "Ground floor",
-    "1st floor",
-    "2nd floor",
-    "3rd floor",
-    "other"
+  List<String> poojaFloorTypes = [
+    "select room Type",
+    "Proper room",
+    "Only place"
   ];
 
-  bool? pantryDetails1 = false;
-  bool? pantryDetails2 = false;
+  bool? poojaRoomRequired = false;
+  bool? poojaRoomNotRequired = false;
+
+  var poojaRoomLength;
+  var poojaRoomWidth;
+  var poojaRoomFloor;
+  var poojaRoomType;
+
   int pantryDetailInt = 0;
-
-// http://sdplweb.com/sdpl/api/edit-bungalow-pantry/project_id
 
   bool isloading = false;
   var printData;
   Future<void> getData() async {
     try {
-      // var client = http.Client();
       var response = await http.get(
-        Uri.parse(
-          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-pantry/179",
-        ),
+        Uri.parse("${dotenv.env['APP_URL']}edit-flat-house-floor-store/179"),
       );
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
+        print(true);
         setState(() {
           printData = jsonResponse;
-          print(printData);
+          poojaRoomLength =
+              printData["flat_house_floor_store"]["pooja_room_length"] != null
+                  ? printData["flat_house_floor_store"]["pooja_room_length"]
+                      .toString()
+                  : "";
+
+          poojaRoomWidth =
+              printData["flat_house_floor_store"]["pooja_room_width"] != null
+                  ? printData["flat_house_floor_store"]["pooja_room_width"]
+                      .toString()
+                  : "";
         });
       }
     } catch (e) {
@@ -195,7 +197,7 @@ class _Step_4State extends State<Step_4> {
                       Row(
                         children: [
                           Text(
-                            "No. of floors",
+                            "Stair Case",
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w600,
@@ -207,7 +209,12 @@ class _Step_4State extends State<Step_4> {
                           DropdownButton<String>(
                               elevation: 5,
                               // value: selectedFloorItems,
-                              hint: Text(selectedStairItem),
+                              hint: printData['flat_house_floor_store']
+                                          ['stair_case'] !=
+                                      null
+                                  ? Text(printData['flat_house_floor_store']
+                                      ['stair_case'])
+                                  : Text(selectedStairItem),
                               items: stairCase
                                   .map(
                                     (ele) => DropdownMenuItem<String>(
@@ -221,7 +228,17 @@ class _Step_4State extends State<Step_4> {
                               onChanged: (value) {
                                 setState(() {
                                   selectedStairItem = value!;
-                                  // print(selectedStairItem);
+                                  printData['flat_house_floor_store']
+                                      ['stair_case'] = null;
+                                  if (selectedStairItem == "select stair") {
+                                    stairItem = 0;
+                                  } else if (selectedStairItem == "U-shaped") {
+                                    stairItem = 1;
+                                  } else if (selectedStairItem == "L-shaped") {
+                                    stairItem = 2;
+                                  } else {
+                                    stairItem = 3;
+                                  }
                                 });
                               }),
                           // SizedBox(
@@ -353,18 +370,32 @@ class _Step_4State extends State<Step_4> {
                                         child: Checkbox(
                                             activeColor: checkColor,
                                             checkColor: Colors.white,
-                                            value: printData['bungalow_pantry']
-                                                        ['pantry_req'] ==
-                                                    1
-                                                ? true
-                                                : pantryDetails1,
+                                            // value: poojaRoomRequired,
+                                            value: printData[
+                                                            'flat_house_floor_store']
+                                                        ['pooja_room_req'] !=
+                                                    null
+                                                ? printData['flat_house_floor_store']
+                                                            [
+                                                            'pooja_room_req'] ==
+                                                        1
+                                                    ? true
+                                                    : poojaRoomRequired
+                                                : poojaRoomRequired,
                                             onChanged: (value) {
                                               setState(
                                                 () {
-                                                  pantryDetails1 = value;
-                                                  pantryDetails2 = false;
-                                                  printData['bungalow_pantry']
-                                                      ['pantry_req'] = 5;
+                                                  poojaRoomRequired = value;
+                                                  poojaRoomNotRequired = false;
+                                                  if (printData[
+                                                              'flat_house_floor_store']
+                                                          ['pooja_room_req'] !=
+                                                      null) {
+                                                    printData[
+                                                            'flat_house_floor_store']
+                                                        [
+                                                        'pooja_room_req'] = null;
+                                                  }
                                                 },
                                               );
                                             }),
@@ -393,17 +424,33 @@ class _Step_4State extends State<Step_4> {
                                         child: Checkbox(
                                             activeColor: checkColor,
                                             checkColor: Colors.white,
-                                            value: printData['bungalow_pantry']
-                                                        ['pantry_req'] ==
-                                                    0
-                                                ? true
-                                                : pantryDetails2,
+                                            value: printData[
+                                                            'flat_house_floor_store']
+                                                        ['pooja_room_req'] !=
+                                                    null
+                                                ? printData['flat_house_floor_store']
+                                                            [
+                                                            'pooja_room_req'] ==
+                                                        0
+                                                    ? true
+                                                    : poojaRoomNotRequired
+                                                : poojaRoomNotRequired,
+                                            // value: poojaRoomNotRequired,
                                             onChanged: (value) {
                                               setState(() {
-                                                pantryDetails2 = value;
-                                                pantryDetails1 = false;
-                                                printData['bungalow_pantry']
-                                                    ['pantry_req'] = 5;
+                                                poojaRoomNotRequired = value;
+                                                poojaRoomRequired = false;
+                                                // printData[
+                                                //         'flat_house_floor_store']
+                                                //     ['pooja_room_req'] = 5;
+                                                if (printData[
+                                                            'flat_house_floor_store']
+                                                        ['pooja_room_req'] !=
+                                                    null) {
+                                                  printData[
+                                                          'flat_house_floor_store']
+                                                      ['pooja_room_req'] = null;
+                                                }
                                               });
                                             }),
                                       ),
@@ -419,6 +466,320 @@ class _Step_4State extends State<Step_4> {
                           ),
                         ],
                       ),
+                      SizedBox(
+                        height: height * 0.01,
+                      ),
+                      Row(
+                        children: [
+                          requirementText("Length"),
+                          SizedBox(
+                            width: width * 0.015,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width * 0.15,
+                              child: TextFormField(
+                                initialValue:
+                                    printData['flat_house_floor_store']
+                                                ['pooja_room_length'] !=
+                                            null
+                                        ? printData['flat_house_floor_store']
+                                                ['pooja_room_length']
+                                            .toString()
+                                        : poojaRoomLength.toString(),
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                    hintText: "length",
+                                    hintStyle: TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(8)
+                                    //fillColor: Colors.green
+                                    ),
+                                onChanged: (value) {
+                                  poojaRoomLength = value;
+                                },
+                              ),
+                            ),
+                          ),
+                          // requirementTextFieldCont(
+                          //     height, width, 0.04, 0.15, "length", KitchenLengthController),
+                          valueContainer(height, width, size, 0.04, 0.05),
+                          SizedBox(
+                            width: width * 0.02,
+                          ),
+                          requirementText("Width"),
+                          SizedBox(
+                            width: width * 0.015,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width * 0.15,
+                              child: TextFormField(
+                                initialValue:
+                                    printData['flat_house_floor_store']
+                                                ['pooja_room_width'] !=
+                                            null
+                                        ? printData['flat_house_floor_store']
+                                                ['pooja_room_width']
+                                            .toString()
+                                        : poojaRoomWidth.toString(),
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                    hintText: "Width",
+                                    hintStyle: TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(8)
+                                    //fillColor: Colors.green
+                                    ),
+                                onChanged: (value) {
+                                  poojaRoomWidth = value;
+                                },
+                              ),
+                            ),
+                          ),
+                          // requirementTextFieldCont(
+                          //     height, width, 0.04, 0.15, "Width", kitchenWidthController),
+                          valueContainer(height, width, size, 0.04, 0.05),
+                          SizedBox(
+                            width: width * 0.01,
+                          ),
+                          requirementText("help ?"),
+                        ],
+                      ),
+                      SizedBox(
+                        height: height * 0.01,
+                      ),
+                      if (poojaRoomRequired == true ||
+                          printData['flat_house_floor_store']
+                                  ['pooja_room_req'] ==
+                              1) ...[
+                        // SizedBox(
+                        //   height: height * 0.01,
+                        // ),
+                        Row(
+                          children: [
+                            requirementText("Location"),
+                            SizedBox(
+                              width: width * 0.02,
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Material(
+                                elevation: 5,
+                                borderRadius: BorderRadius.circular(5),
+                                child: Container(
+                                  height: height * 0.03,
+                                  width: width * 0.25,
+                                  margin: EdgeInsets.all(
+                                    3,
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                        icon: const Visibility(
+                                            visible: false,
+                                            child: Icon(Icons.arrow_downward)),
+                                        // hint: Text(selectedFloor),
+                                        hint: printData["flat_house_floor_store"]
+                                                    ["pooja_room_floor"] !=
+                                                null
+                                            ? Text(poojaFloorItems[int.parse(
+                                                printData[
+                                                        "flat_house_floor_store"]
+                                                    ["pooja_room_floor"])])
+                                            : Text(selectedFloor),
+
+                                        //value: selectedKitchen,
+                                        elevation: 16,
+                                        items: poojaFloorItems
+                                            .map(
+                                              (it) => DropdownMenuItem<String>(
+                                                value: it,
+                                                child: Text(
+                                                  it,
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
+                                        onChanged: (it) {
+                                          setState(
+                                            () {
+                                              selectedFloor = it!;
+                                              if (printData[
+                                                          "flat_house_floor_store"]
+                                                      ["pooja_room_floor"] !=
+                                                  null) {
+                                                printData[
+                                                        "flat_house_floor_store"]
+                                                    ["pooja_room_floor"] = null;
+                                              }
+                                              // print(selectedKitchen);
+                                              if (selectedFloor == "Select") {
+                                                poojaFloor = 0;
+                                                // printData[
+                                                //         "flat_house_floor_store"]
+
+                                                //     ["pooja_room_floor"] = 0;
+                                              }
+                                              if (selectedFloor ==
+                                                  "Ground floor") {
+                                                poojaFloor = 1;
+                                                // printData[
+                                                // "flat_house_floor_store"]
+                                                // ["pooja_room_floor"] = 1;
+                                              }
+                                              if (selectedFloor ==
+                                                  "1st Floor") {
+                                                poojaFloor = 2;
+                                                // printData[
+                                                //         "flat_house_floor_store"]
+                                                //     ["pooja_room_floor"] = 2;
+                                              }
+                                              if (selectedFloor ==
+                                                  "2nd Floor") {
+                                                poojaFloor = 3;
+                                                // printData[
+                                                //         "flat_house_floor_store"]
+                                                //     ["pooja_room_floor"] = 3;
+                                              }
+                                              if (selectedFloor ==
+                                                  "3rd Floor") {
+                                                poojaFloor = 4;
+                                                // printData[
+                                                //         "flat_house_floor_store"]
+                                                //     ["pooja_room_floor"] = 4;
+                                              }
+                                              if (selectedFloor == "other") {
+                                                poojaFloor = 5;
+                                                // printData[
+                                                //         "flat_house_floor_store"]
+                                                //     ["pooja_room_floor"] = 5;
+                                              }
+                                              // print(printData[
+                                              //         "flat_house_floor_store"]
+                                              //     ["pooja_room_floor"]);
+                                            },
+                                          );
+                                        }),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: width * 0.02,
+                            ),
+                            if (selectedFloor == "other") ...[
+                              requirementTextField(
+                                  height, width, 0.04, 0.25, "other location"),
+                            ]
+                          ],
+                        ),
+                        SizedBox(
+                          height: height * 0.01,
+                        ),
+
+                        Row(
+                          children: [
+                            requirementText("Type"),
+                            SizedBox(width: width * 0.08),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Material(
+                                elevation: 5,
+                                borderRadius: BorderRadius.circular(5),
+                                child: Container(
+                                  height: height * 0.03,
+                                  width: width * 0.5,
+                                  margin: EdgeInsets.all(
+                                    3,
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                        icon: const Visibility(
+                                            visible: false,
+                                            child: Icon(Icons.arrow_downward)),
+                                        hint: Text(
+                                            printData["flat_house_floor_store"]
+                                                        ["pooja_room_type"] !=
+                                                    null
+                                                ? printData[
+                                                        "flat_house_floor_store"]
+                                                    ["pooja_room_type"]
+                                                : Text(selectedType)),
+
+                                        //value: selectedKitchen,
+                                        elevation: 16,
+                                        items: poojaFloorTypes
+                                            .map(
+                                              (it) => DropdownMenuItem<String>(
+                                                value: it,
+                                                child: Text(
+                                                  it,
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
+                                        onChanged: (it) {
+                                          setState(
+                                            () {
+                                              selectedType = it!;
+                                              if (selectedType ==
+                                                  "select room Type") {
+                                                poojaType = "select room Type";
+                                                printData["flat_house_floor_store"]
+                                                        ["pooja_room_type"] =
+                                                    "select room Type";
+                                              }
+                                              if (selectedType ==
+                                                  "Proper room") {
+                                                poojaType = "Proper room";
+                                                printData["flat_house_floor_store"]
+                                                        ["pooja_room_type"] =
+                                                    "Proper room";
+                                              }
+                                              if (selectedType ==
+                                                  "Only place") {
+                                                poojaType = "Only place";
+                                                printData["flat_house_floor_store"]
+                                                        ["pooja_room_type"] =
+                                                    "Only place";
+                                              }
+                                            },
+                                          );
+                                        }),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // SizedBox(
+                            //   width: width * 0.02,
+                            // ),
+                            // if (selectedType == "other") ...[
+                            //   requirementTextField(
+                            //       height, width, 0.04, 0.25, "other location"),
+                            // ]
+                          ],
+                        ),
+                      ],
                       SizedBox(
                         height: height * 0.01,
                       ),
@@ -469,107 +830,18 @@ class _Step_4State extends State<Step_4> {
                       SizedBox(
                         height: height * 0.01,
                       ),
-                      if (pantryDetails1 == true ||
-                          printData['bungalow_pantry']['pantry_req'] == 1) ...[
-                        SizedBox(
-                          height: height * 0.01,
-                        ),
-                      ],
-                      SizedBox(
-                        height: height * 0.01,
-                      ),
                       InkWell(
                         onTap: (() {
-                          setState(() {
-                            if (pantryDetails1 == true) {
-                              pantryDetailInt = 1;
-                              if (selectedFloor == "Ground floor") {
-                                pantryFloor = '1';
-                              }
-                              if (selectedFloor == "1st floor") {
-                                pantryFloor = '2';
-                              }
-                              if (selectedFloor == "2nd floor") {
-                                pantryFloor = '3';
-                              }
-                              if (selectedFloor == "3rd floor") {
-                                pantryFloor = '3';
-                              }
-                              if (selectedFloor == "other") {
-                                selectedFloor = floorLocationController;
-                              }
-                              int pantry = int.parse(pantryLengthController) *
-                                  int.parse(pantrywidthController);
-                              pantryArea = pantry.toString();
-                            }
-
-                            int dining = int.parse(diningLengthController) *
-                                int.parse(diningWidthController);
-                            diningArea = dining.toString();
-                            for (int i = 0; i < diningFaciltiy.length; i++) {
-                              if (diningFaciltiy[i] ==
-                                  "With crockery storage") {
-                                diningFeaturesList.add("1");
-                              }
-                              if (diningFaciltiy[i] ==
-                                  "Without crockery storage") {
-                                diningFeaturesList.add("2");
-                              }
-                              if (diningFaciltiy[i] == "Double Height") {
-                                diningFeaturesList.add("3");
-                              }
-                              if (diningFaciltiy[i] == "Near By Basin") {
-                                diningFeaturesList.add("4");
-                              }
-                            }
-                            if (selectedDiningSeats == "6") {
-                              diningFloor = "1";
-                            }
-                            if (selectedDiningSeats == "8") {
-                              diningFloor = "2";
-                            }
-                            if (selectedDiningSeats == "10") {
-                              diningFloor = "3";
-                            }
-                            if (selectedDiningSeats == "more") {
-                              diningFloor = "3";
-                            }
-
-                            if (selectedDiningFloor == "more") {
-                              diningFloor = diningLengthController;
-                            }
-                            if (selectedDiningFloor == "Ground floor") {
-                              diningLocation = "1";
-                            }
-                            if (selectedDiningFloor == "1st floor ") {
-                              diningLocation = "2";
-                            }
-                            if (selectedDiningFloor == "2nd floor") {
-                              diningLocation = "3";
-                            }
-                            if (selectedDiningFloor == "3rd floor") {
-                              diningLocation = "4";
-                            }
-                            if (selectedDiningFloor == "other") {
-                              diningLocation = diningFloorLocation;
-                            }
-                          });
-
-                          pantryPost(
-                            pantryDetailInt,
-                            pantryFloor,
-                            pantryLengthController,
-                            pantrywidthController,
-                            pantryArea,
-                            specificRequestController,
-                            diningLengthController,
-                            diningWidthController,
-                            diningArea,
-                            diningFeaturesList,
-                            diningLocation,
-                            diningFloor,
-                            diningRequirements,
-                          );
+                          HouseDuplexFloorPost(
+                              182,
+                              stairItem,
+                              '',
+                              poojaRoomRequired,
+                              poojaRoomLength,
+                              poojaRoomWidth,
+                              poojaFloor,
+                              poojaType,
+                              "Opening toward hall/ Lobby");
                         }),
                         child: Align(
                           alignment: Alignment.center,

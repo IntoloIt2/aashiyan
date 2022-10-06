@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class Step_2 extends StatefulWidget {
   const Step_2({super.key});
@@ -15,6 +19,7 @@ class _Step_2State extends State<Step_2> {
   bool porchRequired = false;
   bool porchNotRequired = false;
   num porchLength = 0;
+  num porchWidth = 0;
 
   List<String> floorItems = [
     "Select floor",
@@ -22,10 +27,32 @@ class _Step_2State extends State<Step_2> {
     "1st floor(G+1)",
     "2nd floor(G+1)"
   ];
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+
+    Future<void> saveFlatEntrance() async {
+      try {
+        var body = {
+          "floor": selectedFloorItems,
+          "vastu": vastuStatus,
+          "porch_req": porchRequired ? 1 : 0,
+          "porch_length": porchLength,
+          "porch_width": porchWidth
+        };
+        // print(jsonEncode(body));
+        var response = await http.post(
+            Uri.parse("${dotenv.env['API_URL']}flat-house-entrance"),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(body));
+      } catch (e) {
+        print(e.toString());
+      }
+    }
 
     return SingleChildScrollView(
       child: Container(
@@ -60,12 +87,11 @@ class _Step_2State extends State<Step_2> {
                     onChanged: (value) {
                       setState(() {
                         selectedFloorItems = value!;
-                        print(selectedFloorItems);
                       });
                     }),
-                SizedBox(
-                  width: width * 0.04,
-                ),
+                // SizedBox(
+                //   width: width * 0.04,
+                // ),
               ],
             ),
             Row(
@@ -98,7 +124,7 @@ class _Step_2State extends State<Step_2> {
             Row(
               children: [
                 SizedBox(
-                  width: width * 0.19,
+                  width: width * 0.195,
                 ),
                 Checkbox(
                     value: consultExpert,
@@ -138,27 +164,46 @@ class _Step_2State extends State<Step_2> {
             ),
             Row(
               children: [
-                Checkbox(
-                    value: porchRequired,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        porchRequired = value!;
-                      });
-                    }),
-                Text("Required",
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.w500)),
-                Checkbox(
-                    value: porchNotRequired,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        porchNotRequired = value!;
-                      });
-                    }),
-                Text("Not Required",
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.w500))
+                Card(
+                  child: Row(
+                    children: [
+                      Checkbox(
+                          value: porchRequired,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              porchRequired = value!;
+                              porchNotRequired = false;
+                            });
+                          }),
+                      Text("Required",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                ),
+                Card(
+                  child: Row(
+                    children: [
+                      Checkbox(
+                          value: porchNotRequired,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              porchNotRequired = value!;
+                              porchRequired = false;
+                            });
+                          }),
+                      Text("Not Required",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                ),
               ],
+            ),
+            SizedBox(
+              height: height * 0.02,
             ),
             porchRequired
                 ? Container(
@@ -210,7 +255,7 @@ class _Step_2State extends State<Step_2> {
                                         contentPadding: EdgeInsets.all(1)),
                                     initialValue: porchLength.toString(),
                                     onChanged: (value) {
-                                      porchLength = int.parse(value);
+                                      porchWidth = int.parse(value);
                                     },
                                   )),
                             ),
@@ -219,11 +264,36 @@ class _Step_2State extends State<Step_2> {
                         SizedBox(
                           width: width * 0.05,
                         ),
-                        Text("Help")
+                        Text("Help"),
                       ],
                     ),
                   )
                 : Container(),
+            SizedBox(
+              height: height * 0.05,
+            ),
+            Row(
+              children: [
+                Center(
+                  child: InkWell(
+                    onTap: () {
+                      saveFlatEntrance();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(4)),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: const Text(
+                        "save and continue",
+                        style: TextStyle(color: Colors.white, fontSize: 14),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

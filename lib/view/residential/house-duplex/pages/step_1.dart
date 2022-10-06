@@ -4,12 +4,16 @@ import 'package:aashiyan/components/forms.dart' as Forms;
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/model/requirementmodel.dart';
+import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 import '../../../../const.dart';
 import 'package:http/http.dart' as http;
 
 class Step_1 extends StatefulWidget {
   static const namedRoute = "/intrestedNext";
+
   @override
   State<Step_1> createState() => _Step_1State();
 }
@@ -29,13 +33,14 @@ class _Step_1State extends State<Step_1> {
   String levelController = "";
   String? widthController = '';
   String? lengthController = '';
-
+  var project_id;
   var plotValue = TextEditingController();
 
   int isRegular = 1;
   int isNotRegular = 0;
   int isNorthOrientaion = 0;
   int plot_orientaion = 0;
+
   String isWest = "1";
   String isNorth = "1";
   String isSouth = "1";
@@ -126,7 +131,7 @@ class _Step_1State extends State<Step_1> {
     try {
       var client = http.Client();
       var response =
-          await http.get(Uri.parse("https://sdplweb.com/sdpl/api/state/1"));
+          await http.get(Uri.parse("${dotenv.env['APP_URL']}state/1"));
       // print(response.body.toString());
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
@@ -144,8 +149,8 @@ class _Step_1State extends State<Step_1> {
   Future<List?> getCities() async {
     try {
       var client = http.Client();
-      var response = await http
-          .get(Uri.parse("https://sdplweb.com/sdpl/api/city/$stateId"));
+      var response =
+          await http.get(Uri.parse("${dotenv.env['APP_URL']}city/$stateId"));
       // print(response.body.toString());
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
@@ -165,49 +170,55 @@ class _Step_1State extends State<Step_1> {
 
   Future<void> getData() async {
     try {
-      // var client = http.Client();
+      print("project_id---");
+      print(project_id);
       var response = await http.get(
-        Uri.parse("http://192.168.0.99:8080/sdplserver/api/edit-project/179"),
+        // Uri.parse("${dotenv.env['APP_URL']}edit-project/$project_id"),
+        Uri.parse("${dotenv.env['APP_URL']}edit-project/$project_id"),
       );
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
+        // print("jsonResponse-=");
+        // print(jsonResponse);
+        // print();
         setState(() {
           printData = jsonResponse;
-          print(printData);
-          if (printData != null) {
+          // project_id = printData['project_id'];
+
+          if (printData != null && printData['project_id'] != null) {
             nameController = printData["project"]['first_name'] != null
                 ? printData["project"]['first_name'].toString()
                 : '';
             lastNameController = printData["project"]["last_name"] != null
-                ? printData["project"][""].toString()
+                ? printData["project"]["last_name"].toString()
                 : "";
             emailController = printData["project"]["email"] != null
-                ? printData["project"][""].toString()
+                ? printData["project"]["email"].toString()
                 : "";
             addressController = printData["project"]["country"] != null
-                ? printData["project"][""].toString()
+                ? printData["project"]["country"].toString()
                 : "";
             diagonal1Controller = printData["project"]["diagonal_1"] != null
-                ? printData["project"][""].toString()
+                ? printData["project"]["diagonal_1"].toString()
                 : '';
             diagonal2Controller = printData["project"]["diagonal_2"] != null
-                ? printData["project"][""].toString()
+                ? printData["project"]["diagonal_2"].toString()
                 : '';
             eastController = printData["project"]["east_property"] != null
-                ? printData["project"][""].toString()
+                ? printData["project"]["east_property"].toString()
                 : "";
             westController = printData["project"]["west_property"] != null
-                ? printData["project"][""].toString()
+                ? printData["project"]["west_property"].toString()
                 : "";
             northController = printData["project"]["north_property"] != null
-                ? printData["project"][""].toString()
+                ? printData["project"]["north_property"].toString()
                 : "";
             southController = printData["project"]["south_property"] != null
-                ? printData["project"][""].toString()
+                ? printData["project"]["south_property"].toString()
                 : "";
             levelController = printData["project"]["level"] != null
-                ? printData["project"][""].toString()
+                ? printData["project"]["level"].toString()
                 : "";
             //  widthController = printData["project"][]!=null?printData[][].toString():'';
             //  lengthController = printData["project"][]!=null?printData[][].toString():'';
@@ -250,6 +261,8 @@ class _Step_1State extends State<Step_1> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+    var provider = Provider.of<PageNavProvider>(context, listen: true);
+
     if (printData != null) {
       setState(() {
         isloading = false;
@@ -304,6 +317,8 @@ class _Step_1State extends State<Step_1> {
                                 }
                                 print(items.indexOf(it!));
                                 selectedItems = it!;
+                                // print(
+                                //     "${DotEnv().env['APP_URL']}edit-project/179");
                                 // selectedItems = items.indexOf(it);
                               },
                             ),
@@ -322,10 +337,11 @@ class _Step_1State extends State<Step_1> {
                         width: width * 0.25,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue: printData["project"]['first_name'] !=
-                                  null
-                              ? printData["project"]['first_name'].toString()
-                              : nameController,
+                          initialValue: printData['project'] != null
+                              ? printData['project']['first_name'] != null
+                                  ? printData["project"]['first_name']
+                                  : ''
+                              : '',
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "First name",
@@ -354,10 +370,11 @@ class _Step_1State extends State<Step_1> {
                         width: width * 0.19,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue:
-                              printData["project"]['last_name'] != null
+                          initialValue: printData["project"] != null
+                              ? printData["project"]['last_name'] != null
                                   ? printData["project"]['last_name'].toString()
-                                  : lastNameController,
+                                  : lastNameController
+                              : lastNameController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "last name",
@@ -394,8 +411,10 @@ class _Step_1State extends State<Step_1> {
                         width: width * 0.6,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue: printData["project"]['email'] != null
-                              ? printData["project"]['email'].toString()
+                          initialValue: printData["project"] != null
+                              ? printData["project"]['email'] != null
+                                  ? printData["project"]['email'].toString()
+                                  : emailController
                               : emailController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
@@ -652,14 +671,18 @@ class _Step_1State extends State<Step_1> {
                     Checkbox(
                       activeColor: checkColor,
                       checkColor: Colors.white,
-                      value: printData['project']['plot_type'] == 1
-                          ? regularPlotValue
-                          : false,
+                      value: printData['project']['plot_type'] != null
+                          ? printData['project']['plot_type'] == 1
+                              ? true
+                              : regularPlotValue
+                          : regularPlotValue,
                       onChanged: (val) {
                         setState(() {
-                          printData['project']['plot_type'] = 2;
                           regularPlotValue = val;
                           irregularPlotValue = false;
+                          if (printData['project']['plot_type'] != null) {
+                            printData['project']['plot_type'] = null;
+                          }
                         });
                       },
                     ),
@@ -673,15 +696,22 @@ class _Step_1State extends State<Step_1> {
                     Checkbox(
                       activeColor: checkColor,
                       checkColor: Colors.white,
-                      value: printData['project']['plot_type'] == 2
-                          ? true
+                      value: printData['project']['plot_type'] != null
+                          ? printData['project']['plot_type'] == 1
+                              ? true
+                              : irregularPlotValue
                           : irregularPlotValue,
+                      // value: printData['project']['plot_type'] == 2
+                      //     ? true
+                      //     : irregularPlotValue,
                       onChanged: (val) {
                         setState(
                           () {
-                            printData['project']['plot_type'] = 1;
-                            irregularPlotValue = !irregularPlotValue!;
+                            irregularPlotValue = val;
                             regularPlotValue = false;
+                            if (printData['project']['plot_type'] != null) {
+                              printData['project']['plot_type'] = null;
+                            }
                           },
                         );
                       },
@@ -1597,7 +1627,7 @@ class _Step_1State extends State<Step_1> {
                   height: height * 0.02,
                 ),
                 InkWell(
-                  onTap: () {
+                  onTap: () async {
                     setState(
                       () {
                         if (irregularPlotValue == true) {
@@ -1648,7 +1678,7 @@ class _Step_1State extends State<Step_1> {
                     );
                     // print("d1 ${diagonal1Controller}");
                     // print("d2 ${diagonal2Controller}");
-                    requirementPost(
+                    await provider.requirementPost(
                       2342,
                       978,
                       098,
@@ -1682,6 +1712,9 @@ class _Step_1State extends State<Step_1> {
                       levelController,
                       notReqiredInt,
                     );
+                    project_id = provider.project_id;
+                    print("project_id");
+                    print(project_id);
                   },
                   child: Container(
                     decoration: BoxDecoration(

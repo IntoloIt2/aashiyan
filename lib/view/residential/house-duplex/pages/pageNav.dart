@@ -105,7 +105,7 @@ class _PageNavState extends State<PageNav> {
                           onTap: () {
                             setState(() {
                               index = 3;
-                              st = "Pantry";
+                              st = "Floor Store";
                             });
                             // Navigator.pushNamed(context, );
                           },
@@ -138,7 +138,7 @@ class _PageNavState extends State<PageNav> {
                           onTap: () {
                             setState(() {
                               index = 5;
-                              st = "Bed Room";
+                              st = "Basement";
                             });
                             // Navigator.pushNamed(context, );
                           },

@@ -6,6 +6,7 @@ import '../../../../../components/forms.dart';
 import '../../../../const.dart';
 import '../../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Step_3 extends StatefulWidget {
   static const namedRoute = "/LivingHall";
@@ -87,8 +88,11 @@ class _Step_3State extends State<Step_3> {
   // ];
 
   String selecteDrawingHall = "Select";
+
   int drawingHallLocation = 0;
+
   String DrawingSelected = "Select";
+
   List<String> DrawingItems = [
     "Select",
     "Ground floor",
@@ -108,13 +112,13 @@ class _Step_3State extends State<Step_3> {
   String selectedKitchenFunction = "Selecting dining function";
   String kitchenDiningFunction = "1";
 
-  List<String> refrigeratorItems = [
-    "Selecting fridge",
-    "Single Door",
-    "Double Door",
-  ];
-  String selectedRefrigerator = "Selecting fridge";
-  String refrigeratorSize = "";
+  // List<String> refrigeratorItems = [
+  //   "Selecting fridge",
+  //   "Single Door",
+  //   "Double Door",
+  // ];
+  // String selectedRefrigerator = "Selecting fridge";
+  // String refrigeratorSize = "";
 
   List<String> selectedItem = [" ", "Double height", "powder toilet"];
 
@@ -143,11 +147,10 @@ class _Step_3State extends State<Step_3> {
 
   Future<void> getData() async {
     try {
-      // var client = http.Client();
-
-      http: //sdplweb.com/sdpl/api/edit-bungalow-drawing-hall/project_id
-      var response = await http.get(Uri.parse(
-          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-drawing-hall/179"));
+      var response = await http.get(
+          Uri.parse("${dotenv.env['APP_URL']}edit-flat-house-drawing-hall/179"
+              // "http://192.168.0.99:8080/sdplserver/api//114"
+              ));
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
@@ -215,18 +218,20 @@ class _Step_3State extends State<Step_3> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: printData['bungalow_drawing_hall']
-                                                  ['drawing_hall_req'] ==
-                                              1
-                                          ? true
-                                          : livingRequired,
+                                      // value: livingRequired,
+                                      value:
+                                          printData['flat_house_drawing_hall']
+                                                      ['drawing_hall_req'] ==
+                                                  1
+                                              ? true
+                                              : livingRequired,
                                       onChanged: (value) {
                                         setState(
                                           () {
-                                            print(printData['status']);
+                                            // print(printData['status']);
                                             livingRequired = value;
                                             livingNotRequired = false;
-                                            printData['bungalow_drawing_hall']
+                                            printData['flat_house_drawing_hall']
                                                 ['drawing_hall_req'] = 2;
                                           },
                                         );
@@ -256,7 +261,8 @@ class _Step_3State extends State<Step_3> {
                                   child: Checkbox(
                                     activeColor: checkColor,
                                     checkColor: Colors.white,
-                                    value: printData['bungalow_drawing_hall']
+                                    // value: livingNotRequired,
+                                    value: printData['flat_house_drawing_hall']
                                                 ['drawing_hall_req'] ==
                                             0
                                         ? true
@@ -265,7 +271,7 @@ class _Step_3State extends State<Step_3> {
                                       setState(() {
                                         livingNotRequired = value;
                                         livingRequired = false;
-                                        printData['bungalow_drawing_hall']
+                                        printData['flat_house_drawing_hall']
                                             ['drawing_hall_req'] = 2;
                                       });
                                     },
@@ -284,7 +290,7 @@ class _Step_3State extends State<Step_3> {
                   height: height * 0.01,
                 ),
                 if (livingRequired == true ||
-                    printData['bungalow_drawing_hall']['drawing_hall_req'] ==
+                    printData['flat_house_drawing_hall']['drawing_hall_req'] ==
                         1) ...[
                   Row(
                     children: [
@@ -308,13 +314,13 @@ class _Step_3State extends State<Step_3> {
                                 icon: const Visibility(
                                     visible: false,
                                     child: Icon(Icons.arrow_downward)),
-                                hint: printData["bungalow_drawing_hall"]
-                                            ["drawing_hall_location"] !=
+                                hint: printData["flat_house_drawing_hall"]
+                                            ["living_hall_location"] !=
                                         null
                                     ? Text(
                                         floorItems[
-                                            printData["bungalow_drawing_hall"]
-                                                ["drawing_hall_location"]],
+                                            printData["flat_house_drawing_hall"]
+                                                ["living_hall_location"]],
                                       )
                                     : Text(selectedFloor),
                                 // value: selectedFloor,
@@ -335,31 +341,31 @@ class _Step_3State extends State<Step_3> {
                                       selectedFloor = it!;
 
                                       if (selectedFloor == "Select") {
-                                        printData["bungalow_drawing_hall"]
-                                            ["drawing_hall_location"] = 0;
+                                        printData["flat_house_drawing_hall"]
+                                            ["drawing_hall_location"] = '0';
                                       }
                                       if (selectedFloor == "Ground floor") {
-                                        printData["bungalow_drawing_hall"]
-                                            ["drawing_hall_location"] = 1;
+                                        printData["flat_house_drawing_hall"]
+                                            ["drawing_hall_location"] = "1";
                                       }
                                       if (selectedFloor == "1st Floor") {
-                                        printData["bungalow_drawing_hall"]
-                                            ["drawing_hall_location"] = 2;
+                                        printData["flat_house_drawing_hall"]
+                                            ["drawing_hall_location"] = "2";
                                       }
                                       if (selectedFloor == "2nd Floor") {
-                                        printData["bungalow_drawing_hall"]
-                                            ["drawing_hall_location"] = 3;
+                                        printData["flat_house_drawing_hall"]
+                                            ["drawing_hall_location"] = "3";
                                       }
                                       if (selectedFloor == "3rd Floor") {
-                                        printData["bungalow_drawing_hall"]
-                                            ["drawing_hall_location"] = 4;
+                                        printData["flat_house_drawing_hall"]
+                                            ["drawing_hall_location"] = "4";
                                       }
                                       if (selectedFloor == "other") {
-                                        printData["bungalow_drawing_hall"]
-                                            ["drawing_hall_location"] = 5;
+                                        printData["flat_house_drawing_hall"]
+                                            ["drawing_hall_location"] = "5";
                                       }
                                       print(selectedFloor);
-                                      print(printData["bungalow_drawing_hall"]
+                                      print(printData["flat_house_drawing_hall"]
                                           ["drawing_hall_location"]);
                                     },
                                   );
@@ -395,7 +401,7 @@ class _Step_3State extends State<Step_3> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData['bungalow_drawing_hall']
+                            initialValue: printData['flat_house_drawing_hall']
                                 ['drawing_hall_length'],
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
@@ -432,7 +438,7 @@ class _Step_3State extends State<Step_3> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData['bungalow_drawing_hall']
+                            initialValue: printData['flat_house_drawing_hall']
                                 ['drawing_hall_width'],
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
@@ -461,106 +467,106 @@ class _Step_3State extends State<Step_3> {
                   SizedBox(
                     height: height * 0.01,
                   ),
-                  Row(
-                    children: [
-                      requirementText("Features"),
-                      SizedBox(
-                        width: width * 0.02,
-                      ),
-                      // Material(
-                      //   elevation: 5,
-                      //   borderRadius: BorderRadius.circular(5),
-                      //   child: Container(
-                      //     height: height * 0.03,
-                      //     width: width * 0.25,
-                      //     margin: EdgeInsets.all(
-                      //       3,
-                      //     ),
-                      //     child: DropdownButtonHideUnderline(
-                      //       child: DropdownButton<String>(
-                      //           icon: const Visibility(
-                      //               visible: false,
-                      //               child: Icon(Icons.arrow_downward)),
-                      //           value: selectedFeatures,
-                      //           elevation: 16,
-                      //           items: selectedItem
-                      //               .map((it) => DropdownMenuItem<String>(
-                      //                   value: it,
-                      //                   child: Text(
-                      //                     it,
-                      //                     style: TextStyle(
-                      //                       color: Colors.black,
-                      //                     ),
-                      //                   )))
-                      //               .toList(),
-                      //           onChanged: (it) =>
-                      //               setState(() => selectedFeatures = it!)),
-                      //     ),
-                      //   ),
-                      // ),
-                      Material(
-                        borderRadius: BorderRadius.circular(5),
-                        elevation: 5,
-                        child: Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              InkWell(
-                                onTap: () => multiSelected(),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Text("Office features"),
-                                ),
-                              ),
-                              Wrap(
-                                children: otherFeatures
-                                    .map((e) => Chip(
-                                          label: Text(e),
-                                        ))
-                                    .toList(),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      if (selectedFeatures == "other") ...[
-                        Material(
-                          elevation: 5,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(5)),
-                          child: SizedBox(
-                            height: height * 0.04,
-                            width: width * 0.2,
-                            child: TextFormField(
-                              initialValue: printData['bungalow_drawing_hall']
-                                  ['drawing_hall_location'],
-                              style: const TextStyle(fontSize: 14),
-                              decoration: const InputDecoration(
-                                  hintText: "other Location",
-                                  hintStyle: TextStyle(fontSize: 14),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                  ),
-                                  isDense: true,
-                                  contentPadding: EdgeInsets.all(8)
-                                  //fillColor: Colors.green
-                                  ),
-                              onChanged: (value) {
-                                ohterLivingHallController = value;
-                              },
-                            ),
-                          ),
-                        ),
-                      ]
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     requirementText("Features"),
+                  //     SizedBox(
+                  //       width: width * 0.02,
+                  //     ),
+                  //     // Material(
+                  //     //   elevation: 5,
+                  //     //   borderRadius: BorderRadius.circular(5),
+                  //     //   child: Container(
+                  //     //     height: height * 0.03,
+                  //     //     width: width * 0.25,
+                  //     //     margin: EdgeInsets.all(
+                  //     //       3,
+                  //     //     ),
+                  //     //     child: DropdownButtonHideUnderline(
+                  //     //       child: DropdownButton<String>(
+                  //     //           icon: const Visibility(
+                  //     //               visible: false,
+                  //     //               child: Icon(Icons.arrow_downward)),
+                  //     //           value: selectedFeatures,
+                  //     //           elevation: 16,
+                  //     //           items: selectedItem
+                  //     //               .map((it) => DropdownMenuItem<String>(
+                  //     //                   value: it,
+                  //     //                   child: Text(
+                  //     //                     it,
+                  //     //                     style: TextStyle(
+                  //     //                       color: Colors.black,
+                  //     //                     ),
+                  //     //                   )))
+                  //     //               .toList(),
+                  //     //           onChanged: (it) =>
+                  //     //               setState(() => selectedFeatures = it!)),
+                  //     //     ),
+                  //     //   ),
+                  //     // ),
+                  //     Material(
+                  //       borderRadius: BorderRadius.circular(5),
+                  //       elevation: 5,
+                  //       child: Container(
+                  //         padding:
+                  //             EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  //         decoration: BoxDecoration(
+                  //           borderRadius: BorderRadius.circular(5),
+                  //         ),
+                  //         child: Column(
+                  //           crossAxisAlignment: CrossAxisAlignment.start,
+                  //           children: [
+                  //             InkWell(
+                  //               onTap: () => multiSelected(),
+                  //               child: Container(
+                  //                 decoration: BoxDecoration(
+                  //                   borderRadius: BorderRadius.circular(5),
+                  //                 ),
+                  //                 child: Text("Office features"),
+                  //               ),
+                  //             ),
+                  //             Wrap(
+                  //               children: otherFeatures
+                  //                   .map((e) => Chip(
+                  //                         label: Text(e),
+                  //                       ))
+                  //                   .toList(),
+                  //             )
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     if (selectedFeatures == "other") ...[
+                  //       Material(
+                  //         elevation: 5,
+                  //         borderRadius:
+                  //             const BorderRadius.all(Radius.circular(5)),
+                  //         child: SizedBox(
+                  //           height: height * 0.04,
+                  //           width: width * 0.2,
+                  //           child: TextFormField(
+                  //             // initialValue: printData['flat_house_drawing_hall']
+                  //             //     ['drawing_hall_location'],
+                  //             style: const TextStyle(fontSize: 14),
+                  //             decoration: const InputDecoration(
+                  //                 hintText: "other Location",
+                  //                 hintStyle: TextStyle(fontSize: 14),
+                  //                 border: OutlineInputBorder(
+                  //                   borderSide: BorderSide.none,
+                  //                 ),
+                  //                 isDense: true,
+                  //                 contentPadding: EdgeInsets.all(8)
+                  //                 //fillColor: Colors.green
+                  //                 ),
+                  //             onChanged: (value) {
+                  //               ohterLivingHallController = value;
+                  //             },
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ]
+                  //   ],
+                  // ),
                   SizedBox(
                     height: height * 0.01,
                   ),
@@ -578,8 +584,8 @@ class _Step_3State extends State<Step_3> {
                           height: height * 0.04,
                           width: width * 0.2,
                           child: TextFormField(
-                            initialValue: printData['bungalow_drawing_hall']
-                                ['drawing_hall_text'],
+                            initialValue: printData['flat_house_drawing_hall']
+                                ['living_hall_text'],
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "special features",
@@ -674,18 +680,20 @@ class _Step_3State extends State<Step_3> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: printData["bungalow_drawing_hall"]
-                                                  ["living_hall_req"] ==
-                                              1
-                                          ? true
-                                          : drawingHallRequired,
+                                      // value: drawingHallRequired,
+                                      value:
+                                          printData["flat_house_drawing_hall"]
+                                                      ["drawing_hall_req"] ==
+                                                  1
+                                              ? true
+                                              : drawingHallRequired,
                                       onChanged: (value) {
                                         setState(
                                           () {
                                             drawingHallRequired = value;
                                             drawingHallNotRequired = false;
-                                            printData["bungalow_drawing_hall"]
-                                                ["living_hall_req"] = 2;
+                                            printData["flat_house_drawing_hall"]
+                                                ["drawing_hall_req"] = 2;
                                           },
                                         );
                                       }),
@@ -714,18 +722,20 @@ class _Step_3State extends State<Step_3> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: printData["bungalow_drawing_hall"]
-                                                  ["living_hall_req"] ==
-                                              0
-                                          ? true
-                                          : drawingHallNotRequired,
+                                      // value: drawingHallNotRequired,
+                                      value:
+                                          printData["flat_house_drawing_hall"]
+                                                      ["drawing_hall_req"] ==
+                                                  0
+                                              ? true
+                                              : drawingHallNotRequired,
                                       onChanged: (value) {
                                         setState(() {
                                           drawingHallNotRequired = value;
                                           drawingHallRequired = false;
-                                          value:
-                                          printData["bungalow_drawing_hall"]
-                                              ["living_hall_req"] = 2;
+                                          // value:
+                                          printData["flat_house_drawing_hall"]
+                                              ["drawing_hall_req"] = 2;
                                         });
                                       }),
                                 ),
@@ -742,7 +752,7 @@ class _Step_3State extends State<Step_3> {
                   height: height * 0.01,
                 ),
                 if (drawingHallRequired == true ||
-                    printData["bungalow_drawing_hall"]["living_hall_req"] ==
+                    printData["flat_house_drawing_hall"]["drawing_hall_req"] ==
                         1) ...[
                   Row(
                     children: [
@@ -769,13 +779,14 @@ class _Step_3State extends State<Step_3> {
                                     Icons.arrow_downward,
                                   ),
                                 ),
-                                hint: printData["bungalow_drawing_hall"]
-                                            ["living_hall_location"] !=
+                                // hint: Text(DrawingSelected),
+                                hint: printData["flat_house_drawing_hall"]
+                                            ["drawing_hall_location"] !=
                                         null
                                     ? Text(
                                         DrawingItems[
-                                            printData["bungalow_drawing_hall"]
-                                                ["living_hall_location"]],
+                                            printData["flat_house_drawing_hall"]
+                                                ["drawing_hall_location"]],
                                       )
                                     : Text(DrawingSelected),
                                 elevation: 16,
@@ -794,34 +805,34 @@ class _Step_3State extends State<Step_3> {
                                       DrawingSelected = it!;
                                       if (DrawingSelected == "Select") {
                                         // drawingHallLocation = 1;
-                                        printData["bungalow_drawing_hall"]
-                                            ["living_hall_location"] = 0;
+                                        printData["flat_house_drawing_hall"]
+                                            ["drawing_hall_location"] = 0;
                                       }
                                       if (DrawingSelected == "Ground floor") {
                                         drawingHallLocation = 1;
-                                        printData["bungalow_drawing_hall"]
-                                            ["living_hall_location"] = 1;
+                                        printData["flat_house_drawing_hall"]
+                                            ["drawing_hall_location"] = 1;
                                       }
 
                                       if (DrawingSelected == "1st Floor") {
                                         drawingHallLocation = 2;
-                                        printData["bungalow_drawing_hall"]
-                                            ["living_hall_location"] = 2;
+                                        printData["flat_house_drawing_hall"]
+                                            ["drawing_hall_location"] = 2;
                                       }
                                       if (DrawingSelected == "2nd Floor") {
                                         drawingHallLocation = 3;
-                                        printData["bungalow_drawing_hall"]
-                                            ["living_hall_location"] = 3;
+                                        printData["flat_house_drawing_hall"]
+                                            ["drawing_hall_location"] = 3;
                                       }
 
                                       if (DrawingSelected == "3rd Floor") {
                                         drawingHallLocation = 4;
-                                        printData["bungalow_drawing_hall"]
-                                            ["living_hall_location"] = 4;
+                                        printData["flat_house_drawing_hall"]
+                                            ["drawing_hall_location"] = 4;
                                       }
                                       if (DrawingSelected == "other") {
-                                        printData["bungalow_drawing_hall"]
-                                            ["living_hall_location"] = 5;
+                                        printData["flat_house_drawing_hall"]
+                                            ["drawing_hall_location"] = 5;
                                       }
                                     },
                                   );
@@ -866,7 +877,7 @@ class _Step_3State extends State<Step_3> {
                     ],
                   ),
                   SizedBox(
-                    height: height * 0.02,
+                    height: height * 0.01,
                   ),
                   Row(
                     children: [
@@ -882,8 +893,8 @@ class _Step_3State extends State<Step_3> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData['bungalow_drawing_hall']
-                                ['living_hall_length'],
+                            initialValue: printData['flat_house_drawing_hall']
+                                ['drawing_hall_length'],
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",
@@ -919,8 +930,8 @@ class _Step_3State extends State<Step_3> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData['bungalow_drawing_hall']
-                                ['living_hall_width'],
+                            initialValue: printData['flat_house_drawing_hall']
+                                ['drawing_hall_width'],
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "width",
@@ -952,7 +963,7 @@ class _Step_3State extends State<Step_3> {
                   ),
                   Row(
                     children: [
-                      requirementText("Special"),
+                      requirementText("Features"),
                       SizedBox(
                         width: width * 0.02,
                       ),
@@ -964,8 +975,8 @@ class _Step_3State extends State<Step_3> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData['bungalow_drawing_hall']
-                                ['living_hall_text'],
+                            initialValue: printData['flat_house_drawing_hall']
+                                ['drawing_hall_text'],
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "special feature",
@@ -1066,12 +1077,13 @@ class _Step_3State extends State<Step_3> {
                                 icon: const Visibility(
                                     visible: false,
                                     child: Icon(Icons.arrow_downward)),
-                                hint: printData["bungalow_drawing_hall"]
+                                // hint: Text(selectedKitchen),
+                                hint: printData["flat_house_drawing_hall"]
                                             ["kitchen_floor"] !=
                                         null
-                                    ? Text(kitchenItems[
-                                        printData["bungalow_drawing_hall"]
-                                            ["kitchen_floor"]])
+                                    ? Text(kitchenItems[int.parse(
+                                        printData["flat_house_drawing_hall"]
+                                            ["kitchen_floor"])])
                                     : Text(selectedKitchen),
 
                                 //value: selectedKitchen,
@@ -1093,38 +1105,38 @@ class _Step_3State extends State<Step_3> {
                                   setState(
                                     () {
                                       selectedKitchen = it!;
-                                      print(selectedKitchen);
+                                      // print(selectedKitchen);
                                       if (selectedKitchen == "Select") {
                                         KitchenFloor = "0";
-                                        printData["bungalow_drawing_hall"]
+                                        printData["flat_house_drawing_hall"]
                                             ["kitchen_floor"] = 0;
                                       }
                                       if (selectedKitchen == "Ground floor") {
                                         KitchenFloor = "1";
-                                        printData["bungalow_drawing_hall"]
+                                        printData["flat_house_drawing_hall"]
                                             ["kitchen_floor"] = 1;
                                       }
                                       if (selectedKitchen == "1st Floor") {
                                         KitchenFloor = "2";
-                                        printData["bungalow_drawing_hall"]
+                                        printData["flat_house_drawing_hall"]
                                             ["kitchen_floor"] = 2;
                                       }
                                       if (selectedKitchen == "2nd Floor") {
                                         KitchenFloor = "3";
-                                        printData["bungalow_drawing_hall"]
+                                        printData["flat_house_drawing_hall"]
                                             ["kitchen_floor"] = 3;
                                       }
                                       if (selectedKitchen == "3rd Floor") {
                                         KitchenFloor = "4";
-                                        printData["bungalow_drawing_hall"]
+                                        printData["flat_house_drawing_hall"]
                                             ["kitchen_floor"] = 4;
                                       }
                                       if (selectedKitchen == "other") {
                                         KitchenFloor = "4";
-                                        printData["bungalow_drawing_hall"]
+                                        printData["flat_house_drawing_hall"]
                                             ["kitchen_floor"] = 5;
                                       }
-                                      print(printData["bungalow_drawing_hall"]
+                                      print(printData["flat_house_drawing_hall"]
                                           ["kitchen_floor"]);
                                     },
                                   );
@@ -1158,12 +1170,12 @@ class _Step_3State extends State<Step_3> {
                         height: height * 0.04,
                         width: width * 0.15,
                         child: TextFormField(
-                          initialValue: printData['bungalow_drawing_hall']
-                                      ['kitchen_length'] ==
+                          initialValue: printData['flat_house_drawing_hall']
+                                      ['attach_store_length'] ==
                                   null
                               ? ""
-                              : printData['bungalow_drawing_hall']
-                                  ['kitchen_length'],
+                              : printData['flat_house_drawing_hall']
+                                  ['attach_store_length'],
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "length",
@@ -1198,8 +1210,12 @@ class _Step_3State extends State<Step_3> {
                         height: height * 0.04,
                         width: width * 0.15,
                         child: TextFormField(
-                          initialValue: printData['bungalow_drawing_hall']
-                              ['kitchen_width'],
+                          initialValue: printData['flat_house_drawing_hall']
+                                      ['attach_store_width'] !=
+                                  null
+                              ? printData['flat_house_drawing_hall']
+                                  ['attach_store_width']
+                              : 0,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "Width",
@@ -1233,7 +1249,7 @@ class _Step_3State extends State<Step_3> {
                   children: [
                     requirementText("Kitchen funtion"),
                     SizedBox(
-                      width: width * 0.01,
+                      width: width * 0.02,
                     ),
                     Material(
                       elevation: 5,
@@ -1252,12 +1268,13 @@ class _Step_3State extends State<Step_3> {
                                   Icons.arrow_downward,
                                 ),
                               ),
-                              hint: printData['bungalow_drawing_hall']
+                              // hint: Text(selectedKitchenFunction),
+                              hint: printData['flat_house_drawing_hall']
                                           ['kitchen_dining_function'] !=
                                       null
-                                  ? Text(kitchenFunctionItems[
-                                      printData['bungalow_drawing_hall']
-                                          ['kitchen_dining_function']])
+                                  ? Text(kitchenFunctionItems[int.parse(
+                                      printData['flat_house_drawing_hall']
+                                          ['kitchen_dining_function'])])
                                   : Text(selectedKitchenFunction),
                               // value: selectedKitchenFunction,
                               elevation: 16,
@@ -1284,22 +1301,22 @@ class _Step_3State extends State<Step_3> {
                                   selectedKitchenFunction = it!;
                                   if (selectedKitchenFunction ==
                                       "Selecting dining function") {
-                                    printData['bungalow_drawing_hall']
+                                    printData['flat_house_drawing_hall']
                                         ['kitchen_dining_function'] = 0;
                                   }
                                   if (selectedKitchenFunction ==
                                       "full open to dining ") {
-                                    printData['bungalow_drawing_hall']
+                                    printData['flat_house_drawing_hall']
                                         ['kitchen_dining_function'] = 2;
                                   }
                                   if (selectedKitchenFunction ==
                                       "partial open to dining") {
-                                    printData['bungalow_drawing_hall']
+                                    printData['flat_house_drawing_hall']
                                         ['kitchen_dining_function'] = 3;
                                   }
                                   if (selectedKitchenFunction ==
                                       "open with a door") {
-                                    printData['bungalow_drawing_hall']
+                                    printData['flat_house_drawing_hall']
                                         ['kitchen_dining_function'] = 4;
                                   }
                                 });
@@ -1360,6 +1377,62 @@ class _Step_3State extends State<Step_3> {
                 SizedBox(
                   height: height * 0.01,
                 ),
+                // Row(
+                //   children: [
+                //     requirementText("Refrigerator type"),
+                //     SizedBox(
+                //       width: width * 0.02,
+                //     ),
+                //   ],
+                // ),
+                // SizedBox(
+                //   height: height * 0.02,
+                // ),
+                // Material(
+                //   elevation: 10,
+                //   child: Container(
+                //     padding: EdgeInsets.symmetric(vertical: 10),
+                //     color: Colors.white,
+                //     child: SizedBox(
+                //       width: width * 9,
+                //       height: height * 0.3,
+                //       child: FutureBuilder(
+                //           future: getRecent(),
+                //           builder: (context, snapshot) {
+                //             if (snapshot.connectionState ==
+                //                 ConnectionState.waiting) {
+                //               return Container(
+                //                 child: const Center(
+                //                   child: CircularProgressIndicator(),
+                //                 ),
+                //               );
+                //             } else {
+                //               return CarouselSlider.builder(
+                //                 itemCount: bunglowPageRecentList.length,
+                //                 itemBuilder: (context, i, id) {
+                //                   return Container(
+                //                     height: height * 0.4,
+                //                     width: width * 0.9,
+                //                     child: Image.network(
+                //                       imageUrl +
+                //                           bunglowPageRecentList[i]["img_path"],
+                //                       fit: BoxFit.fill,
+                //                     ),
+                //                   );
+                //                 },
+                //                 options: CarouselOptions(
+                //                   autoPlay: true,
+                //                   enableInfiniteScroll: true,
+                //                   autoPlayAnimationDuration:
+                //                       const Duration(milliseconds: 800),
+                //                   viewportFraction: 1,
+                //                 ),
+                //               );
+                //             }
+                //           }),
+                //     ),
+                //   ),
+                // ),
                 SizedBox(
                   height: height * 0.01,
                 ),
@@ -1409,7 +1482,7 @@ class _Step_3State extends State<Step_3> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData['bungalow_drawing_hall']
+                            initialValue: printData['flat_house_drawing_hall']
                                 ['attach_store_length'],
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
@@ -1446,7 +1519,7 @@ class _Step_3State extends State<Step_3> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData['bungalow_drawing_hall']
+                            initialValue: printData['flat_house_drawing_hall']
                                 ['attach_store_width'],
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
@@ -1517,7 +1590,7 @@ class _Step_3State extends State<Step_3> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData['bungalow_drawing_hall']
+                            initialValue: printData['flat_house_drawing_hall']
                                 ['utility_wash_length'],
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
@@ -1556,7 +1629,7 @@ class _Step_3State extends State<Step_3> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData['bungalow_drawing_hall']
+                            initialValue: printData['flat_house_drawing_hall']
                                 ['utility_wash_width'],
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
@@ -1692,8 +1765,8 @@ class _Step_3State extends State<Step_3> {
                         height: height * 0.04,
                         width: width * 0.4,
                         child: TextFormField(
-                          initialValue: printData['bungalow_drawing_hall']
-                              ['utility_wash_width'],
+                          initialValue: printData['flat_house_drawing_hall']
+                              ['kitchen_text'],
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "Specific requirement",
@@ -1716,120 +1789,132 @@ class _Step_3State extends State<Step_3> {
                   ],
                 ),
                 SizedBox(
-                  height: height * 0.02,
+                  height: height * 0.01,
                 ),
                 requirementText("Dining Details"),
                 SizedBox(
-                  height: height * 0.02,
+                  height: height * 0.01,
                 ),
                 Row(
                   children: [
-                    requirementText("Floor"),
                     SizedBox(
-                      width: width * 0.02,
+                      height: height * 0.05,
                     ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Material(
-                        elevation: 5,
-                        borderRadius: BorderRadius.circular(5),
-                        child: Container(
-                          height: height * 0.03,
-                          width: width * 0.25,
-                          margin: EdgeInsets.all(
-                            3,
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                                icon: const Visibility(
-                                    visible: false,
-                                    child: Icon(Icons.arrow_downward)),
-                                hint: printData["bungalow_drawing_hall"]
-                                            ["kitchen_floor"] !=
-                                        null
-                                    ? Text(kitchenItems[
-                                        printData["bungalow_drawing_hall"]
-                                            ["kitchen_floor"]])
-                                    : Text(selectedKitchen),
+                    Row(
+                      children: [
+                        requirementText("Floor"),
+                        SizedBox(
+                          width: width * 0.03,
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Material(
+                            elevation: 5,
+                            borderRadius: BorderRadius.circular(5),
+                            child: Container(
+                              height: height * 0.03,
+                              width: width * 0.25,
+                              margin: EdgeInsets.all(
+                                3,
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                    icon: const Visibility(
+                                        visible: false,
+                                        child: Icon(Icons.arrow_downward)),
+                                    // hint: Text(selectedKitchen),
+                                    hint: printData["flat_house_drawing_hall"]
+                                                ["dining_floor"] !=
+                                            null
+                                        ? Text(kitchenItems[int.parse(
+                                            printData["flat_house_drawing_hall"]
+                                                ["dining_floor"])])
+                                        : Text(selectedKitchen),
 
-                                //value: selectedKitchen,
-                                elevation: 16,
-                                items: kitchenItems
-                                    .map(
-                                      (it) => DropdownMenuItem<String>(
-                                        value: it,
-                                        child: Text(
-                                          it,
-                                          style: TextStyle(
-                                            color: Colors.black,
+                                    //value: selectedKitchen,
+                                    elevation: 16,
+                                    items: kitchenItems
+                                        .map(
+                                          (it) => DropdownMenuItem<String>(
+                                            value: it,
+                                            child: Text(
+                                              it,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                                onChanged: (it) {
-                                  setState(
-                                    () {
-                                      selectedKitchen = it!;
-                                      print(selectedKitchen);
-                                      if (selectedKitchen == "Select") {
-                                        KitchenFloor = "0";
-                                        printData["bungalow_drawing_hall"]
-                                            ["kitchen_floor"] = 0;
-                                      }
-                                      if (selectedKitchen == "Ground floor") {
-                                        KitchenFloor = "1";
-                                        printData["bungalow_drawing_hall"]
-                                            ["kitchen_floor"] = 1;
-                                      }
-                                      if (selectedKitchen == "1st Floor") {
-                                        KitchenFloor = "2";
-                                        printData["bungalow_drawing_hall"]
-                                            ["kitchen_floor"] = 2;
-                                      }
-                                      if (selectedKitchen == "2nd Floor") {
-                                        KitchenFloor = "3";
-                                        printData["bungalow_drawing_hall"]
-                                            ["kitchen_floor"] = 3;
-                                      }
-                                      if (selectedKitchen == "3rd Floor") {
-                                        KitchenFloor = "4";
-                                        printData["bungalow_drawing_hall"]
-                                            ["kitchen_floor"] = 4;
-                                      }
-                                      if (selectedKitchen == "other") {
-                                        KitchenFloor = "4";
-                                        printData["bungalow_drawing_hall"]
-                                            ["kitchen_floor"] = 5;
-                                      }
-                                      print(printData["bungalow_drawing_hall"]
-                                          ["kitchen_floor"]);
-                                    },
-                                  );
-                                }),
+                                        )
+                                        .toList(),
+                                    onChanged: (it) {
+                                      setState(
+                                        () {
+                                          selectedKitchen = it!;
+                                          // print(selectedKitchen);
+                                          // if (selectedKitchen == "Select") {
+                                          //   KitchenFloor = "0";
+                                          //   printData["flat_house_drawing_hall"]
+                                          //       ["kitchen_floor"] = 0;
+                                          // }
+                                          // if (selectedKitchen == "Ground floor") {
+                                          //   KitchenFloor = "1";
+                                          //   printData["flat_house_drawing_hall"]
+                                          //       ["kitchen_floor"] = 1;
+                                          // }
+                                          // if (selectedKitchen == "1st Floor") {
+                                          //   KitchenFloor = "2";
+                                          //   printData["flat_house_drawing_hall"]
+                                          //       ["kitchen_floor"] = 2;
+                                          // }
+                                          // if (selectedKitchen == "2nd Floor") {
+                                          //   KitchenFloor = "3";
+                                          //   printData["flat_house_drawing_hall"]
+                                          //       ["kitchen_floor"] = 3;
+                                          // }
+                                          // if (selectedKitchen == "3rd Floor") {
+                                          //   KitchenFloor = "4";
+                                          //   printData["flat_house_drawing_hall"]
+                                          //       ["kitchen_floor"] = 4;
+                                          // }
+                                          // if (selectedKitchen == "other") {
+                                          //   KitchenFloor = "4";
+                                          //   printData["flat_house_drawing_hall"]
+                                          //       ["kitchen_floor"] = 5;
+                                          // }
+                                          // print(printData["flat_house_drawing_hall"]
+                                          //     ["kitchen_floor"]);
+                                        },
+                                      );
+                                    }),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
+                      ],
+                    )
+                  ],
+                ),
+                // SizedBox(
+                //   height: height * 0.02,
+                // ),
+                Row(
+                  children: [
+                    requirementText("Length"),
                     SizedBox(
-                      width: width * 0.02,
+                      width: width * 0.015,
                     ),
-                    if (selectedFloor == "other") ...[
-                      requirementTextField(
-                          height, width, 0.04, 0.25, "other location"),
-                    ],
                     Material(
                       elevation: 5,
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
                       child: SizedBox(
                         height: height * 0.04,
-                        width: width * 0.36,
+                        width: width * 0.15,
                         child: TextFormField(
-                          initialValue: printData['bungalow_drawing_hall']
-                              ['kitchen_width'],
+                          initialValue: printData['flat_house_drawing_hall']
+                              ['dining_length'],
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
-                              hintText: "Width",
+                              hintText: "length",
                               hintStyle: TextStyle(fontSize: 14),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
@@ -1839,186 +1924,128 @@ class _Step_3State extends State<Step_3> {
                               //fillColor: Colors.green
                               ),
                           onChanged: (value) {
-                            kitchenWidthController = value;
+                            // "Selecting fridge",
+                            // "Single Door",
+                            // "Double Door",
+                            LivingHallLengthController = value;
                           },
                         ),
                       ),
                     ),
-                  ],
-                ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(right: width * 0.2),
-                      padding: EdgeInsets.all(1),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              requirementText("Length"),
-                              SizedBox(
-                                width: width * 0.02,
-                              ),
-                              Material(
-                                borderRadius: BorderRadius.circular(5),
-                                elevation: 1,
-                                child: Container(
-                                    width: width * 0.15,
-                                    child: TextFormField(
-                                      textAlign: TextAlign.center,
-                                      decoration: const InputDecoration(
-                                          hintText: "Length",
-                                          hintStyle: TextStyle(fontSize: 14),
-                                          isDense: true,
-                                          contentPadding: EdgeInsets.all(0)),
-                                      // initialValue: "dinging",
-                                      onChanged: (value) {},
-                                    )),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            width: width * 0.02,
-                          ),
-                          Row(
-                            children: [
-                              requirementText("Width"),
-                              Material(
-                                borderRadius: BorderRadius.circular(5),
-                                elevation: 1,
-                                child: Container(
-                                    width: width * 0.15,
-                                    child: TextFormField(
-                                      textAlign: TextAlign.center,
-                                      decoration: const InputDecoration(
-                                          hintText: "width",
-                                          hintStyle: TextStyle(fontSize: 14),
-                                          isDense: true,
-                                          contentPadding: EdgeInsets.all(1)),
-                                      // initialValue: porchLength.toString(),
-                                      onChanged: (value) {
-                                        // porchLength = int.parse(value);
-                                      },
-                                    )),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: width * 0.05,
-                          ),
-                          Text("Help")
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                Row(
-                  children: [
-                    requirementText("Dining"),
                     SizedBox(
                       width: width * 0.02,
                     ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Material(
-                        elevation: 5,
-                        borderRadius: BorderRadius.circular(5),
-                        child: Container(
-                          height: height * 0.03,
-                          width: width * 0.25,
-                          margin: EdgeInsets.all(
-                            3,
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              icon: const Visibility(
-                                  visible: false,
-                                  child: Icon(Icons.arrow_downward)),
-                              hint: printData["bungalow_drawing_hall"]
-                                          ["drawing_hall_location"] !=
-                                      null
-                                  ? Text(
-                                      floorItems[
-                                          printData["bungalow_drawing_hall"]
-                                              ["drawing_hall_location"]],
-                                    )
-                                  : Text(selectedFloor),
-                              // value: selectedFloor,
-                              elevation: 16,
-                              items: floorItems
-                                  .map((it) => DropdownMenuItem<String>(
-                                      value: it,
-                                      child: Text(
-                                        it,
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                      )))
-                                  .toList(),
-                              onChanged: (it) {
-                                setState(
-                                  () {
-                                    selectedFloor = it!;
-
-                                    if (selectedFloor == "Select") {
-                                      printData["bungalow_drawing_hall"]
-                                          ["drawing_hall_location"] = 0;
-                                    }
-                                    if (selectedFloor == "Ground floor") {
-                                      printData["bungalow_drawing_hall"]
-                                          ["drawing_hall_location"] = 1;
-                                    }
-                                    if (selectedFloor == "1st Floor") {
-                                      printData["bungalow_drawing_hall"]
-                                          ["drawing_hall_location"] = 2;
-                                    }
-                                    if (selectedFloor == "2nd Floor") {
-                                      printData["bungalow_drawing_hall"]
-                                          ["drawing_hall_location"] = 3;
-                                    }
-                                    if (selectedFloor == "3rd Floor") {
-                                      printData["bungalow_drawing_hall"]
-                                          ["drawing_hall_location"] = 4;
-                                    }
-                                    if (selectedFloor == "other") {
-                                      printData["bungalow_drawing_hall"]
-                                          ["drawing_hall_location"] = 5;
-                                    }
-                                    print(selectedFloor);
-                                    print(printData["bungalow_drawing_hall"]
-                                        ["drawing_hall_location"]);
-                                  },
-                                );
-                              },
-                            ),
-                          ),
+                    requirementText("Width"),
+                    SizedBox(
+                      width: width * 0.015,
+                    ),
+                    Material(
+                      elevation: 5,
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      child: SizedBox(
+                        height: height * 0.04,
+                        width: width * 0.15,
+                        child: TextFormField(
+                          initialValue: printData['flat_house_drawing_hall']
+                              ['dining_width'],
+                          style: const TextStyle(fontSize: 14),
+                          decoration: const InputDecoration(
+                              hintText: "width",
+                              hintStyle: TextStyle(fontSize: 14),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
+                              isDense: true,
+                              contentPadding: EdgeInsets.all(8)
+                              //fillColor: Colors.green
+                              ),
+                          onChanged: (value) {
+                            LivingHallWidthController = value;
+                          },
                         ),
                       ),
                     ),
+                    valueContainer(height, width, size, 0.04, 0.05),
                     SizedBox(
-                      width: width * 0.02,
+                      width: width * 0.01,
                     ),
-                    if (selectedFloor == "other") ...[
-                      requirementTextField(
-                          height, width, 0.04, 0.25, "other location"),
-                    ]
+                    requirementText("help ?"),
                   ],
                 ),
                 SizedBox(
-                  height: height * 0.02,
+                  height: height * 0.01,
                 ),
                 Row(
                   children: [
-                    requirementText("Special requirement"),
                     SizedBox(
-                      width: width * 0.01,
+                      height: height * 0.05,
+                    ),
+                    Row(
+                      children: [
+                        requirementText("Dining"),
+                        SizedBox(
+                          width: width * 0.03,
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Material(
+                            elevation: 5,
+                            borderRadius: BorderRadius.circular(5),
+                            child: Container(
+                              height: height * 0.03,
+                              width: width * 0.25,
+                              margin: EdgeInsets.all(
+                                3,
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                    icon: const Visibility(
+                                        visible: false,
+                                        child: Icon(Icons.arrow_downward)),
+                                    // hint: Text(selectedKitchen),
+                                    hint: printData["flat_house_drawing_hall"]
+                                                ["dining_features"] !=
+                                            null
+                                        ? Text(kitchenItems[int.parse(
+                                            printData["flat_house_drawing_hall"]
+                                                ["dining_features"])])
+                                        : Text(selectedKitchen),
+
+                                    //value: selectedKitchen,
+                                    elevation: 16,
+                                    items: kitchenItems
+                                        .map(
+                                          (it) => DropdownMenuItem<String>(
+                                            value: it,
+                                            child: Text(
+                                              it,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
+                                    onChanged: (it) {
+                                      setState(
+                                        () {
+                                          selectedKitchen = it!;
+                                        },
+                                      );
+                                    }),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    requirementText("Specific requirement"),
+                    SizedBox(
+                      width: width * 0.02,
                     ),
                     Material(
                       elevation: 5,
@@ -2027,11 +2054,11 @@ class _Step_3State extends State<Step_3> {
                         height: height * 0.04,
                         width: width * 0.4,
                         child: TextFormField(
-                          initialValue: printData['bungalow_drawing_hall']
-                              ['utility_wash_width'],
+                          initialValue: printData['flat_house_drawing_hall']
+                              ['dining_text'],
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
-                              hintText: "Special requirement",
+                              hintText: "Specific requirement",
                               hintStyle: TextStyle(fontSize: 14),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
@@ -2049,12 +2076,6 @@ class _Step_3State extends State<Step_3> {
                     // requirementTextFieldCont(
                     //     height, width, 0.04, 0.4, "Specific requirement", specificReq)
                   ],
-                ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                SizedBox(
-                  height: height * 0.02,
                 ),
                 Material(
                   elevation: 10,
@@ -2104,19 +2125,20 @@ class _Step_3State extends State<Step_3> {
                 SizedBox(
                   height: height * 0.01,
                 ),
+
                 InkWell(
                   onTap: () {
                     setState(() {
                       int kitch = int.parse(KitchenLengthController) *
                           int.parse(kitchenWidthController);
                       livingHallArea = living.toString();
-                      if (selectedRefrigerator == "Single Door ") {
-                        refrigeratorSize = "1";
-                      }
+                      // if (selectedRefrigerator == "Single Door ") {
+                      //   refrigeratorSize = "1";
+                      // }
 
-                      if (selectedRefrigerator == "Double Door") {
-                        refrigeratorSize = "2";
-                      }
+                      // if (selectedRefrigerator == "Double Door") {
+                      //   refrigeratorSize = "2";
+                      // }
 
                       // if (selectedRefrigerator ==
                       //     "open with a reasonable opening") {
@@ -2221,7 +2243,7 @@ class _Step_3State extends State<Step_3> {
                         KitchenFloor = "4";
                       }
                       if (DrawingSelected == "other") {
-                        printData["bungalow_drawing_hall"]
+                        printData["flat_house_drawing_hall"]
                             ["living_hall_location"] = 5;
                         drawingHallLocation =
                             int.parse(otherDrawingHallLocationController);
@@ -2231,36 +2253,36 @@ class _Step_3State extends State<Step_3> {
                           int.parse(kitchenWidthController);
                       kitchenArea = kitchen.toString();
                     });
-                    livingHallPost(
-                      drawingInt,
-                      drawingHallLocation,
-                      drawingHallLengthController,
-                      drawingHallWidthController,
-                      drawingArea,
-                      drawingSpecialFeaturesController,
-                      drawingSpecialFeaturesController,
-                      livingHallInt,
-                      livingHallLocation,
-                      LivingHallLengthController,
-                      LivingHallWidthController,
-                      livingHallArea,
-                      livingHall,
-                      livingSpecialFeaturesController,
-                      kitchenFeatures,
-                      KitchenFloor,
-                      KitchenLengthController,
-                      kitchenWidthController,
-                      kitchenArea,
-                      kitchenDiningFunction,
-                      attachedLengthController,
-                      attachedWidthController,
-                      attachStoreArea,
-                      utilityWidthController,
-                      utilityLengthController,
-                      utilityWashArea,
-                      refrigeratorSize,
-                      specificReq,
-                    );
+                    // livingHallPost(
+                    //   drawingInt,
+                    //   drawingHallLocation,
+                    //   drawingHallLengthController,
+                    //   drawingHallWidthController,
+                    //   drawingArea,
+                    //   drawingSpecialFeaturesController,
+                    //   drawingSpecialFeaturesController,
+                    //   livingHallInt,
+                    //   livingHallLocation,
+                    //   LivingHallLengthController,
+                    //   LivingHallWidthController,
+                    //   livingHallArea,
+                    //   livingHall,
+                    //   livingSpecialFeaturesController,
+                    //   kitchenFeatures,
+                    //   KitchenFloor,
+                    //   KitchenLengthController,
+                    //   kitchenWidthController,
+                    //   kitchenArea,
+                    //   kitchenDiningFunction,
+                    //   attachedLengthController,
+                    //   attachedWidthController,
+                    //   attachStoreArea,
+                    //   utilityWidthController,
+                    //   utilityLengthController,
+                    //   utilityWashArea,
+                    //   // refrigeratorSize,
+                    //   specificReq,
+                    // );
                   },
                   child: Align(
                     alignment: Alignment.center,

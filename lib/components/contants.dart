@@ -4,6 +4,7 @@ String SUCCESS_MESSAGE = " You will be contacted by us very soon.";
 int LEVEL_ALMOST = 1;
 int LEVEL_UP = 2;
 int LEVEL_DOWN = 3;
+int project_id = 0;
 
 const SITE_NAME = 'SDPL';
 const MR = 1;

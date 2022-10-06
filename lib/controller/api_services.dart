@@ -1,5 +1,7 @@
 import 'dart:convert';
-
+import 'dart:ffi';
+// import 'dart:html';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/model/requirementmodel.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +16,7 @@ var homePage = "http://sdplweb.com/sdpl/api/get-project-image";
 
 List bunglowPagePrestigiousList = [];
 List bunglowPageRecentList = [];
+late int project_id;
 
 Future<void> getPrestigious() async {
   try {
@@ -167,7 +170,7 @@ Future<void> residentailRecent() async {
 //   return RequirementModel.fromJson(jsonDecode(response.body));
 // }
 
-Future<void> requirementPost(
+Future<dynamic> requirementPost(
   int userId,
   int projectGroupId,
   int ProjectTypeId,
@@ -234,7 +237,7 @@ Future<void> requirementPost(
     "south_road_width": southRoadWidth,
   };
 
-  print(projectData);
+  // print(projectData);
 
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
@@ -244,8 +247,8 @@ Future<void> requirementPost(
     },
     body: jsonEncode(projectData),
   );
-  print(response.body);
   var temp = jsonDecode(response.body);
+  return project_id = temp['project_id'];
 }
 
 Future<void> entrancePost(
@@ -699,4 +702,41 @@ Future<void> BasementPost(
     body: jsonEncode(projectData),
   );
   print(response.body);
+}
+
+Future<void> HouseDuplexFloorPost(
+    int? projectId,
+    int? staircase,
+    String? stairCaseImage,
+    bool? poojaRoomReq,
+    int? poojaRoomLength,
+    int? poojaRoomWidth,
+    int? poojaRoomFloor,
+    String? poojaRoomType,
+    String? OpeningToLivingHall) async {
+  var bodyData = {
+    "project_id": 179,
+    "dimension": 1,
+    "stair_case": staircase,
+    "stair_case_image": stairCaseImage,
+    "pooja_room_req": poojaRoomReq,
+    "pooja_room_length": poojaRoomLength,
+    "pooja_room_width": poojaRoomWidth,
+    "pooja_room_floor": poojaRoomFloor,
+    "pooja_room_type": poojaRoomType,
+    "opening_to_li_ha": OpeningToLivingHall
+  };
+
+  print("bodyData=");
+  print(bodyData);
+
+  final resp = await http.post(
+    Uri.parse("${dotenv.env['APP_URL']}flat-house-floor-store"),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(bodyData),
+  );
+  print('resp.body--');
+  print(resp.body);
 }
