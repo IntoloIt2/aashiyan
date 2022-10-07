@@ -47,7 +47,7 @@ class _Step_1State extends State<Step_1> {
   String isEast = "1";
 
   bool? northOriented = false;
-  bool? regularPlotValue = true;
+  bool? regularPlotValue = false;
   bool? irregularPlotValue = false;
   bool? surveyor = false;
   bool? notReqired = true;
@@ -172,6 +172,7 @@ class _Step_1State extends State<Step_1> {
     try {
       print("project_id---");
       print(project_id);
+
       var response = await http.get(
         // Uri.parse("${dotenv.env['APP_URL']}edit-project/$project_id"),
         Uri.parse("${dotenv.env['APP_URL']}edit-project/$project_id"),
@@ -184,6 +185,8 @@ class _Step_1State extends State<Step_1> {
         // print();
         setState(() {
           printData = jsonResponse;
+          // print('printData===');
+          // print(printData);
           // project_id = printData['project_id'];
 
           if (printData != null && printData['project_id'] != null) {
@@ -246,6 +249,9 @@ class _Step_1State extends State<Step_1> {
   void initState() {
     super.initState();
     getData();
+    // print('printData===');
+    // print(printData);
+
     // updateDataByProjectId();
     getCities();
     getState();
@@ -453,12 +459,14 @@ class _Step_1State extends State<Step_1> {
                         width: width * 0.6,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue: printData["project"]['address'] != null
-                              ? printData["project"]['address'].toString()
+                          initialValue: printData['project'] != null
+                              ? printData["project"]['address'] != null
+                                  ? printData["project"]['address'].toString()
+                                  : addressController
                               : addressController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
-                              hintText: "Email",
+                              hintText: "address",
                               hintStyle: TextStyle(fontSize: 14),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
@@ -536,8 +544,10 @@ class _Step_1State extends State<Step_1> {
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             onTap: () {},
-                            hint: printData["project"]["state_name"] != null
-                                ? Text(printData["project"]["state_name"])
+                            hint: printData['project'] != null
+                                ? printData["project"]["state_name"] != null
+                                    ? Text(printData["project"]["state_name"])
+                                    : Text(selectedState)
                                 : Text(selectedState),
                             elevation: 16,
                             items: stateData
@@ -558,7 +568,9 @@ class _Step_1State extends State<Step_1> {
                                 )
                                 .toList(),
                             onChanged: (it) => setState(() {
-                              printData["project"]["state_name"] = null;
+                              if (printData['project'] != null) {
+                                printData["project"]["state_name"] = null;
+                              }
                               selectedState = it!;
                               getCities();
                             }),
@@ -588,8 +600,10 @@ class _Step_1State extends State<Step_1> {
                         width: width * 0.6,
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            hint: printData["project"]["city_name"] != null
-                                ? Text(printData["project"]["city_name"])
+                            hint: printData['project'] != null
+                                ? printData["project"]["city_name"] != null
+                                    ? Text(printData["project"]["city_name"])
+                                    : Text(myState)
                                 : Text(myState),
                             elevation: 16,
                             items: cityData
@@ -671,17 +685,23 @@ class _Step_1State extends State<Step_1> {
                     Checkbox(
                       activeColor: checkColor,
                       checkColor: Colors.white,
-                      value: printData['project']['plot_type'] != null
-                          ? printData['project']['plot_type'] == 1
-                              ? true
+                      value: printData != null
+                          ? printData['project'] != null
+                              // ? printData['project']['plot_type'] != null
+                              ? printData['project']['plot_type'] == 1
+                                  ? true
+                                  : regularPlotValue
+                              // : regularPlotValue
                               : regularPlotValue
                           : regularPlotValue,
+                      // value: regularPlotValue,
                       onChanged: (val) {
                         setState(() {
                           regularPlotValue = val;
                           irregularPlotValue = false;
-                          if (printData['project']['plot_type'] != null) {
-                            printData['project']['plot_type'] = null;
+                          if (printData != null &&
+                              printData['project'] != null) {
+                            printData['project']['plot_type'] = val;
                           }
                         });
                       },
@@ -696,10 +716,12 @@ class _Step_1State extends State<Step_1> {
                     Checkbox(
                       activeColor: checkColor,
                       checkColor: Colors.white,
-                      value: printData['project']['plot_type'] != null
-                          ? printData['project']['plot_type'] == 1
+                      value: printData['project'] != null
+                          // ? printData['project']['plot_type'] != null
+                          ? printData['project']['plot_type'] == 0
                               ? true
                               : irregularPlotValue
+                          // : irregularPlotValue
                           : irregularPlotValue,
                       // value: printData['project']['plot_type'] == 2
                       //     ? true
@@ -709,8 +731,8 @@ class _Step_1State extends State<Step_1> {
                           () {
                             irregularPlotValue = val;
                             regularPlotValue = false;
-                            if (printData['project']['plot_type'] != null) {
-                              printData['project']['plot_type'] = null;
+                            if (printData['project'] != null) {
+                              printData['project']['plot_type'] = 3;
                             }
                           },
                         );
@@ -740,10 +762,11 @@ class _Step_1State extends State<Step_1> {
                               ),
                               isDense: true,
                               contentPadding: EdgeInsets.all(8)),
-                          initialValue:
-                              printData['project']['plot_length'] != null
+                          initialValue: printData['project'] != null
+                              ? printData['project']['plot_length'] != null
                                   ? printData['project']['plot_length']
-                                  : lengthController,
+                                  : lengthController
+                              : lengthController,
                           onChanged: (lengthController) {
                             setState(() {
                               if (lengthController != '') {
@@ -771,8 +794,12 @@ class _Step_1State extends State<Step_1> {
                     SizedBox(
                       width: width * 0.02,
                     ),
-                    if (irregularPlotValue == true ||
-                        printData['project']['plot_type'] == 2) ...[
+                    // if (irregularPlotValue == true || printData != null
+                    if (printData != null
+                        ? printData['project'] != null
+                            ? printData['project']['plot_type'] == 1
+                            : irregularPlotValue == true
+                        : irregularPlotValue == true) ...[
                       requirementText("Diagona1"),
                       SizedBox(
                         width: width * 0.02,
@@ -794,10 +821,11 @@ class _Step_1State extends State<Step_1> {
                                 contentPadding: EdgeInsets.all(8)
                                 //fillColor: Colors.green
                                 ),
-                            initialValue:
-                                printData['project']['diagonal_1'] != null
+                            initialValue: printData['project'] != null
+                                ? printData['project']['diagonal_1'] != null
                                     ? printData['project']['diagonal_1']
-                                    : diagonal1Controller,
+                                    : diagonal1Controller
+                                : diagonal1Controller,
                             onChanged: (diagonal1Controller) {
                               setState(() {
                                 if (diagonal1Controller != '') {
@@ -844,10 +872,11 @@ class _Step_1State extends State<Step_1> {
                               contentPadding: EdgeInsets.all(8)
                               //fillColor: Colors.green
                               ),
-                          initialValue:
-                              printData['project']['plot_width'] != null
+                          initialValue: printData['project'] != null
+                              ? printData['project']['plot_width'] != null
                                   ? printData['project']['plot_width']
-                                  : widthController,
+                                  : widthController
+                              : widthController,
                           onChanged: (widthController) {
                             setState(() {
                               if (widthController != '') {
@@ -878,8 +907,11 @@ class _Step_1State extends State<Step_1> {
                     SizedBox(
                       width: width * 0.02,
                     ),
-                    if (irregularPlotValue == true ||
-                        printData['project']['plot_type'] == 2) ...[
+                    if (printData == null
+                        ? printData['project']['plot_type'] == 1
+                            ? true
+                            : irregularPlotValue == true
+                        : irregularPlotValue == true) ...[
                       requirementText("Diagona2"),
                       SizedBox(
                         width: width * 0.02,
@@ -900,10 +932,11 @@ class _Step_1State extends State<Step_1> {
                                 contentPadding: EdgeInsets.all(8)
                                 // fillColor: Colors.green
                                 ),
-                            initialValue:
-                                printData['project']['diagonal_2'] != null
+                            initialValue: printData != null
+                                ? printData['project'] != null
                                     ? printData['project']['diagonal_2']
-                                    : diagonal2Controller,
+                                    : diagonal2Controller
+                                : '',
                             onChanged: (diagonal2Controller) {
                               setState(() {
                                 if (diagonal2Controller != '') {
@@ -959,10 +992,13 @@ class _Step_1State extends State<Step_1> {
                                 //fillColor: Colors.green
                                 ),
                             key: Key(diagonalCalculations()),
-                            initialValue:
-                                printData['project']['plot_size'] != null
+                            initialValue: printData != null
+                                ? printData['project'] != null
+                                    // ? printData['project']['plot_size'] != null
                                     ? printData['project']['plot_size']
-                                    : plotValue,
+                                    // : plotValue
+                                    : ''
+                                : '',
                             onChanged: (value) {
                               setState(() {
                                 if (plotLenght == 0 || plotWidth == 0) {
@@ -1155,14 +1191,18 @@ class _Step_1State extends State<Step_1> {
                     Checkbox(
                       activeColor: checkColor,
                       checkColor: Colors.white,
-                      value: printData["project"]["east_property"] == 1
-                          ? true
+                      value: printData['project'] != null
+                          ? printData["project"]["east_property"] == 1
+                              ? true
+                              : eastRoad
                           : eastRoad,
                       onChanged: (value) {
                         // print?(printData["project"]["east_property"]);
                         setState(() {
                           eastRoad = !eastRoad;
-                          printData["project"]["east_property"] = "0";
+                          if (printData['project'] != null) {
+                            printData["project"]["east_property"] = "0";
+                          }
                           if (otherEast = true) {
                             otherEast = false;
                           }
@@ -1173,8 +1213,9 @@ class _Step_1State extends State<Step_1> {
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    if (eastRoad == true ||
-                        printData["project"]["east_property"] == 1) ...[
+                    if (printData['project'] != null
+                        ? printData["project"]["east_property"] == 1
+                        : eastRoad == true) ...[
                       Material(
                         elevation: 5,
                         borderRadius:
@@ -1184,8 +1225,9 @@ class _Step_1State extends State<Step_1> {
                           width: width * 0.2,
                           child: TextFormField(
                             // controller: nameController,
-                            initialValue: printData["project"]
-                                ['east_road_width_feet'],
+                            initialValue: printData['project'] != null
+                                ? printData["project"]['east_road_width_feet']
+                                : eastController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Road width",
@@ -1231,12 +1273,16 @@ class _Step_1State extends State<Step_1> {
                     Checkbox(
                       activeColor: checkColor,
                       checkColor: Colors.white,
-                      value: printData["project"]["west_property"] == "1"
-                          ? true
+                      value: printData['project'] != null
+                          ? printData["project"]["west_property"] == "1"
+                              ? true
+                              : westRoad
                           : westRoad,
                       onChanged: (value) {
                         setState(() {
-                          printData["project"]["west_property"] = "0";
+                          if (printData['project'] != null) {
+                            printData["project"]["west_property"] = "0";
+                          }
                           westRoad = !westRoad;
                           if (otherwest = true) {
                             otherwest = false;
@@ -1248,8 +1294,9 @@ class _Step_1State extends State<Step_1> {
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    if (westRoad == true ||
-                        printData["project"]["west_property"] == "1") ...[
+                    if (printData['project'] != null
+                        ? printData["project"]["west_property"] == "1"
+                        : westRoad == true) ...[
                       Material(
                         elevation: 5,
                         borderRadius:
@@ -1259,8 +1306,9 @@ class _Step_1State extends State<Step_1> {
                           width: width * 0.18,
                           child: TextFormField(
                             // controller: nameController,
-                            initialValue: printData["project"]
-                                ['west_road_width_feet'],
+                            initialValue: printData['project'] != null
+                                ? printData["project"]['west_road_width_feet']
+                                : westController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Road width",
@@ -1305,12 +1353,16 @@ class _Step_1State extends State<Step_1> {
                     Checkbox(
                         activeColor: checkColor,
                         checkColor: Colors.white,
-                        value: printData["project"]["east_property"] == 1
-                            ? true
+                        value: printData['project'] != null
+                            ? printData["project"]["east_property"] == 1
+                                ? true
+                                : nortRoad
                             : nortRoad,
                         onChanged: (value) {
                           setState(() {
-                            printData["project"]["east_property"] = 0;
+                            if (printData['project'] != null) {
+                              printData["project"]["east_property"] = 0;
+                            }
                             nortRoad = !nortRoad;
                             if (otherNortn = true) {
                               otherNortn = false;
@@ -1321,8 +1373,9 @@ class _Step_1State extends State<Step_1> {
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    if (nortRoad == true ||
-                        printData["project"]["east_property"] == 1) ...[
+                    if (printData['project'] != null
+                        ? printData["project"]["east_property"] == 1
+                        : nortRoad == true) ...[
                       Material(
                         elevation: 5,
                         borderRadius:
@@ -1332,8 +1385,9 @@ class _Step_1State extends State<Step_1> {
                           width: width * 0.18,
                           child: TextFormField(
                             // controller: nameController,
-                            initialValue: printData["project"]
-                                ['north_road_width_feet'],
+                            initialValue: printData['project'] != null
+                                ? printData["project"]['north_road_width_feet']
+                                : northController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Road width",
@@ -1380,8 +1434,10 @@ class _Step_1State extends State<Step_1> {
                     Checkbox(
                         activeColor: checkColor,
                         checkColor: Colors.white,
-                        value: printData["project"]["south_property"] == "1"
-                            ? true
+                        value: printData['project'] != null
+                            ? printData["project"]["south_property"] == "1"
+                                ? true
+                                : southRoad
                             : southRoad,
                         onChanged: (value) {
                           setState(() {
@@ -1396,8 +1452,9 @@ class _Step_1State extends State<Step_1> {
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    if (southRoad == true ||
-                        printData["project"]["south_property"] == "1") ...[
+                    if (printData['project'] != null
+                        ? printData["project"]["south_property"] == "1"
+                        : southRoad == true) ...[
                       Material(
                         elevation: 5,
                         borderRadius:
@@ -1407,8 +1464,9 @@ class _Step_1State extends State<Step_1> {
                           width: width * 0.18,
                           child: TextFormField(
                             // controller: nameController,
-                            initialValue: printData["project"]
-                                ['north_road_width_feet'],
+                            initialValue: printData['project'] != null
+                                ? printData["project"]['north_road_width_feet']
+                                : southController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Road width",
@@ -1512,9 +1570,11 @@ class _Step_1State extends State<Step_1> {
                           padding: const EdgeInsets.all(5),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
-                              hint: printData['project']['level'] != null
-                                  ? Text(
-                                      "${levels[printData['project']['level']]}")
+                              hint: printData['project'] != null
+                                  ? printData['project']['level'] != null
+                                      ? Text(
+                                          "${levels[printData['project']['level']]}")
+                                      : Text(selectedLevel)
                                   : Text(selectedLevel),
                               // value: selectedLevel,
                               icon: const Icon(Icons.keyboard_arrow_down_sharp),
@@ -1556,8 +1616,9 @@ class _Step_1State extends State<Step_1> {
                           width: width * 0.22,
                           child: TextFormField(
                             // controller: nameController,
-                            initialValue: printData["project"]
-                                ['level_value_feet'],
+                            initialValue: printData['project'] != null
+                                ? printData["project"]['level_value_feet']
+                                : lengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Road width",
@@ -1591,8 +1652,9 @@ class _Step_1State extends State<Step_1> {
                           width: width * 0.22,
                           child: TextFormField(
                             // controller: nameController,
-                            initialValue: printData["project"]
-                                ['level_value_feet'],
+                            initialValue: printData['project'] != null
+                                ? printData["project"]['level_value_feet']
+                                : levelController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                               hintText: "Road width",
@@ -1713,8 +1775,8 @@ class _Step_1State extends State<Step_1> {
                       notReqiredInt,
                     );
                     project_id = provider.project_id;
-                    print("project_id");
-                    print(project_id);
+                    // print("project_id");
+                    // print(project_id);
                   },
                   child: Container(
                     decoration: BoxDecoration(

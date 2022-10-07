@@ -85,7 +85,7 @@ class _Step_4State extends State<Step_4> {
     "select room Type",
     "Proper room",
     "Only place"
-  ];
+  ]; 
 
   bool? poojaRoomRequired = false;
   bool? poojaRoomNotRequired = false;
