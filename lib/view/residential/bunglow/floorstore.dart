@@ -92,7 +92,10 @@ class _FloorStoreState extends State<FloorStore> {
   String openingToLiHa = "";
 
   bool isloading = false;
+
+
   var printData;
+
   Future<void> getData() async {
     try {
       // var client = http.Client();
@@ -325,7 +328,7 @@ class _FloorStoreState extends State<FloorStore> {
                       SizedBox(
                         width: width * 0.02,
                       ),
-                      if (selectedFloor == "other") ...[
+                      if (selectedFloor == "other" ) ...[
                         Material(
                           elevation: 5,
                           borderRadius:
