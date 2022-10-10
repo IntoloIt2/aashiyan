@@ -149,7 +149,7 @@ void multiSelected() async {
 
       http: //sdplweb.com/sdpl/api/edit-bungalow-drawing-hall/project_id
       var response = await http.get(Uri.parse(
-          "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-drawing-hall/179"));
+          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-drawing-hall/179"));
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
