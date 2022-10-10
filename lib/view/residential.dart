@@ -6,13 +6,22 @@ import 'package:flutter/material.dart';
 import '../components/app_bar.dart';
 import '../components/project_category.dart';
 import '../controller/api_services.dart';
+import '../controller/auth_controller.dart';
 
-class Residential extends StatelessWidget {
+class Residential extends StatefulWidget {
   const Residential({Key? key}) : super(key: key);
   static const namedRoute = '/residential';
 
   @override
+  State<Residential> createState() => _ResidentialState();
+}
+
+class _ResidentialState extends State<Residential> {
+  @override
   Widget build(BuildContext context) {
+    // List dialog = [
+
+    // ]
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -212,9 +221,17 @@ class Residential extends StatelessWidget {
               ),
               label: ""),
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
-                color: iconColor,
+              icon: IconButton(
+                icon: Icon(
+                  Icons.person,
+                  color: iconColor,
+                ),
+                onPressed: () {
+                  showDialog(
+                    builder: (context) => loginDialog(context),
+                    context: context,
+                  );
+                },
               ),
               label: ""),
         ],
