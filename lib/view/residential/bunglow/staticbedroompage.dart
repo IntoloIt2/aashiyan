@@ -6528,7 +6528,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
               final response = await http.post(
                 // Uri.parse(baseUrlLocal + "project"),
                 Uri.parse(
-                    'http://192.168.1.99:8080/sdplserver/api/bungalow-bedroom'),
+                    'http://192.168.0.99:8080/sdplserver/api/bungalow-bedroom'),
                 headers: <String, String>{
                   'Content-Type': 'application/json; charset=UTF-8',
                 },

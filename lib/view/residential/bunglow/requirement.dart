@@ -22,8 +22,8 @@ class _RequirementState extends State<Requirement> {
   String addressController = "";
   String? diagonal1Controller = '';
   String? diagonal2Controller = '';
-  String eastController  = "";
-  String westController  = "";
+  String eastController = "";
+  String westController = "";
   String northController = "";
   String southController = "";
   String levelController = "";
@@ -69,7 +69,7 @@ class _RequirementState extends State<Requirement> {
   String country = "India";
 
   // String selectCity = "select";
-  
+
   String myState = "Select State";
 
   int cityId = 0;
@@ -166,7 +166,7 @@ class _RequirementState extends State<Requirement> {
     try {
       // var client = http.Client();
       var response = await http.get(
-        Uri.parse("http://192.168.1.99:8080/sdplserver/api/edit-project/179"),
+        Uri.parse("http://192.168.0.99:8080/sdplserver/api/edit-project/179"),
       );
 
       if (response.statusCode == 200) {
@@ -1160,7 +1160,8 @@ class _RequirementState extends State<Requirement> {
                   SizedBox(
                     width: width * 0.01,
                   ),
-                  if (westRoad == true || printData["project"]["west_property"] == "1") ...[
+                  if (westRoad == true ||
+                      printData["project"]["west_property"] == "1") ...[
                     Material(
                       elevation: 5,
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -1272,7 +1273,6 @@ class _RequirementState extends State<Requirement> {
                 children: [
                   requirementText("South"),
                   Checkbox(
-                      
                       activeColor: checkColor,
                       checkColor: Colors.white,
                       value: otherSouth,
@@ -1455,7 +1455,7 @@ class _RequirementState extends State<Requirement> {
                       ),
                     ),
                   ),
-                  if(selectedLevel == "Up")...[
+                  if (selectedLevel == "Up") ...[
                     Material(
                       elevation: 5,
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -1489,7 +1489,7 @@ class _RequirementState extends State<Requirement> {
                     ),
                     valueContainer(height, width, size, 0.039, 0.05)
                   ],
-                  if (selectedLevel == "Down")...[
+                  if (selectedLevel == "Down") ...[
                     Material(
                       elevation: 5,
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -1498,23 +1498,21 @@ class _RequirementState extends State<Requirement> {
                         width: width * 0.22,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue: printData["project"]['level_value_feet'],
+                          initialValue: printData["project"]
+                              ['level_value_feet'],
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
-
-                              hintText: "Road width",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              isDense: true,
-                              contentPadding: EdgeInsets.all(8),
-                           // fillColor: Colors.green
-                              ),
+                            hintText: "Road width",
+                            hintStyle: TextStyle(fontSize: 14),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                            ),
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(8),
+                            // fillColor: Colors.green
+                          ),
                           onChanged: (value) {
-
                             levelController = value;
-
                           },
                         ),
                       ),

@@ -2,10 +2,13 @@ import 'package:aashiyan/components/bungalow_steps.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/components/project_category.dart';
 import 'package:aashiyan/controller/api_controller.dart';
+import 'package:aashiyan/view/residential/bunglow/bungalow_gallery.dart';
+import 'package:aashiyan/view/residential/bunglow/preExisting.dart';
 // import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 // import 'package:http/http.dart';
 
 import '../../../components/app_bar.dart';
@@ -28,28 +31,42 @@ class Bunglow extends StatelessWidget {
             projectCategory(),
             Column(
               children: [
-                Card(
-                  child: ListTile(
-                    leading: Container(
-                      child: Image.asset("assets/images/existing.png"),
-                    ),
-                    title: Text(
-                      "Pre-existing",
-                      style: TextStyle(
-                        fontSize: height * 0.025,
-                        fontWeight: FontWeight.w500,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PreExisting(),
+                        ));
+                  },
+                  child: Card(
+                    child: ListTile(
+                      leading: Container(
+                        child: Image.asset("assets/images/existing.png"),
+                      ),
+                      title: Text(
+                        "Pre-existing",
+                        style: TextStyle(
+                          fontSize: height * 0.025,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
                 ),
-                Card(
-                  child: ListTile(
-                    leading: Image.asset("assets/images/gallery_icon.png"),
-                    title: Text(
-                      "Gallery",
-                      style: TextStyle(
-                        fontSize: height * 0.025,
-                        fontWeight: FontWeight.w500,
+                InkWell(
+                  onTap: () {
+                    Get.to(BungalowGallery());
+                  },
+                  child: Card(
+                    child: ListTile(
+                      leading: Image.asset("assets/images/gallery_icon.png"),
+                      title: Text(
+                        "Gallery",
+                        style: TextStyle(
+                          fontSize: height * 0.025,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),

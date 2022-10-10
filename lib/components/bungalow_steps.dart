@@ -3,6 +3,7 @@ import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:aashiyan/view/residential/bunglow/floorstore.dart';
 import 'package:aashiyan/view/residential/bunglow/livinghall.dart';
 import 'package:aashiyan/view/residential/bunglow/pantrydetail.dart';
+import 'package:aashiyan/view/residential/bunglow/payment.dart';
 import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:flutter/material.dart';
 import '../view/residential/bunglow/bedroom.dart';
@@ -10,6 +11,8 @@ import '../view/residential/bunglow/bedroom.dart';
 import '../view/residential/bunglow/builtup.dart';
 import '../view/residential/bunglow/entrance.dart';
 import '../view/residential/bunglow/staticbedroompage.dart';
+// import '../view/residential/bunglow/buildUp.dart';
+import '../view/residential/bunglow/test.dart';
 import 'steps_container.dart';
 
 int? index = 0;
@@ -126,6 +129,9 @@ class _BunglowStepsState extends State<BunglowSteps> {
                 },
                 child: stepsContainer("step8"),
               ),
+              const SizedBox(
+                width: 10,
+              ),
             ],
           )
         ],
@@ -142,7 +148,8 @@ List Pages = [
   FloorStore(),
   StaticBedroomPage(),
   Basement(),
-  BuiltUp()
+  BuiltUp(),
+  Payment()
 ];
 
 class StepPages extends StatefulWidget {
@@ -188,7 +195,6 @@ class _StepPagesState extends State<StepPages> {
                             setState(() {
                               index = 1;
                               st = "Entrance";
-                            
                             });
                           },
                           child: stepsContainer("Step 2"),
@@ -263,13 +269,27 @@ class _StepPagesState extends State<StepPages> {
                           },
                           child: stepsContainer("step8"),
                         ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                (context),
+                                MaterialPageRoute(
+                                    builder: ((context) => Payment())));
+                            setState(() {
+                            });
+                          },
+                          child: stepsContainer("Payment"),
+                        ),
                       ],
                     ),
                   )
                 ],
               ),
             ),
-            SizedBox(
+           const SizedBox(
               height: 10,
             ),
             Container(
