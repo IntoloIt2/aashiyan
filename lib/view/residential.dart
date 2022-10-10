@@ -1,9 +1,11 @@
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/view/residential/bunglow/bunglow.dart';
 import 'package:aashiyan/view/residential/house-duplex/houseduplex.dart';
+import 'package:aashiyan/view/residential/house-duplex/providers/residential_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../components/app_bar.dart';
 import '../components/project_category.dart';
@@ -17,6 +19,7 @@ class Residential extends StatelessWidget {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    var provider = Provider.of<ResidentialProvider>(context, listen: true);
     return Scaffold(
       appBar: appBar("Residential"),
       body: SingleChildScrollView(
@@ -63,8 +66,12 @@ class Residential extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
                       Navigator.of(context).pushNamed(HouseDuplex.namedRoute);
+                      var getProjectGroupId =
+                          await provider.getProjectGroupData();
+                      // print("getProjectGroupId==");
+                      // print(getProjectGroupId);
                     },
                     child: Stack(
                       alignment: Alignment.center,

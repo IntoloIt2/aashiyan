@@ -1,4 +1,5 @@
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
+import 'package:aashiyan/view/residential/house-duplex/providers/residential_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:aashiyan/components/bungalow_steps.dart';
 import 'package:aashiyan/const.dart';
@@ -28,6 +29,7 @@ void main() async {
   await dotenv.load(fileName: ".env");
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => PageNavProvider()),
+    ChangeNotifierProvider(create: (_) => ResidentialProvider())
   ], child: const MyApp()));
 }
 

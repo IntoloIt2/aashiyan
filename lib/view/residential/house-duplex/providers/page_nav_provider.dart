@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 class PageNavProvider with ChangeNotifier {
   // bool loading = false;
   int project_id = 0;
+  var temp;
   Future<dynamic> requirementPost(
     int userId,
     int projectGroupId,
@@ -24,7 +25,7 @@ class PageNavProvider with ChangeNotifier {
     String plotWidth,
     String diagonal1,
     String diagonal2,
-    String plotSize,
+    var plotSize,
     String handSketch,
     int plotOrientation,
     String handSketchOrientation,
@@ -41,11 +42,12 @@ class PageNavProvider with ChangeNotifier {
     int apmt,
   ) async {
     // loading = true;
-    notifyListeners();
+    // notifyListeners();
 
     var projectData = {
-      "user_id": 123,
-      "project_group_id": 5,
+      "user_id": userId,
+      "project_group_id": projectGroupId,
+      "project_type_id": ProjectTypeId,
       "prefix": prefix,
       "first_name": firstName,
       "last_name": lastName,
@@ -54,7 +56,6 @@ class PageNavProvider with ChangeNotifier {
       "state": state,
       "city": city,
       "dimension": dimension,
-      "project_type_id": ProjectTypeId,
       "address": address,
       "plot_type": plotType,
       "plot_length": plotLenght,
@@ -76,7 +77,8 @@ class PageNavProvider with ChangeNotifier {
       "south_road_width": southRoadWidth,
     };
 
-    // print(projectData);
+    print("projectData====");
+    print(projectData);
 
     final response = await http.post(
       // Uri.parse(baseUrlLocal + "project"),
@@ -86,7 +88,14 @@ class PageNavProvider with ChangeNotifier {
       },
       body: jsonEncode(projectData),
     );
-    var temp = jsonDecode(response.body);
-    project_id = temp['project_id'];
+    temp = jsonDecode(response.body);
+  }
+
+  int getId() {
+    if (temp != null) {
+      project_id = temp['project_id'];
+    }
+    // notifyListeners();
+    return project_id;
   }
 }
