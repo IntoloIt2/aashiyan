@@ -55,27 +55,21 @@ class _BuiltUpState extends State<BuiltUp> {
 
   bool? SuperRequirment = false;
   bool? SuperNotRequire = false;
-  int SuperInt = 0;
 
   bool? PremiumRequirment = false;
   bool? PremiumNotRequire = false;
-  int PremiumInt = 0;
 
   bool? StandardRequirment = false;
   bool? StandardNotRequire = false;
-  int StdLuxInt = 0;
 
   bool? BasicRequirment = false;
   bool? BasicNotRequire = false;
-  int BasicInt = 0;
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
   bool? ConceptRequirment = false;
   bool? ConceptNotRequire = false;
-  int ConceptInt = 0;
 
   bool? D3Requirment = false;
   bool? D3NotRequire = false;
-  int D3Int = 0;
 
   bool? WorkingRequirment = false;
   bool? WorkingNotRequire = false;
@@ -537,7 +531,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                                 SuperRequirment = false;
                                                 projectCostCalculation();
 
-                                                if (StandardRequirment == 
+                                                if (StandardRequirment ==
                                                     true) {
                                                   drawingDesign(drawingValue);
                                                 } else {
@@ -3487,7 +3481,7 @@ class _BuiltUpState extends State<BuiltUp> {
       payDesFees = payDesFees + mscCost;
     }
 
-    return (payDesFees);
+    return payDesFees;
   }
   // int () {}
 

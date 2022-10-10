@@ -11,7 +11,8 @@ String modelBedroomToJson(List<ModelBedroom> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ModelBedroom {
-  ModelBedroom({
+  ModelBedroom(
+    {
     required this.id,
     required this.projectId,
     required this.bedroom,
@@ -42,7 +43,6 @@ class ModelBedroom {
     required this.bedroomDressWidthFeet,
     required this.bedroomDressAreaFeet,
   });
-
   final int id;
   final int projectId;
   final String bedroom;
