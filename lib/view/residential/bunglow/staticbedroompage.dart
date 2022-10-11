@@ -244,7 +244,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
       var response = await http.get(
         Uri.parse(
           "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-bedroom/$project_id",
-         
         ),
       );
 
@@ -9347,7 +9346,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   alignment: Alignment.topLeft,
                                   child: requirementText("Room Facility"),
                                 ),
-                                 Material(
+                                Material(
                                   borderRadius: BorderRadius.circular(5),
                                   elevation: 5,
                                   child: Container(
@@ -9721,7 +9720,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                     // _value.putIfAbsent("bedrooms", () => jsonUser);
                     // print(jsonEncode(_value));
                     // print(_values[0]["bedroom_length"]);
-                    //  print(masterLength);
+                    // print(masterLength);
                     // print({'dimension': 1, "project_id": 567, "bedrooms": jsonUser});
 
                     if (project_id == null) {

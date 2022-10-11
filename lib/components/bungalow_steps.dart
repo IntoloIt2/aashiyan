@@ -8,7 +8,6 @@ import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:flutter/material.dart';
 import '../view/residential/bunglow/bedroom.dart';
 
-import '../view/residential/bunglow/builtup.dart';
 import '../view/residential/bunglow/entrance.dart';
 import '../view/residential/bunglow/staticbedroompage.dart';
 // import '../view/residential/bunglow/buildUp.dart';
@@ -278,8 +277,7 @@ class _StepPagesState extends State<StepPages> {
                                 (context),
                                 MaterialPageRoute(
                                     builder: ((context) => Payment())));
-                            setState(() {
-                            });
+                            setState(() {});
                           },
                           child: stepsContainer("Payment"),
                         ),
@@ -289,7 +287,7 @@ class _StepPagesState extends State<StepPages> {
                 ],
               ),
             ),
-           const SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(
