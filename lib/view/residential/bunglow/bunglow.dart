@@ -111,6 +111,7 @@ class Bunglow extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            
                             Text(
                               "Our pretigious Bunglow Projects",
                               style: TextStyle(

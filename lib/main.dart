@@ -1,4 +1,7 @@
- import 'package:aashiyan/components/bungalow_steps.dart';
+import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
+import 'package:aashiyan/view/residential/house-duplex/providers/residential_provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:aashiyan/components/bungalow_steps.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/view/homepage.dart';
@@ -13,14 +16,21 @@ import 'package:aashiyan/view/residential.dart';
 import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:aashiyan/view/residential/bunglow/staticbedroompage.dart';
 import 'package:aashiyan/view/residential/bunglow/testing.dart';
+import 'package:aashiyan/view/residential/house-duplex/houseduplex.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:provider/provider.dart';
 
 import 'view/residential/bunglow/bedpratise.dart';
+import 'view/residential/house-duplex/pages/pageNav.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  await dotenv.load(fileName: ".env");
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => PageNavProvider()),
+    ChangeNotifierProvider(create: (_) => ResidentialProvider())
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -41,15 +51,17 @@ class MyApp extends StatelessWidget {
       ),
       home: HomePage(),
       routes: {
-        Residential.namedRoute:  (context)  => Residential(),
-        Bunglow.namedRoute:      (context)  => Bunglow(),
-        Requirement.namedRoute:  (context)  => Requirement(),
-        Entrance.namedRoute:     (context)  => Entrance(),
-        LivingHall.namedRoute:   (context)  => LivingHall(),
-        PantryDetail.namedRoute: (context)  => PantryDetail(),
-        FloorStore.namedRoute:   (context)  => FloorStore(),
-        Basement.namedRoute:     (context)  => Basement(),
-        StepPages.namedRoute:    (context)  => StepPages(),
+        Residential.namedRoute: (context) => Residential(),
+        HouseDuplex.namedRoute: (context) => HouseDuplex(),
+        Bunglow.namedRoute: (context) => Bunglow(),
+        Requirement.namedRoute: (context) => Requirement(),
+        Entrance.namedRoute: (context) => Entrance(),
+        LivingHall.namedRoute: (context) => LivingHall(),
+        PantryDetail.namedRoute: (context) => PantryDetail(),
+        FloorStore.namedRoute: (context) => FloorStore(),
+        Basement.namedRoute: (context) => Basement(),
+        StepPages.namedRoute: (context) => StepPages(),
+        PageNav.namedRoute: (context) => PageNav()
       },
     );
   }
