@@ -337,7 +337,12 @@ class _Step_1State extends State<Step_1> {
                         height: height * 0.04,
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            value: selectedItems,
+                            // hint: Text(selectedItems),
+                            hint: printData != null
+                                ? printData['project'] != null
+                                    ? Text(printData['project']['prefix'])
+                                    : Text(selectedItems)
+                                : Text(selectedItems),
                             icon: const Icon(Icons.keyboard_arrow_down_sharp),
                             elevation: 16,
                             items: items
@@ -352,15 +357,22 @@ class _Step_1State extends State<Step_1> {
                                 .toList(),
                             onChanged: (it) => setState(
                               () {
-                                if (it == "MR") {
-                                  selectedItemInt = 1;
-                                } else if (it == "MRS") {
-                                  selectedItemInt = 2;
-                                } else if (it == "MS") {
-                                  selectedItemInt = 3;
-                                }
+                                // if (it == PREFIX_MR) {
+                                //   selectedItemInt = MR;
+                                // } else if (it == PREFIX_MRS) {
+                                //   selectedItemInt = MRS;
+                                // } else if (it == PREFIX_MS) {
+                                //   selectedItemInt = MS;
+                                // } else if (it == PREFIX_M_S) {
+                                //   selectedItemInt = M_S;
+                                // }
                                 // print(items.indexOf(it!));
                                 selectedItems = it!;
+                                if (printData['project'] != null &&
+                                    printData != null) {
+                                  printData['project']['prefix'] =
+                                      selectedItems;
+                                }
                                 // print(
                                 //     "${DotEnv().env['APP_URL']}edit-project/179");
                                 // selectedItems = items.indexOf(it);
@@ -1869,7 +1881,7 @@ class _Step_1State extends State<Step_1> {
 
                         if (westRoad == true) {
                           isWest = WEST_PROPERTY;
-                        } else if (westRoad == true) {
+                        } else if (otherwest == true) {
                           isWest = WEST_OTHER_PROPERTY;
                         }
                         // if (otherwest == true) {
