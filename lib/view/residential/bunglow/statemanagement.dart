@@ -4,15 +4,11 @@ import 'package:aashiyan/view/residential/bunglow/bedroom.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-
-
 class StateManagement extends GetxController {
   List users = [].obs;
   List printData = [].obs;
   var _user = User();
   bool isMaintain = false;
-
-
 
   @override
   void onInit() async {
@@ -21,8 +17,6 @@ class StateManagement extends GetxController {
     // await Future.delayed(const Duration(seconds: 5));
   }
 
-
-
   Future<void> getData() async {
     try {
       // var client = http.Client();
@@ -30,7 +24,7 @@ class StateManagement extends GetxController {
 
       var response = await http.get(
         Uri.parse(
-            "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-bedroom/179"),
+            "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-bedroom/179"),
       );
       // print(response);
       // print("response");
@@ -72,10 +66,9 @@ class StateManagement extends GetxController {
       BedRoom(
         user: _user,
         onDelete: () => onDlete(_user),
-
       ),
     );
-  // print(users.map((e) => print(e)));
+    // print(users.map((e) => print(e)));
   }
 
   void onDlete(User _user) {
@@ -89,7 +82,6 @@ class StateManagement extends GetxController {
     //     printData["bungalow_bedroom"].indexOf(find),
     //   );});
     var find = users.firstWhere(
-      
       (it) => it.user == _user,
       orElse: () => null!,
     );
