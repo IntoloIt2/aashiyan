@@ -536,7 +536,7 @@ class _BasementState extends State<Basement> {
     var width = MediaQuery.of(context).size.width;
 
     // print(otherFacilities);
-    
+
     return viewData == null
         ? Container(child: CircularProgressIndicator())
         : Container(
@@ -4596,7 +4596,6 @@ class _BasementState extends State<Basement> {
                           gardenSpecificRequiremnt,
                         );
                       } else {
-
                         print("value is posting");
 
                         BasementPost(

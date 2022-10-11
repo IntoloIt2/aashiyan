@@ -163,12 +163,12 @@ class _RequirementState extends State<Requirement> {
   var printData;
 
   Future<void> getData() async {
+
     try {
       // var client = http.Client();
       var response = await http.get(
         Uri.parse("http://192.168.0.99:8080/sdplserver/api/edit-project/179"),
       );
-
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
