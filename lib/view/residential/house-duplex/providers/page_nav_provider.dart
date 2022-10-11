@@ -77,8 +77,8 @@ class PageNavProvider with ChangeNotifier {
       "south_road_width": southRoadWidth,
     };
 
-    print("projectData====");
-    print(projectData);
+    // print("projectData====");
+    // print(projectData);
 
     final response = await http.post(
       // Uri.parse(baseUrlLocal + "project"),
