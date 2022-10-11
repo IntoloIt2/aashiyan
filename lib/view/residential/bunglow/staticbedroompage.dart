@@ -9721,7 +9721,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                     // _value.putIfAbsent("bedrooms", () => jsonUser);
                     // print(jsonEncode(_value));
                     // print(_values[0]["bedroom_length"]);
-                    //  print(masterLength);
+                    // print(masterLength);
                     // print({'dimension': 1, "project_id": 567, "bedrooms": jsonUser});
 
                     if (project_id == null) {

@@ -3401,7 +3401,8 @@ class _BuiltUpState extends State<BuiltUp> {
   }
 
   int setsOfDrawingFees(setsOfDrawing) {
-    int value = ((worCost ~/ 2) +
+    int value = (
+      (worCost ~/ 2) +
         opeCost +
         griCost +
         builCost +
