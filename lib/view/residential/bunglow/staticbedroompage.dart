@@ -9418,7 +9418,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             ? printData[o3i]
                                                     ['bedroom_facility'] ==
                                                 null
+<<<<<<< HEAD
                                             : other3RFac == null) ...[
+=======
+                                            : other3RoomFacility == null) ...[
+>>>>>>> 6fbb308101150a09210849eafc941b82f0771f9d
                                           Wrap(
                                             children: other3RoomFacility
                                                 .map((e) => Chip(
