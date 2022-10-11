@@ -11,7 +11,8 @@ String modelBedroomToJson(List<ModelBedroom> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ModelBedroom {
-  ModelBedroom({
+  ModelBedroom(
+    {
     required this.id,
     required this.projectId,
     required this.bedroom,
@@ -42,36 +43,35 @@ class ModelBedroom {
     required this.bedroomDressWidthFeet,
     required this.bedroomDressAreaFeet,
   });
-
-  int id;
-  int projectId;
-  String bedroom;
-  int bedroomFloor;
-  String bedroomLength;
-  String bedroomWidth;
-  String bedroomArea;
-  String bedroomToiletLength;
-  String bedroomToiletWidth;
-  String bedroomToiletArea;
-  String bedroomToiletReqText;
-  int bedroomDressReq;
-  String bedroomDressLength;
-  String bedroomDressWidth;
-  String bedroomDressArea;
-  String bedroomDressFacility;
-  String bedroomDressReqText;
-  dynamic bedroomImg;
-  String bedroomFacility;
-  String bedroomFacilityReqText;
-  String bedroomLengthFeet;
-  String bedroomWidthFeet;
-  String bedroomAreaFeet;
-  String bedroomToiletLengthFeet;
-  String bedroomToiletWidthFeet;
-  String bedroomToiletAreaFeet;
-  String bedroomDressLengthFeet;
-  String bedroomDressWidthFeet;
-  String bedroomDressAreaFeet;
+  final int id;
+  final int projectId;
+  final String bedroom;
+  final int bedroomFloor;
+  final String bedroomLength;
+  final String bedroomWidth;
+  final String bedroomArea;
+  final String bedroomToiletLength;
+  final String bedroomToiletWidth;
+  final String bedroomToiletArea;
+  final String bedroomToiletReqText;
+  final int bedroomDressReq;
+  final String bedroomDressLength;
+  final String bedroomDressWidth;
+  final String bedroomDressArea;
+  final String bedroomDressFacility;
+  final String bedroomDressReqText;
+  final dynamic bedroomImg;
+  final String bedroomFacility;
+  final String bedroomFacilityReqText;
+  final String bedroomLengthFeet;
+  final String bedroomWidthFeet;
+  final String bedroomAreaFeet;
+  final String bedroomToiletLengthFeet;
+  final String bedroomToiletWidthFeet;
+  final String bedroomToiletAreaFeet;
+  final String bedroomDressLengthFeet;
+  final String bedroomDressWidthFeet;
+  final String bedroomDressAreaFeet;
 
   factory ModelBedroom.fromJson(dynamic json) => ModelBedroom(
         id: json["id"],

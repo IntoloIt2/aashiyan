@@ -163,6 +163,23 @@ const superService = 4000;
 const premiumService = 3000;
 const standardService = 2000;
 const basicService = 1500;
+var payDesFees = 0;
+var user_id;
+var emailController;
+var projectId;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //bungalow bedroom
 // const MASTER_BEDROOM = 1;

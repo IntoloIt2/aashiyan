@@ -262,7 +262,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              bottomNavigationBar: customBottomNav()),
+              bottomNavigationBar: customBottomNav(context)),
         ),
         Container(
           color: Colors.white,

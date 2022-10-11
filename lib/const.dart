@@ -1,7 +1,13 @@
+import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/components/forms.dart';
+import 'package:aashiyan/view/homepage.dart';
+import 'package:aashiyan/view/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-BottomNavigationBar customBottomNav() {
+import 'controller/auth_controller.dart';
+
+BottomNavigationBar customBottomNav(BuildContext context) {
   return BottomNavigationBar(
     items: <BottomNavigationBarItem>[
       BottomNavigationBarItem(
@@ -29,9 +35,16 @@ BottomNavigationBar customBottomNav() {
           ),
           label: ""),
       BottomNavigationBarItem(
-          icon: Icon(
-            Icons.person,
-            color: iconColor,
+          icon: IconButton(
+            icon: Icon(
+              Icons.person,
+              color: iconColor,
+            ),
+            onPressed: () {
+              showDialog(
+                  builder: (context) => loginDialog(context),
+                  context: (context));
+            },
           ),
           label: ""),
     ],
