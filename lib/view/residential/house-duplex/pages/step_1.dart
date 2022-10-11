@@ -47,10 +47,10 @@ class _Step_1State extends State<Step_1> {
   int isNorthOrientaion = 0;
   int plot_orientaion = 0;
 
-  String isWest = "1";
-  String isNorth = "1";
-  String isSouth = "1";
-  String isEast = "1";
+  int isWest = 1;
+  int isNorth = 1;
+  int isSouth = 1;
+  int isEast = 1;
 
   bool? northOriented = false;
   bool? regularPlotValue = false;
@@ -192,7 +192,7 @@ class _Step_1State extends State<Step_1> {
         // print(jsonResponse);
         setState(() {
           printData = jsonResponse;
-
+          // print(printData);
           // project_id = printData['project_id'];
 
           if (printData != null && printData['project_id'] != null) {
@@ -254,7 +254,8 @@ class _Step_1State extends State<Step_1> {
   @override
   void initState() {
     super.initState();
-
+    print('printData-----');
+    print(printData);
     final store = Provider.of<PageNavProvider>(context, listen: false);
     // print('store.getId()');
     // print(store.getId());
@@ -358,7 +359,7 @@ class _Step_1State extends State<Step_1> {
                                 } else if (it == "MS") {
                                   selectedItemInt = 3;
                                 }
-                                print(items.indexOf(it!));
+                                // print(items.indexOf(it!));
                                 selectedItems = it!;
                                 // print(
                                 //     "${DotEnv().env['APP_URL']}edit-project/179");
@@ -1238,9 +1239,9 @@ class _Step_1State extends State<Step_1> {
                             // if (eastRoad == true) {
                             //   eastRoad = false;
                             // }
-                            if (printData['project'] != null) {
-                              printData["project"]["east_property"] =
-                                  EAST_PROPERTY;
+                            if (printData != null &&
+                                printData['project'] != null) {
+                              printData["project"]["east_property"] = eastRoad;
                             }
                           });
                         }),
@@ -1249,20 +1250,22 @@ class _Step_1State extends State<Step_1> {
                     Checkbox(
                       activeColor: checkColor,
                       checkColor: Colors.white,
-                      value: otherEast,
-                      // value: printData['project'] != null
-                      //     ? printData["project"]["east_property"] == 1
-                      //         ? true
-                      //         : otherEast
-                      //     : otherEast,
+                      // value: false,
+                      // value: printData != null ? otherEast : otherEast,
+                      value: printData['project'] != null
+                          ? printData["project"]["east_property"] ==
+                                  EAST_OTHER_PROPERTY
+                              ? true
+                              : otherEast
+                          : otherEast,
                       onChanged: (value) {
                         // print?(printData["project"]["east_property"]);
                         setState(() {
                           otherEast = value!;
                           eastRoad = false;
-                          if (printData['project'] != null) {
-                            printData["project"]["east_property"] =
-                                EAST_OTHER_PROPERTY;
+                          if (printData != null &&
+                              printData['project'] != null) {
+                            printData["project"]["east_property"] = otherEast;
                           }
                           // if (otherEast = true) {
                           //   otherEast = false;
@@ -1276,12 +1279,12 @@ class _Step_1State extends State<Step_1> {
                     ),
                     if (otherEast == true || printData != null
                         ? printData['project'] != null
-                            ? printData["project"]["east_property"] !=
-                                EAST_PROPERTY as int
-                            // ? printData["project"]["east_road_width"]
-                            // : otherEast == true
-                            : otherEast == true
-                        : otherEast == true) ...[
+                            ? printData["project"]["east_property"] ==
+                                    EAST_OTHER_PROPERTY
+                                ? true
+                                : otherEast!
+                            : otherEast!
+                        : otherEast!) ...[
                       Material(
                         elevation: 5,
                         borderRadius:
@@ -1323,19 +1326,21 @@ class _Step_1State extends State<Step_1> {
                       activeColor: checkColor,
                       checkColor: Colors.white,
                       // value: otherwest,
-                      value: printData['project'] != null
-                          ? printData["project"]["west_property"] ==
-                                  WEST_PROPERTY
-                              ? true
+                      value: printData != null
+                          ? printData['project'] != null
+                              ? printData["project"]["west_property"] ==
+                                      WEST_PROPERTY
+                                  ? true
+                                  : westRoad
                               : westRoad
                           : westRoad,
                       onChanged: (value) {
                         setState(() {
                           westRoad = value!;
                           otherwest = false;
-                          if (printData['project'] != null) {
-                            printData["project"]["west_property"] =
-                                WEST_PROPERTY;
+                          if (printData != null &&
+                              printData['project'] != null) {
+                            printData["project"]["west_property"] = westRoad;
                           }
                           // if (westRoad == true) {
                           //   westRoad = false;
@@ -1349,8 +1354,8 @@ class _Step_1State extends State<Step_1> {
                       checkColor: Colors.white,
                       // value: otherwest,
                       value: printData['project'] != null
-                          ? printData["project"]["west_property"] !=
-                                  WEST_PROPERTY
+                          ? printData["project"]["west_property"] ==
+                                  WEST_OTHER_PROPERTY
                               ? true
                               : otherwest
                           : otherwest,
@@ -1358,9 +1363,9 @@ class _Step_1State extends State<Step_1> {
                         setState(() {
                           otherwest = value!;
                           westRoad = false;
-                          if (printData['project'] != null) {
-                            printData["project"]["west_property"] =
-                                WEST_OTHER_PROPERTY;
+                          if (printData != null &&
+                              printData['project'] != null) {
+                            printData["project"]["west_property"] = otherwest;
                           }
                           // if (otherwest = true) {
                           //   otherwest = false;
@@ -1372,12 +1377,14 @@ class _Step_1State extends State<Step_1> {
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    if (otherwest == true || printData['project'] != null
-                        ? printData["project"]["west_property"] !=
-                            WEST_PROPERTY as int
-                        // ? printData["project"]["east_road_width"]
-                        // : otherEast == true
-                        : otherwest == true) ...[
+                    if (otherwest == true || printData != null
+                        ? printData['project'] != null
+                            ? printData["project"]["west_property"] ==
+                                    WEST_OTHER_PROPERTY
+                                ? true
+                                : otherwest!
+                            : otherwest!
+                        : otherwest!) ...[
                       // if (printData['project'] != null
                       //     ? printData["project"]["west_road_width"] != null
                       //         ? printData["project"]["west_road_width"]
@@ -1427,19 +1434,21 @@ class _Step_1State extends State<Step_1> {
                         activeColor: checkColor,
                         checkColor: Colors.white,
                         // value: otherNortn,
-                        value: printData['project'] != null
-                            ? printData["project"]["north_property"] ==
-                                    NORTH_PROPERTY
-                                ? true
+                        value: printData != null
+                            ? printData['project'] != null
+                                ? printData["project"]["north_property"] ==
+                                        NORTH_PROPERTY
+                                    ? true
+                                    : nortRoad
                                 : nortRoad
                             : nortRoad,
                         onChanged: (value) {
                           setState(() {
                             nortRoad = value!;
                             otherNortn = false;
-                            if (printData['project'] != null) {
-                              printData["project"]["north_property"] =
-                                  NORTH_PROPERTY;
+                            if (printData != null &&
+                                printData['project'] != null) {
+                              printData["project"]["north_property"] = nortRoad;
                             }
                             // if (nortRoad == true) {
                             //   nortRoad = false;
@@ -1452,8 +1461,8 @@ class _Step_1State extends State<Step_1> {
                         checkColor: Colors.white,
                         // value: otherNortn,
                         value: printData['project'] != null
-                            ? printData["project"]["north_property"] !=
-                                    NORTH_PROPERTY
+                            ? printData["project"]["north_property"] ==
+                                    EAST_OTHER_PROPERTY
                                 ? true
                                 : otherNortn
                             : otherNortn,
@@ -1466,9 +1475,9 @@ class _Step_1State extends State<Step_1> {
                           setState(() {
                             otherNortn = value!;
                             nortRoad = false;
-                            if (printData['project'] != null) {
-                              printData["project"]["north_property"] =
-                                  NORTH_OTHER_PROPERTY;
+                            if (printData != null &&
+                                printData['project'] != null) {
+                              printData["project"]["north_property"] = nortRoad;
                             }
                             // if (otherNortn = true) {
                             //   otherNortn = false;
@@ -1479,12 +1488,14 @@ class _Step_1State extends State<Step_1> {
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    if (otherNortn == true || printData['project'] != null
-                        ? printData["project"]["north_property"] !=
-                            NORTH_PROPERTY as int
-                        // ? printData["project"]["north_road_width"]
-                        // : otherNortn == true
-                        : otherNortn == true) ...[
+                    if (otherNortn == true || printData != null
+                        ? printData['project'] != null
+                            ? printData["project"]["north_property"] ==
+                                    NORTH_OTHER_PROPERTY
+                                ? true
+                                : otherNortn!
+                            : otherNortn!
+                        : otherNortn!) ...[
                       // if (
                       //   printData['project'] != null
                       //     ? printData["project"]["north_road_width"] != null
@@ -1534,10 +1545,12 @@ class _Step_1State extends State<Step_1> {
                         activeColor: checkColor,
                         checkColor: Colors.white,
                         // value: otherSouth,
-                        value: printData['project'] != null
-                            ? printData["project"]["south_property"] ==
-                                    SOUTH_PROPERTY
-                                ? true
+                        value: printData != null
+                            ? printData['project'] != null
+                                ? printData["project"]["south_property"] ==
+                                        SOUTH_PROPERTY
+                                    ? true
+                                    : southRoad
                                 : southRoad
                             : southRoad,
                         onChanged: (value) {
@@ -1545,7 +1558,8 @@ class _Step_1State extends State<Step_1> {
                             () {
                               southRoad = value!;
                               otherSouth = false;
-                              if (printData['project'] != null) {
+                              if (printData != null &&
+                                  printData['project'] != null) {
                                 printData["project"]["south_property"] =
                                     SOUTH_PROPERTY;
                               }
@@ -1561,8 +1575,8 @@ class _Step_1State extends State<Step_1> {
                         checkColor: Colors.white,
                         // value: otherSouth,
                         value: printData['project'] != null
-                            ? printData["project"]["south_property"] !=
-                                    SOUTH_PROPERTY
+                            ? printData["project"]["south_property"] ==
+                                    SOUTH_OTHER_PROPERTY
                                 ? true
                                 : otherSouth
                             : otherSouth,
@@ -1570,9 +1584,10 @@ class _Step_1State extends State<Step_1> {
                           setState(() {
                             otherSouth = value!;
                             southRoad = false;
-                            if (printData['project'] != null) {
+                            if (printData != null &&
+                                printData['project'] != null) {
                               printData["project"]["south_property"] =
-                                  SOUTH_OTHER_PROPERTY;
+                                  otherSouth;
                             }
                             // if (otherSouth = true) {
                             //   otherSouth = false;
@@ -1583,12 +1598,14 @@ class _Step_1State extends State<Step_1> {
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    if (otherSouth == true || printData['project'] != null
-                        ? printData["project"]["south_property"] !=
-                            SOUTH_PROPERTY
-                        // ? printData["project"]["north_road_width"]
-                        // : otherNortn == true
-                        : otherSouth == true) ...[
+                    if (otherSouth == true || printData != null
+                        ? printData['project'] != null
+                            ? printData["project"]["south_property"] ==
+                                    SOUTH_OTHER_PROPERTY
+                                ? true
+                                : otherSouth!
+                            : otherSouth!
+                        : otherSouth!) ...[
                       Material(
                         elevation: 5,
                         borderRadius:
@@ -1851,30 +1868,38 @@ class _Step_1State extends State<Step_1> {
                         }
 
                         if (westRoad == true) {
-                          isWest = "2";
+                          isWest = WEST_PROPERTY;
+                        } else if (westRoad == true) {
+                          isWest = WEST_OTHER_PROPERTY;
                         }
-                        if (otherwest == true) {
-                          isWest = "1";
-                        }
+                        // if (otherwest == true) {
+                        //   isWest = "1";
+                        // }
                         if (eastRoad == true) {
-                          isEast = "1";
+                          isEast = EAST_PROPERTY;
+                        } else if (otherEast == true) {
+                          isEast = EAST_OTHER_PROPERTY;
                         }
 
-                        if (otherEast == true) {
-                          isEast = "1";
-                        }
+                        // if (otherEast == true) {
+                        //   isEast = EAST_OTHER_PROPERTY;
+                        // }
                         if (nortRoad == true) {
-                          isNorth = "2";
+                          isNorth = NORTH_PROPERTY;
+                        } else if (otherNortn == true) {
+                          isNorth = NORTH_OTHER_PROPERTY;
                         }
-                        if (otherNortn == true) {
-                          isNorth = "1";
-                        }
+                        // if (otherNortn == true) {
+                        //   isNorth = "1";
+                        // }
                         if (southRoad == true) {
-                          isSouth = "2";
+                          isSouth = SOUTH_PROPERTY;
+                        } else if (otherSouth == true) {
+                          isSouth = SOUTH_OTHER_PROPERTY;
                         }
-                        if (otherSouth == true) {
-                          isSouth = "1";
-                        }
+                        // if (otherSouth == true) {
+                        //   isSouth = "1";
+                        // }
                         if (notReqired == true) {
                           notReqiredInt = 1;
                         }
