@@ -104,7 +104,7 @@ class _FloorStoreState extends State<FloorStore> {
 
       var response = await http.get(
         Uri.parse(
-          "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-floor-store/179",
+          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-floor-store/179",
         ),
       );
 
@@ -564,8 +564,7 @@ class _FloorStoreState extends State<FloorStore> {
                     child: SizedBox(
                       width: width * 9,
                       height: height * 0.3,
-                      child: 
-                      FutureBuilder(
+                      child: FutureBuilder(
                         future: getRecent(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==

@@ -244,7 +244,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
       var response = await http.get(
         Uri.parse(
           "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-bedroom/$project_id",
-         
         ),
       );
 
@@ -9347,7 +9346,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   alignment: Alignment.topLeft,
                                   child: requirementText("Room Facility"),
                                 ),
-                                 Material(
+                                Material(
                                   borderRadius: BorderRadius.circular(5),
                                   elevation: 5,
                                   child: Container(
@@ -9418,11 +9417,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             ? printData[o3i]
                                                     ['bedroom_facility'] ==
                                                 null
-<<<<<<< HEAD
                                             : other3RFac == null) ...[
-=======
-                                            : other3RoomFacility == null) ...[
->>>>>>> 6fbb308101150a09210849eafc941b82f0771f9d
                                           Wrap(
                                             children: other3RoomFacility
                                                 .map((e) => Chip(

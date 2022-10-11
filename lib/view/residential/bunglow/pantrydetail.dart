@@ -101,7 +101,7 @@ class _PantryDetailState extends State<PantryDetail> {
       // var client = http.Client();
       var response = await http.get(
         Uri.parse(
-          "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-pantry/179",
+          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-pantry/179",
         ),
       );
 

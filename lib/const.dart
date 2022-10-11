@@ -1,7 +1,13 @@
+import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/components/forms.dart';
+import 'package:aashiyan/view/homepage.dart';
+import 'package:aashiyan/view/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-BottomNavigationBar customBottomNav() {
+import 'controller/auth_controller.dart';
+
+BottomNavigationBar customBottomNav(BuildContext context) {
   return BottomNavigationBar(
     items: <BottomNavigationBarItem>[
       BottomNavigationBarItem(
@@ -29,9 +35,16 @@ BottomNavigationBar customBottomNav() {
           ),
           label: ""),
       BottomNavigationBarItem(
-          icon: Icon(
-            Icons.person,
-            color: iconColor,
+          icon: IconButton(
+            icon: Icon(
+              Icons.person,
+              color: iconColor,
+            ),
+            onPressed: () {
+              showDialog(
+                  builder: (context) => loginDialog(context),
+                  context: (context));
+            },
           ),
           label: ""),
     ],
@@ -105,7 +118,6 @@ Color expansionColor = HexColor("#E8F6F3");
 //     ),
 //   );
 // }
-
 
 // SingleChildScrollView buildSteps(BuildContext context) {
 //   return SingleChildScrollView(
@@ -197,29 +209,28 @@ BottomNavigationBar buildBottomNav() {
 //   );
 // }
 
-
- Row living(var height , var width){
-  return   Row(
-                  children: [
-                    requirementText("Length"),
-                    SizedBox(
-                      width: width * 0.015,
-                    ),
-                    requirementTextField(height, width, 0.04, 0.15, "length"),
-                    valueContainer(height, width, size, 0.04, 0.05),
-                    SizedBox(
-                      width: width * 0.02,
-                    ),
-                    requirementText("Width"),
-                    SizedBox(
-                      width: width * 0.015,
-                    ),
-                    requirementTextField(height, width, 0.04, 0.15, "Width"),
-                    valueContainer(height, width, size, 0.04, 0.05),
-                    SizedBox(
-                      width: width * 0.01,
-                    ),
-                    requirementText("help ?")
-                  ],
-                );
-                }     
+Row living(var height, var width) {
+  return Row(
+    children: [
+      requirementText("Length"),
+      SizedBox(
+        width: width * 0.015,
+      ),
+      requirementTextField(height, width, 0.04, 0.15, "length"),
+      valueContainer(height, width, size, 0.04, 0.05),
+      SizedBox(
+        width: width * 0.02,
+      ),
+      requirementText("Width"),
+      SizedBox(
+        width: width * 0.015,
+      ),
+      requirementTextField(height, width, 0.04, 0.15, "Width"),
+      valueContainer(height, width, size, 0.04, 0.05),
+      SizedBox(
+        width: width * 0.01,
+      ),
+      requirementText("help ?")
+    ],
+  );
+}

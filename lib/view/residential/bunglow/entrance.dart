@@ -154,7 +154,7 @@ class _EntranceState extends State<Entrance> {
       // var client = http.Client();
 
       var response = await http.get(Uri.parse(
-          "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-entrance/179"));
+          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-entrance/179"));
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);

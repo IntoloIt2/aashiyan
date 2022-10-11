@@ -135,7 +135,7 @@ class _MultiFormState extends State<MultiForm> {
               // print(finalResponse);
               final response = await http.post(
                 // Uri.parse(baseUrlLocal + "project"),
-                Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-bedroom'),
+                Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-bedroom'),
                 headers: <String, String>{
                   'Content-Type': 'application/json; charset=UTF-8',
                 },
