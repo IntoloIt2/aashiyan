@@ -1,32 +1,32 @@
 
-import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/view/residential/bunglow/bungalow_detail.dart';
 import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Multiplexer extends StatefulWidget {
-  const Multiplexer({super.key});
+import '../components/contants.dart';
+
+class CommercialShowroom extends StatefulWidget {
+  const CommercialShowroom({super.key});
 
   @override
-  State<Multiplexer> createState() => _MultiplexerState();
+  State<CommercialShowroom> createState() => _CommercialShowroomState();
 }
 
-class _MultiplexerState extends State<Multiplexer> {
+class _CommercialShowroomState extends State<CommercialShowroom> {
   var gallery;
   bool isloading = false;
-
   @override
-  initState() {
+  void initState() {
     super.initState();
 
     getData();
   }
 
+  @override
   void getData() async {
-    gallery = await getGalleryAPI(MALL_MULTIPLESER);
-
+    gallery = await getGalleryAPI(COMMERCIAL_SHOWROOM_OFFICE);
     if (gallery != null)
       setState(() {
         isloading = true;
@@ -34,7 +34,7 @@ class _MultiplexerState extends State<Multiplexer> {
   }
   // Future<void> fetchData() async {
   //   var response =
-  //       await http.get(Uri.parse('http://sdplweb.com/sdpl/api/get-gallery/2'));
+  //       await http.get(Uri.parse('http://sdplweb.com/sdpl/api/get-gallery/3'));
   //   final jsonResponse = jsonDecode(response.body);
 
   //   final finalArt = jsonResponse['gallery'];
@@ -47,7 +47,7 @@ class _MultiplexerState extends State<Multiplexer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: headingFont('Multiplexer'),
+        title: headingFont('Commercial Showroom'),
       ),
       body: Center(
         child: isloading == false
@@ -74,7 +74,7 @@ class _MultiplexerState extends State<Multiplexer> {
                           elevation: 10,
                           child: Column(
                             children: [
-                             Container(
+                                Container(
                                   height: 225,
                                   width:
                                       MediaQuery.of(context).size.width * .95,
@@ -90,9 +90,8 @@ class _MultiplexerState extends State<Multiplexer> {
                                 child: Container(
                                   child: gallery == []
                                       ? const CircularProgressIndicator()
-                                      : headingFont(gallery[i]['img_title']
-                                          .toString()
-                                          .toUpperCase()),
+                                      : headingFont(
+                                          gallery[i]['img_title'].toString().toUpperCase()),
                                 ),
                               ),
                               Padding(
@@ -103,8 +102,7 @@ class _MultiplexerState extends State<Multiplexer> {
                                       ? const CircularProgressIndicator()
                                       : headingFont(gallery[i]
                                               ['project_location']
-                                          .toString()
-                                          .toUpperCase()),
+                                          .toString().toUpperCase()),
                                 ),
                               ),
                             ],

@@ -1,3 +1,4 @@
+
 import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/view/residential/bunglow/bungalow_detail.dart';
@@ -5,14 +6,14 @@ import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Hotels extends StatefulWidget {
-  const Hotels({super.key});
+class MixUse extends StatefulWidget {
+  const MixUse({super.key});
 
   @override
-  State<Hotels> createState() => _HotelsState();
+  State<MixUse> createState() => _MixUseState();
 }
 
-class _HotelsState extends State<Hotels> {
+class _MixUseState extends State<MixUse> {
   bool isloading = false;
   var gallery;
   @override
@@ -21,10 +22,8 @@ class _HotelsState extends State<Hotels> {
     getData();
   }
 
-  // }
-
   void getData() async {
-    gallery = await getGalleryAPI(HOSPITALITY);
+    gallery = await getGalleryAPI(MIX_USE);
 
     print(gallery);
     if (gallery != null)
@@ -37,7 +36,7 @@ class _HotelsState extends State<Hotels> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: headingFont('Hospitality'),
+          title: headingFont('Mix Use Buildings'),
         ),
         body: Center(
           child: isloading == false

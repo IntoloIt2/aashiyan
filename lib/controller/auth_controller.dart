@@ -62,11 +62,6 @@ Future<void> verification(String Verify_code, context, int id) async {
 
   if (verification_res['status'] == 200) {
     showDialog(context: context, builder: loginDialog);
-    // Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (context) => Residential(),
-    //     ));
 
   } else {
     showDialog(
@@ -93,7 +88,6 @@ Future<void> login(String Email, String Password, context) async {
   );
 
   loginres = jsonDecode(response.body);
-  print(loginres);
 
   if (loginres['status'] == 200) {
     Navigator.push(

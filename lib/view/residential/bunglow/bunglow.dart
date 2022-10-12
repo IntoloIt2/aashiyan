@@ -33,11 +33,7 @@ class Bunglow extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PreExisting(),
-                        ));
+                    Get.to(PreExisting());
                   },
                   child: Card(
                     child: ListTile(

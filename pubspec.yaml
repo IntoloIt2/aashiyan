@@ -31,6 +31,8 @@ dependencies:
     sdk: flutter
   configurable_expansion_tile_null_safety: ^3.0.0
   fluttertoast: ^8.0.9
+  url_launcher: ^5.4.2
+  whatsapp_unilink: ^2.0.2
 
 
   # The following adds the Cupertino Icons font to your application.

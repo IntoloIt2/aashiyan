@@ -3,13 +3,16 @@ import 'dart:convert';
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/model/requirementmodel.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+
 var baseUrl = 'http://sdplweb.com/sdpl/api/';
-var baseUrlLocal = 'http://192.168.1.99:8080/sdplserver/api/';
+var baseUrlLocal = 'http://192.168.0.99:8080/sdplserver/api/';
 var imageUrl = 'http://sdplweb.com/sdpl/storage/app/public/';
 var bunglowPage =
     "http://sdplweb.com/sdpl/api/get-bungalow-prestigious-recent-image";
 var residentPage = "http://sdplweb.com/sdpl/api/get-residential-image";
 var homePage = "http://sdplweb.com/sdpl/api/get-project-image";
+// var getGallery = "http://sdplweb.com/sdpl/api/get-gallery/3";
 
 List bunglowPagePrestigiousList = [];
 List bunglowPageRecentList = [];
@@ -18,7 +21,6 @@ Future<void> getPrestigious() async {
   try {
     var url = Uri.parse(bunglowPage);
     var response = await http.get(url);
-    // print(response.body.toString());
     if (response.statusCode == 200) {
       bunglowPagePrestigiousList =
           jsonDecode(response.body)["prestigious_image"];
@@ -700,4 +702,13 @@ Future<void> BasementPost(
     body: jsonEncode(projectData),
   );
   print(response.body);
+}
+
+Future<dynamic> getGalleryAPI(int category) async {
+  print(category);
+  var response = await http.get(Uri.parse(baseUrl + "get-gallery/$category"));
+  final jsonResponse = jsonDecode(response.body);
+
+  final finalArt = jsonResponse['gallery'] as List;
+  return finalArt;
 }
