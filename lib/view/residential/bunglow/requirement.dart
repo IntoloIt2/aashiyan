@@ -181,7 +181,7 @@ class _RequirementState extends State<Requirement> {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
-          // print(printData);
+          print(printData);
         });
       }
     } catch (e) {
@@ -295,7 +295,9 @@ class _RequirementState extends State<Requirement> {
                       width: width * 0.25,
                       child: TextFormField(
                         // controller: nameController,
-                        initialValue: printData["project"]['first_name'],
+                        initialValue: printData != null
+                            ? printData["project"]['first_name'].toString()
+                            : '',
                         style: const TextStyle(fontSize: 14),
                         // controller: fName,
                         decoration: const InputDecoration(
@@ -1615,7 +1617,7 @@ class _RequirementState extends State<Requirement> {
                     stateId,
                     cityId,
                     addressController,
-                    isRegular,
+                    true,
                     dimenInt,
                     lengthController!,
                     widthController!,

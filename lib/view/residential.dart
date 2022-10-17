@@ -1,7 +1,11 @@
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/view/residential/bunglow/bunglow.dart';
+import 'package:aashiyan/view/residential/house-duplex/houseduplex.dart';
+import 'package:aashiyan/view/residential/house-duplex/providers/residential_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../components/app_bar.dart';
 import '../components/project_category.dart';
@@ -24,6 +28,7 @@ class _ResidentialState extends State<Residential> {
     // ]
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    var provider = Provider.of<ResidentialProvider>(context, listen: true);
     return Scaffold(
       appBar: appBar("Residential"),
       body: SingleChildScrollView(
@@ -69,32 +74,42 @@ class _ResidentialState extends State<Residential> {
                       ],
                     ),
                   ),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        height: height * 1,
-                        width: width * 0.5,
-                        child: Image.asset("assets/images/Screen.png"),
-                      ),
-                      Positioned(
-                        height: height * 0.32,
-                        width: width * 0.32,
-                        child: Center(
-                            child: Image.asset("assets/images/ragrawalji.jpg")),
-                      ),
-                      Positioned(
-                        bottom: height * 0.22,
-                        child: Text(
-                          "Houses/Duplex",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: height * 0.018,
-                          ),
+                  InkWell(
+                    onTap: () async {
+                      Navigator.of(context).pushNamed(HouseDuplex.namedRoute);
+                      var getProjectGroupId =
+                          await provider.getProjectGroupData();
+                      // print("getProjectGroupId==");
+                      // print(getProjectGroupId);
+                    },
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          height: height * 1,
+                          width: width * 0.5,
+                          child: Image.asset("assets/images/Screen.png"),
                         ),
-                      )
-                    ],
+                        Positioned(
+                          height: height * 0.32,
+                          width: width * 0.32,
+                          child: Center(
+                              child:
+                                  Image.asset("assets/images/ragrawalji.jpg")),
+                        ),
+                        Positioned(
+                          bottom: height * 0.22,
+                          child: Text(
+                            "Houses/Duplex",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: height * 0.018,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),

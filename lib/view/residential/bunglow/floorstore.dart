@@ -92,7 +92,9 @@ class _FloorStoreState extends State<FloorStore> {
   String openingToLiHa = "";
 
   bool isloading = false;
+
   var printData;
+
   Future<void> getData() async {
     try {
       // var client = http.Client();

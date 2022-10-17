@@ -8,7 +8,6 @@ import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:flutter/material.dart';
 import '../view/residential/bunglow/bedroom.dart';
 
-import '../view/residential/bunglow/builtup.dart';
 import '../view/residential/bunglow/entrance.dart';
 import '../view/residential/bunglow/staticbedroompage.dart';
 // import '../view/residential/bunglow/buildUp.dart';

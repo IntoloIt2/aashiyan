@@ -1,14 +1,38 @@
 // ignore: non_constant_identifier_names
 String SUCCESS_MESSAGE = " You will be contacted by us very soon.";
+List<String> PROJECT_TYPE = [
+  "mix use",
+  "mall and multiplexer",
+  "hospital",
+  "hospitality",
+  "residential",
+  "commercial",
+  "interior designs"
+];
 
+int EAST_OTHER_PROPERTY = 2;
+int EAST_PROPERTY = 1;
+int WEST_OTHER_PROPERTY = 2;
+int WEST_PROPERTY = 1;
+int NORTH_OTHER_PROPERTY = 2;
+int NORTH_PROPERTY = 1;
+int SOUTH_OTHER_PROPERTY = 2;
+int SOUTH_PROPERTY = 1;
 int LEVEL_ALMOST = 1;
 int LEVEL_UP = 2;
 int LEVEL_DOWN = 3;
+int project_id = 0;
 
 const SITE_NAME = 'SDPL';
 const MR = 1;
 const MRS = 2;
 const MS = 3;
+const M_S = 4;
+const PREFIX = 'select';
+const PREFIX_MR = 'Mr';
+const PREFIX_MRS = 'Mrs';
+const PREFIX_MS = 'Ms';
+const PREFIX_M_S = 'M/s';
 const TEXT = 'text';
 const ADMINISTRATOR = 1;
 const EDITOR = 2;
