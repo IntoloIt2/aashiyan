@@ -278,8 +278,7 @@ class _StepPagesState extends State<StepPages> {
                                 (context),
                                 MaterialPageRoute(
                                     builder: ((context) => Payment())));
-                            setState(() {
-                            });
+                            setState(() {});
                           },
                           child: stepsContainer("Payment"),
                         ),
@@ -289,7 +288,7 @@ class _StepPagesState extends State<StepPages> {
                 ],
               ),
             ),
-           const SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Container(

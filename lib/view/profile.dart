@@ -2,6 +2,7 @@ import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -10,7 +11,19 @@ class Profile extends StatefulWidget {
   State<Profile> createState() => _ProfileState();
 }
 
+var email;
+
 class _ProfileState extends State<Profile> {
+  intState() {
+    super.initState();
+  }
+
+  Future<Null> shared() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    email = prefs.getString('loginDetails');
+    prefs.getString('email');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +51,7 @@ class _ProfileState extends State<Profile> {
                   child: Column(
                     children: [
                       Text(
-                        '${emailController.text}',
+                        'Name: $email',
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
@@ -53,7 +66,9 @@ class _ProfileState extends State<Profile> {
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              print(email);
+                            },
                           ),
                           const SizedBox(
                             width: 5,
@@ -144,7 +159,7 @@ class _ProfileState extends State<Profile> {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.chat_bubble_rounded),
+                      const Icon(Icons.perm_device_information),
                       requirementText('Feedback')
                     ],
                   ),
@@ -153,7 +168,7 @@ class _ProfileState extends State<Profile> {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.circle_outlined),
+                      const Icon(Icons.info),
                       requirementText('About Us')
                     ],
                   ),
@@ -161,7 +176,10 @@ class _ProfileState extends State<Profile> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextButton(
-                      onPressed: () {}, child: requirementText('Log Out')),
+                      onPressed: () {
+                        logout();
+                      },
+                      child: requirementText('Log Out')),
                 )
               ],
             ),

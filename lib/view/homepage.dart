@@ -1,14 +1,20 @@
+import 'dart:async';
+
 import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/const.dart';
+import 'package:aashiyan/controller/auth_controller.dart';
 import 'package:aashiyan/view/hotels.dart';
 
 import 'package:aashiyan/view/residential.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/project_category.dart';
 import '../controller/api_services.dart';
+
+
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -18,6 +24,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // @override
+  // void initState() {
+  //   getValidationData().whenComplete(() async {
+  //     Timer(Duration(seconds: 2), () => (finalemail == null ? login('email', 'password', context): HomePage()));
+  //   });
+  // }
+
+  // Future getValidationData() async {
+  //   final SharedPreferences sharedPreferences =
+  //       await SharedPreferences.getInstance();
+  //   var obtainedEmail = SharedPreferences.getString('email');
+  //   setState(() {
+  //     finalemail = obtainedEmail!;
+  //   });
+  // }
+
   _makingPhoneCall() async {
     var url = Uri.parse("${8109093551}");
     if (await canLaunchUrl(url)) {

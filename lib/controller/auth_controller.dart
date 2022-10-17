@@ -1,7 +1,11 @@
-   import 'dart:convert';
+// ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'dart:convert';
+
+import 'package:aashiyan/view/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../components/contants.dart';
 import '../const.dart';
 import '../view/homepage.dart';
@@ -10,6 +14,21 @@ TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 TextEditingController verify_codeController = TextEditingController();
 
+late bool isLogged = false;
+
+SharedPreferences emailPreferences = emailController as SharedPreferences;
+SharedPreferences passwordPreferences = passwordController as SharedPreferences;
+
+@override
+void dispose() {
+  // Clean up the controller when the widget is disposed.
+  emailController.dispose();
+  passwordController.dispose();
+  verify_codeController.dispose();
+}
+
+var name;
+var password;
 var res;
 var verification_res;
 var loginres;
@@ -62,7 +81,6 @@ Future<void> verification(String Verify_code, context, int id) async {
 
   if (verification_res['status'] == 200) {
     showDialog(context: context, builder: loginDialog);
-
   } else {
     showDialog(
         context: context,
@@ -71,10 +89,19 @@ Future<void> verification(String Verify_code, context, int id) async {
   }
 }
 
+
+
 Future<void> login(String Email, String Password, context) async {
-  var map = new Map<String, dynamic>();
-  map['email'] = Email;
-  map['password'] = Password;
+  var map = Map<String, dynamic>();
+
+  map['email'] = emailController.text;
+  map['password'] = passwordController.text;
+
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString('loginDetails', map.toString());
+  prefs.setString('email', Email);
+  prefs.setString('password', Password);
+  prefs.setString('user_id', user_id).toString();
 
   final response = await http.post(
     Uri.parse('http://192.168.0.99:8080/sdplserver/api/login'),
@@ -88,8 +115,11 @@ Future<void> login(String Email, String Password, context) async {
   );
 
   loginres = jsonDecode(response.body);
+  user_id = loginres['data']['id'].toString();
+  print(user_id);
 
-  if (loginres['status'] == 200) {
+  if (loginres['status'] == 200 && user_id != null) {
+    isLogged = true;
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -101,6 +131,16 @@ Future<void> login(String Email, String Password, context) async {
         builder: (context) =>
             acknoledgmentDialog(context, '${(loginres['msg'])}'));
   }
+  print(loginres);
+}
+
+Future<Null> logout() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.remove('loginDetails');
+
+  email = '';
+  password = '';
+  isLogged = false;
 }
 
 AlertDialog registerDialog(BuildContext context) {

@@ -42,7 +42,8 @@ BottomNavigationBar customBottomNav(BuildContext context) {
             ),
             onPressed: () {
               showDialog(
-                  builder: (context) => loginDialog(context),
+                  builder: (context) =>
+                      isLogged ? Profile() : loginDialog(context),
                   context: (context));
             },
           ),

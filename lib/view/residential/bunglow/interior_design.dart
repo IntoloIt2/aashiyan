@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/components/forms.dart';
+import 'package:aashiyan/components/sample_book_pdf.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/view/residential/bunglow/bungalow_detail.dart';
@@ -63,7 +64,9 @@ class _InteriorDesignState extends State<InteriorDesign> {
                                   )),
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(SampleBookPdf());
+                              },
                               child: Card(
                                   color: lightColor,
                                   child: Padding(

@@ -8,14 +8,22 @@ import 'package:flutter/material.dart';
 import '../../../const.dart';
 import 'package:http/http.dart' as http;
 
+import 'preExisting.dart';
+
+var data;
+
 class Requirement extends StatefulWidget {
+  late String fName;
+
   static const namedRoute = "/intrestedNext";
+
   @override
   State<Requirement> createState() => _RequirementState();
 }
 
 class _RequirementState extends State<Requirement> {
   late Future<RequirementModel> futureRequirement;
+
   String nameController = '';
   String lastNameController = "";
   String emailController = "";
@@ -29,7 +37,7 @@ class _RequirementState extends State<Requirement> {
   String levelController = "";
   String? widthController = '';
   String? lengthController = '';
-
+  var fName = TextEditingController();
   var plotValue = TextEditingController();
 
   int isRegular = 1;
@@ -181,6 +189,13 @@ class _RequirementState extends State<Requirement> {
     }
   }
 
+  void fetchData() async {
+    var response = await projects;
+    data = response as List;
+
+    print(data);
+  }
+
   bool isloading = false;
 
   // updateCheckbox() {
@@ -199,10 +214,12 @@ class _RequirementState extends State<Requirement> {
     getData();
     getCities();
     getState();
+    fetchData();
     plotValue.addListener(() => setState(() {}));
     if (printData == null) {
       setState(() {
         isloading = true;
+        // fName = data['first_name'];
       });
     }
   }
@@ -280,6 +297,7 @@ class _RequirementState extends State<Requirement> {
                         // controller: nameController,
                         initialValue: printData["project"]['first_name'],
                         style: const TextStyle(fontSize: 14),
+                        // controller: fName,
                         decoration: const InputDecoration(
                             hintText: "First name",
                             hintStyle: TextStyle(fontSize: 14),
