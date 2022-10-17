@@ -1,9 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, unused_local_variable, avoid_print, sort_child_properties_last, prefer_const_constructors, duplicate_ignore, sized_box_for_whitespace, avoid_unnecessary_containers
 
 // import 'dart:ui';
-
 import 'dart:convert';
-
 import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/view/residential/bunglow/payment.dart';
 import 'package:flutter/material.dart';

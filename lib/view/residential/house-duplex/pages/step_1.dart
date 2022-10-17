@@ -23,7 +23,7 @@ class Step_1 extends StatefulWidget {
 }
 
 class _Step_1State extends State<Step_1> {
-  // late Future<RequirementModel> futureRequirement;
+ // late Future<RequirementModel> futureRequirement;
   String nameController = '';
   String lastNameController = "";
   String emailController = "";
@@ -259,7 +259,7 @@ class _Step_1State extends State<Step_1> {
     final store = Provider.of<PageNavProvider>(context, listen: false);
     // print('store.getId()');
     // print(store.getId());
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (store.getId() == 0) {
         printData = {"project": null};
       } else {
@@ -304,6 +304,7 @@ class _Step_1State extends State<Step_1> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     var provider = Provider.of<PageNavProvider>(context, listen: true);
+    
     // print('projectGroupId====');
     // print(projectTypeId);
 
@@ -320,9 +321,9 @@ class _Step_1State extends State<Step_1> {
         : SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+            children: [
                 Row(
-                  children: [
+             children: [
                     requirementText("Name"),
                     SizedBox(
                       width: width * 0.04,
@@ -372,7 +373,7 @@ class _Step_1State extends State<Step_1> {
                     ),
                     const SizedBox(
                       width: 5,
-                    ),
+                      ),
                     Material(
                       elevation: 5,
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
