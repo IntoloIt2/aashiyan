@@ -4690,7 +4690,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       size,
                                       0.04,
                                       0.05,
-                                    ),
+                                     ),
                                     SizedBox(
                                       width: width * 0.08,
                                     ),
@@ -4825,8 +4825,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     checkColor: Color.fromRGBO(
                                                         255, 255, 255, 1),
                                                     value: pi != null
-                                                        ? printData[pi][
-                                                                    'bedroom_dress_req'] ==
+                                                        ? printData[pi]['bedroom_dress_req'] ==
                                                                 0
                                                             ? true
                                                             : parentsNotRequiredDress
@@ -4841,7 +4840,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                           if (pi != null) {
                                                             printData[pi][
                                                                 'bedroom_dress_req'] = 4;
-                                                          }
+                                                                }
                                                           if (parentsRequiredDress ==
                                                               true) {
                                                             parentDressInt = 1;
