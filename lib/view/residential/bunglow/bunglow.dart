@@ -19,10 +19,46 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../components/app_bar.dart';
 import '../../../controller/api_services.dart';
 
-class Bunglow extends StatelessWidget {
-  Bunglow({Key? key}) : super(key: key);
+var bungalow_count;
+
+class Bunglow extends StatefulWidget {
+  // Bunglow({Key? key}) : super(key: key);
+
   static const namedRoute = "/bunglow";
+
+  @override
+  State<Bunglow> createState() => _BunglowState();
+}
+
+class _BunglowState extends State<Bunglow> {
   final ApiController cont = Get.put(ApiController());
+
+  Future<void> showMaxProjectPremiumDialogue(context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text("To move Further with another Project requirement"),
+        content: Column(mainAxisSize: MainAxisSize.min, children: const [
+          Text(
+              "1. If you want to create more project up to 200, kindly purchase license copy with the payment of 10000 rupees+Gst. Go to payment option down below."),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+              "2. If you want to have similar app with your customization, name and style kindly reach out to us on +918109093551 or by the call option down below."),
+        ]),
+        actions: <Widget>[
+          TextButton(onPressed: (() {}), child: const Text("CALL")),
+          TextButton(onPressed: (() {}), child: const Text("PAYMENT"))
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,26 +129,33 @@ class Bunglow extends StatelessWidget {
                     final SharedPreferences prefs =
                         await SharedPreferences.getInstance();
                     String? resultData = prefs.getString('userData');
+
                     var decodedJson;
                     if (resultData != null) {
                       decodedJson = jsonDecode(resultData);
+                      if (decodedJson['data'] != null) {
+                        bungalow_count = await cont.projectCount(
+                            decodedJson['data'], decodedJson['data']['id']);
+                      }
                     }
-                    // print('decodedJson===');
-                    // print(decodedJson);
+
                     if (decodedJson != null
                         ? decodedJson['status'] == 200 &&
                                 decodedJson['data'] != null
                             ? decodedJson['data']['id'] != null
+                                ? bungalow_count != null
+                                    ? bungalow_count <= 1
+                                        ? true
+                                        : false
+                                    : false
+                                : false
                             : false
                         : false) {
                       Navigator.of(context).pushNamed(StepPages.namedRoute);
                       cont.getData();
                       cont.printData;
                     } else {
-                      // print("object==");
-                      showDialog(
-                          builder: (context) => registerDialog(context),
-                          context: (context));
+                      showMaxProjectPremiumDialogue(context);
                     }
                   },
                   child: Card(

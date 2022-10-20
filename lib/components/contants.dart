@@ -10,6 +10,7 @@ List<String> PROJECT_TYPE = [
   "interior designs"
 ];
 
+int CITY_ID = 1;
 int EAST_OTHER_PROPERTY = 2;
 int EAST_PROPERTY = 1;
 int WEST_OTHER_PROPERTY = 2;
@@ -22,7 +23,7 @@ int LEVEL_ALMOST = 1;
 int LEVEL_UP = 2;
 int LEVEL_DOWN = 3;
 int project_id = 0;
-
+String PHONE_NO = "+91 8109093551";
 const SITE_NAME = 'SDPL';
 const MR = 1;
 const MRS = 2;

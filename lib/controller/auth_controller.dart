@@ -98,6 +98,7 @@ Future<void> login(String Email, String Password, context) async {
   map['email'] = emailController.text;
   map['password'] = passwordController.text;
   // prefs.setString('user_id', user_id).toString();
+  // print("${dotenv.env['APP_URL']}login");
 
   final response = await http.post(
     Uri.parse('${dotenv.env['APP_URL']}login'),
@@ -109,8 +110,6 @@ Future<void> login(String Email, String Password, context) async {
   );
 
   loginres = jsonDecode(response.body);
-  // print('loginres====');
-  // print(loginres);
 
   if (loginres['status'] == 200 && loginres['data'] != null
       ? loginres['data']['id'] != null

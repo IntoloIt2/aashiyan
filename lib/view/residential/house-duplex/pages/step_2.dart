@@ -42,7 +42,6 @@ class _Step_2State extends State<Step_2> {
           "porch_length": porchLength,
           "porch_width": porchWidth
         };
-        // print(jsonEncode(body));
         var response = await http.post(
             Uri.parse("${dotenv.env['API_URL']}flat-house-entrance"),
             headers: <String, String>{
