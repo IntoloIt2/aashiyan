@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, must_be_immutable, non_constant_identifier_names, prefer_typing_uninitialized_variables, sized_box_for_whitespace
+
 import 'dart:convert';
 
 import 'package:aashiyan/components/contants.dart';
@@ -42,7 +44,6 @@ class _BungalowDetailState extends State<BungalowDetail> {
     setState(() {
       project_gallery = finalArt;
     });
-    print(project_gallery);
   }
 
   List gallery = [];
@@ -52,11 +53,11 @@ class _BungalowDetailState extends State<BungalowDetail> {
       appBar: AppBar(),
       body: Center(
         child: project_gallery == null
-            ? CircularProgressIndicator()
+            ? const CircularProgressIndicator()
             : Column(
                 children: [
                   Card(
-                    margin: EdgeInsets.symmetric(vertical: 5),
+                    margin: const EdgeInsets.symmetric(vertical: 5),
                     elevation: 5,
                     child: Column(
                       children: [
@@ -67,7 +68,7 @@ class _BungalowDetailState extends State<BungalowDetail> {
                               itemBuilder: ((context, index, int i) {
                                 return Container(
                                     child: project_gallery == []
-                                        ? CircularProgressIndicator()
+                                        ? const CircularProgressIndicator()
                                         : Image.network(
                                             'https://sdplweb.com/sdpl/public/storage/${project_gallery[index]['project_gallery_img_path']}',
                                             filterQuality: FilterQuality.medium,
@@ -80,7 +81,7 @@ class _BungalowDetailState extends State<BungalowDetail> {
                                   autoPlay: true,
                                   viewportFraction: 1,
                                   autoPlayAnimationDuration:
-                                      Duration(milliseconds: 800))),
+                                      const Duration(milliseconds: 800))),
                         ),
                         SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
@@ -93,7 +94,7 @@ class _BungalowDetailState extends State<BungalowDetail> {
                                         height: 70,
                                         width: 100,
                                         child: project_gallery == []
-                                            ? CircularProgressIndicator()
+                                            ? const CircularProgressIndicator()
                                             : Image.network(
                                                 'https://sdplweb.com/sdpl/public/storage/${project_gallery[i]['project_gallery_img_path']}',
                                                 fit: BoxFit.cover,
@@ -110,7 +111,7 @@ class _BungalowDetailState extends State<BungalowDetail> {
                       alignment: Alignment.centerLeft,
                       child: Container(
                           child: gallery == []
-                              ? CircularProgressIndicator()
+                              ? const CircularProgressIndicator()
                               : headingFont(
                                   widget.project_location.toString())),
                     ),
@@ -121,7 +122,7 @@ class _BungalowDetailState extends State<BungalowDetail> {
                       alignment: Alignment.centerLeft,
                       child: Container(
                         child: gallery == []
-                            ? CircularProgressIndicator()
+                            ? const CircularProgressIndicator()
                             : requirementText(widget.description.toString()),
                       ),
                     ),

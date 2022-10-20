@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_cast, empty_catches
+
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
@@ -19,9 +21,7 @@ class ApiController extends GetxController {
         printData = jsonResponse;
         // print(printData);
       }
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   Future<dynamic> projectCount(data, id) async {
@@ -32,8 +32,6 @@ class ApiController extends GetxController {
         final response = json.decode(temp.body);
         return response["bungalow_count"];
       }
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   }
 }

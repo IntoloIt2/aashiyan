@@ -16,7 +16,7 @@ SingleChildScrollView projectCategory() {
         InkWell(
           child: stepsContainer("Hotels"),
           onTap: () {
-            Get.to(Hotels());
+            Get.to(const Hotels());
           },
         ),
         const SizedBox(
@@ -24,7 +24,7 @@ SingleChildScrollView projectCategory() {
         ),
         InkWell(
             onTap: () {
-              Get.to(Residential());
+              Get.to(const Residential());
             },
             child: stepsContainer("residental")),
         const SizedBox(
@@ -32,7 +32,7 @@ SingleChildScrollView projectCategory() {
         ),
         InkWell(
             onTap: () {
-              Get.to(Multiplexer());
+              Get.to(const Multiplexer());
             },
             child: stepsContainer("Multiplex/mall")),
         const SizedBox(
@@ -40,7 +40,7 @@ SingleChildScrollView projectCategory() {
         ),
         InkWell(
             onTap: () {
-              Get.to(InteriorDesign());
+              Get.to(const InteriorDesign());
             },
             child: stepsContainer("Interior Design")),
         const SizedBox(
@@ -48,7 +48,7 @@ SingleChildScrollView projectCategory() {
         ),
         InkWell(
             onTap: () {
-              Get.to(Hospitals());
+              Get.to(const Hospitals());
             },
             child: stepsContainer("Hospitals")),
         const SizedBox(

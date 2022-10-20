@@ -2,6 +2,8 @@
 //
 //     final modelBedroom = modelBedroomFromJson(jsonString);
 
+// ignore_for_file: prefer_if_null_operators, unnecessary_null_comparison, duplicate_ignore
+
 import 'dart:convert';
 
 List<ModelBedroom> modelBedroomFromJson(dynamic str) => List<ModelBedroom>.from(
@@ -11,8 +13,7 @@ String modelBedroomToJson(List<ModelBedroom> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ModelBedroom {
-  ModelBedroom(
-    {
+  ModelBedroom({
     required this.id,
     required this.projectId,
     required this.bedroom,
@@ -135,8 +136,10 @@ class ModelBedroom {
         "bedroom_toilet_req_text": bedroomToiletReqText,
         "bedroom_dress_req": bedroomDressReq,
         "bedroom_dress_length":
+            // ignore: unnecessary_null_comparison
             bedroomDressLength == null ? null : bedroomDressLength,
         "bedroom_dress_width":
+            // ignore: unnecessary_null_comparison
             bedroomDressWidth == null ? null : bedroomDressWidth,
         "bedroom_dress_area":
             bedroomDressArea == null ? null : bedroomDressArea,

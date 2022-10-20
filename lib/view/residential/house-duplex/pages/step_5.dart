@@ -1,5 +1,8 @@
+// ignore_for_file: camel_case_types, duplicate_ignore, unused_field, prefer_final_fields, non_constant_identifier_names, prefer_typing_uninitialized_variables, sized_box_for_whitespace, avoid_unnecessary_containers
+
 import 'package:flutter/material.dart';
 
+// ignore: camel_case_types
 class Step_5 extends StatefulWidget {
   const Step_5({super.key});
 
@@ -30,6 +33,7 @@ class _Step_5State extends State<Step_5> {
   var width;
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     flat_house_bedroom = [
@@ -65,15 +69,15 @@ class _Step_5State extends State<Step_5> {
     return Column(
       children: [
         ExpansionTile(
-          title: Text("bedroom counter"),
-          subtitle: Text("data 1"),
+          title: const Text("bedroom counter"),
+          subtitle: const Text("data 1"),
           children: [
-            ListTile(
+            const ListTile(
               title: Text("tile no. 1"),
             ),
             Column(
               children: [
-                Text("Person Bedroom"),
+                const Text("Person Bedroom"),
                 Row(
                   children: [
                     Container(
@@ -112,17 +116,17 @@ class _Step_5State extends State<Step_5> {
           children: [
             Center(
               child: Container(
-                padding: EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                    borderRadius: const BorderRadius.all(Radius.circular(4)),
                     border: Border.all(width: 1, color: Colors.black)),
                 child: InkWell(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text("Add BedRoom"),
+                      const Text("Add BedRoom"),
                       Container(
-                        child: Icon(Icons.add),
+                        child: const Icon(Icons.add),
                       )
                     ],
                   ),

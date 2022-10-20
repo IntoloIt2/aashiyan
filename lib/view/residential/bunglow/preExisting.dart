@@ -1,4 +1,5 @@
-import 'package:aashiyan/const.dart';
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 class PreExisting extends StatelessWidget {
@@ -8,7 +9,7 @@ class PreExisting extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Bungalow Existing Projects',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),

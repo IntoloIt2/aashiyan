@@ -1,9 +1,9 @@
+// ignore_for_file: non_constant_identifier_names, avoid_print
+
 import 'dart:convert';
-import 'dart:ffi';
 // import 'dart:html';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:aashiyan/components/forms.dart';
-import 'package:aashiyan/model/requirementmodel.dart';
 import 'package:http/http.dart' as http;
 
 var baseUrl = 'http://sdplweb.com/sdpl/api/';

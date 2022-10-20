@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types, use_key_in_widget_constructors, unnecessary_null_comparison, non_constant_identifier_names, prefer_typing_uninitialized_variables, empty_catches, avoid_unnecessary_containers, sized_box_for_whitespace, prefer_if_null_operators, unused_local_variable, unrelated_type_equality_checks
+
 import 'dart:convert';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -156,12 +158,9 @@ class _Step_3State extends State<Step_3> {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
-          print(printData);
         });
       }
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   bool isloading = false;
@@ -185,7 +184,7 @@ class _Step_3State extends State<Step_3> {
     }
 
     return isloading == true
-        ? Center(
+        ? const Center(
             child: CircularProgressIndicator(),
           )
         : SingleChildScrollView(
@@ -210,7 +209,7 @@ class _Step_3State extends State<Step_3> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -253,7 +252,7 @@ class _Step_3State extends State<Step_3> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -306,7 +305,7 @@ class _Step_3State extends State<Step_3> {
                           child: Container(
                             height: height * 0.03,
                             width: width * 0.25,
-                            margin: EdgeInsets.all(
+                            margin: const EdgeInsets.all(
                               3,
                             ),
                             child: DropdownButtonHideUnderline(
@@ -330,7 +329,7 @@ class _Step_3State extends State<Step_3> {
                                         value: it,
                                         child: Text(
                                           it,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.black,
                                           ),
                                         )))
@@ -364,9 +363,6 @@ class _Step_3State extends State<Step_3> {
                                         printData["flat_house_drawing_hall"]
                                             ["drawing_hall_location"] = "5";
                                       }
-                                      print(selectedFloor);
-                                      print(printData["flat_house_drawing_hall"]
-                                          ["drawing_hall_location"]);
                                     },
                                   );
                                 },
@@ -613,7 +609,7 @@ class _Step_3State extends State<Step_3> {
                   Material(
                     elevation: 10,
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       color: Colors.white,
                       child: SizedBox(
                         width: width * 9,
@@ -672,7 +668,7 @@ class _Step_3State extends State<Step_3> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -714,7 +710,7 @@ class _Step_3State extends State<Step_3> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -795,7 +791,7 @@ class _Step_3State extends State<Step_3> {
                                         value: it,
                                         child: Text(
                                           it,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.black,
                                           ),
                                         ))).toList(),
@@ -1004,7 +1000,7 @@ class _Step_3State extends State<Step_3> {
                   Material(
                     elevation: 10,
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       color: Colors.white,
                       child: SizedBox(
                         width: width * 9,
@@ -1069,7 +1065,7 @@ class _Step_3State extends State<Step_3> {
                         child: Container(
                           height: height * 0.03,
                           width: width * 0.25,
-                          margin: EdgeInsets.all(
+                          margin: const EdgeInsets.all(
                             3,
                           ),
                           child: DropdownButtonHideUnderline(
@@ -1094,7 +1090,7 @@ class _Step_3State extends State<Step_3> {
                                         value: it,
                                         child: Text(
                                           it,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.black,
                                           ),
                                         ),
@@ -1136,8 +1132,6 @@ class _Step_3State extends State<Step_3> {
                                         printData["flat_house_drawing_hall"]
                                             ["kitchen_floor"] = 5;
                                       }
-                                      print(printData["flat_house_drawing_hall"]
-                                          ["kitchen_floor"]);
                                     },
                                   );
                                 }),
@@ -1284,7 +1278,7 @@ class _Step_3State extends State<Step_3> {
                                       value: it,
                                       child: Text(
                                         it,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.black,
                                         ),
                                       ),
@@ -1332,7 +1326,7 @@ class _Step_3State extends State<Step_3> {
                 Material(
                   elevation: 10,
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     color: Colors.white,
                     child: SizedBox(
                       width: width * 9,
@@ -1442,7 +1436,7 @@ class _Step_3State extends State<Step_3> {
                       borderRadius: BorderRadius.circular(5),
                       elevation: 5,
                       child: Container(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         child: Row(
                           children: [
                             SizedBox(
@@ -1550,7 +1544,7 @@ class _Step_3State extends State<Step_3> {
                       borderRadius: BorderRadius.circular(5),
                       elevation: 5,
                       child: Container(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         child: Row(
                           children: [
                             SizedBox(
@@ -1665,7 +1659,7 @@ class _Step_3State extends State<Step_3> {
                       borderRadius: BorderRadius.circular(5),
                       elevation: 5,
                       child: Container(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         child: Row(
                           children: [
                             SizedBox(
@@ -1696,7 +1690,7 @@ class _Step_3State extends State<Step_3> {
                       borderRadius: BorderRadius.circular(5),
                       elevation: 5,
                       child: Container(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         child: Row(
                           children: [
                             SizedBox(
@@ -1727,7 +1721,7 @@ class _Step_3State extends State<Step_3> {
                       borderRadius: BorderRadius.circular(5),
                       elevation: 5,
                       child: Container(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         child: Row(
                           children: [
                             SizedBox(
@@ -1814,7 +1808,7 @@ class _Step_3State extends State<Step_3> {
                             child: Container(
                               height: height * 0.03,
                               width: width * 0.25,
-                              margin: EdgeInsets.all(
+                              margin: const EdgeInsets.all(
                                 3,
                               ),
                               child: DropdownButtonHideUnderline(
@@ -1839,7 +1833,7 @@ class _Step_3State extends State<Step_3> {
                                             value: it,
                                             child: Text(
                                               it,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: Colors.black,
                                               ),
                                             ),
@@ -1994,7 +1988,7 @@ class _Step_3State extends State<Step_3> {
                             child: Container(
                               height: height * 0.03,
                               width: width * 0.25,
-                              margin: EdgeInsets.all(
+                              margin: const EdgeInsets.all(
                                 3,
                               ),
                               child: DropdownButtonHideUnderline(
@@ -2019,7 +2013,7 @@ class _Step_3State extends State<Step_3> {
                                             value: it,
                                             child: Text(
                                               it,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: Colors.black,
                                               ),
                                             ),
@@ -2080,7 +2074,7 @@ class _Step_3State extends State<Step_3> {
                 Material(
                   elevation: 10,
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     color: Colors.white,
                     child: SizedBox(
                       width: width * 9,

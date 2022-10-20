@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, unnecessary_null_comparison, prefer_typing_uninitialized_variables, empty_catches, avoid_unnecessary_containers, sized_box_for_whitespace
+
 import 'dart:convert';
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
@@ -109,14 +111,9 @@ class _PantryDetailState extends State<PantryDetail> {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
-          print(printData);
         });
       }
-    } catch (e) {
-      print(
-        e.toString(),
-      );
-    }
+    } catch (e) {}
   }
 
   @override
@@ -138,7 +135,7 @@ class _PantryDetailState extends State<PantryDetail> {
     return isloading == true
         ? Center(
             child: Column(
-              children: [
+              children: const [
                 CircularProgressIndicator(),
               ],
             ),
@@ -706,7 +703,7 @@ class _PantryDetailState extends State<PantryDetail> {
                                       null
                                   ? Text(printData['bungalow_pantry']
                                       ['dining_seat'])
-                                  : Text(' '),
+                                  : const Text(' '),
                               // value: selectedDiningSeats,
                               elevation: 16,
                               items: diningSeatsItems
@@ -799,7 +796,7 @@ class _PantryDetailState extends State<PantryDetail> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
@@ -813,7 +810,7 @@ class _PantryDetailState extends State<PantryDetail> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    child: Text("Select features"),
+                                    child: const Text("Select features"),
                                   ),
                                 ),
                                 Wrap(

@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables, empty_catches, curly_braces_in_flow_control_structures, unnecessary_null_comparison, prefer_if_null_operators, avoid_unnecessary_containers, sized_box_for_whitespace
+
 import 'dart:convert';
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
@@ -12,7 +14,7 @@ import 'package:http/http.dart' as http;
 Text headingFont(String s) {
   return Text(
     s,
-    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
   );
 }
 
@@ -155,7 +157,6 @@ class _EntranceState extends State<Entrance> {
 
   Future<void> getData(int id) async {
     try {
-      print(id);
       var response = await http.get(
         Uri.parse("${dotenv.env['APP_URL']}edit-bungalow-entrance/$id"),
       );
@@ -166,14 +167,11 @@ class _EntranceState extends State<Entrance> {
         setState(
           () {
             printData = jsonResponse;
-            print("entrance data");
-            print(printData);
 
             if (printData != null) {
               pageId = printData['bungalow_entrance']['id'] != null
                   ? int.parse(printData['bungalow_entrance']['id'].toString())
                   : pageId;
-              print(pageId);
               //  widthController = printData["project"][]!=null?printData[][].toString():'';
               //  lengthController = printData["project"][]!=null?printData[][].toString():'';
               floorController = printData['bungalow_entrance']['floor'] != null
@@ -260,19 +258,16 @@ class _EntranceState extends State<Entrance> {
           },
         );
       }
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     final store = Provider.of<PageNavProvider>(context, listen: false);
 
-    print('store.getId()');
-    print(store.getId());
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (store.getId() == 0) {
         printData = {"project": null};
@@ -450,7 +445,7 @@ class _EntranceState extends State<Entrance> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      margin: EdgeInsets.only(right: 10),
+                      margin: const EdgeInsets.only(right: 10),
                       height: height * 0.04,
                       child: Row(
                         children: [
@@ -496,7 +491,7 @@ class _EntranceState extends State<Entrance> {
                 elevation: 5,
                 child: Container(
                   height: height * 0.04,
-                  margin: EdgeInsets.only(right: 10),
+                  margin: const EdgeInsets.only(right: 10),
                   child: Row(
                     children: [
                       StatefulBuilder(builder:
@@ -524,7 +519,7 @@ class _EntranceState extends State<Entrance> {
                                         Navigator.of(context).pop();
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.all(10),
+                                        padding: const EdgeInsets.all(10),
                                         color: Colors.black,
                                         child: const Text(
                                           "okay",
@@ -566,7 +561,7 @@ class _EntranceState extends State<Entrance> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      margin: EdgeInsets.only(right: 10),
+                      margin: const EdgeInsets.only(right: 10),
                       height: height * 0.04,
                       child: Row(
                         children: [
@@ -664,7 +659,7 @@ class _EntranceState extends State<Entrance> {
                   elevation: 5,
                   borderRadius: BorderRadius.circular(5),
                   child: Container(
-                    margin: EdgeInsets.only(right: 10),
+                    margin: const EdgeInsets.only(right: 10),
                     height: height * 0.04,
                     padding: const EdgeInsets.all(3),
                     child: DropdownButtonHideUnderline(
@@ -749,7 +744,7 @@ class _EntranceState extends State<Entrance> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 Checkbox(
@@ -781,7 +776,7 @@ class _EntranceState extends State<Entrance> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 Checkbox(
@@ -815,7 +810,7 @@ class _EntranceState extends State<Entrance> {
                   height: height * 0.1,
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 10),
+                  margin: const EdgeInsets.only(left: 10),
                   child: Column(children: [
                     requirementText("Main car gate"),
                     SizedBox(
@@ -985,7 +980,7 @@ class _EntranceState extends State<Entrance> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -1021,7 +1016,7 @@ class _EntranceState extends State<Entrance> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -1198,7 +1193,7 @@ class _EntranceState extends State<Entrance> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -1231,7 +1226,7 @@ class _EntranceState extends State<Entrance> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -1352,7 +1347,7 @@ class _EntranceState extends State<Entrance> {
                   borderRadius: BorderRadius.circular(5),
                   elevation: 5,
                   child: Container(
-                    padding: EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.only(right: 10),
                     child: Row(
                       children: [
                         SizedBox(
@@ -1416,7 +1411,7 @@ class _EntranceState extends State<Entrance> {
             Material(
               elevation: 10,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 color: Colors.white,
                 child: SizedBox(
                   width: width * 9,
@@ -1570,7 +1565,7 @@ class _EntranceState extends State<Entrance> {
             Material(
               elevation: 10,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 color: Colors.white,
                 child: SizedBox(
                   width: width * 9,
@@ -1786,7 +1781,7 @@ class _EntranceState extends State<Entrance> {
                   elevation: 5,
                   borderRadius: BorderRadius.circular(5),
                   child: Container(
-                    margin: EdgeInsets.only(left: 10),
+                    margin: const EdgeInsets.only(left: 10),
                     height: height * 0.035,
                     width: width * 0.45,
                     child: DropdownButtonHideUnderline(
@@ -1828,7 +1823,7 @@ class _EntranceState extends State<Entrance> {
             Material(
               elevation: 10,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 color: Colors.white,
                 child: SizedBox(
                   width: width * 9,
@@ -2087,7 +2082,7 @@ class _EntranceState extends State<Entrance> {
             Material(
               elevation: 10,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 color: Colors.white,
                 child: SizedBox(
                   width: width * 9,
@@ -2205,7 +2200,6 @@ class _EntranceState extends State<Entrance> {
                 },
               );
               if (pageId != null) {
-                print("put data");
                 entrancePut(
                   provider.project_id,
                   moderateString,
