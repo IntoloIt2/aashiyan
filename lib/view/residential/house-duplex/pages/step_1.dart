@@ -9,6 +9,7 @@ import 'package:aashiyan/model/requirementmodel.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../const.dart';
@@ -135,6 +136,16 @@ class _Step_1State extends State<Step_1> {
       );
     }
     return diagonalCalculation;
+  }
+
+  void showToast(msg, toastColor, GRAVITY) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 0,
+        backgroundColor: toastColor,
+        textColor: Colors.white);
   }
 
   Future<void> getState() async {
@@ -1903,7 +1914,7 @@ class _Step_1State extends State<Step_1> {
                         }
                       },
                     );
-                    await provider.requirementPost(
+                    var status = await provider.requirementPost(
                       user_id,
                       projectGroupId,
                       projectTypeId,
@@ -1938,6 +1949,10 @@ class _Step_1State extends State<Step_1> {
                       notReqiredInt,
                     );
                     // project_id = provider.project_id;
+                    if (status == 200) {
+                      showToast('Project Requirement Submitted !',
+                          Colors.lightGreen, ToastGravity.TOP);
+                    }
                   },
                   child: Container(
                     decoration: BoxDecoration(

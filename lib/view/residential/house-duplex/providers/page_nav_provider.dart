@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 class PageNavProvider with ChangeNotifier {
   int project_id = 0;
   var temp;
+
   Future<dynamic> requirementPost(
     int userId,
     int projectGroupId,
@@ -85,6 +86,7 @@ class PageNavProvider with ChangeNotifier {
       body: jsonEncode(projectData),
     );
     temp = jsonDecode(response.body);
+    return temp['status'];
   }
 
   int getId() {
