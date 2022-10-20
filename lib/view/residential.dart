@@ -1,4 +1,5 @@
 import 'package:aashiyan/const.dart';
+import 'package:aashiyan/view/profile.dart';
 import 'package:aashiyan/view/residential/bunglow/bunglow.dart';
 import 'package:aashiyan/view/residential/house-duplex/houseduplex.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/residential_provider.dart';
@@ -11,6 +12,7 @@ import '../components/app_bar.dart';
 import '../components/project_category.dart';
 import '../controller/api_services.dart';
 import '../controller/auth_controller.dart';
+import '../controller/provider/auth_provider.dart';
 
 class Residential extends StatefulWidget {
   const Residential({Key? key}) : super(key: key);
@@ -29,6 +31,7 @@ class _ResidentialState extends State<Residential> {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     var provider = Provider.of<ResidentialProvider>(context, listen: true);
+    // final store = Provider.of<Auth_Provider>(context, listen: true);
     return Scaffold(
       appBar: appBar("Residential"),
       body: SingleChildScrollView(
@@ -242,10 +245,21 @@ class _ResidentialState extends State<Residential> {
                   color: iconColor,
                 ),
                 onPressed: () {
-                  showDialog(
-                    builder: (context) => loginDialog(context),
-                    context: context,
-                  );
+                  isLogged
+                      // ? const Profile()
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Profile(),
+                          ))
+                      : showDialog(
+                          builder: (context) => loginDialog(context),
+                          context: (context));
+
+                  // showDialog(
+                  //   builder: (context) => loginDialog(context),
+                  //   context: context,
+                  // );
                 },
               ),
               label: ""),

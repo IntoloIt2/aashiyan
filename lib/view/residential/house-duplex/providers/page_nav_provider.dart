@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class PageNavProvider with ChangeNotifier {
@@ -82,7 +83,7 @@ class PageNavProvider with ChangeNotifier {
 
     final response = await http.post(
       // Uri.parse(baseUrlLocal + "project"),
-      Uri.parse('http://192.168.0.99:8080/sdplserver/api/project'),
+      Uri.parse('${dotenv.env['APP_URL']}project'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
