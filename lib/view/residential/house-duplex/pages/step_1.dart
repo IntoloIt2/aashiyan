@@ -9,6 +9,7 @@ import 'package:aashiyan/model/requirementmodel.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../const.dart';
@@ -137,12 +138,21 @@ class _Step_1State extends State<Step_1> {
     return diagonalCalculation;
   }
 
+  void showToast(msg, toastColor, GRAVITY) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 0,
+        backgroundColor: toastColor,
+        textColor: Colors.white);
+  }
+
   Future<void> getState() async {
     try {
       var client = http.Client();
       var response =
-          await http.get(Uri.parse("${dotenv.env['APP_URL']}state/1"));
-      // print(response.body.toString());
+          await http.get(Uri.parse("${dotenv.env['APP_URL']}state/$CITY_ID"));
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         final stateList = jsonResponse['states'] as List;
@@ -161,14 +171,12 @@ class _Step_1State extends State<Step_1> {
       var client = http.Client();
       var response =
           await http.get(Uri.parse("${dotenv.env['APP_URL']}city/$stateId"));
-      // print(response.body.toString());
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         final cityList = jsonResponse['cities'] as List;
         setState(() {
           cityData = cityList;
         });
-        // print(cityData);
         return cityList;
       }
     } catch (e) {
@@ -180,21 +188,14 @@ class _Step_1State extends State<Step_1> {
 
   Future<void> getData(int id) async {
     try {
-      print('printData===');
-      print(id);
       var response = await http.get(
-        // Uri.parse("${dotenv.env['APP_URL']}edit-project/$project_id"),
         Uri.parse("${dotenv.env['APP_URL']}edit-project/$id"),
       );
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        // print('jsonResponse====');
-        // print(jsonResponse);
         setState(() {
           printData = jsonResponse;
-          // print(printData);
-          // project_id = printData['project_id'];
 
           if (printData != null && printData['project_id'] != null) {
             nameController = printData["project"]['first_name'] != null
@@ -230,8 +231,6 @@ class _Step_1State extends State<Step_1> {
             levelController = printData["project"]["level"] != null
                 ? printData["project"]["level"].toString()
                 : "";
-            //  widthController = printData["project"][]!=null?printData[][].toString():'';
-            //  lengthController = printData["project"][]!=null?printData[][].toString():'';
           }
         });
       }
@@ -267,7 +266,7 @@ class _Step_1State extends State<Step_1> {
 
     getUserId();
     final store = Provider.of<PageNavProvider>(context, listen: false);
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (store.getId() == 0) {
         printData = {"project": null};
       } else {
@@ -293,9 +292,6 @@ class _Step_1State extends State<Step_1> {
       },
     );
 
-    // print("projectTypeId==");
-    // print(projectTypeId);
-
     // updateDataByProjectId();
     getCities();
     getState();
@@ -311,16 +307,14 @@ class _Step_1State extends State<Step_1> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+
     var provider = Provider.of<PageNavProvider>(context, listen: true);
-    // print('projectGroupId====');
-    // print(projectTypeId);
 
     if (printData != null) {
       setState(() {
         isloading = false;
       });
     }
-    // print(stateData);
     return isloading
         ? const Center(
             child: CircularProgressIndicator(),
@@ -381,9 +375,6 @@ class _Step_1State extends State<Step_1> {
                                   printData['project']['prefix'] =
                                       selectedItems;
                                 }
-                                // print(
-                                //     "${DotEnv().env['APP_URL']}edit-project/179");
-                                // selectedItems = items.indexOf(it);
                               },
                             ),
                           ),
@@ -447,9 +438,7 @@ class _Step_1State extends State<Step_1> {
                                 borderSide: BorderSide.none,
                               ),
                               isDense: true,
-                              contentPadding: EdgeInsets.all(8)
-                              //fillColor: Colors.green
-                              ),
+                              contentPadding: EdgeInsets.all(8)),
                           onChanged: (value) {
                             lastNameController = value;
                           },
@@ -1925,9 +1914,7 @@ class _Step_1State extends State<Step_1> {
                         }
                       },
                     );
-                    // print("d1 ${diagonal1Controller}");
-                    // print("d2 ${diagonal2Controller}");
-                    await provider.requirementPost(
+                    var status = await provider.requirementPost(
                       user_id,
                       projectGroupId,
                       projectTypeId,
@@ -1962,8 +1949,10 @@ class _Step_1State extends State<Step_1> {
                       notReqiredInt,
                     );
                     // project_id = provider.project_id;
-                    // print("project_id");
-                    // print(provider.getId());
+                    if (status == 200) {
+                      showToast('Project Requirement Submitted !',
+                          Colors.lightGreen, ToastGravity.TOP);
+                    }
                   },
                   child: Container(
                     decoration: BoxDecoration(

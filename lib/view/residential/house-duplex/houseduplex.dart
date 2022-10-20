@@ -11,8 +11,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:url_launcher/url_launcher.dart';
 import '../../../controller/auth_controller.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 var house_count;
 
@@ -40,7 +41,16 @@ class _HouseDuplexState extends State<HouseDuplex> {
               "2. If you want to have similar app with your customization, name and style kindly reach out to us on +918109093551 or by the call option down below."),
         ]),
         actions: <Widget>[
-          TextButton(onPressed: (() {}), child: const Text("CALL")),
+          TextButton(
+              onPressed: (() {
+                final Uri launchUri = Uri(
+                  scheme: 'tel',
+                  path: PHONE_NO,
+                );
+                UrlLauncher.launchUrl(launchUri,
+                    mode: LaunchMode.platformDefault);
+              }),
+              child: const Text("CALL")),
           TextButton(onPressed: (() {}), child: const Text("PAYMENT"))
         ],
       ),
@@ -49,18 +59,9 @@ class _HouseDuplexState extends State<HouseDuplex> {
 
   Future<dynamic> projectCount(data, id) async {
     try {
-      // final SharedPreferences prefs = await SharedPreferences.getInstance();
-      // String? userData = prefs.getString('userData');
-      // var decJson;
-      // if (userData != null) {
-      //   decJson = jsonDecode(userData);
-      // }
-      // print(decJson);
-
       if (data != null) {
         final temp = await http
             .get(Uri.parse("${dotenv.env['APP_URL']}project-count/$id"));
-        // "${dotenv.env['APP_URL']}project-count/${decJson['data']['id']}"));
         final response = json.decode(temp.body);
         setState(() {
           house_count = response["house_count"];
@@ -81,6 +82,7 @@ class _HouseDuplexState extends State<HouseDuplex> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: appBar("House Duplex"),
       body: SingleChildScrollView(
@@ -146,32 +148,33 @@ class _HouseDuplexState extends State<HouseDuplex> {
               var decodedJson;
               if (resultData != null) {
                 decodedJson = jsonDecode(resultData);
+
                 if (decodedJson['data'] != null) {
                   house_count = await projectCount(
                       decodedJson['data'], decodedJson['data']['id']);
                 }
               }
-
               if (decodedJson != null
                   ? decodedJson['status'] == 200 && decodedJson['data'] != null
                       ? decodedJson['data']['id'] != null
-                          ? house_count != null
-                              ? house_count <= 1
-                                  ? true
-                                  : false
-                              : false
+                          ? true
                           : false
                       : false
                   : false) {
+                if (house_count != null
+                    ? house_count >= 1
+                        ? true
+                        : false
+                    : false) {
+                  showMaxProjectPremiumDialogue(context);
+                  return;
+                }
                 Navigator.of(context).pushNamed(PageNav.namedRoute);
               } else {
-                showMaxProjectPremiumDialogue(context);
-                // showDialog(
-                //     builder: (context) =>
-                //        ,
-                //     context: (context));
+                showDialog(
+                    builder: (context) => loginDialog(context),
+                    context: (context));
               }
-              // Navigator.of(context).pushNamed(PageNav.namedRoute);
             },
             child: Card(
               elevation: 2,

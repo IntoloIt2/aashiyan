@@ -5,9 +5,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class PageNavProvider with ChangeNotifier {
-  // bool loading = false;
   int project_id = 0;
   var temp;
+
   Future<dynamic> requirementPost(
     int userId,
     int projectGroupId,
@@ -78,11 +78,7 @@ class PageNavProvider with ChangeNotifier {
       "south_road_width": southRoadWidth,
     };
 
-    // print("projectData====");
-    // print(projectData);
-
     final response = await http.post(
-      // Uri.parse(baseUrlLocal + "project"),
       Uri.parse('${dotenv.env['APP_URL']}project'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -90,6 +86,7 @@ class PageNavProvider with ChangeNotifier {
       body: jsonEncode(projectData),
     );
     temp = jsonDecode(response.body);
+    return temp['status'];
   }
 
   int getId() {

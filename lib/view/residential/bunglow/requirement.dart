@@ -1598,8 +1598,9 @@ class _RequirementState extends State<Requirement> {
                       }
                     },
                   );
-                  // print("d1 ${diagonal1Controller}");
-                  // print("d2 ${diagonal2Controller}");
+                  print("d1 ${diagonal1Controller}");
+                  print("d2 ${diagonal2Controller}");
+                  // futureRequirement =
                   requirementPost(
                     2342,
                     978,
