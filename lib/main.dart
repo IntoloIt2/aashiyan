@@ -13,7 +13,7 @@ import 'package:aashiyan/view/residential/bunglow/bunglow.dart';
 import 'package:aashiyan/view/residential.dart';
 import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:aashiyan/view/residential/house-duplex/houseduplex.dart';
-
+import './controller/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +24,8 @@ void main() async {
   await dotenv.load(fileName: ".env");
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => PageNavProvider()),
-    ChangeNotifierProvider(create: (_) => ResidentialProvider())
+    ChangeNotifierProvider(create: (_) => ResidentialProvider()),
+    // ChangeNotifierProvider(create: (_) => Auth_Provider())
   ], child: const MyApp()));
 }
 

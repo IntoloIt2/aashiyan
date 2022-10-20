@@ -11,6 +11,30 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  Future<String?> showLogoutDialogue(context) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Logout!'),
+        content: const Text("Do You want to logout!"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context, 'Cancel');
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+              onPressed: () {
+                logout();
+                Navigator.pop(context, 'Ok');
+              },
+              child: const Text('ok')),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +62,7 @@ class _ProfileState extends State<Profile> {
                   child: Column(
                     children: [
                       Text(
-                        '${emailController.text}',
+                        "email",
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
@@ -161,7 +185,10 @@ class _ProfileState extends State<Profile> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextButton(
-                      onPressed: () {}, child: requirementText('Log Out')),
+                      onPressed: () {
+                        showLogoutDialogue(context);
+                      },
+                      child: requirementText('Log Out')),
                 )
               ],
             ),

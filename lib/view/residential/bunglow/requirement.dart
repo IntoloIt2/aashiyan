@@ -5,6 +5,8 @@ import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/model/requirementmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../const.dart';
 import 'package:http/http.dart' as http;
 
@@ -125,7 +127,7 @@ class _RequirementState extends State<Requirement> {
     try {
       var client = http.Client();
       var response =
-          await http.get(Uri.parse("https://sdplweb.com/sdpl/api/state/1"));
+          await http.get(Uri.parse("${dotenv.env['APP_URL']}state/1"));
       // print(response.body.toString());
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
@@ -142,9 +144,20 @@ class _RequirementState extends State<Requirement> {
 
   Future<List?> getCities() async {
     try {
+      // var prefs = await SharedPreferences.getInstance();
+      // String? resultData = prefs.getString('userData');
+      // var decodedJson = jsonDecode(resultData!);
+      // if (!prefs.containsKey('userData')) {
+      //   print("user not login");
+      // } else {
+      //   print("user login");
+      // }
+
+      // print('temp==');
+      // print(temp);
       var client = http.Client();
-      var response = await http
-          .get(Uri.parse("https://sdplweb.com/sdpl/api/city/$stateId"));
+      var response =
+          await http.get(Uri.parse("${dotenv.env['APP_URL']}city/$stateId"));
       // print(response.body.toString());
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
@@ -166,7 +179,7 @@ class _RequirementState extends State<Requirement> {
     try {
       // var client = http.Client();
       var response = await http.get(
-        Uri.parse("http://192.168.0.99:8080/sdplserver/api/edit-project/179"),
+        Uri.parse("${dotenv.env['APP_URL']}edit-project/179"),
       );
 
       if (response.statusCode == 200) {

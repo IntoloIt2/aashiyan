@@ -10,9 +10,9 @@ import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provid
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../const.dart';
 import 'package:http/http.dart' as http;
-
 import '../providers/residential_provider.dart';
 
 class Step_1 extends StatefulWidget {
@@ -122,6 +122,7 @@ class _Step_1State extends State<Step_1> {
   int? diagonalValue = 0;
   String? diagonal1Text, diagonal2Text, finalDiagonal;
   String diagonalCalculation = "";
+
   String diagonalCalculations() {
     diagonal1Text = diagonal1Controller;
     diagonal2Text = diagonal2Controller;
@@ -250,16 +251,25 @@ class _Step_1State extends State<Step_1> {
   //     }
   //   }
   // }
+  Future<dynamic> getUserId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userData = prefs.getString('userData');
+    var decJson;
+    if (userData != null) {
+      decJson = jsonDecode(userData);
+    }
+    user_id = decJson['data']['id'];
+  }
 
   @override
   void initState() {
     super.initState();
-    print('printData-----');
-    print(printData);
+
+    getUserId();
     final store = Provider.of<PageNavProvider>(context, listen: false);
-    // print('store.getId()');
-    // print(store.getId());
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+
       if (store.getId() == 0) {
         printData = {"project": null};
       } else {
@@ -1921,7 +1931,7 @@ class _Step_1State extends State<Step_1> {
                     // print("d1 ${diagonal1Controller}");
                     // print("d2 ${diagonal2Controller}");
                     await provider.requirementPost(
-                      95,
+                      user_id,
                       projectGroupId,
                       projectTypeId,
                       selectedItems,
