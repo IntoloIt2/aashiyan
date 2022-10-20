@@ -8,13 +8,13 @@ import 'package:aashiyan/controller/auth_controller.dart';
 
 import 'package:aashiyan/view/residential/bunglow/bungalow_gallery.dart';
 import 'package:aashiyan/view/residential/bunglow/preExisting.dart';
-// import 'package:carousel_slider/carousel_options.dart';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:http/http.dart';
 
 import '../../../components/app_bar.dart';
 import '../../../controller/api_services.dart';
