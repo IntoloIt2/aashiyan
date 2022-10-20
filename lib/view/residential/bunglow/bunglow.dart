@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:aashiyan/components/bungalow_steps.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/components/project_category.dart';
 import 'package:aashiyan/controller/api_controller.dart';
+import 'package:aashiyan/controller/auth_controller.dart';
 
 import 'package:aashiyan/view/residential/bunglow/bungalow_gallery.dart';
 import 'package:aashiyan/view/residential/bunglow/preExisting.dart';
@@ -10,7 +13,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../components/app_bar.dart';
 import '../../../controller/api_services.dart';
@@ -81,10 +85,31 @@ class Bunglow extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(StepPages.namedRoute);
-                    cont.getData();
-                    cont.printData;
+                  onTap: () async {
+                    final SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    String? resultData = prefs.getString('userData');
+                    var decodedJson;
+                    if (resultData != null) {
+                      decodedJson = jsonDecode(resultData);
+                    }
+                    // print('decodedJson===');
+                    // print(decodedJson);
+                    if (decodedJson != null
+                        ? decodedJson['status'] == 200 &&
+                                decodedJson['data'] != null
+                            ? decodedJson['data']['id'] != null
+                            : false
+                        : false) {
+                      Navigator.of(context).pushNamed(StepPages.namedRoute);
+                      cont.getData();
+                      cont.printData;
+                    } else {
+                      // print("object==");
+                      showDialog(
+                          builder: (context) => registerDialog(context),
+                          context: (context));
+                    }
                   },
                   child: Card(
                     child: ListTile(
@@ -107,7 +132,6 @@ class Bunglow extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            
                             Text(
                               "Our pretigious Bunglow Projects",
                               style: TextStyle(

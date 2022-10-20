@@ -2,12 +2,16 @@ import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/view/homepage.dart';
 import 'package:aashiyan/view/profile.dart';
+import './controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'controller/auth_controller.dart';
+import 'package:provider/provider.dart';
+import 'controller/provider/auth_provider.dart';
+import './view/profile.dart';
 
 BottomNavigationBar customBottomNav(BuildContext context) {
+  // final store = Provider.of<Auth_Provider>(context, listen: true);
   return BottomNavigationBar(
     items: <BottomNavigationBarItem>[
       BottomNavigationBarItem(
@@ -41,11 +45,22 @@ BottomNavigationBar customBottomNav(BuildContext context) {
               color: iconColor,
             ),
             onPressed: () {
-              if (user_id != null) print(user_id);
-              showDialog(
-                  builder: (context) =>
-                      isLogged ? Profile() : loginDialog(context),
-                  context: (context));
+              isLogged
+                  // ? const Profile()
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Profile(),
+                      ))
+                  : showDialog(
+                      builder: (context) => loginDialog(context),
+                      context: (context));
+              // showDialog(
+              //     builder: (context) =>
+              //         isLogged ? Profile() : loginDialog(context),
+              //     context: (context));
+              // :
+              //
             },
           ),
           label: ""),

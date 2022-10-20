@@ -171,7 +171,7 @@ const standardService = 2000;
 const basicService = 1500;
 var payDesFees = 0;
 var user_id;
-var emailController;
+// var emailController;
 var projectId;
 
 

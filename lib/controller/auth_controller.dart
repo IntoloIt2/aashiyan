@@ -4,11 +4,14 @@ import 'dart:convert';
 
 import 'package:aashiyan/view/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../components/contants.dart';
 import '../const.dart';
 import '../view/homepage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
@@ -28,6 +31,7 @@ void dispose() {
 }
 
 var name;
+var email;
 var password;
 var res;
 var verification_res;
@@ -37,10 +41,11 @@ Future<void> registeration(String Email, String Password, context) async {
   var map = new Map<String, dynamic>();
   map['email'] = Email;
   map['password'] = Password;
-  print(map);
+  // print(map);
 
   final response = await http.post(
-    Uri.parse('http://192.168.0.99:8080/sdplserver/api/registration'),
+    Uri.parse("${dotenv.env['APP_URL']}registration"),
+    // Uri.parse('http://192.168.0.99:8080/sdplserver/api/registration'),
     //verify-email/userid
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
@@ -66,10 +71,8 @@ Future<void> verification(String Verify_code, context, int id) async {
 
   map['verify_code'] = Verify_code;
   map['user_id'] = id;
-
-  print(jsonEncode(map));
   final response = await http.post(
-    Uri.parse('http://192.168.0.99:8080/sdplserver/api/verify-email/ $user_id'),
+    Uri.parse("${dotenv.env['APP_URL']}verify-email/${user_id}"),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -77,9 +80,10 @@ Future<void> verification(String Verify_code, context, int id) async {
   );
 
   verification_res = jsonDecode(response.body);
-  print(verification_res);
 
   if (verification_res['status'] == 200) {
+    showToast('Registered Successfully!', Colors.lightBlueAccent);
+    verify_codeController.clear();
     showDialog(context: context, builder: loginDialog);
   } else {
     showDialog(
@@ -91,17 +95,13 @@ Future<void> verification(String Verify_code, context, int id) async {
 
 Future<void> login(String Email, String Password, context) async {
   var map = Map<String, dynamic>();
-
   map['email'] = emailController.text;
   map['password'] = passwordController.text;
-
   // prefs.setString('user_id', user_id).toString();
 
   final response = await http.post(
-    Uri.parse('http://192.168.0.99:8080/sdplserver/api/login'),
-
+    Uri.parse('${dotenv.env['APP_URL']}login'),
     //verify-email/userid     |     http://sdplweb.com/sdpl/api/login
-
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -109,37 +109,72 @@ Future<void> login(String Email, String Password, context) async {
   );
 
   loginres = jsonDecode(response.body);
-  // user_id = loginres['data']['id'].toString();
-  print('loginres===');
-  print(loginres);
+  // print('loginres====');
+  // print(loginres);
 
-  if (loginres['status'] == 200 && user_id != null) {
+  if (loginres['status'] == 200 && loginres['data'] != null
+      ? loginres['data']['id'] != null
+          ? true
+          : false
+      : false) {
     isLogged = true;
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('loginDetails', loginres);
+    showToast('Successfully logged in!', Colors.lightGreen);
+    emailController.clear();
+    passwordController.clear();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var temp = await prefs.setString('userData', jsonEncode(loginres));
 
     Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => HomePage(),
         ));
+  } else if (loginres['errors'] != null
+      ? loginres['errors']['email'] != null
+      : false) {
+    showDialog(
+        context: context,
+        builder: (context) =>
+            acknoledgmentDialog(context, "${loginres['errors']['email']}"));
+  } else if (loginres['errors'] != null
+      ? loginres['errors']['password'] != null
+      : false) {
+    showDialog(
+        context: context,
+        builder: (context) =>
+            acknoledgmentDialog(context, "${loginres['errors']['password']}"));
   } else {
     showDialog(
         context: context,
         builder: (context) =>
-            acknoledgmentDialog(context, '${(loginres['msg'])}'));
+            acknoledgmentDialog(context, "${loginres['msg']}"));
   }
-  print(loginres);
 }
 
 Future<Null> logout() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  // prefs.remove('loginDetails');
-  prefs.remove('user_id');
-
+  String? resultData = prefs.getString('userData');
+  var decodedJson = jsonDecode(resultData!);
+  print('decodedJson-----');
+  print(decodedJson);
+  prefs.clear();
   email = emailController.text;
   password = passwordController.text;
   isLogged = false;
+  if (!isLogged) {
+    showToast('Successfully logged Out!', Colors.lightBlueAccent);
+    Get.to(() => HomePage());
+  }
+}
+
+void showToast(msg, toastColor) {
+  Fluttertoast.showToast(
+      msg: '${msg}',
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 0,
+      backgroundColor: toastColor,
+      textColor: Colors.white);
 }
 
 AlertDialog registerDialog(BuildContext context) {
@@ -253,8 +288,8 @@ AlertDialog loginDialog(BuildContext context) {
               ),
               onPressed: () {
                 login(emailController.text, passwordController.text, context);
-                emailController.clear();
-                passwordController.clear();
+                // emailController.clear();
+                // passwordController.clear();
               },
             ),
           ),
