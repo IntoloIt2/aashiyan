@@ -5,6 +5,7 @@ import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/model/requirementmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../const.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,8 +23,6 @@ class Requirement extends StatefulWidget {
 }
 
 class _RequirementState extends State<Requirement> {
-  late Future<RequirementModel> futureRequirement;
-
   String nameController = '';
   String lastNameController = "";
   String emailController = "";
@@ -191,7 +190,7 @@ class _RequirementState extends State<Requirement> {
 
   void fetchData() async {
     var response = await projects;
-    data = response as List;
+    data = response;
 
     print(data);
   }
@@ -211,6 +210,7 @@ class _RequirementState extends State<Requirement> {
   @override
   void initState() {
     super.initState();
+
     getData();
     getCities();
     getState();
@@ -1605,7 +1605,7 @@ class _RequirementState extends State<Requirement> {
                   );
                   print("d1 ${diagonal1Controller}");
                   print("d2 ${diagonal2Controller}");
-                  futureRequirement = requirementPost(
+                  requirementPost(
                     2342,
                     978,
                     098,

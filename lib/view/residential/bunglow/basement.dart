@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
@@ -12,6 +14,8 @@ class Basement extends StatefulWidget {
   @override
   State<Basement> createState() => _BasementState();
 }
+
+var id;
 
 class _BasementState extends State<Basement> {
   final List<String> otherItems = ["Pantry", "Staff Toilet", "Toilet"];
@@ -25,6 +29,7 @@ class _BasementState extends State<Basement> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print(id);
     getData();
   }
 

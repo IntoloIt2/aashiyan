@@ -41,6 +41,7 @@ BottomNavigationBar customBottomNav(BuildContext context) {
               color: iconColor,
             ),
             onPressed: () {
+              if (user_id != null) print(user_id);
               showDialog(
                   builder: (context) =>
                       isLogged ? Profile() : loginDialog(context),

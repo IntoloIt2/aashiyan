@@ -89,19 +89,13 @@ Future<void> verification(String Verify_code, context, int id) async {
   }
 }
 
-
-
 Future<void> login(String Email, String Password, context) async {
   var map = Map<String, dynamic>();
 
   map['email'] = emailController.text;
   map['password'] = passwordController.text;
 
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString('loginDetails', map.toString());
-  prefs.setString('email', Email);
-  prefs.setString('password', Password);
-  prefs.setString('user_id', user_id).toString();
+  // prefs.setString('user_id', user_id).toString();
 
   final response = await http.post(
     Uri.parse('http://192.168.0.99:8080/sdplserver/api/login'),
@@ -115,11 +109,15 @@ Future<void> login(String Email, String Password, context) async {
   );
 
   loginres = jsonDecode(response.body);
-  user_id = loginres['data']['id'].toString();
-  print(user_id);
+  // user_id = loginres['data']['id'].toString();
+  print('loginres===');
+  print(loginres);
 
   if (loginres['status'] == 200 && user_id != null) {
     isLogged = true;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('loginDetails', loginres);
+
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -136,10 +134,11 @@ Future<void> login(String Email, String Password, context) async {
 
 Future<Null> logout() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.remove('loginDetails');
+  // prefs.remove('loginDetails');
+  prefs.remove('user_id');
 
-  email = '';
-  password = '';
+  email = emailController.text;
+  password = passwordController.text;
   isLogged = false;
 }
 
@@ -213,8 +212,6 @@ AlertDialog registerDialog(BuildContext context) {
   );
 }
 
-void postData() {}
-
 AlertDialog loginDialog(BuildContext context) {
   return AlertDialog(
     title: const Center(
@@ -277,8 +274,6 @@ AlertDialog loginDialog(BuildContext context) {
     ),
   );
 }
-
-void verifyUser() {}
 
 AlertDialog verificationDialog(BuildContext context) {
   return AlertDialog(

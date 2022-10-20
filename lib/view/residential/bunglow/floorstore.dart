@@ -112,6 +112,43 @@ class _FloorStoreState extends State<FloorStore> {
         setState(() {
           printData = jsonResponse;
           print(printData);
+
+          if (printData != null) {
+            FloorStoreDetail1 =
+                printData["bungalow_floor_store"]["floor_store_req"] == 1
+                    ? true
+                    : FloorStoreDetail1;
+            FloorStoreDetail2 =
+                printData["bungalow_floor_store"]["floor_store_req"] == 0
+                    ? true
+                    : FloorStoreDetail2;
+            selectedFloor = printData['bungalow_floor_store']['store_floor'] !=
+                    null
+                ? pantryItems[printData['bungalow_floor_store']['store_floor']]
+                : (selectedFloor);
+            floorStoreLocationController = printData["bungalow_floor_store"]
+                    ["store_floor"] ??
+                floorStoreLocationController;
+            floorStoreLengthController = printData["bungalow_floor_store"]
+                    ["floor_store_length"] ??
+                floorStoreLengthController;
+            floorStoreWidthController = printData["bungalow_floor_store"]
+                    ["floor_store_width"] ??
+                floorStoreWidthController;
+            selectedStair = printData['bungalow_floor_store']['stair_case'] ??
+                selectedStair;
+            requiredLift = printData["bungalow_floor_store"]["lift_req"] == 1
+                ? true
+                : requiredLift;
+            notRequiredLift = printData["bungalow_floor_store"]["lift_req"] == 0
+                ? true
+                : notRequiredLift;
+            liftItems =
+                printData['bungalow_floor_store']['passanger_capacity'] ?? selectedLift;
+            liftSpecialRequirementController =  printData["bungalow_floor_store"]
+                                        ["lift_special_req"] ?? liftSpecialRequirementController;
+                                    
+          }
         });
       }
     } catch (e) {
@@ -175,8 +212,6 @@ class _FloorStoreState extends State<FloorStore> {
                                           () {
                                             FloorStoreDetail1 = value;
                                             FloorStoreDetail2 = false;
-                                            printData["bungalow_floor_store"]
-                                                ["floor_store_req"] = 2;
                                           },
                                         );
                                       }),
@@ -208,18 +243,12 @@ class _FloorStoreState extends State<FloorStore> {
                                   child: Checkbox(
                                     activeColor: checkColor,
                                     checkColor: Colors.white,
-                                    value: printData["bungalow_floor_store"]
-                                                ["floor_store_req"] ==
-                                            0
-                                        ? true
-                                        : FloorStoreDetail2,
+                                    value: FloorStoreDetail2,
                                     onChanged: (value) {
                                       setState(
                                         () {
                                           FloorStoreDetail2 = value;
                                           FloorStoreDetail1 = false;
-                                          printData["bungalow_floor_store"]
-                                              ["floor_store_req"] = 2;
                                         },
                                       );
                                     },
@@ -240,9 +269,7 @@ class _FloorStoreState extends State<FloorStore> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                if (FloorStoreDetail1 == true ||
-                    printData["bungalow_floor_store"]["floor_store_req"] ==
-                        1) ...[
+                if (FloorStoreDetail1 == true) ...[
                   SizedBox(
                     height: height * 0.01,
                   ),
@@ -266,13 +293,7 @@ class _FloorStoreState extends State<FloorStore> {
                               icon: const Visibility(
                                   visible: false,
                                   child: Icon(Icons.arrow_downward)),
-                              hint: printData['bungalow_floor_store']
-                                          ['store_floor'] !=
-                                      null
-                                  ? Text(pantryItems[
-                                      printData['bungalow_floor_store']
-                                          ['store_floor']])
-                                  : Text(selectedFloor),
+                              hint: Text(selectedFloor),
                               elevation: 16,
                               items: pantryItems
                                   .map(
@@ -280,7 +301,7 @@ class _FloorStoreState extends State<FloorStore> {
                                       value: it,
                                       child: Text(
                                         it,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.black,
                                         ),
                                       ),
@@ -293,30 +314,30 @@ class _FloorStoreState extends State<FloorStore> {
                                     selectedFloor = it!;
                                     // printData['bungalow_floor_store']
                                     //     ['store_floor'] = '';
-                                    if (selectedFloor == "select floor") {
-                                      printData['bungalow_floor_store']
-                                          ['store_floor'] = 0;
-                                    }
-                                    if (selectedFloor == "Ground floor") {
-                                      printData['bungalow_floor_store']
-                                          ['store_floor'] = 1;
-                                    }
-                                    if (selectedFloor == "1st floor") {
-                                      printData['bungalow_floor_store']
-                                          ['store_floor'] = 2;
-                                    }
-                                    if (selectedFloor == "2nd floor") {
-                                      printData['bungalow_floor_store']
-                                          ['store_floor'] = 3;
-                                    }
-                                    if (selectedFloor == "3rd floor") {
-                                      printData['bungalow_floor_store']
-                                          ['store_floor'] = 4;
-                                    }
-                                    if (selectedFloor == "other") {
-                                      printData['bungalow_floor_store']
-                                          ['store_floor'] = 5;
-                                    }
+                                    // if (selectedFloor == "select floor") {
+                                    //   printData['bungalow_floor_store']
+                                    //       ['store_floor'] = 0;
+                                    // }
+                                    // if (selectedFloor == "Ground floor") {
+                                    //   printData['bungalow_floor_store']
+                                    //       ['store_floor'] = 1;
+                                    // }
+                                    // if (selectedFloor == "1st floor") {
+                                    //   printData['bungalow_floor_store']
+                                    //       ['store_floor'] = 2;
+                                    // }
+                                    // if (selectedFloor == "2nd floor") {
+                                    //   printData['bungalow_floor_store']
+                                    //       ['store_floor'] = 3;
+                                    // }
+                                    // if (selectedFloor == "3rd floor") {
+                                    //   printData['bungalow_floor_store']
+                                    //       ['store_floor'] = 4;
+                                    // }
+                                    // if (selectedFloor == "other") {
+                                    //   printData['bungalow_floor_store']
+                                    //       ['store_floor'] = 5;
+                                    // }
                                   },
                                 );
                               },
@@ -337,9 +358,7 @@ class _FloorStoreState extends State<FloorStore> {
                             width: width * 0.25,
                             child: TextFormField(
                               // controller: txt,
-                              initialValue: printData["bungalow_floor_store"]
-                                      ["store_floor"]
-                                  .toString(),
+                              initialValue: floorStoreLocationController,
                               style: const TextStyle(fontSize: 14),
                               decoration: const InputDecoration(
                                   hintText: "other location",
@@ -354,9 +373,6 @@ class _FloorStoreState extends State<FloorStore> {
                               onChanged: ((value) {
                                 setState(() {
                                   floorStoreLocationController = value;
-                                  printData["bungalow_floor_store"]
-                                          ["store_floor"] =
-                                      floorStoreLocationController;
                                 });
                               }),
                             ),
@@ -413,8 +429,7 @@ class _FloorStoreState extends State<FloorStore> {
                           width: width * 0.15,
                           child: TextFormField(
                             // controller: txt,
-                            initialValue: printData["bungalow_floor_store"]
-                                ["floor_store_length"],
+                            initialValue: floorStoreLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",
@@ -430,9 +445,6 @@ class _FloorStoreState extends State<FloorStore> {
                               setState(
                                 () {
                                   floorStoreLengthController = value;
-                                  printData["bungalow_floor_store"]
-                                          ["floor_store_length"] =
-                                      floorStoreLengthController;
                                 },
                               );
                             }),
@@ -458,8 +470,7 @@ class _FloorStoreState extends State<FloorStore> {
                           width: width * 0.15,
                           child: TextFormField(
                             // controller: txt,
-                            initialValue: printData["bungalow_floor_store"]
-                                ["floor_store_width"],
+                            initialValue: floorStoreWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "width",
@@ -474,9 +485,6 @@ class _FloorStoreState extends State<FloorStore> {
                             onChanged: ((value) {
                               setState(() {
                                 floorStoreWidthController = value;
-                                printData["bungalow_floor_store"]
-                                        ["floor_store_width"] =
-                                    floorStoreWidthController;
                               });
                             }),
                           ),
@@ -515,12 +523,7 @@ class _FloorStoreState extends State<FloorStore> {
                             icon: const Visibility(
                                 visible: false,
                                 child: Icon(Icons.arrow_downward)),
-                            hint: printData['bungalow_floor_store']
-                                        ['stair_case'] !=
-                                    null
-                                ? Text(printData['bungalow_floor_store']
-                                    ['stair_case'])
-                                : Text(selectedStair),
+                            hint: Text(selectedStair),
                             // value: selectedStair,
                             elevation: 16,
                             items: stairItems
@@ -541,8 +544,6 @@ class _FloorStoreState extends State<FloorStore> {
                                   // "L saped",
                                   // "Semi circular"
                                   selectedStair = it!;
-                                  printData['bungalow_floor_store']
-                                      ['stair_case'] = selectedStair;
                                 },
                               );
                             },
@@ -665,18 +666,12 @@ class _FloorStoreState extends State<FloorStore> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: printData["bungalow_floor_store"]
-                                                  ["lift_req"] ==
-                                              1
-                                          ? true
-                                          : requiredLift,
+                                      value: requiredLift,
                                       onChanged: (value) {
                                         setState(
                                           () {
                                             requiredLift = value;
                                             notRequiredLift = false;
-                                            printData["bungalow_floor_store"]
-                                                ["lift_req"] = 2;
                                           },
                                         );
                                       }),
@@ -708,17 +703,11 @@ class _FloorStoreState extends State<FloorStore> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: printData["bungalow_floor_store"]
-                                                  ["lift_req"] ==
-                                              0
-                                          ? true
-                                          : notRequiredLift,
+                                      value: notRequiredLift,
                                       onChanged: (value) {
                                         setState(() {
                                           notRequiredLift = value;
                                           requiredLift = false;
-                                          printData["bungalow_floor_store"]
-                                              ["lift_req"] = 2;
                                         });
                                       }),
                                 ),
@@ -737,8 +726,7 @@ class _FloorStoreState extends State<FloorStore> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                if (requiredLift == true ||
-                    printData["bungalow_floor_store"]["lift_req"] == 1) ...[
+                if (requiredLift == true) ...[
                   Row(
                     children: [
                       requirementText("Passenger capacity"),
@@ -758,13 +746,7 @@ class _FloorStoreState extends State<FloorStore> {
                                 icon: const Visibility(
                                     visible: false,
                                     child: Icon(Icons.arrow_downward)),
-                                hint: printData['bungalow_floor_store']
-                                            ['passanger_capacity'] !=
-                                        null
-                                    ? Text(printData['bungalow_floor_store']
-                                            ['passanger_capacity']
-                                        .toString())
-                                    : Text(selectedLift),
+                                hint: Text(selectedLift),
                                 // value: selectedLift,
                                 elevation: 16,
                                 items: liftItems
@@ -783,8 +765,7 @@ class _FloorStoreState extends State<FloorStore> {
                                 onChanged: (it) {
                                   setState(() {
                                     selectedLift = it!;
-                                    printData['bungalow_floor_store']
-                                        ['passanger_capacity'] = selectedLift;
+                                   
                                   });
                                 }),
                           ),
