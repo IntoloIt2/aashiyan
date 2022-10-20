@@ -1,6 +1,7 @@
+// ignore_for_file: camel_case_types, avoid_unnecessary_containers, unnecessary_brace_in_string_interps
+
 import 'dart:convert';
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 // class Item {
 //   Item({
@@ -535,6 +536,7 @@ import 'package:flutter/material.dart';
 //   bool isExpand=false;
 //   @override
 //   void initState() {
+// ignore: todo
 //     // TODO: implement initState
 //     super.initState();
 //     isExpand=false;
@@ -692,7 +694,7 @@ class _dynmicTestingState extends State<dynmicTesting> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("dynamic"),
+        title: const Text("dynamic"),
         actions: [
           IconButton(
             onPressed: () {
@@ -700,7 +702,7 @@ class _dynmicTestingState extends State<dynmicTesting> {
                 count = count + 1;
               });
             },
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
           ),
           IconButton(
             onPressed: () {
@@ -708,7 +710,7 @@ class _dynmicTestingState extends State<dynmicTesting> {
                 count = 0;
               });
             },
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
           ),
         ],
       ),
@@ -723,7 +725,7 @@ class _dynmicTestingState extends State<dynmicTesting> {
               },
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Text(result),
@@ -736,7 +738,7 @@ class _dynmicTestingState extends State<dynmicTesting> {
     return Row(
       children: [
         Text("Id ${key}"),
-        SizedBox(
+        const SizedBox(
           width: 30,
         ),
         Expanded(child: TextField(
@@ -753,7 +755,6 @@ class _dynmicTestingState extends State<dynmicTesting> {
     for (var map in _values) {
       if (map.containsKey("id")) {
         if (map["id"] == key) {
-          print("$foundKey ${map["id"]} ");
           foundKey = key;
           break;
         }
@@ -761,7 +762,6 @@ class _dynmicTestingState extends State<dynmicTesting> {
     }
     if (-1 != foundKey) {
       _values.removeWhere((map) {
-        print("${map["id"] == foundKey} ${map["id"]} ");
         return map["id"] == foundKey;
       });
     }
@@ -773,7 +773,7 @@ class _dynmicTestingState extends State<dynmicTesting> {
   }
 
   String _prettyPrint(jsonObject) {
-    var encoder = JsonEncoder.withIndent('  ');
+    var encoder = const JsonEncoder.withIndent('  ');
     return encoder.convert(jsonObject);
   }
 }

@@ -6,7 +6,6 @@ import 'package:aashiyan/view/residential/bunglow/pantrydetail.dart';
 import 'package:aashiyan/view/residential/bunglow/payment.dart';
 import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:flutter/material.dart';
-import '../view/residential/bunglow/bedroom.dart';
 
 import '../view/residential/bunglow/entrance.dart';
 import '../view/residential/bunglow/staticbedroompage.dart';
@@ -139,15 +138,16 @@ class _BunglowStepsState extends State<BunglowSteps> {
   }
 }
 
+// ignore: non_constant_identifier_names
 List Pages = [
   Requirement(),
-  Entrance(),
+  const Entrance(),
   LivingHall(),
   PantryDetail(),
-  FloorStore(),
-  StaticBedroomPage(),
+  const FloorStore(),
+  const StaticBedroomPage(),
   Basement(),
-  BuiltUp(),
+  const BuiltUp(),
   Payment()
 ];
 
@@ -174,7 +174,7 @@ class _StepPagesState extends State<StepPages> {
               child: Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.only(top: 10),
                     child: Row(
                       children: [
                         InkWell(
@@ -291,7 +291,7 @@ class _StepPagesState extends State<StepPages> {
               height: 10,
             ),
             Container(
-              padding: EdgeInsets.only(left: 10, right: 10),
+              padding: const EdgeInsets.only(left: 10, right: 10),
               child: Pages[index!],
             )
           ],

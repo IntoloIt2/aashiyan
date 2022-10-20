@@ -1,14 +1,14 @@
+// ignore_for_file: library_prefixes, camel_case_types, use_key_in_widget_constructors, non_constant_identifier_names, prefer_typing_uninitialized_variables, unused_local_variable, empty_catches, body_might_complete_normally_nullable, sized_box_for_whitespace, prefer_if_null_operators, unrelated_type_equality_checks, avoid_unnecessary_containers, unnecessary_string_interpolations
+
 import 'dart:convert';
 import 'dart:core';
-import 'package:aashiyan/components/bungalow_steps.dart';
 import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/components/forms.dart' as Forms;
 import 'package:aashiyan/components/forms.dart';
-import 'package:aashiyan/controller/api_services.dart';
-import 'package:aashiyan/model/requirementmodel.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../const.dart';
@@ -23,7 +23,7 @@ class Step_1 extends StatefulWidget {
 }
 
 class _Step_1State extends State<Step_1> {
- // late Future<RequirementModel> futureRequirement;
+  // late Future<RequirementModel> futureRequirement;
   String nameController = '';
   String lastNameController = "";
   String emailController = "";
@@ -137,12 +137,21 @@ class _Step_1State extends State<Step_1> {
     return diagonalCalculation;
   }
 
+  void showToast(msg, toastColor, GRAVITY) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 0,
+        backgroundColor: toastColor,
+        textColor: Colors.white);
+  }
+
   Future<void> getState() async {
     try {
       var client = http.Client();
       var response =
-          await http.get(Uri.parse("${dotenv.env['APP_URL']}state/1"));
-      // print(response.body.toString());
+          await http.get(Uri.parse("${dotenv.env['APP_URL']}state/$STATE_ID"));
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         final stateList = jsonResponse['states'] as List;
@@ -151,9 +160,7 @@ class _Step_1State extends State<Step_1> {
         });
         // print(stateData);
       }
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   Future<List?> getCities() async {
@@ -161,41 +168,30 @@ class _Step_1State extends State<Step_1> {
       var client = http.Client();
       var response =
           await http.get(Uri.parse("${dotenv.env['APP_URL']}city/$stateId"));
-      // print(response.body.toString());
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         final cityList = jsonResponse['cities'] as List;
         setState(() {
           cityData = cityList;
         });
-        // print(cityData);
         return cityList;
       }
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   var printData;
 
-  Future<void> getData(int id) async {
+  Future<void> getData(id) async {
     try {
-      print('printData===');
-      print(id);
       var response = await http.get(
-        // Uri.parse("${dotenv.env['APP_URL']}edit-project/$project_id"),
         Uri.parse("${dotenv.env['APP_URL']}edit-project/$id"),
       );
-
+      // print('response.body==');
+      // print(response.body);
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        // print('jsonResponse====');
-        // print(jsonResponse);
         setState(() {
           printData = jsonResponse;
-          // print(printData);
-          // project_id = printData['project_id'];
-
           if (printData != null && printData['project_id'] != null) {
             nameController = printData["project"]['first_name'] != null
                 ? printData["project"]['first_name'].toString()
@@ -230,14 +226,10 @@ class _Step_1State extends State<Step_1> {
             levelController = printData["project"]["level"] != null
                 ? printData["project"]["level"].toString()
                 : "";
-            //  widthController = printData["project"][]!=null?printData[][].toString():'';
-            //  lengthController = printData["project"][]!=null?printData[][].toString():'';
           }
         });
       }
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   bool isloading = false;
@@ -259,6 +251,9 @@ class _Step_1State extends State<Step_1> {
       decJson = jsonDecode(userData);
     }
     user_id = decJson['data']['id'];
+    // print('decJson===');
+    // print(decJson);
+    getData(user_id);
   }
 
   @override
@@ -268,14 +263,15 @@ class _Step_1State extends State<Step_1> {
     getUserId();
     final store = Provider.of<PageNavProvider>(context, listen: false);
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-
-      if (store.getId() == 0) {
-        printData = {"project": null};
-      } else {
-        getData(store.getId());
-      }
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    // print("object==");
+    // print(store.getId());
+    // if (store.getId() == 0) {
+    //   printData = {"project": null};
+    // } else {
+    //   getData(store.getId());
+    // }
+    // });
 
     var residentProvider =
         Provider.of<ResidentialProvider>(context, listen: false);
@@ -295,10 +291,6 @@ class _Step_1State extends State<Step_1> {
       },
     );
 
-    // print("projectTypeId==");
-    // print(projectTypeId);
-
-    // updateDataByProjectId();
     getCities();
     getState();
     plotValue.addListener(() => setState(() {}));
@@ -313,17 +305,14 @@ class _Step_1State extends State<Step_1> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+
     var provider = Provider.of<PageNavProvider>(context, listen: true);
-    
-    // print('projectGroupId====');
-    // print(projectTypeId);
 
     if (printData != null) {
       setState(() {
         isloading = false;
       });
     }
-    // print(stateData);
     return isloading
         ? const Center(
             child: CircularProgressIndicator(),
@@ -331,9 +320,9 @@ class _Step_1State extends State<Step_1> {
         : SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+              children: [
                 Row(
-             children: [
+                  children: [
                     requirementText("Name"),
                     SizedBox(
                       width: width * 0.04,
@@ -344,11 +333,10 @@ class _Step_1State extends State<Step_1> {
                         Radius.circular(5),
                       ),
                       child: Container(
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         height: height * 0.04,
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            // hint: Text(selectedItems),
                             hint: printData != null
                                 ? printData['project'] != null
                                     ? Text(printData['project']['prefix'])
@@ -384,9 +372,6 @@ class _Step_1State extends State<Step_1> {
                                   printData['project']['prefix'] =
                                       selectedItems;
                                 }
-                                // print(
-                                //     "${DotEnv().env['APP_URL']}edit-project/179");
-                                // selectedItems = items.indexOf(it);
                               },
                             ),
                           ),
@@ -395,7 +380,7 @@ class _Step_1State extends State<Step_1> {
                     ),
                     const SizedBox(
                       width: 5,
-                      ),
+                    ),
                     Material(
                       elevation: 5,
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -417,9 +402,7 @@ class _Step_1State extends State<Step_1> {
                                 borderSide: BorderSide.none,
                               ),
                               isDense: true,
-                              contentPadding: EdgeInsets.all(8)
-                              //fillColor: Colors.green
-                              ),
+                              contentPadding: EdgeInsets.all(8)),
                           onChanged: (value) {
                             nameController = value;
                           },
@@ -450,9 +433,7 @@ class _Step_1State extends State<Step_1> {
                                 borderSide: BorderSide.none,
                               ),
                               isDense: true,
-                              contentPadding: EdgeInsets.all(8)
-                              //fillColor: Colors.green
-                              ),
+                              contentPadding: EdgeInsets.all(8)),
                           onChanged: (value) {
                             lastNameController = value;
                           },
@@ -599,7 +580,7 @@ class _Step_1State extends State<Step_1> {
                         Radius.circular(5),
                       ),
                       child: Container(
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         height: height * 0.04,
                         width: width * 0.6,
                         child: DropdownButtonHideUnderline(
@@ -656,7 +637,7 @@ class _Step_1State extends State<Step_1> {
                         Radius.circular(5),
                       ),
                       child: Container(
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         height: height * 0.04,
                         width: width * 0.6,
                         child: DropdownButtonHideUnderline(
@@ -717,7 +698,7 @@ class _Step_1State extends State<Step_1> {
                         Radius.circular(5),
                       ),
                       child: Container(
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         height: height * 0.04,
                         width: width * 0.2,
                         child: DropdownButtonHideUnderline(
@@ -1209,7 +1190,7 @@ class _Step_1State extends State<Step_1> {
                                   Navigator.of(context).pop();
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(10),
                                   color: Colors.black,
                                   child: const Text(
                                     "okay",
@@ -1762,10 +1743,7 @@ class _Step_1State extends State<Step_1> {
                                       ))
                                   .toList(),
                               onChanged: (it) => setState(() {
-                                // print("selectedLevel---");
-                                // print(printData['project']['level']);
                                 selectedLevel = it!;
-                                print(selectedLevel);
                                 if (it == "Up") {
                                   if (printData['project'] != null) {
                                     printData['project']['level'] = 2;
@@ -1928,9 +1906,7 @@ class _Step_1State extends State<Step_1> {
                         }
                       },
                     );
-                    // print("d1 ${diagonal1Controller}");
-                    // print("d2 ${diagonal2Controller}");
-                    await provider.requirementPost(
+                    var status = await provider.requirementPost(
                       user_id,
                       projectGroupId,
                       projectTypeId,
@@ -1965,8 +1941,10 @@ class _Step_1State extends State<Step_1> {
                       notReqiredInt,
                     );
                     // project_id = provider.project_id;
-                    // print("project_id");
-                    // print(provider.getId());
+                    if (status == 200) {
+                      showToast('Project Requirement Submitted !',
+                          Colors.lightGreen, ToastGravity.TOP);
+                    }
                   },
                   child: Container(
                     decoration: BoxDecoration(

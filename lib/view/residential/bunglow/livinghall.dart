@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, unnecessary_null_comparison, non_constant_identifier_names, prefer_typing_uninitialized_variables, prefer_if_null_operators, empty_catches, unused_local_variable, avoid_unnecessary_containers, sized_box_for_whitespace
+
 import 'dart:convert';
 
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
@@ -146,9 +148,6 @@ class _LivingHallState extends State<LivingHall> {
   var printData;
   int? pageId;
   Future<void> getData(int id) async {
-    print('id===');
-    print(id);
-
     try {
       // var client = http.Client();
 
@@ -160,7 +159,6 @@ class _LivingHallState extends State<LivingHall> {
         setState(
           () {
             printData = jsonResponse;
-            print(printData);
             if (printData != null) {
               pageId = printData['bungalow_drawing_hall']['id'] != null
                   ? int.parse(
@@ -194,9 +192,6 @@ class _LivingHallState extends State<LivingHall> {
                           ["kitchen_floor"]]
                       : selectedKitchen;
 
-              print( "kitchen   ${selectedKitchen}");
-
-             
               selectedKitchenFunction = printData['bungalow_drawing_hall']
                           ['kitchen_dining_function'] !=
                       null
@@ -221,7 +216,6 @@ class _LivingHallState extends State<LivingHall> {
                   ? DrawingItems[printData["bungalow_drawing_hall"]
                       ["drawing_hall_location"]]
                   : DrawingSelected;
-              print(DrawingSelected);
 
               LivingHallLengthController = printData['bungalow_drawing_hall']
                           ['living_hall_length'] !=
@@ -330,14 +324,13 @@ class _LivingHallState extends State<LivingHall> {
                   : '';
               specificReq =
                   printData['bungalow_drawing_hall']['specific_req'] != null
-                      ? printData['bungalow_drawing_hall']['specific_req']  : '';
+                      ? printData['bungalow_drawing_hall']['specific_req']
+                      : '';
             }
           },
         );
       }
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   bool isloading = false;
@@ -391,7 +384,7 @@ class _LivingHallState extends State<LivingHall> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -425,7 +418,7 @@ class _LivingHallState extends State<LivingHall> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -469,7 +462,7 @@ class _LivingHallState extends State<LivingHall> {
                     child: Container(
                       height: height * 0.03,
                       width: width * 0.25,
-                      margin: EdgeInsets.all(
+                      margin: const EdgeInsets.all(
                         3,
                       ),
                       child: DropdownButtonHideUnderline(
@@ -491,7 +484,7 @@ class _LivingHallState extends State<LivingHall> {
                               },
                               child: Text(
                                 it.value,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                 ),
                               ),
@@ -554,7 +547,6 @@ class _LivingHallState extends State<LivingHall> {
                           ),
                       onChanged: (value) {
                         LivingHallLengthController = value;
-                        print(LivingHallLengthController);
                       },
                     ),
                   ),
@@ -617,7 +609,8 @@ class _LivingHallState extends State<LivingHall> {
                   borderRadius: BorderRadius.circular(5),
                   elevation: 5,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -630,7 +623,7 @@ class _LivingHallState extends State<LivingHall> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            child: Text("Office features"),
+                            child: const Text("Office features"),
                           ),
                         ),
                         Wrap(
@@ -644,8 +637,7 @@ class _LivingHallState extends State<LivingHall> {
                     ),
                   ),
                 ),
-                if(selectedFeatures == "other") ...[
-                  
+                if (selectedFeatures == "other") ...[
                   Material(
                     elevation: 5,
                     borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -725,7 +717,7 @@ class _LivingHallState extends State<LivingHall> {
             Material(
               elevation: 10,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 color: Colors.white,
                 child: SizedBox(
                   width: width * 9,
@@ -783,7 +775,7 @@ class _LivingHallState extends State<LivingHall> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -817,7 +809,7 @@ class _LivingHallState extends State<LivingHall> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -880,11 +872,10 @@ class _LivingHallState extends State<LivingHall> {
                                 value: it.value,
                                 onTap: () {
                                   drawingHallLocation = idx;
-                                  print(drawingHallLocation);
                                 },
                                 child: Text(
                                   it.value,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.black,
                                   ),
                                 ));
@@ -970,7 +961,6 @@ class _LivingHallState extends State<LivingHall> {
                           ),
                       onChanged: (value) {
                         drawingHallLengthController = value;
-                        print(drawingHallLengthController);
                       },
                     ),
                   ),
@@ -1012,7 +1002,6 @@ class _LivingHallState extends State<LivingHall> {
                           ),
                       onChanged: (value) {
                         drawingHallWidthController = value;
-                        print(drawingHallWidthController);
                       },
                     ),
                   ),
@@ -1076,7 +1065,7 @@ class _LivingHallState extends State<LivingHall> {
             Material(
               elevation: 10,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 color: Colors.white,
                 child: SizedBox(
                   width: width * 9,
@@ -1140,7 +1129,7 @@ class _LivingHallState extends State<LivingHall> {
                   child: Container(
                     height: height * 0.03,
                     width: width * 0.25,
-                    margin: EdgeInsets.all(
+                    margin: const EdgeInsets.all(
                       3,
                     ),
                     child: DropdownButtonHideUnderline(
@@ -1161,7 +1150,7 @@ class _LivingHallState extends State<LivingHall> {
                               },
                               child: Text(
                                 it.value,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                 ),
                               ),
@@ -1325,7 +1314,7 @@ class _LivingHallState extends State<LivingHall> {
                                 value: it,
                                 child: Text(
                                   it,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.black,
                                   ),
                                 ),
@@ -1353,7 +1342,7 @@ class _LivingHallState extends State<LivingHall> {
           Material(
             elevation: 10,
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               color: Colors.white,
               child: SizedBox(
                 width: width * 9,
@@ -1409,7 +1398,7 @@ class _LivingHallState extends State<LivingHall> {
                 child: Container(
                   height: height * 0.03,
                   width: width * 0.4,
-                  margin: EdgeInsets.all(
+                  margin: const EdgeInsets.all(
                     3,
                   ),
                   child: DropdownButtonHideUnderline(
@@ -1427,7 +1416,7 @@ class _LivingHallState extends State<LivingHall> {
                           value: it.value,
                           child: Text(
                             it.value,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                             ),
                           ),
@@ -1450,7 +1439,7 @@ class _LivingHallState extends State<LivingHall> {
           Material(
             elevation: 10,
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               color: Colors.white,
               child: SizedBox(
                 width: width * 9,
@@ -1499,7 +1488,7 @@ class _LivingHallState extends State<LivingHall> {
                 borderRadius: BorderRadius.circular(5),
                 elevation: 5,
                 child: Container(
-                  padding: EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.only(right: 10),
                   child: Row(
                     children: [
                       SizedBox(
@@ -1615,7 +1604,7 @@ class _LivingHallState extends State<LivingHall> {
                 borderRadius: BorderRadius.circular(5),
                 elevation: 5,
                 child: Container(
-                  padding: EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.only(right: 10),
                   child: Row(
                     children: [
                       SizedBox(
@@ -1738,7 +1727,7 @@ class _LivingHallState extends State<LivingHall> {
                 borderRadius: BorderRadius.circular(5),
                 elevation: 5,
                 child: Container(
-                  padding: EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.only(right: 10),
                   child: Row(
                     children: [
                       SizedBox(
@@ -1769,7 +1758,7 @@ class _LivingHallState extends State<LivingHall> {
                 borderRadius: BorderRadius.circular(5),
                 elevation: 5,
                 child: Container(
-                  padding: EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.only(right: 10),
                   child: Row(
                     children: [
                       SizedBox(
@@ -1800,7 +1789,7 @@ class _LivingHallState extends State<LivingHall> {
                 borderRadius: BorderRadius.circular(5),
                 elevation: 5,
                 child: Container(
-                  padding: EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.only(right: 10),
                   child: Row(
                     children: [
                       SizedBox(
@@ -1970,10 +1959,6 @@ class _LivingHallState extends State<LivingHall> {
               );
 
               if (pageId != null) {
-                print(pageId);
-                print(drawingHallLengthController);
-                print(LivingHallWidthController);
-
                 livingHallput(
                   provider.project_id,
                   drawingInt,

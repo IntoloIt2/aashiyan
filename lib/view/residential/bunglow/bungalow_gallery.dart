@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, prefer_typing_uninitialized_variables, avoid_print
+
 import 'dart:convert';
 
 import 'package:aashiyan/components/contants.dart';

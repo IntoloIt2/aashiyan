@@ -1,7 +1,14 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print, prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
+
+import 'dart:convert';
+
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+var decodedJson;
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -11,6 +18,14 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  Future<dynamic> getUserData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? resultData = prefs.getString('userData');
+    decodedJson = jsonDecode(resultData!);
+    print('decodedJson==');
+    print(decodedJson);
+  }
+
   Future<String?> showLogoutDialogue(context) {
     return showDialog<String>(
       context: context,
@@ -33,6 +48,12 @@ class _ProfileState extends State<Profile> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
   }
 
   @override
@@ -62,30 +83,34 @@ class _ProfileState extends State<Profile> {
                   child: Column(
                     children: [
                       Text(
-                        "email",
+                        decodedJson != null
+                            ? decodedJson['data']['email'] != null
+                                ? "${decodedJson['data']['email']}"
+                                : ''
+                            : '',
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                            fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          TextButton(
-                            child: const Text(
-                              'Edit Details',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            onPressed: () {},
-                          ),
+                          // TextButton(
+                          //   child: const Text(
+                          //     'Edit Details',
+                          //     style: TextStyle(
+                          //         color: Colors.black,
+                          //         fontSize: 20,
+                          //         fontWeight: FontWeight.bold),
+                          //   ),
+                          //   onPressed: () {},
+                          // ),
                           const SizedBox(
                             width: 5,
                           ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.edit),
-                          )
+                          // IconButton(
+                          //   onPressed: () {},
+                          //   icon: const Icon(Icons.edit),
+                          // )
                         ],
                       ),
                     ],
