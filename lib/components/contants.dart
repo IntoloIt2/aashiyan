@@ -10,6 +10,13 @@ List<String> PROJECT_TYPE = [
   "interior designs"
 ];
 
+// Entrance
+String OutSideOpen = '1';
+String OutSideClosed = '2';  
+
+
+
+
 int EAST_OTHER_PROPERTY = 2;
 int EAST_PROPERTY = 1;
 int WEST_OTHER_PROPERTY = 2;
@@ -22,6 +29,8 @@ int LEVEL_ALMOST = 1;
 int LEVEL_UP = 2;
 int LEVEL_DOWN = 3;
 int project_id = 0;
+
+
 
 const SITE_NAME = 'SDPL';
 const MR = 1;

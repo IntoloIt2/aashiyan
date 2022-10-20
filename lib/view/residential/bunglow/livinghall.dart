@@ -21,24 +21,6 @@ class _LivingHallState extends State<LivingHall> {
   List<String> otherFeatures = [];
   List livingHall = [];
 
-  void multiSelected() async {
-    final List<String> otherItems = ["Double Height", "Powder Toilet"];
-
-    final List<String> result = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return MultiSelect(items: otherItems);
-        });
-
-    if (result != null) {
-      setState(
-        () {
-          otherFeatures = result;
-        },
-      );
-    }
-  }
-
   List<String> floorItems = [
     "Select",
     "Ground floor",
@@ -142,6 +124,7 @@ class _LivingHallState extends State<LivingHall> {
 
   int drawingInt = 0;
   // String drawingArea = "0";
+  List<String> otherItems = ["Double Height", "Powder Toilet"];
 
   var printData;
   int? pageId;
@@ -194,9 +177,8 @@ class _LivingHallState extends State<LivingHall> {
                           ["kitchen_floor"]]
                       : selectedKitchen;
 
-              print( "kitchen   ${selectedKitchen}");
+              print("kitchen   ${selectedKitchen}");
 
-             
               selectedKitchenFunction = printData['bungalow_drawing_hall']
                           ['kitchen_dining_function'] !=
                       null
@@ -330,7 +312,28 @@ class _LivingHallState extends State<LivingHall> {
                   : '';
               specificReq =
                   printData['bungalow_drawing_hall']['specific_req'] != null
-                      ? printData['bungalow_drawing_hall']['specific_req']  : '';
+                      ? printData['bungalow_drawing_hall']['specific_req']
+                      : '';
+              livingHall =
+                  printData['bungalow_drawing_hall']['living_hall'] != null
+                      ? printData['bungalow_drawing_hall']['living_hall']
+                          .toString()
+                          .split(",")
+                      : [];
+
+              // print(livingHall);
+              if (livingHall != null) {
+                if (livingHall.contains('1') &&
+                    !otherFeatures.contains("Double Height")) {
+                  print("object 1");
+                  otherFeatures.add(otherItems[0]);
+                }
+                if (livingHall.contains('2') &&
+                    !otherFeatures.contains("Powder Toilet")) {
+                  print("object 2");
+                  otherFeatures.add(otherItems[1]);
+                }
+              }
             }
           },
         );
@@ -356,6 +359,22 @@ class _LivingHallState extends State<LivingHall> {
     });
     if (printData == null) {
       isloading = true;
+    }
+  }
+
+  void multiSelected() async {
+    final List<String> result = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return MultiSelect(items: otherItems);
+        });
+
+    if (result != null) {
+      setState(
+        () {
+          otherFeatures = result;
+        },
+      );
     }
   }
 
@@ -644,8 +663,7 @@ class _LivingHallState extends State<LivingHall> {
                     ),
                   ),
                 ),
-                if(selectedFeatures == "other") ...[
-                  
+                if (selectedFeatures == "other") ...[
                   Material(
                     elevation: 5,
                     borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -1146,14 +1164,14 @@ class _LivingHallState extends State<LivingHall> {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                           icon: const Visibility(
-                              visible: false,
-                              child: Icon(Icons.arrow_downward)),
+                            visible: false,
+                            child: Icon(Icons.arrow_downward),
+                          ),
                           hint: Text(selectedKitchen),
                           elevation: 16,
                           items: kitchenItems.asMap().entries.map((it) {
                             int idx = it.key;
                             String val = it.value;
-
                             return DropdownMenuItem<String>(
                               value: it.value,
                               onTap: () {
@@ -1204,7 +1222,7 @@ class _LivingHallState extends State<LivingHall> {
                   width: width * 0.15,
                   child: TextFormField(
                     // initialValue: "45",
-                    initialValue: printData['bungalow_drawing_hall'] != null
+                    initialValue: printData != null
                         ? printData['bungalow_drawing_hall']
                                     ['kitchen_length'] !=
                                 null
@@ -1256,7 +1274,7 @@ class _LivingHallState extends State<LivingHall> {
                   height: height * 0.04,
                   width: width * 0.15,
                   child: TextFormField(
-                    initialValue: printData['bungalow_drawing_hall'] != null
+                    initialValue: printData != null
                         ? printData['bungalow_drawing_hall']['kitchen_width'] !=
                                 null
                             ? printData['bungalow_drawing_hall']

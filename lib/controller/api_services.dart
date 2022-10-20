@@ -269,7 +269,7 @@ Future<void> entrancePost(
   String porchLength,
   String porchWidth,
   String porchArea,
-  String porch,
+  var porch,
   String visualNature,
   String carPrkingSpace,
   bool foyerReq,
@@ -284,8 +284,8 @@ Future<void> entrancePost(
   String verandah,
 ) async {
   var projectData = {
-    "project_id": 123,
-    "vastu": 5,
+    "project_id": projectid,
+    "vastu": vastu,
     "floor": floor,
     "entrance_gate": entranceGate,
     "one_gate": oneGate,
@@ -351,7 +351,7 @@ Future<void> entrancePut(
   String porchLength,
   String porchWidth,
   String porchArea,
-  String porch,
+  var porch,
   String visualNature,
   String carPrkingSpace,
   bool foyerReq,
@@ -367,7 +367,7 @@ Future<void> entrancePut(
 ) async {
   var projectData = {
     "project_id": projectid,
-    "vastu": 5,
+    "vastu": vastu,
     "floor": floor,
     "entrance_gate": entranceGate,
     "one_gate": oneGate,

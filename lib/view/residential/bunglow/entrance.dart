@@ -5,6 +5,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import '../../../components/contants.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
@@ -35,7 +36,6 @@ class _EntranceState extends State<Entrance> {
   ];
 
   String selectedFloor = "Select";
-
   int floorInt = 1;
 
   String floorController = " ";
@@ -52,6 +52,7 @@ class _EntranceState extends State<Entrance> {
   String foyerLengthController = ' ';
   String verandaWidthController = ' ';
   String verandaLengthController = ' ';
+  List porchRequiredFaci = [];
 
   void floor() {
     setState(() {
@@ -99,8 +100,8 @@ class _EntranceState extends State<Entrance> {
   ];
   String selectedVisual = "Select";
 
-  List<String> carParkingItems = ["Select", "1", "2", "3", "4", "5", "more"];
-  String selectedCarParking = "Select";
+  // List<String> carParkingItems = ["Select", "1", "2", "3", "4", "5", "more"];
+  // String selectedCarParking = "Select";
 
   bool? outSideOpen = false;
   bool? outSideClosed = false;
@@ -113,7 +114,7 @@ class _EntranceState extends State<Entrance> {
   bool? requiredWelcomeLobyy = false;
   int? requiredWelcomeLobyyInt = 0;
   String foyerArea = "0";
-  String veranda = "";
+  String veranda = '0';
 
   bool? notReqiredWelcomeLobby = false;
 
@@ -168,17 +169,23 @@ class _EntranceState extends State<Entrance> {
             printData = jsonResponse;
             print("entrance data");
             print(printData);
-
             if (printData != null) {
               pageId = printData['bungalow_entrance']['id'] != null
                   ? int.parse(printData['bungalow_entrance']['id'].toString())
                   : pageId;
               print(pageId);
-              //  widthController = printData["project"][]!=null?printData[][].toString():'';
-              //  lengthController = printData["project"][]!=null?printData[][].toString():'';
+
               floorController = printData['bungalow_entrance']['floor'] != null
                   ? printData['bungalow_entrance']['floor'].toString()
                   : '';
+              moderate = printData['bungalow_entrance']['entrance_gate'] != null
+                  ? printData['bungalow_entrance']['entrance_gate'] ==
+                      "One Gate"
+                  : false;
+              oneGate = printData['bungalow_entrance']['entrance_gate'] != null
+                  ? printData['bungalow_entrance']['entrance_gate'] ==
+                      "One Gate"
+                  : false;
               gateWidthController =
                   printData['bungalow_entrance']['floor'] != null
                       ? printData['bungalow_entrance']['floor'].toString()
@@ -214,7 +221,7 @@ class _EntranceState extends State<Entrance> {
                       null
                   ? printData['bungalow_entrance']['security_kiosq_req'] == 0
                   : false;
-              porchNotRequired =
+              porchRequired =
                   printData["bungalow_entrance"]['porch_req'] != null
                       ? printData["bungalow_entrance"]['porch_req'] == 1
                       : false;
@@ -248,14 +255,81 @@ class _EntranceState extends State<Entrance> {
                       ? printData["bungalow_entrance"]["verandah_req"] == 0
                       : false;
               outSideOpen = printData["bungalow_entrance"]["verandah"] != null
-                  ? printData["bungalow_entrance"]["verandah"] ==
-                      "Out side open"
+                  ? printData["bungalow_entrance"]["verandah"] == '1'
                   : false;
 
               outSideClosed = printData["bungalow_entrance"]["verandah"] != null
-                  ? printData["bungalow_entrance"]["verandah"] ==
-                      "Out side Closed with glass or grill"
+                  ? printData["bungalow_entrance"]["verandah"] == '2'
                   : false;
+              // ignore: prefer_if_null_operators
+              securityKioskLengthController = printData["bungalow_entrance"]
+                          ["security_kiosq_length"] !=
+                      null
+                  ? printData["bungalow_entrance"]["security_kiosq_length"]
+                  : '';
+              securityKioskWidthController =
+                  printData["bungalow_entrance"]["security_kiosq_width"] ?? '';
+              porchLengthController =
+                  printData['bungalow_entrance']['porch_length'] ?? '';
+              porchWidthController =
+                  printData['bungalow_entrance']['porch_width'] ?? '';
+              foyerLengthController =
+                  printData['bungalow_entrance']['foyer_length'] ?? '';
+              foyerWidthController =
+                  printData['bungalow_entrance']['foyer_width'] ?? '';
+              verandaLengthController = printData['bungalow_entrance'] != null
+                  ? printData['bungalow_entrance']['verandah_length']
+                  : '';
+              verandaWidthController = printData['bungalow_entrance'] != null
+                  ? printData['bungalow_entrance']['verandah_width']
+                  : '';
+              porchRequiredFaci =
+                  printData['bungalow_entrance']['porch'] != null
+                      ? printData['bungalow_entrance']['porch']
+                          .toString()
+                          .split(",")
+                      : [];
+              print(porchRequiredFaci);
+
+              if (porchRequiredFaci != null) {
+                if (porchRequiredFaci.contains('1')) {
+                  visualNature = true;
+                }
+                if (porchRequiredFaci.contains('2')) {
+                  carparking = true;
+                }
+              }
+              selectedVisual =
+                  printData['bungalow_entrance']['visual_nature'] != null
+                      ? visualItems[int.parse(printData['bungalow_entrance']
+                              ['visual_nature']
+                          .toString())]
+                      : selectedVisual;
+              print(selectedVisual);
+
+              SelectedCar =
+                  printData['bungalow_entrance']['car_parking_space'] != null
+                      ? noOfCars[int.parse(printData['bungalow_entrance']
+                              ['car_parking_space']
+                          .toString())]
+                      : SelectedCar;
+              print(SelectedCar);
+              visualNaturString = printData['bungalow_entrance']
+                          ['visual_nature'] !=
+                      null
+                  ? (printData['bungalow_entrance']['visual_nature'].toString())
+                  : visualNaturString;
+              visualNaturString = printData['bungalow_entrance']
+                          ['visual_nature'] !=
+                      null
+                  ? (printData['bungalow_entrance']['visual_nature'].toString())
+                  : visualNaturString;
+              carParkingString =
+                  printData['bungalow_entrance']['carParkingString'] != null
+                      ? (printData['bungalow_entrance']['carParkingString']
+                          .toString())
+                      : carParkingString;
+              print(carParkingString);
             }
           },
         );
@@ -300,13 +374,7 @@ class _EntranceState extends State<Entrance> {
         },
       );
     }
-    return
-        //  isloading
-        //     ? const Center(
-        //         child: CircularProgressIndicator(),
-        //       )
-        //     :
-        SingleChildScrollView(
+    return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -421,14 +489,6 @@ class _EntranceState extends State<Entrance> {
                     ),
                   ),
                 )
-                // requirementTextFieldCont(
-                //   height,
-                //   width,
-                //   0.04,
-                //   0.15,
-                //   "floors",
-                //   floorController,
-                // ),
               ]
             ],
           ),
@@ -457,19 +517,9 @@ class _EntranceState extends State<Entrance> {
                           Checkbox(
                             activeColor: checkColor,
                             checkColor: Colors.white,
-                            value: printData != null &&
-                                    printData["bungalow_entrance"] != null
-                                ? printData["bungalow_entrance"]["vastu"] == "1"
-                                    ? true
-                                    : moderate
-                                : moderate,
+                            value: moderate,
                             onChanged: (value) {
                               setState(() {
-                                if (printData != null &&
-                                    printData["bungalow_entrance"] != null) {
-                                  printData["bungalow_entrance"]["vastu"] = "2";
-                                }
-
                                 moderate = !moderate;
                               });
                             },
@@ -573,14 +623,7 @@ class _EntranceState extends State<Entrance> {
                           Checkbox(
                             activeColor: checkColor,
                             checkColor: Colors.white,
-                            value: printData != null &&
-                                    printData['bungalow_entrance'] != null
-                                ? printData['bungalow_entrance']
-                                            ['entrance_gate'] ==
-                                        "One gate"
-                                    ? false
-                                    : oneGate
-                                : oneGate,
+                            value: oneGate,
                             onChanged: (value) {
                               setState(() {
                                 if (printData['bungalow_entrance'] != null &&
@@ -1393,12 +1436,18 @@ class _EntranceState extends State<Entrance> {
                             visible: false, child: Icon(Icons.arrow_downward)),
                         hint: Text(selectedVisual),
                         // value: selectedVisual,
-                        items: visualItems
-                            .map((e) => DropdownMenuItem<String>(
-                                  value: e,
-                                  child: Text(e),
-                                ))
-                            .toList(),
+                        items: visualItems.asMap().entries.map((e) {
+                          int idx = e.key;
+                          String val = e.value;
+                          return DropdownMenuItem<String>(
+                            value: e.value,
+                            onTap: () {
+                              visualNaturString = idx.toString();
+                              print(visualNaturString);
+                            },
+                            child: Text(e.value),
+                          );
+                        }).toList(),
                         onChanged: (e) => setState(
                           () {
                             selectedVisual = e!;
@@ -1514,12 +1563,17 @@ class _EntranceState extends State<Entrance> {
                           child: Icon(Icons.arrow_downward),
                         ),
                         hint: Text(SelectedCar),
-                        items: noOfCars
-                            .map((e) => DropdownMenuItem<String>(
-                                  value: e,
-                                  child: Text(e),
-                                ))
-                            .toList(),
+                        items: noOfCars.asMap().entries.map((e) {
+                          int idx = e.key;
+                          String val = e.value;
+                          return DropdownMenuItem<String>(
+                            value: e.value,
+                            onTap: () {
+                              carParkingString = idx.toString();
+                            },
+                            child: Text(e.value),
+                          );
+                        }).toList(),
                         onChanged: (e) => setState(
                           () {
                             SelectedCar = e!;
@@ -1553,8 +1607,6 @@ class _EntranceState extends State<Entrance> {
                             ),
                         onChanged: (value) {
                           noOfCar = value;
-                          printData["bungalow_entrance"]['car_parking_space'] =
-                              noOfCar;
                         },
                       ),
                     ),
@@ -1640,15 +1692,7 @@ class _EntranceState extends State<Entrance> {
                         child: Checkbox(
                             activeColor: checkColor,
                             checkColor: Colors.white,
-                            value:
-                                // printData != null &&
-                                //         printData['bungalow_entrance'] != null
-                                //     ? printData['bungalow_entrance']['foyer_req'] ==
-                                //             1
-                                //         ? true
-                                //         : requiredWelcomeLobyy
-                                //     :
-                                requiredWelcomeLobyy,
+                            value: requiredWelcomeLobyy,
                             onChanged: (value) {
                               setState(() {
                                 requiredWelcomeLobyy = value;
@@ -1745,10 +1789,10 @@ class _EntranceState extends State<Entrance> {
                     height: height * 0.04,
                     width: width * 0.15,
                     child: TextFormField(
-                      initialValue:
-                          printData != null && printData['bungalow'] != null
-                              ? printData['bungalow_entrance']['foyer_width']
-                              : "",
+                      initialValue: printData != null &&
+                              printData['bungalow_entrance'] != null
+                          ? printData['bungalow_entrance']['foyer_width']
+                          : '',
                       style: const TextStyle(fontSize: 14),
                       decoration: const InputDecoration(
                           hintText: "Width",
@@ -2138,11 +2182,15 @@ class _EntranceState extends State<Entrance> {
               setState(
                 () {
                   if (moderate == true) {
+                    moderateString = "1";
+                  } else {
                     moderateString = "0";
                   }
                   floor();
                   if (oneGate == false) {
-                    gate = "Twogate";
+                    gate = "Two gate";
+                  } else {
+                    gate = "One Gate";
                   }
                   if (selectedCarGate == "more") {
                     selectedCarGate = selectedCarGateController.text;
@@ -2156,7 +2204,6 @@ class _EntranceState extends State<Entrance> {
                     int securityArea =
                         int.parse(securityKioskLengthController) *
                             int.parse(securityKioskWidthController);
-
                     securityKiosqArea = securityArea.toString();
                   }
                   if (porchRequired == true) {
@@ -2165,26 +2212,30 @@ class _EntranceState extends State<Entrance> {
                         int.parse(porchWidthController);
                     porchArea = pArea.toString();
                   }
-                  if (visualNature == true) {
-                    porch = "visual nature ";
+                  if (visualNature == true &&
+                      !porchRequiredFaci.contains("1")) {
+                    porchRequiredFaci.add("1");
                   }
-                  if (carparking == true) {
-                    porch = "car parking space";
+                  if (carparking == true && !porchRequiredFaci.contains("2")) {
+                    porchRequiredFaci.add("2");
                   }
+
+                  if (visualNature == false &&
+                      porchRequiredFaci.contains("1")) {
+                    porchRequiredFaci.remove("1");
+                  }
+                  if (carparking == false && porchRequiredFaci.contains("2")) {
+                    porchRequiredFaci.remove("2");
+                  }
+
                   if (carparking == true && visualNature == true) {
                     porch = "visual nature car parking space ";
                   }
-                  if (carparking == true) {
-                    carParkingString = "1";
-                  }
-                  if (visualNature == true) {
-                    visualNaturString = "1";
-                  }
+
                   if (requiredWelcomeLobyy == true) {
                     requiredWelcomeLobyyInt = 1;
                     int fArea = int.parse(foyerLengthController) *
                         int.parse(foyerWidthController);
-
                     porchArea = fArea.toString();
                   }
                   if (requiredVeranda == true) {
@@ -2196,10 +2247,10 @@ class _EntranceState extends State<Entrance> {
                     verandaArea = vArea.toString();
 
                     if (outSideOpen == true) {
-                      veranda = "out side open";
+                      veranda = OutSideOpen;
                     }
                     if (outSideClosed == true) {
-                      veranda = "out side closed with glass or grill";
+                      veranda = OutSideClosed;
                     }
                   }
                 },
@@ -2225,7 +2276,7 @@ class _EntranceState extends State<Entrance> {
                   porchLengthController,
                   porchWidthController,
                   porchArea,
-                  porch,
+                  porchRequiredFaci,
                   visualNaturString,
                   carParkingString,
                   requiredWelcomeLobyy!,
@@ -2241,7 +2292,7 @@ class _EntranceState extends State<Entrance> {
                 );
               } else {
                 entrancePost(
-                  123,
+                  provider.project_id,
                   moderateString,
                   floorInt,
                   gate,
@@ -2259,7 +2310,7 @@ class _EntranceState extends State<Entrance> {
                   porchLengthController,
                   porchWidthController,
                   porchArea,
-                  porch,
+                  porchRequiredFaci,
                   visualNaturString,
                   carParkingString,
                   requiredWelcomeLobyy!,
