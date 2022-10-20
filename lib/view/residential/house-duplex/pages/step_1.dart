@@ -251,8 +251,8 @@ class _Step_1State extends State<Step_1> {
       decJson = jsonDecode(userData);
     }
     user_id = decJson['data']['id'];
-    print('decJson===');
-    print(decJson);
+    // print('decJson===');
+    // print(decJson);
     getData(user_id);
   }
 
