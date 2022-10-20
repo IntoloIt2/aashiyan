@@ -112,6 +112,13 @@ class _FloorStoreState extends State<FloorStore> {
         setState(() {
           printData = jsonResponse;
           print(printData);
+          if(printData != null){
+            FloorStoreDetail1 = printData["bungalow_floor_store"]
+                                                  ["floor_store_req"] ==
+                                              1
+                                          ? true
+                                          : false;
+          }
         });
       }
     } catch (e) {
@@ -165,18 +172,13 @@ class _FloorStoreState extends State<FloorStore> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: printData["bungalow_floor_store"]
-                                                  ["floor_store_req"] ==
-                                              1
-                                          ? true
-                                          : FloorStoreDetail1,
+                                      value:FloorStoreDetail1,
                                       onChanged: (value) {
                                         setState(
                                           () {
                                             FloorStoreDetail1 = value;
                                             FloorStoreDetail2 = false;
-                                            printData["bungalow_floor_store"]
-                                                ["floor_store_req"] = 2;
+                                           
                                           },
                                         );
                                       }),
@@ -413,8 +415,9 @@ class _FloorStoreState extends State<FloorStore> {
                           width: width * 0.15,
                           child: TextFormField(
                             // controller: txt,
-                            initialValue: printData["bungalow_floor_store"]
-                                ["floor_store_length"],
+                            initialValue: printData != null && printData["bungalow_floor_store"]
+                                ["floor_store_length"] != null ? printData["bungalow_floor_store"]
+                                ["floor_store_length"] : '',
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",

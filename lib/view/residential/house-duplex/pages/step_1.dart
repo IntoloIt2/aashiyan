@@ -23,7 +23,7 @@ class Step_1 extends StatefulWidget {
 }
 
 class _Step_1State extends State<Step_1> {
-  // late Future<RequirementModel> futureRequirement;
+ // late Future<RequirementModel> futureRequirement;
   String nameController = '';
   String lastNameController = "";
   String emailController = "";
@@ -259,7 +259,7 @@ class _Step_1State extends State<Step_1> {
     final store = Provider.of<PageNavProvider>(context, listen: false);
     // print('store.getId()');
     // print(store.getId());
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (store.getId() == 0) {
         printData = {"project": null};
       } else {
@@ -304,6 +304,7 @@ class _Step_1State extends State<Step_1> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     var provider = Provider.of<PageNavProvider>(context, listen: true);
+    
     // print('projectGroupId====');
     // print(projectTypeId);
 
@@ -320,9 +321,9 @@ class _Step_1State extends State<Step_1> {
         : SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+            children: [
                 Row(
-                  children: [
+             children: [
                     requirementText("Name"),
                     SizedBox(
                       width: width * 0.04,
@@ -337,7 +338,12 @@ class _Step_1State extends State<Step_1> {
                         height: height * 0.04,
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            value: selectedItems,
+                            // hint: Text(selectedItems),
+                            hint: printData != null
+                                ? printData['project'] != null
+                                    ? Text(printData['project']['prefix'])
+                                    : Text(selectedItems)
+                                : Text(selectedItems),
                             icon: const Icon(Icons.keyboard_arrow_down_sharp),
                             elevation: 16,
                             items: items
@@ -352,15 +358,22 @@ class _Step_1State extends State<Step_1> {
                                 .toList(),
                             onChanged: (it) => setState(
                               () {
-                                if (it == "MR") {
-                                  selectedItemInt = 1;
-                                } else if (it == "MRS") {
-                                  selectedItemInt = 2;
-                                } else if (it == "MS") {
-                                  selectedItemInt = 3;
-                                }
+                                // if (it == PREFIX_MR) {
+                                //   selectedItemInt = MR;
+                                // } else if (it == PREFIX_MRS) {
+                                //   selectedItemInt = MRS;
+                                // } else if (it == PREFIX_MS) {
+                                //   selectedItemInt = MS;
+                                // } else if (it == PREFIX_M_S) {
+                                //   selectedItemInt = M_S;
+                                // }
                                 // print(items.indexOf(it!));
                                 selectedItems = it!;
+                                if (printData['project'] != null &&
+                                    printData != null) {
+                                  printData['project']['prefix'] =
+                                      selectedItems;
+                                }
                                 // print(
                                 //     "${DotEnv().env['APP_URL']}edit-project/179");
                                 // selectedItems = items.indexOf(it);
@@ -372,7 +385,7 @@ class _Step_1State extends State<Step_1> {
                     ),
                     const SizedBox(
                       width: 5,
-                    ),
+                      ),
                     Material(
                       elevation: 5,
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -1869,7 +1882,7 @@ class _Step_1State extends State<Step_1> {
 
                         if (westRoad == true) {
                           isWest = WEST_PROPERTY;
-                        } else if (westRoad == true) {
+                        } else if (otherwest == true) {
                           isWest = WEST_OTHER_PROPERTY;
                         }
                         // if (otherwest == true) {

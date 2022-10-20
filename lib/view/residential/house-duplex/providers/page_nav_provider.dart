@@ -5,8 +5,8 @@ import 'package:http/http.dart' as http;
 
 class PageNavProvider with ChangeNotifier {
   // bool loading = false;
-  int project_id = 0;
-  var temp;
+  int project_id = 179;
+  var temp ;
   Future<dynamic> requirementPost(
     int userId,
     int projectGroupId,
@@ -77,8 +77,8 @@ class PageNavProvider with ChangeNotifier {
       "south_road_width": southRoadWidth,
     };
 
-    print("projectData====");
-    print(projectData);
+    // print("projectData====");
+    // print(projectData);
 
     final response = await http.post(
       // Uri.parse(baseUrlLocal + "project"),

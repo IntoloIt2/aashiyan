@@ -13,7 +13,6 @@ var bunglowPage =
     "http://sdplweb.com/sdpl/api/get-bungalow-prestigious-recent-image";
 var residentPage = "http://sdplweb.com/sdpl/api/get-residential-image";
 var homePage = "http://sdplweb.com/sdpl/api/get-project-image";
-
 List bunglowPagePrestigiousList = [];
 List bunglowPageRecentList = [];
 late int project_id;
@@ -270,10 +269,10 @@ Future<void> entrancePost(
   String porchLength,
   String porchWidth,
   String porchArea,
-  String porch,
+  var porch,
   String visualNature,
   String carPrkingSpace,
-  int foyerReq,
+  bool foyerReq,
   String foyerLength,
   String foyerWidth,
   String foyerArea,
@@ -285,8 +284,8 @@ Future<void> entrancePost(
   String verandah,
 ) async {
   var projectData = {
-    "project_id": 123,
-    "vastu": 5,
+    "project_id": projectid,
+    "vastu": vastu,
     "floor": floor,
     "entrance_gate": entranceGate,
     "one_gate": oneGate,
@@ -333,33 +332,111 @@ Future<void> entrancePost(
   print(response.body);
 }
 
+Future<void> entrancePut(
+  int projectid,
+  String vastu,
+  int floor,
+  String entranceGate,
+  String oneGate,
+  String twoGate,
+  String mainCarGate,
+  String sidePadestrianGate,
+  String diffrentCustomizedLocation,
+  int securityKisoqReq,
+  String securityKisoqLength,
+  String securityKisoqWidth,
+  String securityKisoqArea,
+  int securityKisoq,
+  int porchReq,
+  String porchLength,
+  String porchWidth,
+  String porchArea,
+  var porch,
+  String visualNature,
+  String carPrkingSpace,
+  bool foyerReq,
+  String foyerLength,
+  String foyerWidth,
+  String foyerArea,
+  String foyerlobby,
+  int verandahReq,
+  String verandahLength,
+  String verandahWidth,
+  String verandahArea,
+  String verandah,
+) async {
+  var projectData = {
+    "project_id": projectid,
+    "vastu": vastu,
+    "floor": floor,
+    "entrance_gate": entranceGate,
+    "one_gate": oneGate,
+    "two_gate": twoGate,
+    "main_car_gate": mainCarGate,
+    "side_padestrian_gate": sidePadestrianGate,
+    "different_customized_location": diffrentCustomizedLocation,
+    "security_kiosq_req": securityKisoqReq,
+    "security_kiosq_length": securityKisoqLength,
+    "security_kiosq_width": securityKisoqWidth,
+    "security_kiosq_area": securityKisoqArea,
+    "security_kiosq": securityKisoq,
+    "porch_req": porchReq,
+    "porch_length": porchLength,
+    "porch_width": porchWidth,
+    "porch_area": porchArea,
+    "porch": porch,
+    "visual_nature": visualNature,
+    "car_parking_space": carPrkingSpace,
+    "foyer_req": foyerReq,
+    "foyer_length": foyerLength,
+    "foyer_width": foyerWidth,
+    "foyer_area": foyerArea,
+    "foyer_lobby": foyerlobby,
+    "verandah_length": verandahLength,
+    "verandah_width": verandahWidth,
+    "verandah_area": verandahArea,
+    "verandah": verandah,
+    "dimension": dimenInt,
+    "verandah_req": verandahReq,
+  };
+
+  print(projectData);
+  print(verandahReq);
+
+  final response = await http.post(
+    Uri.parse(
+        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-entrance/$projectid'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+  print(response.body);
+}
+
 Future<void> livingHallPost(
+  int projectId,
   int drawingHallRequirement,
   int drawingHallLocation,
   String drawingHallLength,
   String drawingHallWidth,
-  String drawingHallArea,
   String drawingHall,
   String drawingHallText,
   int LivingHallReq,
   int livingHallLocation,
   String livingHallLength,
   String livingHallwidth,
-  String livingHallArea,
   List livinghall,
   String LivingHallText,
   List kitchenFeatures,
-  String kitchenFloor,
+  int kitchenFloor,
   String kitchenLength,
   String kitchenWidth,
-  String kitchenArea,
   String kitchenDiningFunction,
   String attachStoreLength,
   String attachStoreWidth,
-  String attachStoreArea,
   String utilityWashWidth,
   String utilityWashLength,
-  String utilityWashArea,
   String refrigeratorSize,
   String specificReq,
 ) async {
@@ -372,28 +449,23 @@ Future<void> livingHallPost(
     "drawing_hall_location": drawingHallLocation,
     "drwing_hall_length": drawingHallLength,
     "drawing_hall_width": drawingHallWidth,
-    "drawing_hall_area": drawingHallArea,
     "drawing_hall": drawingHall,
     "drawing_hall_text": drawingHallText,
     "living_hall_req": LivingHallReq,
     "living_hall_location": livingHallLocation,
     "living_hall_width": livingHallwidth,
-    "living_hall_length": livingHallArea,
-    "living_hall_area": livingHallArea,
+    "living_hall_length": livingHallLength,
     "living_hall": livinghall,
     "living_hall_text": LivingHallText,
     "kitchen_features": kitchenFeatures,
     "kitchen_floor": kitchenFloor,
     "kitchen_length": kitchenLength,
     "kitchen_width": kitchenWidth,
-    "kitchen_area": kitchenArea,
     "kitchen_dining_function": kitchenDiningFunction,
     "attach_store_length": attachStoreLength,
     "attach_store_width": attachStoreWidth,
-    "attach_store_area": attachStoreArea,
     "utility_wash_width": utilityWashWidth,
     "utility_wash_length": utilityWashLength,
-    "utility_wash_area": utilityWashArea,
     "refrigerator_size": refrigeratorSize,
     "specific_req": specificReq,
   };
@@ -401,7 +473,82 @@ Future<void> livingHallPost(
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-drawing-hall'),
+    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-drawing-hall'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+  print(response.body);
+}
+
+Future<void> livingHallput(
+  int projectId,
+  int drawingHallRequirement,
+  int drawingHallLocation,
+  String drawingHallLength,
+  String drawingHallWidth,
+  String drawingHall,
+  String drawingHallText,
+  int LivingHallReq,
+  int livingHallLocation,
+  String livingHallLength,
+  String livingHallwidth,
+  List livinghall,
+  String LivingHallText,
+  List kitchenFeatures,
+  int kitchenFloor,
+  String kitchenLength,
+  String kitchenWidth,
+  String kitchenDiningFunction,
+  String attachStoreLength,
+  String attachStoreWidth,
+  String utilityWashWidth,
+  String utilityWashLength,
+  String refrigeratorSize,
+  String specificReq,
+) async {
+  print(drawingHallLength);
+  print(drawingHallWidth);
+
+  print(livingHallLength);
+  print(livingHallwidth);
+
+  var projectData = {
+    "project_id": projectId,
+    "user_id": 986,
+    "dimension": dimenInt,
+    "drawing_hall_req": drawingHallRequirement,
+    "drawing_hall_location": drawingHallLocation,
+    "drawing_hall_length": drawingHallLength,
+    "drawing_hall_width": drawingHallWidth,
+    "drawing_hall": drawingHall,
+    "drawing_hall_text": drawingHallText,
+    "living_hall_req": LivingHallReq,
+    "living_hall_location": livingHallLocation,
+    "living_hall_width": livingHallwidth,
+    "living_hall_length": livingHallLength,
+    "living_hall": livinghall,
+    "living_hall_text": LivingHallText,
+    "kitchen_features": kitchenFeatures,
+    "kitchen_floor": kitchenFloor,
+    "kitchen_length": kitchenLength,
+    "kitchen_width": kitchenWidth,
+    "kitchen_dining_function": kitchenDiningFunction,
+    "attach_store_length": attachStoreLength,
+    "attach_store_width": attachStoreWidth,
+    "utility_wash_width": utilityWashWidth,
+    "utility_wash_length": utilityWashLength,
+    "refrigerator_size": refrigeratorSize,
+    "specific_req": specificReq,
+  };
+
+  print(projectData);
+
+  final response = await http.post(
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse(
+        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-drawing-hall/$projectId'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

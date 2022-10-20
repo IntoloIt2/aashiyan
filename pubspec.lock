@@ -63,8 +63,7 @@ packages:
       name: configurable_expansion_tile_null_safety
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
-    version: "3.0.0"
+    version: "3.1.1"
   cross_file:
     dependency: transitive
     description:
@@ -72,9 +71,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.3+2"
-=======
-    version: "3.1.1"
->>>>>>> 67a962327b0e2e6c8ad65aa44cedd1157c440b1d
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -129,15 +125,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-<<<<<<< HEAD
-  flutter_plugin_android_lifecycle:
-    dependency: transitive
-    description:
-      name: flutter_plugin_android_lifecycle
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.7"
-=======
   flutter_login:
     dependency: "direct main"
     description:
@@ -145,7 +132,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
->>>>>>> 67a962327b0e2e6c8ad65aa44cedd1157c440b1d
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.7"
   flutter_redux:
     dependency: "direct main"
     description:
@@ -211,7 +204,7 @@ packages:
       name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.8.5+3"
+    version: "0.8.6"
   image_picker_android:
     dependency: transitive
     description:
@@ -338,13 +331,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.3"
+  process:
+    dependency: transitive
+    description:
+      name: process
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.2.4"
   provider:
     dependency: "direct main"
     description:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.3"
+    version: "6.0.4"
   quiver:
     dependency: transitive
     description:
