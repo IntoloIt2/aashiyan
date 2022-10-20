@@ -1,13 +1,81 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:aashiyan/components/app_bar.dart';
+import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/components/project_category.dart';
 import 'package:aashiyan/view/residential/house-duplex/pages/pageNav.dart';
 import 'package:flutter/material.dart';
 import 'package:aashiyan/const.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
-class HouseDuplex extends StatelessWidget {
-  const HouseDuplex({super.key});
+import '../../../controller/auth_controller.dart';
+
+var house_count;
+
+class HouseDuplex extends StatefulWidget {
   static const namedRoute = '/house-duplex';
+  @override
+  State<HouseDuplex> createState() => _HouseDuplexState();
+}
+
+class _HouseDuplexState extends State<HouseDuplex> {
+// const HouseDuplex({super.key});
+
+  Future<void> showMaxProjectPremiumDialogue(context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text("To move Further with another Project requirement"),
+        content: Column(mainAxisSize: MainAxisSize.min, children: const [
+          Text(
+              "1. If you want to create more project up to 200, kindly purchase license copy with the payment of 10000 rupees+Gst. Go to payment option down below."),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+              "2. If you want to have similar app with your customization, name and style kindly reach out to us on +918109093551 or by the call option down below."),
+        ]),
+        actions: <Widget>[
+          TextButton(onPressed: (() {}), child: const Text("CALL")),
+          TextButton(onPressed: (() {}), child: const Text("PAYMENT"))
+        ],
+      ),
+    );
+  }
+
+  Future<dynamic> projectCount(data, id) async {
+    try {
+      // final SharedPreferences prefs = await SharedPreferences.getInstance();
+      // String? userData = prefs.getString('userData');
+      // var decJson;
+      // if (userData != null) {
+      //   decJson = jsonDecode(userData);
+      // }
+      // print(decJson);
+
+      if (data != null) {
+        final temp = await http
+            .get(Uri.parse("${dotenv.env['APP_URL']}project-count/$id"));
+        // "${dotenv.env['APP_URL']}project-count/${decJson['data']['id']}"));
+        final response = json.decode(temp.body);
+        setState(() {
+          house_count = response["house_count"];
+        });
+        return house_count;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,8 +139,39 @@ class HouseDuplex extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamed(PageNav.namedRoute);
+            onTap: () async {
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              String? resultData = prefs.getString('userData');
+              var decodedJson;
+              if (resultData != null) {
+                decodedJson = jsonDecode(resultData);
+                if (decodedJson['data'] != null) {
+                  house_count = await projectCount(
+                      decodedJson['data'], decodedJson['data']['id']);
+                }
+              }
+
+              if (decodedJson != null
+                  ? decodedJson['status'] == 200 && decodedJson['data'] != null
+                      ? decodedJson['data']['id'] != null
+                          ? house_count != null
+                              ? house_count <= 1
+                                  ? true
+                                  : false
+                              : false
+                          : false
+                      : false
+                  : false) {
+                Navigator.of(context).pushNamed(PageNav.namedRoute);
+              } else {
+                showMaxProjectPremiumDialogue(context);
+                // showDialog(
+                //     builder: (context) =>
+                //        ,
+                //     context: (context));
+              }
+              // Navigator.of(context).pushNamed(PageNav.namedRoute);
             },
             child: Card(
               elevation: 2,
@@ -95,8 +194,8 @@ class HouseDuplex extends StatelessWidget {
           Card(
               elevation: 2,
               child: ListTile(
-                leading:
-                    Container(child: Text("Our Prestigious Bungalow Projects")),
+                leading: Container(
+                    child: const Text("Our Prestigious Bungalow Projects")),
                 // title: ,
               ))
         ],
