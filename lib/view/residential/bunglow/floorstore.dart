@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:aashiyan/components/forms.dart';
+import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
+import '../../../components/contants.dart' as constant;
 
 class FloorStore extends StatefulWidget {
   const FloorStore({Key? key}) : super(key: key);
@@ -127,8 +130,10 @@ class _FloorStoreState extends State<FloorStore> {
                 ? pantryItems[printData['bungalow_floor_store']['store_floor']]
                 : (selectedFloor);
             floorStoreLocationController = printData["bungalow_floor_store"]
-                    ["store_floor"] ??
-                floorStoreLocationController;
+                        ["store_floor"] !=
+                    null
+                ? pantryItems[printData["bungalow_floor_store"]["store_floor"]]
+                : floorStoreLocationController;
             floorStoreLengthController = printData["bungalow_floor_store"]
                     ["floor_store_length"] ??
                 floorStoreLengthController;
@@ -143,11 +148,28 @@ class _FloorStoreState extends State<FloorStore> {
             notRequiredLift = printData["bungalow_floor_store"]["lift_req"] == 0
                 ? true
                 : notRequiredLift;
-            liftItems =
-                printData['bungalow_floor_store']['passanger_capacity'] ?? selectedLift;
-            liftSpecialRequirementController =  printData["bungalow_floor_store"]
-                                        ["lift_special_req"] ?? liftSpecialRequirementController;
-                                    
+            selectedLift =
+                printData['bungalow_floor_store']['passanger_capacity'] != null
+                    ? liftItems[printData['bungalow_floor_store']
+                        ['passanger_capacity']]
+                    : selectedLift;
+            liftSpecialRequirementController = printData["bungalow_floor_store"]
+                    ["lift_special_req"] ??
+                liftSpecialRequirementController;
+            poojaRoomRequired =
+                printData["bungalow_floor_store"]["pooja_room_req"] == 1
+                    ? true
+                    : poojaRoomRequired;
+            poojaRoomNotRequired =
+                printData["bungalow_floor_store"]["pooja_room_req"] == 0
+                    ? true
+                    : poojaRoomNotRequired;
+            poojaLengthController = printData["bungalow_floor_store"]
+                    ["pooja_room_length"] ??
+                poojaLengthController;
+            poojaWidthController = printData["bungalow_floor_store"]
+                    ["pooja_room_width"] ??
+                poojaWidthController;
           }
         });
       }
@@ -169,6 +191,7 @@ class _FloorStoreState extends State<FloorStore> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+    var provider = Provider.of<PageNavProvider>(context, listen: true);
     if (printData != null) {
       setState(() {
         isloading = false;
@@ -429,7 +452,9 @@ class _FloorStoreState extends State<FloorStore> {
                           width: width * 0.15,
                           child: TextFormField(
                             // controller: txt,
-                            initialValue: floorStoreLengthController,
+                            initialValue: printData["bungalow_floor_store"]
+                                    ["floor_store_length"] ??
+                                '',
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",
@@ -470,7 +495,9 @@ class _FloorStoreState extends State<FloorStore> {
                           width: width * 0.15,
                           child: TextFormField(
                             // controller: txt,
-                            initialValue: floorStoreWidthController,
+                            initialValue: printData["bungalow_floor_store"]
+                                    ["floor_store_width"] ??
+                                '',
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "width",
@@ -526,16 +553,22 @@ class _FloorStoreState extends State<FloorStore> {
                             hint: Text(selectedStair),
                             // value: selectedStair,
                             elevation: 16,
-                            items: stairItems
-                                .map((it) => DropdownMenuItem<String>(
-                                    value: it,
-                                    child: Text(
-                                      it,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    )))
-                                .toList(),
+                            items: stairItems.asMap().entries.map((it) {
+                              int idx = it.key;
+                              String val = it.value;
+                              return DropdownMenuItem<String>(
+                                  value: it.value,
+                                  onTap: () {
+                                    selectedStair = idx.toString();
+                                    print(selectedStair);
+                                  },
+                                  child: Text(
+                                    it.value,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ));
+                            }).toList(),
                             onChanged: (it) {
                               setState(
                                 () {
@@ -765,7 +798,6 @@ class _FloorStoreState extends State<FloorStore> {
                                 onChanged: (it) {
                                   setState(() {
                                     selectedLift = it!;
-                                   
                                   });
                                 }),
                           ),
@@ -799,7 +831,8 @@ class _FloorStoreState extends State<FloorStore> {
                           child: TextFormField(
                             // controller: txt,
                             initialValue: printData["bungalow_floor_store"]
-                                ["lift_special_req"],
+                                    ["lift_special_req"] ??
+                                '',
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "lift Requirement",
@@ -814,9 +847,6 @@ class _FloorStoreState extends State<FloorStore> {
                             onChanged: ((value) {
                               setState(() {
                                 liftSpecialRequirementController = value;
-                                printData["bungalow_floor_store"]
-                                        ["lift_special_req"] =
-                                    liftSpecialRequirementController;
                               });
                             }),
                           ),
@@ -847,18 +877,12 @@ class _FloorStoreState extends State<FloorStore> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: printData["bungalow_floor_store"]
-                                                  ["pooja_room_req"] ==
-                                              1
-                                          ? true
-                                          : poojaRoomRequired,
+                                      value: poojaRoomRequired,
                                       onChanged: (value) {
                                         setState(
                                           () {
                                             poojaRoomRequired = value;
                                             poojaRoomNotRequired = false;
-                                            printData["bungalow_floor_store"]
-                                                ["pooja_room_req"] = 2;
                                           },
                                         );
                                       }),
@@ -890,17 +914,11 @@ class _FloorStoreState extends State<FloorStore> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: printData["bungalow_floor_store"]
-                                                  ["pooja_room_req"] ==
-                                              0
-                                          ? true
-                                          : poojaRoomNotRequired,
+                                      value: poojaRoomNotRequired,
                                       onChanged: (value) {
                                         setState(() {
                                           poojaRoomNotRequired = value;
                                           poojaRoomRequired = false;
-                                          printData["bungalow_floor_store"]
-                                              ["pooja_room_req"] = 2;
                                         });
                                       }),
                                 ),
@@ -919,9 +937,7 @@ class _FloorStoreState extends State<FloorStore> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                if (poojaRoomRequired == true ||
-                    printData["bungalow_floor_store"]["pooja_room_req"] ==
-                        1) ...[
+                if (poojaRoomRequired == true) ...[
                   Row(
                     children: [
                       requirementText("Length"),
@@ -938,7 +954,8 @@ class _FloorStoreState extends State<FloorStore> {
                           child: TextFormField(
                             // controller: txt,
                             initialValue: printData["bungalow_floor_store"]
-                                ["pooja_room_length"],
+                                    ["pooja_room_length"] ??
+                                '',
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",
@@ -953,9 +970,6 @@ class _FloorStoreState extends State<FloorStore> {
                             onChanged: ((value) {
                               setState(() {
                                 poojaLengthController = value;
-                                printData["bungalow_floor_store"]
-                                        ["lift_special_req"] =
-                                    poojaLengthController;
                               });
                             }),
                           ),
@@ -981,7 +995,8 @@ class _FloorStoreState extends State<FloorStore> {
                           child: TextFormField(
                             // controller: txt,
                             initialValue: printData["bungalow_floor_store"]
-                                ["pooja_room_width"],
+                                    ["pooja_room_width"] ??
+                                '',
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "width",
@@ -996,8 +1011,6 @@ class _FloorStoreState extends State<FloorStore> {
                             onChanged: ((value) {
                               setState(() {
                                 poojaWidthController = value;
-                                printData["bungalow_floor_store"]
-                                    ["pooja_room_width"] = poojaWidthController;
                               });
                             }),
                           ),
@@ -1068,30 +1081,30 @@ class _FloorStoreState extends State<FloorStore> {
                                 onChanged: (it) {
                                   setState(() {
                                     selectedPooja = it!;
-                                    if (selectedPooja == "select floor") {
-                                      printData['bungalow_floor_store']
-                                          ['pooja_room_floor'] = 0;
-                                    }
-                                    if (selectedPooja == "Groung floor") {
-                                      printData['bungalow_floor_store']
-                                          ['pooja_room_floor'] = 1;
-                                    }
-                                    if (selectedPooja == "1st Floor") {
-                                      printData['bungalow_floor_store']
-                                          ['pooja_room_floor'] = 2;
-                                    }
-                                    if (selectedPooja == "2nd Floor") {
-                                      printData['bungalow_floor_store']
-                                          ['pooja_room_floor'] = 3;
-                                    }
-                                    if (selectedPooja == "3rd Floor") {
-                                      printData['bungalow_floor_store']
-                                          ['pooja_room_floor'] = 4;
-                                    }
-                                    if (selectedPooja == "other") {
-                                      printData['bungalow_floor_store']
-                                          ['pooja_room_floor'] = 5;
-                                    }
+                                    // if (selectedPooja == "select floor") {
+                                    //   printData['bungalow_floor_store']
+                                    //       ['pooja_room_floor'] = 0;
+                                    // }
+                                    // if (selectedPooja == "Groung floor") {
+                                    //   printData['bungalow_floor_store']
+                                    //       ['pooja_room_floor'] = 1;
+                                    // }
+                                    // if (selectedPooja == "1st Floor") {
+                                    //   printData['bungalow_floor_store']
+                                    //       ['pooja_room_floor'] = 2;
+                                    // }
+                                    // if (selectedPooja == "2nd Floor") {
+                                    //   printData['bungalow_floor_store']
+                                    //       ['pooja_room_floor'] = 3;
+                                    // }
+                                    // if (selectedPooja == "3rd Floor") {
+                                    //   printData['bungalow_floor_store']
+                                    //       ['pooja_room_floor'] = 4;
+                                    // }
+                                    // if (selectedPooja == "other") {
+                                    //   printData['bungalow_floor_store']
+                                    //       ['pooja_room_floor'] = 5;
+                                    // }
                                   });
                                 }),
                           ),
@@ -1302,19 +1315,19 @@ class _FloorStoreState extends State<FloorStore> {
                           int area = int.parse(floorStoreLengthController) *
                               int.parse(floorStoreWidthController);
                           floorStoreArea = area.toString();
-                          if (selectedFloor == "Ground floor") {
-                            storeFloor = "0";
+                          if (selectedFloor == constant.G_FLOOR_TEXT) {
+                            storeFloor = constant.G_FLOOR.toString();
                           }
-                          if (selectedFloor == "1st floor") {
-                            storeFloor = "1";
+                          if (selectedFloor == constant.G_1_FLOOR_TEXT) {
+                            storeFloor = constant.G_1_FLOOR.toString();
                           }
-                          if (selectedFloor == "2nd floor") {
-                            storeFloor = "2";
+                          if (selectedFloor == constant.G_2_FLOOR_TEXT) {
+                            storeFloor = constant.G_2_FLOOR.toString();
                           }
-                          if (selectedFloor == "3rd floor") {
-                            storeFloor = "3";
+                          if (selectedFloor == constant.G_3_FLOOR_TEXT) {
+                            storeFloor = constant.G_3_FLOOR.toString();
                           }
-                          if (selectedFloor == "other") {
+                          if (selectedFloor == constant.OTHER_FLOOR_TEXT) {
                             storeFloor = floorStoreLocationController;
                           }
                         }
@@ -1364,6 +1377,26 @@ class _FloorStoreState extends State<FloorStore> {
                       },
                     ),
                     flooreStorePost(
+                      provider.project_id,
+                      floorStoreInt,
+                      floorStoreLengthController,
+                      floorStoreWidthController,
+                      floorStoreArea,
+                      storeFloor,
+                      selectedStair,
+                      liftRequirement,
+                      liftSpecialRequirementController,
+                      passengerCapacity,
+                      poojaRoomReq,
+                      poojaLengthController,
+                      poojaWidthController,
+                      poojaRoomArea,
+                      poojaRoomLocation,
+                      selectedPoojaPlace,
+                      openingToLiHa,
+                    ),
+                    flooreStorePut(
+                      provider.project_id,
                       floorStoreInt,
                       floorStoreLengthController,
                       floorStoreWidthController,
