@@ -172,7 +172,7 @@ class _HouseDuplexState extends State<HouseDuplex> {
                       : false
                   : false) {
                 if (house_count != null
-                    ? house_count >= 3
+                    ? house_count >= 1
                         ? true
                         : false
                     : false) {

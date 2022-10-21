@@ -7,6 +7,7 @@ import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provid
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../components/forms.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
@@ -334,6 +335,11 @@ class _LivingHallState extends State<LivingHall> {
   }
 
   bool isloading = false;
+  Future<dynamic> getProjectId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    project_id = prefs.getInt('projectId')!;
+    getData(project_id);
+  }
 
   @override
   void initState() {
@@ -342,10 +348,11 @@ class _LivingHallState extends State<LivingHall> {
     final store = Provider.of<PageNavProvider>(context, listen: false);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (store.getId() == 0) {
-      } else {
-        getData(store.getId());
-      }
+      getProjectId();
+      // if (store.getId() == 0) {
+      // } else {
+      //   getData(store.getId());
+      // }
     });
     if (printData == null) {
       isloading = true;
@@ -870,7 +877,7 @@ class _LivingHallState extends State<LivingHall> {
                             String val = it.value;
                             return DropdownMenuItem<String>(
                                 value: it.value,
-                                 onTap: () {
+                                onTap: () {
                                   drawingHallLocation = idx;
                                 },
                                 child: Text(

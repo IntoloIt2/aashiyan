@@ -2,9 +2,11 @@
 
 import 'dart:convert';
 
+import 'package:aashiyan/utils/helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PageNavProvider with ChangeNotifier {
   int project_id = 0;
@@ -90,16 +92,17 @@ class PageNavProvider with ChangeNotifier {
     temp = jsonDecode(response.body);
     if (temp != null) {
       project_id = temp['project_id'];
+      setProjectId(project_id);
     }
 
     return temp['status'];
   }
 
-  int getId() {
-    // if (temp != null) {
-    //   project_id = temp['project_id'];
-    // }
-    notifyListeners();
-    return project_id;
-  }
+  // int getId() {
+  //   // if (temp != null) {
+  //   //   project_id = temp['project_id'];
+  //   // }
+  //   notifyListeners();
+  //   return project_id;
+  // }
 }
