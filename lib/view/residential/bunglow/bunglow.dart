@@ -74,11 +74,9 @@ class _BunglowState extends State<Bunglow> {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const PreExisting(),
-                        ));
+
+                    Get.to(PreExisting());
+
                   },
                   child: Card(
                     child: ListTile(

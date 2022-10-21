@@ -1,13 +1,16 @@
 // ignore_for_file: non_constant_identifier_names, avoid_print
 
 import 'dart:convert';
+import 'dart:core';
+import 'dart:ffi';
+
 // import 'dart:html';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:http/http.dart' as http;
 
 var baseUrl = 'http://sdplweb.com/sdpl/api/';
-var baseUrlLocal = 'http://192.168.1.99:8080/sdplserver/api/';
+var baseUrlLocal = 'http://192.168.0.99:8080/sdplserver/api/';
 var imageUrl = 'http://sdplweb.com/sdpl/storage/app/public/';
 var bunglowPage =
     "http://sdplweb.com/sdpl/api/get-bungalow-prestigious-recent-image";
@@ -21,7 +24,6 @@ Future<void> getPrestigious() async {
   try {
     var url = Uri.parse(bunglowPage);
     var response = await http.get(url);
-    // print(response.body.toString());
     if (response.statusCode == 200) {
       bunglowPagePrestigiousList =
           jsonDecode(response.body)["prestigious_image"];
@@ -558,8 +560,9 @@ Future<void> livingHallput(
 }
 
 Future<void> pantryPost(
+  int projectId,
   int pantryRequest,
-  String pantryFloor,
+  int pantryFloor,
   String pantryLength,
   String pantryWidth,
   String pantryArea,
@@ -568,12 +571,12 @@ Future<void> pantryPost(
   String diningWidth,
   String diningArea,
   List diningFeatures,
-  String diningFloor,
+  String diningLocation,
   String diningSeat,
   String diningText,
 ) async {
   var projectData = {
-    "project_id": 255825,
+    "project_id": projectId,
     "user_id": 3655,
     "dimension": dimenInt,
     "pantry_req": pantryRequest,
@@ -586,7 +589,7 @@ Future<void> pantryPost(
     "dining_width": diningWidth,
     "dining_area": diningArea,
     "dining_features": diningFeatures,
-    "dining_floor": diningFloor,
+    "dining_floor": diningLocation,
     "dining_seat": diningSeat,
     "dining_text": diningText,
   };
@@ -594,7 +597,55 @@ Future<void> pantryPost(
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-pantry'),
+    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-pantry'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+  print(response.body);
+}
+
+Future<void> pantryPut(
+  int projectId,
+  int pantryRequest,
+  int pantryFloor,
+  String pantryLength,
+  String pantryWidth,
+  String pantryArea,
+  String specificRequest,
+  String diningLength,
+  String diningWidth,
+  String diningArea,
+  List diningFeatures,
+  String diningLocation,
+  String diningSeat,
+  String diningText,
+) async {
+  var projectData = {
+    "project_id": projectId,
+    "user_id": 19,
+    "dimension": dimenInt,
+    "pantry_req": pantryRequest,
+    "pantry_floor": pantryFloor,
+    "pantry_length": pantryLength,
+    "pantry_width": pantryWidth,
+    "pantry_area": pantryArea,
+    "specific_req": specificRequest,
+    "dining_length": diningLength,
+    "dining_width": diningWidth,
+    "dining_area": diningArea,
+    "dining_features": diningFeatures,
+    "dining_floor": diningLocation,
+    "dining_seat": diningSeat,
+    "dining_text": diningText,
+  };
+  print("$diningFeatures  dini");
+  print(projectData);
+  final response = await http.post(
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse(
+        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-pantry/$projectId'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -604,6 +655,7 @@ Future<void> pantryPost(
 }
 
 Future<void> flooreStorePost(
+  int projectId,
   int floorStoreRequirement,
   String floorStoreLength,
   String floorStoreWidth,
@@ -622,11 +674,11 @@ Future<void> flooreStorePost(
   String openingToLiHa,
 ) async {
   var projectData = {
-    "project_id": 5456,
+    "project_id": projectId,
     "dimension": 1,
     "floor_store_req": floorStoreRequirement,
-    "floor_store_length": floorStoreArea,
-    "floor_store_width": floorStoreLength,
+    "floor_store_length": floorStoreLength,
+    "floor_store_width": floorStoreWidth,
     "floor_store_area": floorStoreArea,
     "store_floor": storeFloor,
     "stair_case": stairCase,
@@ -648,7 +700,65 @@ Future<void> flooreStorePost(
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-floor-store'),
+    Uri.parse(
+        'http://192.168.0.99:8080/sdplserver/api/bungalow-floor-store/$projectId'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+
+  print(response.body);
+}
+
+Future<void> flooreStorePut(
+  int projectId,
+  int floorStoreRequirement,
+  String floorStoreLength,
+  String floorStoreWidth,
+  String floorStoreArea,
+  String storeFloor,
+  String stairCase,
+  int liftRequirement,
+  String liftSpecialRequirement,
+  int passengerCapacity,
+  int poojaRoomReq,
+  String poojaRoomLength,
+  String poojaRoomWidth,
+  String poojaRoomArea,
+  String poojaRoomFloor,
+  String poojaRoomType,
+  String openingToLiHa,
+) async {
+  var projectData = {
+    "project_id": projectId,
+    "dimension": 1,
+    "floor_store_req": floorStoreRequirement,
+    "floor_store_length": floorStoreLength,
+    "floor_store_width": floorStoreWidth,
+    "floor_store_area": floorStoreArea,
+    "store_floor": storeFloor,
+    "stair_case": stairCase,
+    "stair_case_image": "sta",
+    "lift_req": liftRequirement,
+    "passanger_capacity": passengerCapacity,
+    "pooja_room_req": poojaRoomReq,
+    "pooja_room_length": poojaRoomLength,
+    "pooja_room_width": poojaRoomWidth,
+    "pooja_room_area": poojaRoomArea,
+    "pooja_room_floor": poojaRoomFloor,
+    "pooja_room_type": poojaRoomType,
+    "opening_to_li_ha": poojaRoomWidth,
+    "lift_special_req": liftRequirement,
+  };
+
+  print(floorStoreArea);
+
+  print(projectData);
+  final response = await http.post(
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse(
+        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-floor-store/$projectId'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -704,7 +814,7 @@ Future<void> BedRoomPost(
 
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.1.99:8080/sdplserver/api/bungalow-bedroom'),
+    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-bedroom'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -849,6 +959,15 @@ Future<void> BasementPost(
     body: jsonEncode(projectData),
   );
   print(response.body);
+}
+
+Future<dynamic> getGalleryAPI(int category) async {
+  print(category);
+  var response = await http.get(Uri.parse(baseUrl + "get-gallery/$category"));
+  final jsonResponse = jsonDecode(response.body);
+
+  final finalArt = jsonResponse['gallery'] as List;
+  return finalArt;
 }
 
 Future<void> BasementPut(

@@ -1,24 +1,29 @@
-// ignore_for_file: library_prefixes, use_key_in_widget_constructors, non_constant_identifier_names, unused_local_variable, empty_catches, body_might_complete_normally_nullable, prefer_typing_uninitialized_variables, sized_box_for_whitespace, prefer_if_null_operators, unrelated_type_equality_checks, avoid_unnecessary_containers, unnecessary_string_interpolations
-
 import 'dart:convert';
 import 'dart:core';
 import 'package:aashiyan/components/forms.dart' as Forms;
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/controller/api_services.dart';
+import 'package:aashiyan/model/requirementmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../const.dart';
 import 'package:http/http.dart' as http;
-import '../../../components/contants.dart';
+
+import 'preExisting.dart';
+
+var data;
 
 class Requirement extends StatefulWidget {
+  late String fName;
+
   static const namedRoute = "/intrestedNext";
+
   @override
   State<Requirement> createState() => _RequirementState();
 }
 
 class _RequirementState extends State<Requirement> {
-  // late Future<RequirementModel> futureRequirement;
   String nameController = '';
   String lastNameController = "";
   String emailController = "";
@@ -32,7 +37,7 @@ class _RequirementState extends State<Requirement> {
   String levelController = "";
   String? widthController = '';
   String? lengthController = '';
-
+  var fName = TextEditingController();
   var plotValue = TextEditingController();
 
   int isRegular = 1;
@@ -128,7 +133,7 @@ class _RequirementState extends State<Requirement> {
     try {
       var client = http.Client();
       var response =
-          await http.get(Uri.parse("${dotenv.env['APP_URL']}state/$STATE_ID"));
+          await http.get(Uri.parse("${dotenv.env['APP_URL']}state/1"));
       // print(response.body.toString());
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
@@ -138,7 +143,9 @@ class _RequirementState extends State<Requirement> {
         });
         // print(stateData);
       }
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Future<List?> getCities() async {
@@ -167,7 +174,9 @@ class _RequirementState extends State<Requirement> {
         // print(cityData);
         return cityList;
       }
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   var printData;
@@ -183,9 +192,19 @@ class _RequirementState extends State<Requirement> {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
+          print(printData);
         });
       }
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void fetchData() async {
+    var response = await projects;
+    data = response;
+
+    print(data);
   }
 
   bool isloading = false;
@@ -203,13 +222,16 @@ class _RequirementState extends State<Requirement> {
   @override
   void initState() {
     super.initState();
+
     getData();
     getCities();
     getState();
+    fetchData();
     plotValue.addListener(() => setState(() {}));
     if (printData == null) {
       setState(() {
         isloading = true;
+        // fName = data['first_name'];
       });
     }
   }
@@ -243,7 +265,7 @@ class _RequirementState extends State<Requirement> {
                       Radius.circular(5),
                     ),
                     child: Container(
-                      padding: const EdgeInsets.all(5),
+                      padding: EdgeInsets.all(5),
                       height: height * 0.04,
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
@@ -289,6 +311,7 @@ class _RequirementState extends State<Requirement> {
                             ? printData["project"]['first_name'].toString()
                             : '',
                         style: const TextStyle(fontSize: 14),
+                        // controller: fName,
                         decoration: const InputDecoration(
                             hintText: "First name",
                             hintStyle: TextStyle(fontSize: 14),
@@ -466,7 +489,7 @@ class _RequirementState extends State<Requirement> {
                       Radius.circular(5),
                     ),
                     child: Container(
-                      padding: const EdgeInsets.all(5),
+                      padding: EdgeInsets.all(5),
                       height: height * 0.04,
                       width: width * 0.6,
                       child: DropdownButtonHideUnderline(
@@ -519,7 +542,7 @@ class _RequirementState extends State<Requirement> {
                       Radius.circular(5),
                     ),
                     child: Container(
-                      padding: const EdgeInsets.all(5),
+                      padding: EdgeInsets.all(5),
                       height: height * 0.04,
                       width: width * 0.6,
                       child: DropdownButtonHideUnderline(
@@ -578,7 +601,7 @@ class _RequirementState extends State<Requirement> {
                       Radius.circular(5),
                     ),
                     child: Container(
-                      padding: const EdgeInsets.all(5),
+                      padding: EdgeInsets.all(5),
                       height: height * 0.04,
                       width: width * 0.2,
                       child: DropdownButtonHideUnderline(
@@ -1025,7 +1048,7 @@ class _RequirementState extends State<Requirement> {
                                 Navigator.of(context).pop();
                               },
                               child: Container(
-                                padding: const EdgeInsets.all(10),
+                                padding: EdgeInsets.all(10),
                                 color: Colors.black,
                                 child: const Text(
                                   "okay",
@@ -1592,7 +1615,8 @@ class _RequirementState extends State<Requirement> {
                       }
                     },
                   );
-                  // futureRequirement =
+                  print("d1 ${diagonal1Controller}");
+                  print("d2 ${diagonal2Controller}");
                   requirementPost(
                     2342,
                     978,

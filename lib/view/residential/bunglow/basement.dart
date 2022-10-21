@@ -1,10 +1,12 @@
 // ignore_for_file: unused_import, use_key_in_widget_constructors, prefer_typing_uninitialized_variables, unnecessary_null_comparison, non_constant_identifier_names, avoid_print, prefer_if_null_operators, avoid_unnecessary_containers, sized_box_for_whitespace, must_be_immutable
 
 import 'dart:convert';
+import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +16,8 @@ class Basement extends StatefulWidget {
   @override
   State<Basement> createState() => _BasementState();
 }
+
+var id;
 
 class _BasementState extends State<Basement> {
   final List<String> otherItems = ["Pantry", "Staff Toilet", "Toilet"];
@@ -28,6 +32,7 @@ class _BasementState extends State<Basement> {
     // ignore: todo
     // TODO: implement initState
     super.initState();
+    print(id);
     getData();
   }
 

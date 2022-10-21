@@ -1,10 +1,14 @@
+import 'package:aashiyan/controller/api_services.dart';
+import 'package:aashiyan/view/commercial_show_off.dart';
 import 'package:aashiyan/view/hospitals.dart';
 import 'package:aashiyan/view/hotels.dart';
+import 'package:aashiyan/view/mixuse.dart';
 import 'package:aashiyan/view/multiplexer.dart';
 import 'package:aashiyan/view/residential.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../view/residential/bunglow/interior_design.dart';
+import 'contants.dart';
 import 'steps_container.dart';
 
 SingleChildScrollView projectCategory() {
@@ -16,7 +20,10 @@ SingleChildScrollView projectCategory() {
         InkWell(
           child: stepsContainer("Hotels"),
           onTap: () {
-            Get.to(const Hotels());
+
+            getGalleryAPI(HOSPITALITY);
+            Get.to(Hotels());
+
           },
         ),
         const SizedBox(
@@ -32,7 +39,10 @@ SingleChildScrollView projectCategory() {
         ),
         InkWell(
             onTap: () {
-              Get.to(const Multiplexer());
+
+              getGalleryAPI(MALL_MULTIPLESER);
+              Get.to(Multiplexer());
+
             },
             child: stepsContainer("Multiplex/mall")),
         const SizedBox(
@@ -40,7 +50,9 @@ SingleChildScrollView projectCategory() {
         ),
         InkWell(
             onTap: () {
-              Get.to(const InteriorDesign());
+              getGalleryAPI(BUNGALOW);
+              Get.to(InteriorDesign());
+
             },
             child: stepsContainer("Interior Design")),
         const SizedBox(
@@ -48,18 +60,29 @@ SingleChildScrollView projectCategory() {
         ),
         InkWell(
             onTap: () {
-              Get.to(const Hospitals());
+              getGalleryAPI(HOSPITAL);
+              Get.to(Hospitals());
+
             },
             child: stepsContainer("Hospitals")),
         const SizedBox(
           width: 5,
         ),
         InkWell(
-            onTap: () {}, child: stepsContainer("Commercial Showroom/Offices")),
+            onTap: () {
+              getGalleryAPI(COMMERCIAL_SHOWROOM_OFFICE);
+              Get.to(CommercialShowroom());
+            },
+            child: stepsContainer("Commercial Showroom/Offices")),
         const SizedBox(
           width: 5,
         ),
-        InkWell(onTap: () {}, child: stepsContainer("Mix Use Buildings")),
+        InkWell(
+            onTap: () {
+              getGalleryAPI(MIX_USE);
+              Get.to(MixUse());
+            },
+            child: stepsContainer("Mix Use Buildings")),
       ],
     ),
   );

@@ -98,17 +98,16 @@ Future<void> login(String Email, String Password, context) async {
   map['email'] = emailController.text;
   map['password'] = passwordController.text;
   // prefs.setString('user_id', user_id).toString();
-  // print("${dotenv.env['APP_URL']}login");
 
   final response = await http.post(
     Uri.parse('${dotenv.env['APP_URL']}login'),
-    //verify-email/userid     |     http://sdplweb.com/sdpl/api/login
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(map),
   );
-
+  print('response====');
+  print(response);
   loginres = jsonDecode(response.body);
 
   if (loginres['status'] == 200 && loginres['data'] != null
