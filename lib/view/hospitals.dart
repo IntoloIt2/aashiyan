@@ -1,8 +1,4 @@
-
-// ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors
-
-import 'dart:convert';
-
+// ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, override_on_non_overriding_member, curly_braces_in_flow_control_structures, sized_box_for_whitespace
 
 import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/view/residential/bunglow/bungalow_detail.dart';
@@ -73,30 +69,30 @@ class _HospitalsState extends State<Hospitals> {
                           ));
                         },
                         child: Card(
-                           shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0)),
                           shadowColor: Colors.blueAccent,
                           elevation: 10,
                           child: Column(
                             children: [
-                                Container(
-                                  height: 225,
-                                  width:
-                                      MediaQuery.of(context).size.width * .95,
-                                  child: gallery == []
-                                      ? const CircularProgressIndicator()
-                                      : Image.network(
-                                          'https://sdplweb.com/sdpl/public/storage/${(gallery[i]['img_path'])}',
-                                          fit: BoxFit.fill,
-                                        ),
-                                ),
+                              Container(
+                                height: 225,
+                                width: MediaQuery.of(context).size.width * .95,
+                                child: gallery == []
+                                    ? const CircularProgressIndicator()
+                                    : Image.network(
+                                        'https://sdplweb.com/sdpl/public/storage/${(gallery[i]['img_path'])}',
+                                        fit: BoxFit.fill,
+                                      ),
+                              ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 10.0),
                                 child: Container(
                                   child: gallery == []
                                       ? const CircularProgressIndicator()
-                                      : headingFont(
-                                          gallery[i]['img_title'].toString().toUpperCase()),
+                                      : headingFont(gallery[i]['img_title']
+                                          .toString()
+                                          .toUpperCase()),
                                 ),
                               ),
                               Padding(
@@ -107,7 +103,8 @@ class _HospitalsState extends State<Hospitals> {
                                       ? const CircularProgressIndicator()
                                       : headingFont(gallery[i]
                                               ['project_location']
-                                          .toString().toUpperCase()),
+                                          .toString()
+                                          .toUpperCase()),
                                 ),
                               ),
                             ],

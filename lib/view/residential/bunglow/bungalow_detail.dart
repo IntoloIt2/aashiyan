@@ -1,6 +1,7 @@
+// ignore_for_file: must_be_immutable, non_constant_identifier_names, prefer_typing_uninitialized_variables, sized_box_for_whitespace
+
 import 'dart:convert';
 
-import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -42,7 +43,6 @@ class _BungalowDetailState extends State<BungalowDetail> {
     setState(() {
       project_gallery = finalArt;
     });
-    print(project_gallery);
   }
 
   List gallery = [];
@@ -50,19 +50,19 @@ class _BungalowDetailState extends State<BungalowDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Ashiyaan',
           style: TextStyle(),
         ),
       ),
       body: Center(
         child: project_gallery == null
-            ? CircularProgressIndicator()
+            ? const CircularProgressIndicator()
             : SingleChildScrollView(
                 child: Column(
                   children: [
                     Card(
-                      margin: EdgeInsets.symmetric(vertical: 5),
+                      margin: const EdgeInsets.symmetric(vertical: 5),
                       elevation: 5,
                       child: Column(
                         children: [
@@ -75,7 +75,7 @@ class _BungalowDetailState extends State<BungalowDetail> {
                                       height: 225,
                                       width: MediaQuery.of(context).size.width,
                                       child: project_gallery == []
-                                          ? CircularProgressIndicator()
+                                          ? const CircularProgressIndicator()
                                           : Image.network(
                                               'https://sdplweb.com/sdpl/public/storage/${project_gallery[index]['project_gallery_img_path']}',
                                               filterQuality:
@@ -89,7 +89,7 @@ class _BungalowDetailState extends State<BungalowDetail> {
                                     autoPlay: true,
                                     viewportFraction: 1,
                                     autoPlayAnimationDuration:
-                                        Duration(milliseconds: 800))),
+                                        const Duration(milliseconds: 800))),
                           ),
                           SingleChildScrollView(
                               scrollDirection: Axis.horizontal,
@@ -104,7 +104,7 @@ class _BungalowDetailState extends State<BungalowDetail> {
                                           height: 70,
                                           width: 100,
                                           child: project_gallery == []
-                                              ? CircularProgressIndicator()
+                                              ? const CircularProgressIndicator()
                                               : Image.network(
                                                   'https://sdplweb.com/sdpl/public/storage/${project_gallery[i]['project_gallery_img_path']}',
                                                   fit: BoxFit.cover,
@@ -121,7 +121,7 @@ class _BungalowDetailState extends State<BungalowDetail> {
                         alignment: Alignment.centerLeft,
                         child: Container(
                             child: gallery == []
-                                ? CircularProgressIndicator()
+                                ? const CircularProgressIndicator()
                                 : headingFont(widget.project_location
                                     .toString()
                                     .toUpperCase())),
@@ -133,7 +133,7 @@ class _BungalowDetailState extends State<BungalowDetail> {
                         alignment: Alignment.centerLeft,
                         child: Container(
                           child: gallery == []
-                              ? CircularProgressIndicator()
+                              ? const CircularProgressIndicator()
                               : requirementText(widget.description.toString()),
                         ),
                       ),
