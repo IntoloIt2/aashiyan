@@ -91,6 +91,7 @@ class PageNavProvider with ChangeNotifier {
     if (temp != null) {
       project_id = temp['project_id'];
     }
+
     return temp['status'];
   }
 
