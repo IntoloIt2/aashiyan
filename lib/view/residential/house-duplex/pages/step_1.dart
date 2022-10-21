@@ -253,19 +253,17 @@ class _Step_1State extends State<Step_1> {
     user_id = decJson['data']['id'];
     // print('decJson===');
     // print(decJson);
-    getData(user_id);
   }
 
   @override
   void initState() {
     super.initState();
-
     getUserId();
     final store = Provider.of<PageNavProvider>(context, listen: false);
+    getData(store.getId());
 
     // WidgetsBinding.instance.addPostFrameCallback((_) {
-    // print("object==");
-    // print(store.getId());
+
     // if (store.getId() == 0) {
     //   printData = {"project": null};
     // } else {
@@ -290,7 +288,6 @@ class _Step_1State extends State<Step_1> {
         projectTypeId = value;
       },
     );
-
     getCities();
     getState();
     plotValue.addListener(() => setState(() {}));
