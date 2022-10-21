@@ -187,6 +187,12 @@ const G_1_FLOOR = 2;
 const G_2_FLOOR = 3;
 const G_3_FLOOR = 4;
 
+const G_FLOOR_TEXT = "Ground Floor";
+const G_1_FLOOR_TEXT = "1st floor";
+const G_2_FLOOR_TEXT = "2nd floor";
+const G_3_FLOOR_TEXT = "3rd floor";
+const OTHER_FLOOR_TEXT = "Other Floor";
+
 const FIRST_FLOOR = 2;
 const SECOND_FLOOR = 3;
 const THIRD_FLOOR = 4;

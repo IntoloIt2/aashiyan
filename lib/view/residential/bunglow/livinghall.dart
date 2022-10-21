@@ -870,7 +870,7 @@ class _LivingHallState extends State<LivingHall> {
                             String val = it.value;
                             return DropdownMenuItem<String>(
                                 value: it.value,
-                                onTap: () {
+                                 onTap: () {
                                   drawingHallLocation = idx;
                                 },
                                 child: Text(
