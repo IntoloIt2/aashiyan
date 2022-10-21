@@ -148,11 +148,11 @@ class _FloorStoreState extends State<FloorStore> {
             notRequiredLift = printData["bungalow_floor_store"]["lift_req"] == 0
                 ? true
                 : notRequiredLift;
-            selectedLift =
-                printData['bungalow_floor_store']['passanger_capacity'] != null
-                    ? liftItems[printData['bungalow_floor_store']
-                        ['passanger_capacity']]
-                    : selectedLift;
+            // selectedLift =
+            //     printData['bungalow_floor_store']['passanger_capacity'] != null
+            //         ? liftItems[printData['bungalow_floor_store']
+            //             ['passanger_capacity']]
+            //         : selectedLift;
             liftSpecialRequirementController = printData["bungalow_floor_store"]
                     ["lift_special_req"] ??
                 liftSpecialRequirementController;
@@ -170,6 +170,11 @@ class _FloorStoreState extends State<FloorStore> {
             poojaWidthController = printData["bungalow_floor_store"]
                     ["pooja_room_width"] ??
                 poojaWidthController;
+            selectedPooja =
+                printData['bungalow_floor_store']['pooja_room_floor'] != null
+                    ? poojaRoomItems[printData['bungalow_floor_store']
+                        ['pooja_room_floor']]
+                    : selectedPooja;
           }
         });
       }
@@ -1047,15 +1052,7 @@ class _FloorStoreState extends State<FloorStore> {
                                 icon: const Visibility(
                                     visible: false,
                                     child: Icon(Icons.arrow_downward)),
-                                hint: printData['bungalow_floor_store']
-                                            ['pooja_room_floor'] !=
-                                        null
-                                    ? Text(
-                                        poojaRoomItems[
-                                            printData['bungalow_floor_store']
-                                                ['pooja_room_floor']],
-                                      )
-                                    : Text(selectedPooja),
+                                hint: Text(selectedPooja),
 
                                 // value: selectedPooja,
                                 elevation: 16,
