@@ -74,9 +74,7 @@ class _BunglowState extends State<Bunglow> {
               children: [
                 InkWell(
                   onTap: () {
-
-                    Get.to(PreExisting());
-
+                    Get.to(() => PreExisting());
                   },
                   child: Card(
                     child: ListTile(

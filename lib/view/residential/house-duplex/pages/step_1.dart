@@ -128,12 +128,13 @@ class _Step_1State extends State<Step_1> {
     diagonal2Text = diagonal2Controller;
     finalDiagonal = plotValue.text;
 
-    if (diagonal1Text != '' && diagonal2Text != '') {
+    if (diagonal1 != '' && diagonal2 != '') {
       diagonalCalculation = (((diagonal1! * diagonal2!) / 2)).toString();
       plotValue.value = plotValue.value.copyWith(
         text: diagonalCalculation.toString(),
       );
     }
+
     return diagonalCalculation;
   }
 
@@ -186,8 +187,6 @@ class _Step_1State extends State<Step_1> {
       var response = await http.get(
         Uri.parse("${dotenv.env['APP_URL']}edit-project/$id"),
       );
-      // print('response.body==');
-      // print(response.body);
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
@@ -246,13 +245,13 @@ class _Step_1State extends State<Step_1> {
   Future<dynamic> getUserId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('userData');
+    project_id = prefs.getInt('projectId');
+    getData(project_id);
     var decJson;
     if (userData != null) {
       decJson = jsonDecode(userData);
     }
     user_id = decJson['data']['id'];
-    // print('decJson===');
-    // print(decJson);
   }
 
   @override
@@ -260,7 +259,8 @@ class _Step_1State extends State<Step_1> {
     super.initState();
     getUserId();
     final store = Provider.of<PageNavProvider>(context, listen: false);
-    getData(store.getId());
+
+    // getData(store.getId());
 
     // WidgetsBinding.instance.addPostFrameCallback((_) {
 
@@ -865,13 +865,12 @@ class _Step_1State extends State<Step_1> {
                             initialValue: printData['project'] != null
                                 ? printData['project']['diagonal_1'] != null
                                     ? printData['project']['diagonal_1']
-                                    : diagonal1Controller
-                                : diagonal1Controller,
-                            onChanged: (diagonal1Controller) {
+                                    : diagonal1.toString()
+                                : diagonal1.toString(),
+                            onChanged: (value) {
                               setState(() {
-                                if (diagonal1Controller != '') {
-                                  diagonal1 =
-                                      int.parse(diagonal1Controller.toString());
+                                if (value != '') {
+                                  diagonal1 = int.parse(value.toString());
                                 } else {
                                   diagonal1 = 0;
                                   plotValue.text = '0';
@@ -1039,8 +1038,8 @@ class _Step_1State extends State<Step_1> {
                                     // ? printData['project']['plot_size'] != null
                                     ? printData['project']['plot_size']
                                     // : plotValue
-                                    : plotValue.value.toString()
-                                : plotValue.value.toString(),
+                                    : plotValue.text
+                                : plotValue.text,
                             onChanged: (value) {
                               setState(() {
                                 if (plotLenght == 0 || plotWidth == 0) {
