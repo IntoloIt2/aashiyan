@@ -1,15 +1,19 @@
-// ignore_for_file: unused_import, prefer_typing_uninitialized_variables, avoid_print
+// ignore_for_file: unused_import, prefer_typing_uninitialized_variables, avoid_print, sized_box_for_whitespace
 
 import 'dart:convert';
 
 import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/const.dart';
+import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/view/residential/bunglow/bungalow_detail.dart';
 import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+var categoryId;
 
 class BungalowGallery extends StatefulWidget {
   const BungalowGallery({super.key});
@@ -22,18 +26,14 @@ class _BungalowGalleryState extends State<BungalowGallery> {
   @override
   void initState() {
     super.initState();
-
     fetchData();
   }
 
   var gallery;
   Future fetchData() async {
-    var response =
-        await http.get(Uri.parse('http://sdplweb.com/sdpl/api/get-gallery/8'));
-    final jsonResponse = jsonDecode(response.body);
-
-    final finalArt = jsonResponse['gallery'];
-
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    categoryId = prefs.getInt('projectTypeId');
+    var finalArt = await getGalleryAPI(categoryId!);
     setState(() {
       gallery = finalArt;
     });
@@ -43,7 +43,9 @@ class _BungalowGalleryState extends State<BungalowGallery> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bungalow Gallery'),
+        title: categoryId == BUNGALOW
+            ? const Text('Bungalow Gallery')
+            : const Text('Flat House Gallery'),
       ),
       body: Center(
         child: gallery == null
