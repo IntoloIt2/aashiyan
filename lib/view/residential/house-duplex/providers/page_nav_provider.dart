@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -86,14 +88,18 @@ class PageNavProvider with ChangeNotifier {
       body: jsonEncode(projectData),
     );
     temp = jsonDecode(response.body);
+    if (temp != null) {
+      project_id = temp['project_id'];
+    }
+
     return temp['status'];
   }
 
   int getId() {
-    if (temp != null) {
-      project_id = temp['project_id'];
-    }
-    // notifyListeners();
+    // if (temp != null) {
+    //   project_id = temp['project_id'];
+    // }
+    notifyListeners();
     return project_id;
   }
 }

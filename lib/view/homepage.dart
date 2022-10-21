@@ -1,3 +1,5 @@
+// ignore_for_file: sort_child_properties_last, sized_box_for_whitespace, avoid_unnecessary_containers
+
 import 'package:aashiyan/const.dart';
 
 import 'package:aashiyan/view/residential.dart';
@@ -7,7 +9,7 @@ import '../components/project_category.dart';
 import '../controller/api_services.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -38,7 +40,7 @@ class _HomePageState extends State<HomePage> {
                 centerTitle: true,
                 bottom: PreferredSize(
                   child: Container(
-                    margin: EdgeInsets.only(bottom: 10),
+                    margin: const EdgeInsets.only(bottom: 10),
                     child: Text(
                       "Premium Architecture Engineering",
                       style: TextStyle(
@@ -47,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                           fontFamily: "Courgette-Regular"),
                     ),
                   ),
-                  preferredSize: Size.fromHeight(10),
+                  preferredSize: const Size.fromHeight(10),
                 ),
               ),
               body: SingleChildScrollView(
@@ -134,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.all(20),
+                      margin: const EdgeInsets.all(20),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [

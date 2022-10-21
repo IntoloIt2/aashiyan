@@ -1,14 +1,9 @@
-import 'package:aashiyan/components/contants.dart';
+// ignore_for_file: prefer_const_constructors
+
 import 'package:aashiyan/components/forms.dart';
-import 'package:aashiyan/view/homepage.dart';
 import 'package:aashiyan/view/profile.dart';
 import './controller/auth_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'controller/auth_controller.dart';
-import 'package:provider/provider.dart';
-import 'controller/provider/auth_provider.dart';
-import './view/profile.dart';
 
 BottomNavigationBar customBottomNav(BuildContext context) {
   // final store = Provider.of<Auth_Provider>(context, listen: true);

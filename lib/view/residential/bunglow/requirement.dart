@@ -1,14 +1,15 @@
+// ignore_for_file: library_prefixes, use_key_in_widget_constructors, non_constant_identifier_names, unused_local_variable, empty_catches, body_might_complete_normally_nullable, prefer_typing_uninitialized_variables, sized_box_for_whitespace, prefer_if_null_operators, unrelated_type_equality_checks, avoid_unnecessary_containers, unnecessary_string_interpolations
+
 import 'dart:convert';
 import 'dart:core';
 import 'package:aashiyan/components/forms.dart' as Forms;
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/controller/api_services.dart';
-import 'package:aashiyan/model/requirementmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../const.dart';
 import 'package:http/http.dart' as http;
+import '../../../components/contants.dart';
 
 class Requirement extends StatefulWidget {
   static const namedRoute = "/intrestedNext";
@@ -127,7 +128,7 @@ class _RequirementState extends State<Requirement> {
     try {
       var client = http.Client();
       var response =
-          await http.get(Uri.parse("${dotenv.env['APP_URL']}state/1"));
+          await http.get(Uri.parse("${dotenv.env['APP_URL']}state/$STATE_ID"));
       // print(response.body.toString());
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
@@ -137,9 +138,7 @@ class _RequirementState extends State<Requirement> {
         });
         // print(stateData);
       }
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   Future<List?> getCities() async {
@@ -168,9 +167,7 @@ class _RequirementState extends State<Requirement> {
         // print(cityData);
         return cityList;
       }
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   var printData;
@@ -186,12 +183,9 @@ class _RequirementState extends State<Requirement> {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
-          print(printData);
         });
       }
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   bool isloading = false;
@@ -249,7 +243,7 @@ class _RequirementState extends State<Requirement> {
                       Radius.circular(5),
                     ),
                     child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       height: height * 0.04,
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
@@ -472,7 +466,7 @@ class _RequirementState extends State<Requirement> {
                       Radius.circular(5),
                     ),
                     child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       height: height * 0.04,
                       width: width * 0.6,
                       child: DropdownButtonHideUnderline(
@@ -525,7 +519,7 @@ class _RequirementState extends State<Requirement> {
                       Radius.circular(5),
                     ),
                     child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       height: height * 0.04,
                       width: width * 0.6,
                       child: DropdownButtonHideUnderline(
@@ -584,7 +578,7 @@ class _RequirementState extends State<Requirement> {
                       Radius.circular(5),
                     ),
                     child: Container(
-                      padding: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       height: height * 0.04,
                       width: width * 0.2,
                       child: DropdownButtonHideUnderline(
@@ -1031,7 +1025,7 @@ class _RequirementState extends State<Requirement> {
                                 Navigator.of(context).pop();
                               },
                               child: Container(
-                                padding: EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(10),
                                 color: Colors.black,
                                 child: const Text(
                                   "okay",
@@ -1598,8 +1592,6 @@ class _RequirementState extends State<Requirement> {
                       }
                     },
                   );
-                  print("d1 ${diagonal1Controller}");
-                  print("d2 ${diagonal2Controller}");
                   // futureRequirement =
                   requirementPost(
                     2342,

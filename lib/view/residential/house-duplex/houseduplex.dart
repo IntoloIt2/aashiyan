@@ -1,14 +1,13 @@
+// ignore_for_file: library_prefixes, non_constant_identifier_names, prefer_typing_uninitialized_variables, use_key_in_widget_constructors, avoid_print, unused_local_variable, avoid_unnecessary_containers, use_build_context_synchronously
+
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:aashiyan/components/app_bar.dart';
 import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/components/project_category.dart';
 import 'package:aashiyan/view/residential/house-duplex/pages/pageNav.dart';
 import 'package:flutter/material.dart';
-import 'package:aashiyan/const.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -162,7 +161,7 @@ class _HouseDuplexState extends State<HouseDuplex> {
                       : false
                   : false) {
                 if (house_count != null
-                    ? house_count >= 1
+                    ? house_count >= 3
                         ? true
                         : false
                     : false) {

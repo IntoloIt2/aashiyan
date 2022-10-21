@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 
 import 'package:aashiyan/components/contants.dart';
@@ -108,7 +110,6 @@ class _InteriorDesignState extends State<InteriorDesign> {
                                         description: gallery[i]['description'],
                                         id: gallery[i]['id'],
                                       ));
-                                      print(gallery[i]['id']);
                                     },
                                     child: Container(
                                       child: gallery == []
