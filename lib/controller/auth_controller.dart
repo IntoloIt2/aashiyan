@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, unused_import, non_constant_identifier_names, unnecessary_late, unnecessary_new, prefer_collection_literals, unnecessary_brace_in_string_interps, unused_local_variable, prefer_void_to_null, sized_box_for_whitespace
 
 import 'dart:convert';
 
@@ -98,7 +98,7 @@ Future<void> login(String Email, String Password, context) async {
   map['email'] = emailController.text;
   map['password'] = passwordController.text;
   // prefs.setString('user_id', user_id).toString();
-  print("${dotenv.env['APP_URL']}login");
+
   final response = await http.post(
     Uri.parse('${dotenv.env['APP_URL']}login'),
     headers: <String, String>{
@@ -125,7 +125,7 @@ Future<void> login(String Email, String Password, context) async {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage(),
+          builder: (context) => const HomePage(),
         ));
   } else if (loginres['errors'] != null
       ? loginres['errors']['email'] != null
@@ -153,15 +153,15 @@ Future<Null> logout() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String? resultData = prefs.getString('userData');
   var decodedJson = jsonDecode(resultData!);
-  print('decodedJson-----');
-  print(decodedJson);
+  // print('decodedJson-----');
+  // print(decodedJson);
   prefs.clear();
   email = emailController.text;
   password = passwordController.text;
   isLogged = false;
   if (!isLogged) {
     showToast('Successfully logged Out!', Colors.lightBlueAccent);
-    Get.to(() => HomePage());
+    Get.to(() => const HomePage());
   }
 }
 

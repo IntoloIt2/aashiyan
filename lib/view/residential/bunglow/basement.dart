@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, use_key_in_widget_constructors, prefer_typing_uninitialized_variables, unnecessary_null_comparison, non_constant_identifier_names, avoid_print, prefer_if_null_operators, avoid_unnecessary_containers, sized_box_for_whitespace, must_be_immutable
+
 import 'dart:convert';
 import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/components/forms.dart';
@@ -27,6 +29,7 @@ class _BasementState extends State<Basement> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     print(id);
@@ -543,7 +546,7 @@ class _BasementState extends State<Basement> {
     // print(otherFacilities);
 
     return viewData == null
-        ? Container(child: CircularProgressIndicator())
+        ? Container(child: const CircularProgressIndicator())
         : Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -560,7 +563,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -611,7 +614,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -718,7 +721,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -769,7 +772,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -870,7 +873,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -921,7 +924,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -1058,8 +1061,8 @@ class _BasementState extends State<Basement> {
                           children: [
                             requirementText("help"),
                             IconButton(
-                                padding: EdgeInsets.all(5),
-                                constraints: BoxConstraints(),
+                                padding: const EdgeInsets.all(5),
+                                constraints: const BoxConstraints(),
                                 onPressed: () {},
                                 icon: Icon(
                                   Icons.help,
@@ -1143,8 +1146,8 @@ class _BasementState extends State<Basement> {
                         borderRadius: BorderRadius.circular(5),
                         elevation: 5,
                         child: Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
                           ),
@@ -1172,7 +1175,7 @@ class _BasementState extends State<Basement> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: Text("Office Facility"),
+                                  child: const Text("Office Facility"),
                                 ),
                               ),
                               Wrap(
@@ -1245,7 +1248,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -1294,7 +1297,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -1436,8 +1439,8 @@ class _BasementState extends State<Basement> {
                           children: [
                             requirementText("help"),
                             IconButton(
-                                padding: EdgeInsets.all(5),
-                                constraints: BoxConstraints(),
+                                padding: const EdgeInsets.all(5),
+                                constraints: const BoxConstraints(),
                                 onPressed: () {},
                                 icon: Icon(
                                   Icons.help,
@@ -1492,7 +1495,7 @@ class _BasementState extends State<Basement> {
                                         value: it,
                                         child: Text(
                                           it,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.black,
                                           ),
                                         )))
@@ -1548,7 +1551,7 @@ class _BasementState extends State<Basement> {
                                         value: it,
                                         child: Text(
                                           it,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.black,
                                           ),
                                         )))
@@ -1670,7 +1673,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -1720,7 +1723,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -1864,8 +1867,8 @@ class _BasementState extends State<Basement> {
                           children: [
                             requirementText("help"),
                             IconButton(
-                                padding: EdgeInsets.all(5),
-                                constraints: BoxConstraints(),
+                                padding: const EdgeInsets.all(5),
+                                constraints: const BoxConstraints(),
                                 onPressed: () {},
                                 icon: Icon(
                                   Icons.help,
@@ -1912,7 +1915,7 @@ class _BasementState extends State<Basement> {
                                         value: it,
                                         child: Text(
                                           it,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.black,
                                           ),
                                         )))
@@ -1969,7 +1972,7 @@ class _BasementState extends State<Basement> {
                                       value: it,
                                       child: Text(
                                         it,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.black,
                                         ),
                                       )))
@@ -2058,7 +2061,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -2108,7 +2111,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -2260,8 +2263,8 @@ class _BasementState extends State<Basement> {
                           children: [
                             requirementText("help"),
                             IconButton(
-                                padding: EdgeInsets.all(5),
-                                constraints: BoxConstraints(),
+                                padding: const EdgeInsets.all(5),
+                                constraints: const BoxConstraints(),
                                 onPressed: () {},
                                 icon: Icon(
                                   Icons.help,
@@ -2358,7 +2361,7 @@ class _BasementState extends State<Basement> {
                                         value: it,
                                         child: Text(
                                           it,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.black,
                                           ),
                                         )))
@@ -2485,7 +2488,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -2535,7 +2538,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -2675,8 +2678,8 @@ class _BasementState extends State<Basement> {
                           children: [
                             requirementText("help"),
                             IconButton(
-                                padding: EdgeInsets.all(5),
-                                constraints: BoxConstraints(),
+                                padding: const EdgeInsets.all(5),
+                                constraints: const BoxConstraints(),
                                 onPressed: () {},
                                 icon: Icon(
                                   Icons.help,
@@ -2803,7 +2806,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -2852,7 +2855,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -3000,8 +3003,8 @@ class _BasementState extends State<Basement> {
                           children: [
                             requirementText("help"),
                             IconButton(
-                                padding: EdgeInsets.all(5),
-                                constraints: BoxConstraints(),
+                                padding: const EdgeInsets.all(5),
+                                constraints: const BoxConstraints(),
                                 onPressed: () {},
                                 icon: Icon(
                                   Icons.help,
@@ -3079,7 +3082,7 @@ class _BasementState extends State<Basement> {
                             borderRadius: BorderRadius.circular(5),
                             elevation: 5,
                             child: Container(
-                              padding: EdgeInsets.only(right: 10),
+                              padding: const EdgeInsets.only(right: 10),
                               child: Row(
                                 children: [
                                   SizedBox(
@@ -3123,7 +3126,7 @@ class _BasementState extends State<Basement> {
                             borderRadius: BorderRadius.circular(5),
                             elevation: 5,
                             child: Container(
-                              padding: EdgeInsets.only(right: 10),
+                              padding: const EdgeInsets.only(right: 10),
                               child: Row(
                                 children: [
                                   SizedBox(
@@ -3216,7 +3219,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -3267,7 +3270,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -3415,8 +3418,8 @@ class _BasementState extends State<Basement> {
                           children: [
                             requirementText("help"),
                             IconButton(
-                                padding: EdgeInsets.all(5),
-                                constraints: BoxConstraints(),
+                                padding: const EdgeInsets.all(5),
+                                constraints: const BoxConstraints(),
                                 onPressed: () {},
                                 icon: Icon(
                                   Icons.help,
@@ -3555,7 +3558,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -3606,7 +3609,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -3755,8 +3758,8 @@ class _BasementState extends State<Basement> {
                           children: [
                             requirementText("help"),
                             IconButton(
-                                padding: EdgeInsets.all(5),
-                                constraints: BoxConstraints(),
+                                padding: const EdgeInsets.all(5),
+                                constraints: const BoxConstraints(),
                                 onPressed: () {},
                                 icon: Icon(
                                   Icons.help,
@@ -3884,7 +3887,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -3935,7 +3938,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -4080,8 +4083,8 @@ class _BasementState extends State<Basement> {
                           children: [
                             requirementText("help"),
                             IconButton(
-                              padding: EdgeInsets.all(5),
-                              constraints: BoxConstraints(),
+                              padding: const EdgeInsets.all(5),
+                              constraints: const BoxConstraints(),
                               onPressed: () {},
                               icon: Icon(
                                 Icons.help,
@@ -4209,7 +4212,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -4260,7 +4263,7 @@ class _BasementState extends State<Basement> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -4747,19 +4750,19 @@ class _MultiSelectState extends State<MultiSelect> {
       ),
       actions: [
         ElevatedButton(
-          child: Text('clear all'),
           onPressed: clear,
+          child: const Text('clear all'),
         ),
         const SizedBox(
           width: 10,
         ),
         TextButton(
-          child: Text('Cancel'),
           onPressed: cancel,
+          child: const Text('Cancel'),
         ),
         ElevatedButton(
-          child: Text('Submit'),
           onPressed: submit,
+          child: const Text('Submit'),
         ),
       ],
     );

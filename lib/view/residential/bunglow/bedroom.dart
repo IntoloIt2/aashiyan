@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, unused_field, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, avoid_print, prefer_generic_function_type_aliases, must_be_immutable, prefer_final_fields, duplicate_ignore, unnecessary_null_comparison, sort_child_properties_last, sized_box_for_whitespace
+
 import 'dart:convert';
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/const.dart';
@@ -19,6 +21,7 @@ class _MultiFormState extends State<MultiForm> {
 
   bool isloading = false;
 
+  // ignore: prefer_final_fields
   var _user = User();
 
   int bedroomPage = 0;
@@ -27,6 +30,7 @@ class _MultiFormState extends State<MultiForm> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
   }
@@ -48,7 +52,6 @@ class _MultiFormState extends State<MultiForm> {
     // }
     // print(printData["bungalow_bedroom"]
     // );
-    print("hello");
 
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
@@ -310,7 +313,7 @@ class _BedRoomState extends State<BedRoom> {
 
     return ExpansionTile(
       trailing: InkWell(
-        child: Icon(Icons.delete),
+        child: const Icon(Icons.delete),
         onTap: widget.onDelete,
       ),
       maintainState: true,
@@ -442,8 +445,8 @@ class _BedRoomState extends State<BedRoom> {
                         children: [
                           requirementText("help"),
                           IconButton(
-                              padding: EdgeInsets.all(5),
-                              constraints: BoxConstraints(),
+                              padding: const EdgeInsets.all(5),
+                              constraints: const BoxConstraints(),
                               onPressed: () {},
                               icon: Icon(
                                 Icons.help,
@@ -612,8 +615,8 @@ class _BedRoomState extends State<BedRoom> {
                         children: [
                           requirementText("help"),
                           IconButton(
-                              padding: EdgeInsets.all(5),
-                              constraints: BoxConstraints(),
+                              padding: const EdgeInsets.all(5),
+                              constraints: const BoxConstraints(),
                               onPressed: () {},
                               icon: Icon(
                                 Icons.help,
@@ -669,7 +672,7 @@ class _BedRoomState extends State<BedRoom> {
                             borderRadius: BorderRadius.circular(5),
                             elevation: 5,
                             child: Container(
-                              padding: EdgeInsets.only(right: 10),
+                              padding: const EdgeInsets.only(right: 10),
                               child: Row(
                                 children: [
                                   SizedBox(
@@ -708,7 +711,7 @@ class _BedRoomState extends State<BedRoom> {
                             borderRadius: BorderRadius.circular(5),
                             elevation: 5,
                             child: Container(
-                              padding: EdgeInsets.only(right: 10),
+                              padding: const EdgeInsets.only(right: 10),
                               child: Row(
                                 children: [
                                   SizedBox(
@@ -813,8 +816,8 @@ class _BedRoomState extends State<BedRoom> {
                           children: [
                             requirementText("help"),
                             IconButton(
-                              padding: EdgeInsets.all(5),
-                              constraints: BoxConstraints(),
+                              padding: const EdgeInsets.all(5),
+                              constraints: const BoxConstraints(),
                               onPressed: () {},
                               icon: Icon(
                                 Icons.help,
@@ -842,7 +845,7 @@ class _BedRoomState extends State<BedRoom> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
@@ -855,7 +858,7 @@ class _BedRoomState extends State<BedRoom> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    child: Text("Office Facility"),
+                                    child: const Text("Office Facility"),
                                   ),
                                 ),
                                 Wrap(
@@ -959,14 +962,14 @@ class _BedRoomState extends State<BedRoom> {
                   Material(
                     elevation: 5,
                     child: Container(
-                      margin: EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Material(
                             elevation: 3,
                             child: Container(
-                              margin: EdgeInsets.all(5),
+                              margin: const EdgeInsets.all(5),
                               child: Row(
                                 children: const [
                                   Icon(Icons.cloud_upload),
@@ -1002,14 +1005,14 @@ class _BedRoomState extends State<BedRoom> {
                     child: Row(
                       children: [
                         requirementText("Room Facility"),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Material(
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
@@ -1023,7 +1026,7 @@ class _BedRoomState extends State<BedRoom> {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    child: Text("Office Facility"),
+                                    child: const Text("Office Facility"),
                                   ),
                                 ),
                                 Wrap(

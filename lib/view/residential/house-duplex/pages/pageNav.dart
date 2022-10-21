@@ -1,11 +1,7 @@
-import 'package:aashiyan/view/residential/bunglow/bedroom.dart';
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: file_names, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:matcher/matcher.dart';
 import '../../../../components/steps_container.dart';
-import '../../bunglow/requirement.dart';
 import '../pages/index.dart';
 
 int? index = 0;
@@ -20,22 +16,20 @@ class PageNav extends StatefulWidget {
 }
 
 class _PageNavState extends State<PageNav> {
-  // int? index = 0;
   List Pages = [
     Step_1(),
-    Step_2(),
+    const Step_2(),
     Step_3(),
     Step_4(),
-    Step_5(),
-    Step_6(),
-    Step_7()
+    const Step_5(),
+    const Step_6(),
+    const Step_7()
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
-        // appBar: appBar(st!),
         title: Text(
           st!,
           style: const TextStyle(
@@ -51,7 +45,6 @@ class _PageNavState extends State<PageNav> {
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Material(
                       // elevation: 5,
@@ -64,7 +57,7 @@ class _PageNavState extends State<PageNav> {
                           },
                           child: houseStepsContainer('Step 1')),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                       width: 0,
                     ),
@@ -79,7 +72,7 @@ class _PageNavState extends State<PageNav> {
                           },
                           child: houseStepsContainer('Step 2')),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                       width: 2,
                     ),
@@ -91,11 +84,10 @@ class _PageNavState extends State<PageNav> {
                               index = 2;
                               st = "Living Hall";
                             });
-                            // Navigator.pushNamed(context, );
                           },
                           child: houseStepsContainer('Step 3')),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                       width: 2,
                     ),
@@ -107,11 +99,10 @@ class _PageNavState extends State<PageNav> {
                               index = 3;
                               st = "Floor Store";
                             });
-                            // Navigator.pushNamed(context, );
                           },
                           child: houseStepsContainer('Step 4')),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                       width: 2,
                     ),
@@ -124,11 +115,10 @@ class _PageNavState extends State<PageNav> {
                               st = "Bed Room";
                               // st = "Floor Store";
                             });
-                            // Navigator.pushNamed(context, );
                           },
                           child: houseStepsContainer('Step 5')),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                       width: 2,
                     ),
@@ -140,11 +130,10 @@ class _PageNavState extends State<PageNav> {
                               index = 5;
                               st = "Basement";
                             });
-                            // Navigator.pushNamed(context, );
                           },
                           child: houseStepsContainer('Step 6')),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                       width: 2,
                     ),
@@ -156,11 +145,10 @@ class _PageNavState extends State<PageNav> {
                               index = 6;
                               st = "Basement";
                             });
-                            // Navigator.pushNamed(context, );
                           },
                           child: houseStepsContainer('Step 7')),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                       width: 2,
                     ),
@@ -172,11 +160,10 @@ class _PageNavState extends State<PageNav> {
                               index = 7;
                               st = "Built Up";
                             });
-                            // Navigator.pushNamed(context, );
                           },
                           child: houseStepsContainer('Step 8')),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                       width: 2,
                     ),
@@ -185,7 +172,7 @@ class _PageNavState extends State<PageNav> {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Pages[index!],
             )
           ],

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, camel_case_types, unused_local_variable, empty_catches, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -42,16 +44,13 @@ class _Step_2State extends State<Step_2> {
           "porch_length": porchLength,
           "porch_width": porchWidth
         };
-        // print(jsonEncode(body));
         var response = await http.post(
             Uri.parse("${dotenv.env['API_URL']}flat-house-entrance"),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
             body: jsonEncode(body));
-      } catch (e) {
-        print(e.toString());
-      }
+      } catch (e) {}
     }
 
     return SingleChildScrollView(
@@ -61,7 +60,7 @@ class _Step_2State extends State<Step_2> {
           children: [
             Row(
               children: [
-                Text(
+                const Text(
                   "No. of floors",
                   style: TextStyle(
                       color: Colors.black,
@@ -80,7 +79,7 @@ class _Step_2State extends State<Step_2> {
                           (ele) => DropdownMenuItem<String>(
                             value: ele,
                             child: Text(ele,
-                                style: TextStyle(color: Colors.black)),
+                                style: const TextStyle(color: Colors.black)),
                           ),
                         )
                         .toList(),
@@ -96,7 +95,7 @@ class _Step_2State extends State<Step_2> {
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   "Vastu",
                   style: TextStyle(
                       color: Colors.black,
@@ -114,7 +113,7 @@ class _Step_2State extends State<Step_2> {
                     });
                   },
                 ),
-                Text(
+                const Text(
                   "Moderate considerations",
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w500),
@@ -133,14 +132,14 @@ class _Step_2State extends State<Step_2> {
                         consultExpert = value!;
                       });
                     }),
-                Text("Consult expert",
+                const Text("Consult expert",
                     style: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.w500))
               ],
             ),
             Row(
               children: [
-                Text("Ground Floor requirement",
+                const Text("Ground Floor requirement",
                     style: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.w700)),
                 SizedBox(
@@ -151,11 +150,11 @@ class _Step_2State extends State<Step_2> {
             Row(
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 20),
+                  margin: const EdgeInsets.only(top: 20),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("Porch"),
+                      const Text("Porch"),
                       //
                     ],
                   ),
@@ -175,7 +174,7 @@ class _Step_2State extends State<Step_2> {
                               porchNotRequired = false;
                             });
                           }),
-                      Text("Required",
+                      const Text("Required",
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w500)),
@@ -193,7 +192,7 @@ class _Step_2State extends State<Step_2> {
                               porchRequired = false;
                             });
                           }),
-                      Text("Not Required",
+                      const Text("Not Required",
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w500)),
@@ -208,13 +207,13 @@ class _Step_2State extends State<Step_2> {
             porchRequired
                 ? Container(
                     margin: EdgeInsets.only(right: width * 0.2),
-                    padding: EdgeInsets.all(1),
+                    padding: const EdgeInsets.all(1),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            Text("Length"),
+                            const Text("Length"),
                             SizedBox(
                               width: width * 0.02,
                             ),
@@ -240,7 +239,7 @@ class _Step_2State extends State<Step_2> {
                         ),
                         Row(
                           children: [
-                            Text("Width"),
+                            const Text("Width"),
                             Material(
                               borderRadius: BorderRadius.circular(5),
                               elevation: 1,
@@ -264,7 +263,7 @@ class _Step_2State extends State<Step_2> {
                         SizedBox(
                           width: width * 0.05,
                         ),
-                        Text("Help"),
+                        const Text("Help"),
                       ],
                     ),
                   )

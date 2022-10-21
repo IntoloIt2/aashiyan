@@ -20,8 +20,10 @@ SingleChildScrollView projectCategory() {
         InkWell(
           child: stepsContainer("Hotels"),
           onTap: () {
+
             getGalleryAPI(HOSPITALITY);
             Get.to(Hotels());
+
           },
         ),
         const SizedBox(
@@ -29,7 +31,7 @@ SingleChildScrollView projectCategory() {
         ),
         InkWell(
             onTap: () {
-              Get.to(Residential());
+              Get.to(const Residential());
             },
             child: stepsContainer("residental")),
         const SizedBox(
@@ -37,8 +39,10 @@ SingleChildScrollView projectCategory() {
         ),
         InkWell(
             onTap: () {
+
               getGalleryAPI(MALL_MULTIPLESER);
               Get.to(Multiplexer());
+
             },
             child: stepsContainer("Multiplex/mall")),
         const SizedBox(
@@ -48,6 +52,7 @@ SingleChildScrollView projectCategory() {
             onTap: () {
               getGalleryAPI(BUNGALOW);
               Get.to(InteriorDesign());
+
             },
             child: stepsContainer("Interior Design")),
         const SizedBox(
@@ -57,6 +62,7 @@ SingleChildScrollView projectCategory() {
             onTap: () {
               getGalleryAPI(HOSPITAL);
               Get.to(Hospitals());
+
             },
             child: stepsContainer("Hospitals")),
         const SizedBox(

@@ -1,10 +1,11 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, use_key_in_widget_constructors, avoid_unnecessary_containers, use_build_context_synchronously, sized_box_for_whitespace
+
 import 'dart:convert';
 
 import 'package:aashiyan/components/bungalow_steps.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/components/project_category.dart';
 import 'package:aashiyan/controller/api_controller.dart';
-import 'package:aashiyan/controller/auth_controller.dart';
 
 import 'package:aashiyan/view/residential/bunglow/bungalow_gallery.dart';
 import 'package:aashiyan/view/residential/bunglow/preExisting.dart';
@@ -13,16 +14,51 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../components/app_bar.dart';
 import '../../../controller/api_services.dart';
 
-class Bunglow extends StatelessWidget {
-  Bunglow({Key? key}) : super(key: key);
+var bungalow_count;
+
+class Bunglow extends StatefulWidget {
+  // Bunglow({Key? key}) : super(key: key);
+
   static const namedRoute = "/bunglow";
+
+  @override
+  State<Bunglow> createState() => _BunglowState();
+}
+
+class _BunglowState extends State<Bunglow> {
   final ApiController cont = Get.put(ApiController());
+
+  Future<void> showMaxProjectPremiumDialogue(context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text("To move Further with another Project requirement"),
+        content: Column(mainAxisSize: MainAxisSize.min, children: const [
+          Text(
+              "1. If you want to create more project up to 200, kindly purchase license copy with the payment of 10000 rupees+Gst. Go to payment option down below."),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+              "2. If you want to have similar app with your customization, name and style kindly reach out to us on +918109093551 or by the call option down below."),
+        ]),
+        actions: <Widget>[
+          TextButton(onPressed: (() {}), child: const Text("CALL")),
+          TextButton(onPressed: (() {}), child: const Text("PAYMENT"))
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +74,9 @@ class Bunglow extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
+
                     Get.to(PreExisting());
+
                   },
                   child: Card(
                     child: ListTile(
@@ -57,7 +95,7 @@ class Bunglow extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.to(BungalowGallery());
+                    Get.to(const BungalowGallery());
                   },
                   child: Card(
                     child: ListTile(
@@ -89,26 +127,33 @@ class Bunglow extends StatelessWidget {
                     final SharedPreferences prefs =
                         await SharedPreferences.getInstance();
                     String? resultData = prefs.getString('userData');
+
                     var decodedJson;
                     if (resultData != null) {
                       decodedJson = jsonDecode(resultData);
+                      if (decodedJson['data'] != null) {
+                        bungalow_count = await cont.projectCount(
+                            decodedJson['data'], decodedJson['data']['id']);
+                      }
                     }
-                    // print('decodedJson===');
-                    // print(decodedJson);
+
                     if (decodedJson != null
                         ? decodedJson['status'] == 200 &&
                                 decodedJson['data'] != null
                             ? decodedJson['data']['id'] != null
+                                ? bungalow_count != null
+                                    ? bungalow_count <= 1
+                                        ? true
+                                        : false
+                                    : false
+                                : false
                             : false
                         : false) {
                       Navigator.of(context).pushNamed(StepPages.namedRoute);
                       cont.getData();
                       cont.printData;
                     } else {
-                      // print("object==");
-                      showDialog(
-                          builder: (context) => registerDialog(context),
-                          context: (context));
+                      showMaxProjectPremiumDialogue(context);
                     }
                   },
                   child: Card(

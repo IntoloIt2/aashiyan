@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace, unused_local_variable, avoid_unnecessary_containers, prefer_const_constructors
+
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/view/profile.dart';
 import 'package:aashiyan/view/residential/bunglow/bunglow.dart';
@@ -5,14 +7,12 @@ import 'package:aashiyan/view/residential/house-duplex/houseduplex.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/residential_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../components/app_bar.dart';
 import '../components/project_category.dart';
 import '../controller/api_services.dart';
 import '../controller/auth_controller.dart';
-import '../controller/provider/auth_provider.dart';
 
 class Residential extends StatefulWidget {
   const Residential({Key? key}) : super(key: key);
