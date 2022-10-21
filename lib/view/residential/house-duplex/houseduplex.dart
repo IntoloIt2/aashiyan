@@ -14,6 +14,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../controller/auth_controller.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
+import '../bunglow/preExisting.dart';
+
 var house_count;
 
 class HouseDuplex extends StatefulWidget {
@@ -98,10 +100,19 @@ class _HouseDuplexState extends State<HouseDuplex> {
                   height: 45,
                 ),
               ),
-              title: Text(
-                "Pre-existing",
-                style: TextStyle(
-                    fontSize: height * 0.025, fontWeight: FontWeight.w500),
+              title: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PreExisting(),
+                      ));
+                },
+                child: Text(
+                  "Pre-existing",
+                  style: TextStyle(
+                      fontSize: height * 0.025, fontWeight: FontWeight.w500),
+                ),
               ),
             ),
           )),
