@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables, empty_catches, unused_local_variable, avoid_unnecessary_containers, sized_box_for_whitespace
+
 import 'dart:convert';
 
 import 'package:aashiyan/components/forms.dart';
@@ -114,7 +116,6 @@ class _FloorStoreState extends State<FloorStore> {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
-          print(printData);
 
           if (printData != null) {
             FloorStoreDetail1 =
@@ -178,9 +179,7 @@ class _FloorStoreState extends State<FloorStore> {
           }
         });
       }
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   @override
@@ -222,7 +221,7 @@ class _FloorStoreState extends State<FloorStore> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -263,7 +262,7 @@ class _FloorStoreState extends State<FloorStore> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -565,7 +564,6 @@ class _FloorStoreState extends State<FloorStore> {
                                   value: it.value,
                                   onTap: () {
                                     selectedStair = idx.toString();
-                                    print(selectedStair);
                                   },
                                   child: Text(
                                     it.value,
@@ -597,7 +595,7 @@ class _FloorStoreState extends State<FloorStore> {
                 Material(
                   elevation: 10,
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     color: Colors.white,
                     child: SizedBox(
                       width: width * 9,
@@ -646,14 +644,14 @@ class _FloorStoreState extends State<FloorStore> {
                 Material(
                   elevation: 5,
                   child: Container(
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Material(
                           elevation: 3,
                           child: Container(
-                            margin: EdgeInsets.all(5),
+                            margin: const EdgeInsets.all(5),
                             child: Row(
                               children: const [
                                 Icon(Icons.cloud_upload),
@@ -696,7 +694,7 @@ class _FloorStoreState extends State<FloorStore> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -733,7 +731,7 @@ class _FloorStoreState extends State<FloorStore> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -874,7 +872,7 @@ class _FloorStoreState extends State<FloorStore> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -911,7 +909,7 @@ class _FloorStoreState extends State<FloorStore> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 SizedBox(
@@ -1044,7 +1042,7 @@ class _FloorStoreState extends State<FloorStore> {
                         borderRadius: BorderRadius.circular(5),
                         child: Container(
                           height: height * 0.03,
-                          margin: EdgeInsets.all(
+                          margin: const EdgeInsets.all(
                             3,
                           ),
                           child: DropdownButtonHideUnderline(
@@ -1068,7 +1066,7 @@ class _FloorStoreState extends State<FloorStore> {
                                         value: it,
                                         child: Text(
                                           it,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.black,
                                           ),
                                         ),
@@ -1126,7 +1124,7 @@ class _FloorStoreState extends State<FloorStore> {
                         borderRadius: BorderRadius.circular(5),
                         child: Container(
                           height: height * 0.03,
-                          margin: EdgeInsets.all(
+                          margin: const EdgeInsets.all(
                             3,
                           ),
                           child: DropdownButtonHideUnderline(
@@ -1225,7 +1223,7 @@ class _FloorStoreState extends State<FloorStore> {
                 Material(
                   elevation: 10,
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     color: Colors.white,
                     child: SizedBox(
                       width: width * 9,
@@ -1295,7 +1293,7 @@ class _FloorStoreState extends State<FloorStore> {
                             }),
                       ),
                       requirementText("Opening toward hall/ lobby"),
-                      Card(),
+                      const Card(),
                       Container(),
                     ],
                   ),

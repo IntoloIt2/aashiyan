@@ -1,4 +1,5 @@
-import 'package:aashiyan/view/residential/bunglow/requirement.dart';
+// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -13,6 +14,7 @@ class SampleBookPdf extends StatefulWidget {
 class _SampleBookPdfState extends State<SampleBookPdf> {
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     build(context);
@@ -22,7 +24,7 @@ class _SampleBookPdfState extends State<SampleBookPdf> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Technical Drawing Book'),
+        title: const Text('Technical Drawing Book'),
       ),
       body: Center(
         child: SfPdfViewer.asset('assets/pdf/technicaldrawingbook.pdf'),
