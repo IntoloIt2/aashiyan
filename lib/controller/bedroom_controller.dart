@@ -1,12 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BedRoomController extends GetxController {
-
-   
   List products = [].obs;
-  RxString  personBedroomController = ''.obs;
-  RxString   bedroomLength = "".obs;
+  RxString personBedroomController = ''.obs;
+  RxString bedroomLength = "".obs;
   RxInt bedroom = 0.obs;
   RxInt bedRoomFloor = 0.obs;
   RxString? bedRoomWidth = "".obs;

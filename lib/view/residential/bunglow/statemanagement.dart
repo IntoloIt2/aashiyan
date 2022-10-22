@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields, unnecessary_overrides, empty_catches, no_leading_underscores_for_local_identifiers, null_check_always_fails
+
 import 'dart:convert';
 
 import 'package:aashiyan/view/residential/bunglow/bedroom.dart';
@@ -45,9 +47,7 @@ class StateManagement extends GetxController {
           }
         }
       }
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   // printData = getData();

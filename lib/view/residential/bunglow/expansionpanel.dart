@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element, curly_braces_in_flow_control_structures
+
 import 'package:flutter/material.dart';
 
 const double _kPanelHeaderCollapsedHeight = kMinInteractiveDimension;
