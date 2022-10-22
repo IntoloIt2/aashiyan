@@ -1,19 +1,44 @@
+// ignore_for_file: depend_on_referenced_packages, deprecated_member_use
+
+import 'package:aashiyan/components/contants.dart';
+
+// ignore_for_file: sort_child_properties_last, sized_box_for_whitespace, avoid_unnecessary_containers
+
 import 'package:aashiyan/const.dart';
+import 'package:aashiyan/view/hotels.dart';
 
 import 'package:aashiyan/view/residential.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../components/project_category.dart';
 import '../controller/api_services.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  // @override
+  // void initState() {
+  //   getValidationData().whenComplete(() async {
+  //     Timer(Duration(seconds: 2), () => (finalemail == null ? login('email', 'password', context): HomePage()));
+  //   });
+  // }
+
+  // Future getValidationData() async {
+  //   final SharedPreferences sharedPreferences =
+  //       await SharedPreferences.getInstance();
+  //   var obtainedEmail = SharedPreferences.getString('email');
+  //   setState(() {
+  //     finalemail = obtainedEmail!;
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -38,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                 centerTitle: true,
                 bottom: PreferredSize(
                   child: Container(
-                    margin: EdgeInsets.only(bottom: 10),
+                    margin: const EdgeInsets.only(bottom: 10),
                     child: Text(
                       "Premium Architecture Engineering",
                       style: TextStyle(
@@ -47,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                           fontFamily: "Courgette-Regular"),
                     ),
                   ),
-                  preferredSize: Size.fromHeight(10),
+                  preferredSize: const Size.fromHeight(10),
                 ),
               ),
               body: SingleChildScrollView(
@@ -103,8 +128,20 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          polyContainer(context, "Projects\nand \nworks"),
-                          polyContainer(context, "Text\nyour \nneeds"),
+                          InkWell(
+                              onTap: () {
+                                getGalleryAPI(HOSPITALITY);
+                                Get.to(const Hotels());
+                              },
+                              child: polyContainer(
+                                  context, "Projects\nand \nworks")),
+                          InkWell(
+                              onTap: () async {
+                                await launch(
+                                    "https://wa.me/${8109093551}?text=Hey! I'm inquiring about the apartment listing");
+                              },
+                              child:
+                                  polyContainer(context, "Text\nyour \nneeds")),
                           polyContainer(context, "Built \nup \nArea"),
                           polyContainer(context, "Free \nQuotaion"),
                         ],
@@ -126,7 +163,11 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          polyContainer(context, "contact"),
+                          InkWell(
+                              onTap: () {
+                                launch("tel://8109093551");
+                              },
+                              child: polyContainer(context, "contact")),
                           polyContainer(context, "start\napprox \nDetailing"),
                           polyContainer(context, "cost of \nproject"),
                           polyContainer(context, "pay"),
@@ -134,7 +175,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.all(20),
+                      margin: const EdgeInsets.all(20),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [

@@ -1,5 +1,25 @@
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: non_constant_identifier_names
+// ignore_for_file: constant_identifier_names, duplicate_ignore, non_constant_identifier_names, prefer_typing_uninitialized_variables
+
 // ignore: non_constant_identifier_names
 String SUCCESS_MESSAGE = " You will be contacted by us very soon.";
+// ignore: non_constant_identifier_names
 List<String> PROJECT_TYPE = [
   "mix use",
   "mall and multiplexer",
@@ -10,6 +30,7 @@ List<String> PROJECT_TYPE = [
   "interior designs"
 ];
 
+
 // Entrance
 String OutSideOpen = '1';
 String OutSideClosed = '2';  
@@ -17,20 +38,38 @@ String OutSideClosed = '2';
 
 
 
+
+// ignore: non_constant_identifier_names
+int STATE_ID = 1;
+// ignore: non_constant_identifier_names
+
 int EAST_OTHER_PROPERTY = 2;
+// ignore: non_constant_identifier_names
 int EAST_PROPERTY = 1;
+// ignore: non_constant_identifier_names
 int WEST_OTHER_PROPERTY = 2;
+// ignore: non_constant_identifier_names
 int WEST_PROPERTY = 1;
+// ignore: non_constant_identifier_names
 int NORTH_OTHER_PROPERTY = 2;
+// ignore: non_constant_identifier_names
 int NORTH_PROPERTY = 1;
+// ignore: non_constant_identifier_names
 int SOUTH_OTHER_PROPERTY = 2;
+// ignore: non_constant_identifier_names
 int SOUTH_PROPERTY = 1;
+// ignore: non_constant_identifier_names
 int LEVEL_ALMOST = 1;
+// ignore: non_constant_identifier_names
 int LEVEL_UP = 2;
+// ignore: non_constant_identifier_names
 int LEVEL_DOWN = 3;
+// ignore: non_constant_identifier_names
 int project_id = 0;
 
-
+// ignore: non_constant_identifier_names
+String PHONE_NO = "+91 8109093551";
+// ignore: constant_identifier_names
 
 const SITE_NAME = 'SDPL';
 const MR = 1;
@@ -160,6 +199,12 @@ const G_1_FLOOR = 2;
 const G_2_FLOOR = 3;
 const G_3_FLOOR = 4;
 
+const G_FLOOR_TEXT = "Ground Floor";
+const G_1_FLOOR_TEXT = "1st floor";
+const G_2_FLOOR_TEXT = "2nd floor";
+const G_3_FLOOR_TEXT = "3rd floor";
+const OTHER_FLOOR_TEXT = "Other Floor";
+
 const FIRST_FLOOR = 2;
 const SECOND_FLOOR = 3;
 const THIRD_FLOOR = 4;
@@ -180,7 +225,7 @@ const standardService = 2000;
 const basicService = 1500;
 var payDesFees = 0;
 var user_id;
-var emailController;
+// var emailController;
 var projectId;
 
 

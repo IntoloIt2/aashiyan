@@ -1,10 +1,11 @@
-import 'dart:convert';
+// ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, curly_braces_in_flow_control_structures, sized_box_for_whitespace
 
+import 'package:aashiyan/components/contants.dart';
+import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/view/residential/bunglow/bungalow_detail.dart';
 import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 
 class Multiplexer extends StatefulWidget {
   const Multiplexer({super.key});
@@ -14,24 +15,34 @@ class Multiplexer extends StatefulWidget {
 }
 
 class _MultiplexerState extends State<Multiplexer> {
+  var gallery;
+  bool isloading = false;
+
   @override
   initState() {
     super.initState();
 
-    fetchData();
+    getData();
   }
 
-  var gallery;
-  Future<void> fetchData() async {
-    var response =
-        await http.get(Uri.parse('http://sdplweb.com/sdpl/api/get-gallery/2'));
-    final jsonResponse = jsonDecode(response.body);
+  void getData() async {
+    gallery = await getGalleryAPI(MALL_MULTIPLESER);
 
-    final finalArt = jsonResponse['gallery'];
-    setState(() {
-      gallery = finalArt;
-    });
+    if (gallery != null)
+      setState(() {
+        isloading = true;
+      });
   }
+  // Future<void> fetchData() async {
+  //   var response =
+  //       await http.get(Uri.parse('http://sdplweb.com/sdpl/api/get-gallery/2'));
+  //   final jsonResponse = jsonDecode(response.body);
+
+  //   final finalArt = jsonResponse['gallery'];
+  //   setState(() {
+  //     gallery = finalArt;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +51,7 @@ class _MultiplexerState extends State<Multiplexer> {
         title: headingFont('Multiplexer'),
       ),
       body: Center(
-        child: gallery == null
+        child: isloading == false
             ? CircularProgressIndicator()
             : SingleChildScrollView(
                 child: Column(
@@ -58,23 +69,30 @@ class _MultiplexerState extends State<Multiplexer> {
                           ));
                         },
                         child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0)),
                           shadowColor: Colors.blueAccent,
                           elevation: 10,
                           child: Column(
                             children: [
                               Container(
+                                height: 225,
+                                width: MediaQuery.of(context).size.width * .95,
                                 child: gallery == []
                                     ? const CircularProgressIndicator()
                                     : Image.network(
-                                        'https://sdplweb.com/sdpl/public/storage/${(gallery[i]['img_path'])}'),
+                                        'https://sdplweb.com/sdpl/public/storage/${(gallery[i]['img_path'])}',
+                                        fit: BoxFit.fill,
+                                      ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 10.0),
                                 child: Container(
                                   child: gallery == []
                                       ? const CircularProgressIndicator()
-                                      : headingFont(
-                                          gallery[i]['img_title'].toString()),
+                                      : headingFont(gallery[i]['img_title']
+                                          .toString()
+                                          .toUpperCase()),
                                 ),
                               ),
                               Padding(
@@ -85,7 +103,8 @@ class _MultiplexerState extends State<Multiplexer> {
                                       ? const CircularProgressIndicator()
                                       : headingFont(gallery[i]
                                               ['project_location']
-                                          .toString()),
+                                          .toString()
+                                          .toUpperCase()),
                                 ),
                               ),
                             ],

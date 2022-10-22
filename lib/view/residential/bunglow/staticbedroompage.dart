@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison, prefer_typing_uninitialized_variables, non_constant_identifier_names, empty_catches, prefer_final_fields, avoid_unnecessary_containers, sized_box_for_whitespace, unused_local_variable, no_leading_underscores_for_local_identifiers
+
 import 'dart:convert';
 import 'dart:core';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
@@ -60,7 +62,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
   int? o3i;
 
   void multiSelected(result, l1, l2) async {
-    print(l1);
     if (result != null) {
       setState(
         () {
@@ -256,39 +257,29 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
             for (int i = 0; i < printData.length; i++) {
               if (printData[i]["bedroom"] == "1") {
                 mi = i;
-                print("master $mi");
               }
               if (printData[i]["bedroom"] == "2") {
                 si = i;
-                print("son $si");
               }
               if (printData[i]["bedroom"] == "3") {
                 di = i;
-                print("daughter $di");
               }
               if (printData[i]["bedroom"] == "4") {
                 pi = i;
-                print("parent $pi");
               }
               if (printData[i]["bedroom"] == "5") {
                 gi = i;
-                print("guest $gi");
               }
               if (printData[i]["bedroom"] == "6") {
                 o2i = i;
-                print("ohter1 $o1i");
               }
               if (printData[i]["bedroom"] == "7") {
                 o2i = i;
-                print("other2 $o2i");
               }
               if (printData[i]["bedroom"] == "8") {
                 o3i = i;
-                print("other3 $o3i");
               }
             }
-
-            print('Data ${printData}');
 
             if (printData.asMap().containsKey(mi)) {
               masterLength = printData[mi]['bedroom_length'] != null
@@ -765,9 +756,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
           },
         );
       }
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   List<Map<String, dynamic>> _values = [];
@@ -910,12 +899,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
     // print(printData[0]['bedroom_toilet_req_text']);
 
-    print(daughterToiletFacility);
-
     // print(printData[1]['bedroom_facility']);
 
     return printData == null
-        ? Container(child: CircularProgressIndicator())
+        ? Container(child: const CircularProgressIndicator())
         : Column(
             children: [
               Column(
@@ -998,7 +985,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           setState(
                                             () {
                                               sonBedRoom = value!;
-                                              print(sonBedRoom);
                                               if (si != null) {
                                                 if (sonBedRoom == true) {
                                                   printData[si]['bedroom'] =
@@ -1412,7 +1398,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               () {
                                                 masterLength =
                                                     int.parse(text.toString());
-                                                print(masterLength);
                                               },
                                             );
                                           },
@@ -1523,7 +1508,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               setState(
                                                 () {
                                                   selectedFloor = it;
-                                                  print(selectedFloor);
                                                   if (selectedFloor ==
                                                       "Ground Floor") {
                                                     printData[mi]
@@ -1654,8 +1638,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -1715,7 +1699,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -1770,7 +1755,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -1920,8 +1906,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         children: [
                                           requirementText("help"),
                                           IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -1987,7 +1973,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   borderRadius:
                                                       BorderRadius.circular(5),
                                                 ),
-                                                child: Text("Office Facility"),
+                                                child: const Text(
+                                                    "Office Facility"),
                                               ),
                                             ),
                                             if (mi != null &&
@@ -2120,7 +2107,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 Material(
                                   elevation: 5,
                                   child: Container(
-                                    margin: EdgeInsets.all(10),
+                                    margin: const EdgeInsets.all(10),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -2128,7 +2115,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         Material(
                                           elevation: 3,
                                           child: Container(
-                                            margin: EdgeInsets.all(5),
+                                            margin: const EdgeInsets.all(5),
                                             child: Row(
                                               children: const [
                                                 Icon(Icons.cloud_upload),
@@ -2199,7 +2186,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                             setState(() {
                                               masterRoomFacility = result;
-                                              print(masterDressFacility);
                                               if (mi != null) {
                                                 printData[mi]
                                                     ['bedroom_facility'] = null;
@@ -2211,7 +2197,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               borderRadius:
                                                   BorderRadius.circular(5),
                                             ),
-                                            child: Text("Room Facility"),
+                                            child: const Text("Room Facility"),
                                           ),
                                         ),
                                         if (printData
@@ -2529,7 +2515,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         null;
                                                   }
                                                   selectedFloorSon = it;
-                                                  print(selectedFloorSon);
                                                   if (selectedFloor ==
                                                       "Ground Floor") {
                                                     sonLocation = 0;
@@ -2653,8 +2638,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -2714,7 +2699,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -2769,7 +2755,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -2992,7 +2979,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   borderRadius:
                                                       BorderRadius.circular(5),
                                                 ),
-                                                child: Text("Office Facility"),
+                                                child: const Text(
+                                                    "Office Facility"),
                                               ),
                                             ),
                                             if (si != null
@@ -3128,7 +3116,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 Material(
                                   elevation: 5,
                                   child: Container(
-                                    margin: EdgeInsets.all(10),
+                                    margin: const EdgeInsets.all(10),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -3136,7 +3124,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         Material(
                                           elevation: 3,
                                           child: Container(
-                                            margin: EdgeInsets.all(5),
+                                            margin: const EdgeInsets.all(5),
                                             child: Row(
                                               children: const [
                                                 Icon(Icons.cloud_upload),
@@ -3207,7 +3195,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                             setState(() {
                                               sonRoomFacility = result;
-                                              print(sonDressFacility);
                                               if (si != null) {
                                                 printData[si]
                                                     ['bedroom_facility'] = null;
@@ -3219,7 +3206,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               borderRadius:
                                                   BorderRadius.circular(5),
                                             ),
-                                            child: Text("Room Facility"),
+                                            child: const Text("Room Facility"),
                                           ),
                                         ),
                                         if (si != null
@@ -3550,7 +3537,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         ['bedroom_floor'] = 3;
                                                   }
                                                   selectedFloorDaughter = it;
-                                                  print(selectedFloorDaughter);
                                                   if (selectedFloorDaughter ==
                                                       "Ground Floor") {
                                                     daughterLocation = 0;
@@ -3674,8 +3660,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -3735,7 +3721,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -3792,7 +3779,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -4017,7 +4005,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   borderRadius:
                                                       BorderRadius.circular(5),
                                                 ),
-                                                child: Text("Office Facility"),
+                                                child: const Text(
+                                                    "Office Facility"),
                                               ),
                                             ),
                                             if (di != null
@@ -4155,7 +4144,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 Material(
                                   elevation: 5,
                                   child: Container(
-                                    margin: EdgeInsets.all(10),
+                                    margin: const EdgeInsets.all(10),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -4163,7 +4152,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         Material(
                                           elevation: 3,
                                           child: Container(
-                                            margin: EdgeInsets.all(5),
+                                            margin: const EdgeInsets.all(5),
                                             child: Row(
                                               children: const [
                                                 Icon(Icons.cloud_upload),
@@ -4234,7 +4223,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                             setState(() {
                                               daughterRoomFacility = result;
-                                              print(daughterDressFacility);
                                               if (di != null) {
                                                 printData[di]
                                                     ['bedroom_facility'] = null;
@@ -4246,7 +4234,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               borderRadius:
                                                   BorderRadius.circular(5),
                                             ),
-                                            child: Text("Room Facility"),
+                                            child: const Text("Room Facility"),
                                           ),
                                         ),
                                         if (di != null
@@ -4574,7 +4562,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         null;
                                                   }
                                                   selectedFloorParent = it;
-                                                  print(selectedFloorParent);
                                                   if (selectedFloorParent ==
                                                       "Ground Floor") {
                                                     parentLocation = 0;
@@ -4690,7 +4677,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       size,
                                       0.04,
                                       0.05,
-                                     ),
+                                    ),
                                     SizedBox(
                                       width: width * 0.08,
                                     ),
@@ -4698,8 +4685,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -4759,7 +4746,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -4815,17 +4803,20 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
                                                   height: height * 0.04,
                                                   child: Checkbox(
                                                     activeColor: checkColor,
-                                                    checkColor: Color.fromRGBO(
-                                                        255, 255, 255, 1),
+                                                    checkColor:
+                                                        const Color.fromRGBO(
+                                                            255, 255, 255, 1),
                                                     value: pi != null
-                                                        ? printData[pi]['bedroom_dress_req'] ==
+                                                        ? printData[pi][
+                                                                    'bedroom_dress_req'] ==
                                                                 0
                                                             ? true
                                                             : parentsNotRequiredDress
@@ -4840,7 +4831,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                           if (pi != null) {
                                                             printData[pi][
                                                                 'bedroom_dress_req'] = 4;
-                                                                }
+                                                          }
                                                           if (parentsRequiredDress ==
                                                               true) {
                                                             parentDressInt = 1;
@@ -5047,8 +5038,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         BorderRadius.circular(
                                                             5),
                                                   ),
-                                                  child:
-                                                      Text("Office Facility"),
+                                                  child: const Text(
+                                                      "Office Facility"),
                                                 ),
                                               ),
                                               if (pi != null
@@ -5189,7 +5180,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 Material(
                                   elevation: 5,
                                   child: Container(
-                                    margin: EdgeInsets.all(10),
+                                    margin: const EdgeInsets.all(10),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -5197,7 +5188,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         Material(
                                           elevation: 3,
                                           child: Container(
-                                            margin: EdgeInsets.all(5),
+                                            margin: const EdgeInsets.all(5),
                                             child: Row(
                                               children: const [
                                                 Icon(Icons.cloud_upload),
@@ -5269,7 +5260,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             setState(
                                               () {
                                                 parentRoomFacility = result;
-                                                print(parentDressFacility);
                                                 if (pi != null) {
                                                   printData[pi]
                                                           ['bedroom_facility'] =
@@ -5283,7 +5273,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               borderRadius:
                                                   BorderRadius.circular(5),
                                             ),
-                                            child: Text("Room Facility"),
+                                            child: const Text("Room Facility"),
                                           ),
                                         ),
                                         if (pi != null
@@ -5598,7 +5588,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         null;
                                                   }
                                                   selectedFloorGuest = it;
-                                                  print(selectedFloorGuest);
                                                   if (selectedFloorGuest ==
                                                       "Ground Floor") {
                                                     guestLocation = 0;
@@ -5722,8 +5711,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -5783,7 +5772,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -5838,7 +5828,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -6071,8 +6062,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         BorderRadius.circular(
                                                             5),
                                                   ),
-                                                  child:
-                                                      Text("Office Facility"),
+                                                  child: const Text(
+                                                      "Office Facility"),
                                                 ),
                                               ),
                                               if (gi != null
@@ -6212,7 +6203,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 Material(
                                   elevation: 5,
                                   child: Container(
-                                    margin: EdgeInsets.all(10),
+                                    margin: const EdgeInsets.all(10),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -6220,7 +6211,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         Material(
                                           elevation: 3,
                                           child: Container(
-                                            margin: EdgeInsets.all(5),
+                                            margin: const EdgeInsets.all(5),
                                             child: Row(
                                               children: const [
                                                 Icon(Icons.cloud_upload),
@@ -6291,7 +6282,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                             setState(() {
                                               guestRoomFacility = result;
-                                              print(guestDressFacility);
                                               if (gi != null) {
                                                 printData[gi]
                                                     ['bedroom_facility'] = null;
@@ -6303,7 +6293,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               borderRadius:
                                                   BorderRadius.circular(5),
                                             ),
-                                            child: Text("Room Facility"),
+                                            child: const Text("Room Facility"),
                                           ),
                                         ),
                                         if (gi != null
@@ -6634,7 +6624,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         null;
                                                   }
                                                   selectedFloorOther1 = it;
-                                                  print(selectedFloorOther1);
                                                   if (selectedFloorOther1 ==
                                                       "Ground Floor") {
                                                     other1Location = 0;
@@ -6758,8 +6747,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -6819,7 +6808,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -6874,7 +6864,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -7107,8 +7098,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         BorderRadius.circular(
                                                             5),
                                                   ),
-                                                  child:
-                                                      Text("Office Facility"),
+                                                  child: const Text(
+                                                      "Office Facility"),
                                                 ),
                                               ),
                                               if (o1i != null
@@ -7247,7 +7238,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 Material(
                                   elevation: 5,
                                   child: Container(
-                                    margin: EdgeInsets.all(10),
+                                    margin: const EdgeInsets.all(10),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -7255,7 +7246,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         Material(
                                           elevation: 3,
                                           child: Container(
-                                            margin: EdgeInsets.all(5),
+                                            margin: const EdgeInsets.all(5),
                                             child: Row(
                                               children: const [
                                                 Icon(Icons.cloud_upload),
@@ -7326,7 +7317,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                             setState(() {
                                               other1RoomFacility = result;
-                                              print(other1DressFacility);
                                               if (o1i != null) {
                                                 printData[o1i]
                                                     ['bedroom_facility'] = null;
@@ -7338,7 +7328,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               borderRadius:
                                                   BorderRadius.circular(5),
                                             ),
-                                            child: Text("Room Facility"),
+                                            child: const Text("Room Facility"),
                                           ),
                                         ),
                                         if (o1i != null
@@ -7779,8 +7769,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -7840,7 +7830,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -7895,7 +7886,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -8128,8 +8120,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         BorderRadius.circular(
                                                             5),
                                                   ),
-                                                  child:
-                                                      Text("Office Facility"),
+                                                  child: const Text(
+                                                      "Office Facility"),
                                                 ),
                                               ),
                                               if (o2i != null
@@ -8268,7 +8260,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 Material(
                                   elevation: 5,
                                   child: Container(
-                                    margin: EdgeInsets.all(10),
+                                    margin: const EdgeInsets.all(10),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -8276,7 +8268,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         Material(
                                           elevation: 3,
                                           child: Container(
-                                            margin: EdgeInsets.all(5),
+                                            margin: const EdgeInsets.all(5),
                                             child: Row(
                                               children: const [
                                                 Icon(Icons.cloud_upload),
@@ -8347,7 +8339,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                             setState(() {
                                               other2RoomFacility = result;
-                                              print(other2DressFacility);
                                               if (o2i != null) {
                                                 printData[o2i]
                                                     ['bedroom_facility'] = null;
@@ -8359,7 +8350,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               borderRadius:
                                                   BorderRadius.circular(5),
                                             ),
-                                            child: Text("Room Facility"),
+                                            child: const Text("Room Facility"),
                                           ),
                                         ),
                                         if (o2i != null
@@ -8687,7 +8678,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   // printData[7]
                                                   //     ['bedroom_floor'] = null;
                                                   selectedFloorOther3 = it;
-                                                  print(selectedFloorOther3);
                                                   if (selectedFloorOther3 ==
                                                       "Ground Floor") {
                                                     other3Location = 0;
@@ -8811,8 +8801,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       children: [
                                         requirementText("help"),
                                         IconButton(
-                                            padding: EdgeInsets.all(5),
-                                            constraints: BoxConstraints(),
+                                            padding: const EdgeInsets.all(5),
+                                            constraints: const BoxConstraints(),
                                             onPressed: () {},
                                             icon: Icon(
                                               Icons.help,
@@ -8872,7 +8862,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -8927,7 +8918,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               BorderRadius.circular(5),
                                           elevation: 5,
                                           child: Container(
-                                            padding: EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Row(
                                               children: [
                                                 SizedBox(
@@ -9160,8 +9152,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         BorderRadius.circular(
                                                             5),
                                                   ),
-                                                  child:
-                                                      Text("Office Facility"),
+                                                  child: const Text(
+                                                      "Office Facility"),
                                                 ),
                                               ),
                                               if (o3i != null
@@ -9301,7 +9293,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 Material(
                                   elevation: 5,
                                   child: Container(
-                                    margin: EdgeInsets.all(10),
+                                    margin: const EdgeInsets.all(10),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -9309,7 +9301,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         Material(
                                           elevation: 3,
                                           child: Container(
-                                            margin: EdgeInsets.all(5),
+                                            margin: const EdgeInsets.all(5),
                                             child: Row(
                                               children: const [
                                                 Icon(Icons.cloud_upload),
@@ -9380,7 +9372,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                             setState(() {
                                               other3RoomFacility = result;
-                                              print(other3DressFacility);
                                               if (o3i != null) {
                                                 printData[o3i]
                                                     ['bedroom_facility'] = null;
@@ -9392,7 +9383,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               borderRadius:
                                                   BorderRadius.circular(5),
                                             ),
-                                            child: Text("Room Facility"),
+                                            child: const Text("Room Facility"),
                                           ),
                                         ),
                                         if (o3i != null
@@ -9714,8 +9705,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                     _value["bedrooms"] = jsonUser;
 
-                    print(jsonEncode(_value));
-
                     // _value.putIfAbsent("bedrooms", () => jsonUser);
                     // print(jsonEncode(_value));
                     // print(_values[0]["bedroom_length"]);
@@ -9734,7 +9723,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                       );
                       // print(update.body);
                     } else {
-                      print(jsonEncode(_value));
                       final submit = await http.post(
                         Uri.parse(
                             'http://192.168.0.99:8080/sdplserver/api/update-bungalow-bedroom/$project_id'),
@@ -9743,7 +9731,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                         },
                         body: jsonEncode(_value),
                       );
-                      print(submit.body);
                     }
                   },
                   child: Container(

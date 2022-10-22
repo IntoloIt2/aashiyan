@@ -1,8 +1,8 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, camel_case_types, prefer_typing_uninitialized_variables, use_key_in_widget_constructors, unused_field, duplicate_ignore, empty_catches, no_leading_underscores_for_local_identifiers, body_might_complete_normally_nullable, avoid_unnecessary_containers, sized_box_for_whitespace, prefer_if_null_operators
+
 import 'dart:convert';
 import 'dart:io';
-import 'package:aashiyan/components/bungalow_steps.dart';
 import 'package:aashiyan/components/forms.dart';
-import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import '../../../../const.dart';
@@ -92,6 +92,7 @@ class _Step_4State extends State<Step_4> {
 
   var poojaRoomLength;
   var poojaRoomWidth;
+  // ignore: prefer_typing_uninitialized_variables
   var poojaRoomFloor;
   var poojaRoomType;
 
@@ -107,7 +108,6 @@ class _Step_4State extends State<Step_4> {
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        print(true);
         setState(() {
           printData = jsonResponse;
           poojaRoomLength =
@@ -123,11 +123,7 @@ class _Step_4State extends State<Step_4> {
                   : "";
         });
       }
-    } catch (e) {
-      print(
-        e.toString(),
-      );
-    }
+    } catch (e) {}
   }
 
   Future<void> _onImageButtonPressed(
@@ -151,12 +147,10 @@ class _Step_4State extends State<Step_4> {
     if (_imageFileList != null) {
       return Container(
         child: Column(children: [
-          Text("Image Picker"),
-          Container(
-            child: Image.file(
-              _imageFileList,
-              fit: BoxFit.fitHeight,
-            ),
+          const Text("Image Picker"),
+          Image.file(
+            _imageFileList,
+            fit: BoxFit.fitHeight,
           )
         ]),
       );
@@ -183,7 +177,7 @@ class _Step_4State extends State<Step_4> {
         ? Center(
             child: Column(
               children: [
-                CircularProgressIndicator(),
+                const CircularProgressIndicator(),
               ],
             ),
           )
@@ -196,7 +190,7 @@ class _Step_4State extends State<Step_4> {
                     children: [
                       Row(
                         children: [
-                          Text(
+                          const Text(
                             "Stair Case",
                             style: TextStyle(
                                 color: Colors.black,
@@ -220,8 +214,8 @@ class _Step_4State extends State<Step_4> {
                                     (ele) => DropdownMenuItem<String>(
                                       value: ele,
                                       child: Text(ele,
-                                          style:
-                                              TextStyle(color: Colors.black)),
+                                          style: const TextStyle(
+                                              color: Colors.black)),
                                     ),
                                   )
                                   .toList(),
@@ -299,14 +293,14 @@ class _Step_4State extends State<Step_4> {
                       Material(
                         elevation: 5,
                         child: Container(
-                          margin: EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Material(
                                 elevation: 3,
                                 child: Container(
-                                  margin: EdgeInsets.all(5),
+                                  margin: const EdgeInsets.all(5),
                                   child: InkWell(
                                     onTap: () {
                                       _onImageButtonPressed(
@@ -584,7 +578,7 @@ class _Step_4State extends State<Step_4> {
                                 child: Container(
                                   height: height * 0.03,
                                   width: width * 0.25,
-                                  margin: EdgeInsets.all(
+                                  margin: const EdgeInsets.all(
                                     3,
                                   ),
                                   child: DropdownButtonHideUnderline(
@@ -610,7 +604,7 @@ class _Step_4State extends State<Step_4> {
                                                 value: it,
                                                 child: Text(
                                                   it,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.black,
                                                   ),
                                                 ),
@@ -706,7 +700,7 @@ class _Step_4State extends State<Step_4> {
                                 child: Container(
                                   height: height * 0.03,
                                   width: width * 0.5,
-                                  margin: EdgeInsets.all(
+                                  margin: const EdgeInsets.all(
                                     3,
                                   ),
                                   child: DropdownButtonHideUnderline(
@@ -731,7 +725,7 @@ class _Step_4State extends State<Step_4> {
                                                 value: it,
                                                 child: Text(
                                                   it,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: Colors.black,
                                                   ),
                                                 ),

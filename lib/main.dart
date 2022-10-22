@@ -13,7 +13,6 @@ import 'package:aashiyan/view/residential/bunglow/bunglow.dart';
 import 'package:aashiyan/view/residential.dart';
 import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:aashiyan/view/residential/house-duplex/houseduplex.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +23,8 @@ void main() async {
   await dotenv.load(fileName: ".env");
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => PageNavProvider()),
-    ChangeNotifierProvider(create: (_) => ResidentialProvider())
+    ChangeNotifierProvider(create: (_) => ResidentialProvider()),
+    // ChangeNotifierProvider(create: (_) => Auth_Provider())
   ], child: const MyApp()));
 }
 
@@ -44,19 +44,19 @@ class MyApp extends StatelessWidget {
           primary: primaryColor,
         ),
       ),
-      home: HomePage(),
+      home: const HomePage(),
       routes: {
-        Residential.namedRoute: (context) => Residential(),
+        Residential.namedRoute: (context) => const Residential(),
         HouseDuplex.namedRoute: (context) => HouseDuplex(),
         Bunglow.namedRoute: (context) => Bunglow(),
         Requirement.namedRoute: (context) => Requirement(),
-        Entrance.namedRoute: (context) => Entrance(),
+        Entrance.namedRoute: (context) => const Entrance(),
         LivingHall.namedRoute: (context) => LivingHall(),
         PantryDetail.namedRoute: (context) => PantryDetail(),
-        FloorStore.namedRoute: (context) => FloorStore(),
+        FloorStore.namedRoute: (context) => const FloorStore(),
         Basement.namedRoute: (context) => Basement(),
-        StepPages.namedRoute: (context) => StepPages(),
-        PageNav.namedRoute: (context) => PageNav()
+        StepPages.namedRoute: (context) => const StepPages(),
+        PageNav.namedRoute: (context) => const PageNav()
       },
     );
   }
