@@ -46,7 +46,8 @@ class _PreExistingState extends State<PreExisting> {
     var response = await http
         .get(Uri.parse("${dotenv.env['APP_URL']}get-project/$userId"));
     final jsonResponse = jsonDecode(response.body);
-
+    print('jsonResponse==');
+    print(jsonResponse);
     setState(() {
       projects = jsonResponse['projects'];
     });
