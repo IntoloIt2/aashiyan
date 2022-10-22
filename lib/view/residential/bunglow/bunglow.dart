@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:aashiyan/components/bungalow_steps.dart';
+import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/components/project_category.dart';
 import 'package:aashiyan/controller/api_controller.dart';
@@ -21,6 +22,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../components/app_bar.dart';
 import '../../../controller/api_services.dart';
+import '../../../utils/helpers.dart';
 
 var bungalow_count;
 
@@ -93,7 +95,7 @@ class _BunglowState extends State<Bunglow> {
               children: [
                 InkWell(
                   onTap: () {
-                    Get.to(() => PreExisting());
+                    Get.to(() => const PreExisting());
                   },
                   child: Card(
                     child: ListTile(
@@ -112,6 +114,7 @@ class _BunglowState extends State<Bunglow> {
                 ),
                 InkWell(
                   onTap: () {
+                    setProjectTypeId(BUNGALOW);
                     Get.to(const BungalowGallery());
                   },
                   child: Card(

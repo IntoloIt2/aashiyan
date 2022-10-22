@@ -106,8 +106,6 @@ Future<void> login(String Email, String Password, context) async {
     },
     body: jsonEncode(map),
   );
-  print('response====');
-  print(response);
   loginres = jsonDecode(response.body);
 
   if (loginres['status'] == 200 && loginres['data'] != null

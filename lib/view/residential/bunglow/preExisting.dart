@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:aashiyan/components/bungalow_steps.dart';
 import 'package:aashiyan/components/forms.dart';
@@ -66,76 +67,82 @@ class _PreExistingState extends State<PreExisting> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: projects != null
-              ? Column(
-                  children: <Widget>[
-                    for (var i = 0; i < projects.length; i++)
-                      InkWell(
-                        onTap: () {
-                          setProjectId(projects[i]['id']);
-                          projects[i]['project_type_id'] == BUNGALOW.toString()
-                              ? Get.to(() => const StepPages())
-                              : Get.to(() => const PageNav());
-                        },
-                        child: Card(
-                          color: lightColor,
-                          margin: const EdgeInsets.symmetric(vertical: 2),
-                          elevation: 5,
-                          shadowColor: primaryColor,
-                          child: Container(
-                            height: 80,
-                            child: Center(
-                              child: ListTile(
-                                  leading: const Icon(
-                                    Icons.home,
-                                    size: 45,
-                                  ),
-                                  title: projects == []
-                                      ? const CircularProgressIndicator()
-                                      : headingFont(
-                                          projects[i]['project_type']),
-                                  subtitle: projects == []
-                                      ? const CircularProgressIndicator()
-                                      : Row(
-                                          children: [
-                                            requirementText(
-                                                projects[i]['prefix']),
-                                            const SizedBox(
-                                              width: 3,
+              ? projects.length > 0
+                  ? Column(
+                      children: <Widget>[
+                        for (var i = 0; i < projects.length; i++)
+                          InkWell(
+                            onTap: () {
+                              setProjectId(projects[i]['id']);
+                              projects[i]['project_type_id'] ==
+                                      BUNGALOW.toString()
+                                  ? Get.to(() => const StepPages())
+                                  : Get.to(() => const PageNav());
+                            },
+                            child: Card(
+                              color: lightColor,
+                              margin: const EdgeInsets.symmetric(vertical: 2),
+                              elevation: 5,
+                              shadowColor: primaryColor,
+                              child: Container(
+                                height: 80,
+                                child: Center(
+                                  child: ListTile(
+                                      leading: const Icon(
+                                        Icons.home,
+                                        size: 45,
+                                      ),
+                                      title: projects == []
+                                          ? const CircularProgressIndicator()
+                                          : headingFont(
+                                              projects[i]['project_type']),
+                                      subtitle: projects == []
+                                          ? const CircularProgressIndicator()
+                                          : Row(
+                                              children: [
+                                                requirementText(
+                                                    projects[i]['prefix']),
+                                                const SizedBox(
+                                                  width: 3,
+                                                ),
+                                                requirementText(
+                                                    projects[i]['first_name']),
+                                                const SizedBox(
+                                                  width: 3,
+                                                ),
+                                                requirementText(
+                                                    projects[i]['last_name'])
+                                              ],
                                             ),
-                                            requirementText(
-                                                projects[i]['first_name']),
-                                            const SizedBox(
-                                              width: 3,
-                                            ),
-                                            requirementText(
-                                                projects[i]['last_name'])
-                                          ],
-                                        ),
-                                  trailing: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(projects[i]['create_date']),
-                                      Text(projects[i]['create_time']),
-                                    ],
-                                  )),
+                                      trailing: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(projects[i]['create_date']),
+                                          Text(projects[i]['create_time']),
+                                        ],
+                                      )),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                  ],
-                )
-              : Column(
-                  children: const [
-                    Text('You didn\'t have made any projects,'),
-                    Text(
-                      'Make One',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
+                      ],
+                    )
+                  : projects == null
+                      ? CircularProgressIndicator()
+                      : Column(
+                          children: const [
+                            Text('You didn\'t have made any projects,'),
+                            Text(
+                              'Make One',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        )
+              : null,
         ),
       ),
     );

@@ -1,11 +1,9 @@
+// ignore_for_file: curly_braces_in_flow_control_structures, sized_box_for_whitespace
 
 import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/controller/api_services.dart';
 
 // ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors
-
-import 'dart:convert';
-
 
 import 'package:aashiyan/view/residential/bunglow/bungalow_detail.dart';
 import 'package:aashiyan/view/residential/bunglow/entrance.dart';
@@ -33,7 +31,6 @@ class _HotelsState extends State<Hotels> {
   void getData() async {
     gallery = await getGalleryAPI(HOSPITALITY);
 
-    print(gallery);
     if (gallery != null)
       setState(() {
         isloading = true;

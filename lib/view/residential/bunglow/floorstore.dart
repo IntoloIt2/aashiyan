@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables, empty_catches, unused_local_variable, avoid_unnecessary_containers, sized_box_for_whitespace
+
 import 'dart:convert';
 
 import 'package:aashiyan/components/forms.dart';
@@ -194,9 +196,7 @@ class _FloorStoreState extends State<FloorStore> {
           }
         });
       }
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
   }
 
   @override
@@ -218,6 +218,7 @@ class _FloorStoreState extends State<FloorStore> {
         isloading = false;
       });
     }
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,6 +250,7 @@ class _FloorStoreState extends State<FloorStore> {
                                       FloorStoreDetail1 = value;
                                       FloorStoreDetail2 = false;
                                       print(FloorStoreDetail1);
+
                                     },
                                   );
                                 }),
@@ -325,6 +327,7 @@ class _FloorStoreState extends State<FloorStore> {
                     margin: const EdgeInsets.all(
                       3,
                     ),
+
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                         icon: const Visibility(
@@ -374,6 +377,7 @@ class _FloorStoreState extends State<FloorStore> {
                               //   printData['bungalow_floor_store']
                               //       ['store_floor'] = 5;
                               // }
+
                             },
                           );
                         },
@@ -384,10 +388,12 @@ class _FloorStoreState extends State<FloorStore> {
                 SizedBox(
                   width: width * 0.02,
                 ),
+
                 if (selectedFloor == "other") ...[
                   Material(
                     elevation: 5,
                     borderRadius: const BorderRadius.all(Radius.circular(5)),
+
                     child: SizedBox(
                       height: height * 0.04,
                       width: width * 0.25,
@@ -430,6 +436,7 @@ class _FloorStoreState extends State<FloorStore> {
                 //
                 Material(
                   elevation: 5,
+
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
                   child: SizedBox(
                     height: height * 0.04,
@@ -449,6 +456,7 @@ class _FloorStoreState extends State<FloorStore> {
                           hintStyle: TextStyle(fontSize: 14),
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
+
                           ),
                           isDense: true,
                           contentPadding: EdgeInsets.all(8)
@@ -474,6 +482,7 @@ class _FloorStoreState extends State<FloorStore> {
                 SizedBox(
                   width: width * 0.015,
                 ),
+
                 Material(
                   elevation: 5,
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -495,6 +504,7 @@ class _FloorStoreState extends State<FloorStore> {
                           hintStyle: TextStyle(fontSize: 14),
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
+
                           ),
                           isDense: true,
                           contentPadding: EdgeInsets.all(8)
@@ -605,6 +615,7 @@ class _FloorStoreState extends State<FloorStore> {
                             child: Image.network(
                               imageUrl + bunglowPageRecentList[i]["img_path"],
                               fit: BoxFit.fill,
+
                             ),
                           );
                         },
@@ -753,6 +764,7 @@ class _FloorStoreState extends State<FloorStore> {
                 SizedBox(
                   width: width * 0.02,
                 ),
+
                 Material(
                   elevation: 5,
                   borderRadius: BorderRadius.circular(5),
@@ -781,6 +793,7 @@ class _FloorStoreState extends State<FloorStore> {
                                 it.value,
                                 style: const TextStyle(
                                   color: Colors.black,
+
                                 ),
                               ),
                             );
@@ -895,6 +908,7 @@ class _FloorStoreState extends State<FloorStore> {
                   SizedBox(
                     width: width * 0.05,
                   ),
+
                   Material(
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
@@ -909,6 +923,7 @@ class _FloorStoreState extends State<FloorStore> {
                                 checkColor: Colors.white,
                                 value: poojaRoomNotRequired,
                                 onChanged: (value) {
+
                                   setState(() {
                                     poojaRoomNotRequired = value;
                                     poojaRoomRequired = false;
@@ -923,6 +938,7 @@ class _FloorStoreState extends State<FloorStore> {
                       ),
                     ),
                   ),
+
                 ],
               ),
             ],
@@ -958,6 +974,7 @@ class _FloorStoreState extends State<FloorStore> {
                           hintStyle: TextStyle(fontSize: 14),
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
+
                           ),
                           isDense: true,
                           contentPadding: EdgeInsets.all(8)
@@ -1037,6 +1054,7 @@ class _FloorStoreState extends State<FloorStore> {
                   elevation: 5,
                   borderRadius: BorderRadius.circular(5),
                   child: Container(
+
                     height: height * 0.03,
                     margin: EdgeInsets.all(
                       3,
@@ -1068,6 +1086,7 @@ class _FloorStoreState extends State<FloorStore> {
                                 it.value,
                                 style: TextStyle(
                                   color: Colors.black,
+
                                 ),
                               ),
                             );
@@ -1157,7 +1176,9 @@ class _FloorStoreState extends State<FloorStore> {
                           );
                         },
                       ),
+
                     ),
+
                   ),
                 ),
                 SizedBox(
