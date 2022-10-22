@@ -17,7 +17,7 @@ var residentPage = "http://sdplweb.com/sdpl/api/get-residential-image";
 var homePage = "http://sdplweb.com/sdpl/api/get-project-image";
 List bunglowPagePrestigiousList = [];
 List bunglowPageRecentList = [];
-late int project_id;
+int project_id = 0;
 
 Future<void> getPrestigious() async {
   try {
@@ -237,7 +237,8 @@ Future<dynamic> requirementPost(
     "south_road_width": southRoadWidth,
   };
 
-  // print(projectData);
+  print('projectData==');
+  print(projectData);
 
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
@@ -658,7 +659,6 @@ Future<void> flooreStorePost(
   int floorStoreRequirement,
   String floorStoreLength,
   String floorStoreWidth,
-  String floorStoreArea,
   String storeFloor,
   String stairCase,
   int liftRequirement,
@@ -667,7 +667,6 @@ Future<void> flooreStorePost(
   int poojaRoomReq,
   String poojaRoomLength,
   String poojaRoomWidth,
-  String poojaRoomArea,
   String poojaRoomFloor,
   String poojaRoomType,
   String openingToLiHa,
@@ -678,7 +677,6 @@ Future<void> flooreStorePost(
     "floor_store_req": floorStoreRequirement,
     "floor_store_length": floorStoreLength,
     "floor_store_width": floorStoreWidth,
-    "floor_store_area": floorStoreArea,
     "store_floor": storeFloor,
     "stair_case": stairCase,
     "stair_case_image": "sta",
@@ -687,14 +685,11 @@ Future<void> flooreStorePost(
     "pooja_room_req": poojaRoomReq,
     "pooja_room_length": poojaRoomLength,
     "pooja_room_width": poojaRoomWidth,
-    "pooja_room_area": poojaRoomArea,
     "pooja_room_floor": poojaRoomFloor,
     "pooja_room_type": poojaRoomType,
     "opening_to_li_ha": poojaRoomWidth,
     "lift_special_req": liftRequirement,
   };
-
-  print(floorStoreArea);
 
   print(projectData);
   final response = await http.post(
@@ -715,7 +710,6 @@ Future<void> flooreStorePut(
   int floorStoreRequirement,
   String floorStoreLength,
   String floorStoreWidth,
-  String floorStoreArea,
   String storeFloor,
   String stairCase,
   int liftRequirement,
@@ -724,7 +718,6 @@ Future<void> flooreStorePut(
   int poojaRoomReq,
   String poojaRoomLength,
   String poojaRoomWidth,
-  String poojaRoomArea,
   String poojaRoomFloor,
   String poojaRoomType,
   String openingToLiHa,
@@ -735,7 +728,6 @@ Future<void> flooreStorePut(
     "floor_store_req": floorStoreRequirement,
     "floor_store_length": floorStoreLength,
     "floor_store_width": floorStoreWidth,
-    "floor_store_area": floorStoreArea,
     "store_floor": storeFloor,
     "stair_case": stairCase,
     "stair_case_image": "sta",
@@ -744,15 +736,15 @@ Future<void> flooreStorePut(
     "pooja_room_req": poojaRoomReq,
     "pooja_room_length": poojaRoomLength,
     "pooja_room_width": poojaRoomWidth,
-    "pooja_room_area": poojaRoomArea,
     "pooja_room_floor": poojaRoomFloor,
     "pooja_room_type": poojaRoomType,
     "opening_to_li_ha": poojaRoomWidth,
     "lift_special_req": liftRequirement,
   };
 
-  print(floorStoreArea);
-
+  print('projectId===');
+  print(projectId);
+  print('projectData==');
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),

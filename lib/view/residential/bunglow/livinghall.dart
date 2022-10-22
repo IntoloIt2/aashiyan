@@ -1224,7 +1224,10 @@ class _LivingHallState extends State<LivingHall> {
                   width: width * 0.15,
                   child: TextFormField(
                     // initialValue: "45",
-                    initialValue: printData != null
+
+                    initialValue: printData != null &&
+                            printData['bungalow_drawing_hall'] != null
+
                         ? printData['bungalow_drawing_hall']
                                     ['kitchen_length'] !=
                                 null

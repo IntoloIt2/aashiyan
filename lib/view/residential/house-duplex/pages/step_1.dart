@@ -246,6 +246,7 @@ class _Step_1State extends State<Step_1> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('userData');
     project_id = prefs.getInt('projectId');
+    
     getData(project_id);
     var decJson;
     if (userData != null) {
