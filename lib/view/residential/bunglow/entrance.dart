@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables, empty_catches, curly_braces_in_flow_control_structures, unnecessary_null_comparison, prefer_if_null_operators, avoid_unnecessary_containers, sized_box_for_whitespace
+// ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables, empty_catches, curly_braces_in_flow_control_structures, unnecessary_null_comparison, prefer_if_null_operators, avoid_unnecessary_containers, sized_box_for_whitespace, unused_local_variable
 
 import 'dart:convert';
 import 'package:aashiyan/components/forms.dart';

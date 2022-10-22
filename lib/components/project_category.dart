@@ -20,10 +20,8 @@ SingleChildScrollView projectCategory() {
         InkWell(
           child: stepsContainer("Hotels"),
           onTap: () {
-
             getGalleryAPI(HOSPITALITY);
-            Get.to(Hotels());
-
+            Get.to(const Hotels());
           },
         ),
         const SizedBox(
@@ -39,10 +37,8 @@ SingleChildScrollView projectCategory() {
         ),
         InkWell(
             onTap: () {
-
               getGalleryAPI(MALL_MULTIPLESER);
-              Get.to(Multiplexer());
-
+              Get.to(const Multiplexer());
             },
             child: stepsContainer("Multiplex/mall")),
         const SizedBox(
@@ -51,8 +47,7 @@ SingleChildScrollView projectCategory() {
         InkWell(
             onTap: () {
               getGalleryAPI(BUNGALOW);
-              Get.to(InteriorDesign());
-
+              Get.to(const InteriorDesign());
             },
             child: stepsContainer("Interior Design")),
         const SizedBox(
@@ -61,8 +56,7 @@ SingleChildScrollView projectCategory() {
         InkWell(
             onTap: () {
               getGalleryAPI(HOSPITAL);
-              Get.to(Hospitals());
-
+              Get.to(const Hospitals());
             },
             child: stepsContainer("Hospitals")),
         const SizedBox(
@@ -71,7 +65,7 @@ SingleChildScrollView projectCategory() {
         InkWell(
             onTap: () {
               getGalleryAPI(COMMERCIAL_SHOWROOM_OFFICE);
-              Get.to(CommercialShowroom());
+              Get.to(const CommercialShowroom());
             },
             child: stepsContainer("Commercial Showroom/Offices")),
         const SizedBox(
@@ -80,7 +74,7 @@ SingleChildScrollView projectCategory() {
         InkWell(
             onTap: () {
               getGalleryAPI(MIX_USE);
-              Get.to(MixUse());
+              Get.to(const MixUse());
             },
             child: stepsContainer("Mix Use Buildings")),
       ],

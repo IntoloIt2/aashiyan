@@ -8,12 +8,16 @@ import 'package:aashiyan/components/project_category.dart';
 import 'package:aashiyan/view/residential/house-duplex/pages/pageNav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
+import 'package:get/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import '../../../controller/auth_controller.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
+import '../../../utils/helpers.dart';
+import '../bunglow/bungalow_gallery.dart';
 import '../bunglow/preExisting.dart';
 
 var house_count;
@@ -116,20 +120,26 @@ class _HouseDuplexState extends State<HouseDuplex> {
               ),
             ),
           )),
-          Card(
-            elevation: 2,
-            child: ListTile(
-              leading: Container(
-                child: Image.asset(
-                  'assets/images/gallery_icon.png',
-                  width: 45,
-                  height: 45,
+          InkWell(
+            onTap: () {
+              setProjectTypeId(FLAT_HOUSE);
+              Get.to(() => BungalowGallery());
+            },
+            child: Card(
+              elevation: 2,
+              child: ListTile(
+                leading: Container(
+                  child: Image.asset(
+                    'assets/images/gallery_icon.png',
+                    width: 45,
+                    height: 45,
+                  ),
                 ),
-              ),
-              title: Text(
-                "Gallery",
-                style: TextStyle(
-                    fontSize: height * 0.025, fontWeight: FontWeight.w500),
+                title: Text(
+                  "Gallery",
+                  style: TextStyle(
+                      fontSize: height * 0.025, fontWeight: FontWeight.w500),
+                ),
               ),
             ),
           ),

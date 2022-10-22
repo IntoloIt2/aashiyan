@@ -1,25 +1,19 @@
-
-import 'dart:async';
+// ignore_for_file: depend_on_referenced_packages, deprecated_member_use
 
 import 'package:aashiyan/components/contants.dart';
 
 // ignore_for_file: sort_child_properties_last, sized_box_for_whitespace, avoid_unnecessary_containers
 
-
 import 'package:aashiyan/const.dart';
-import 'package:aashiyan/controller/auth_controller.dart';
 import 'package:aashiyan/view/hotels.dart';
 
 import 'package:aashiyan/view/residential.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/project_category.dart';
 import '../controller/api_services.dart';
-
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -44,15 +38,6 @@ class _HomePageState extends State<HomePage> {
   //     finalemail = obtainedEmail!;
   //   });
   // }
-
-  _makingPhoneCall() async {
-    var url = Uri.parse("${8109093551}");
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                           InkWell(
                               onTap: () {
                                 getGalleryAPI(HOSPITALITY);
-                                Get.to(Hotels());
+                                Get.to(const Hotels());
                               },
                               child: polyContainer(
                                   context, "Projects\nand \nworks")),
