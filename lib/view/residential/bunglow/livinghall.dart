@@ -334,6 +334,9 @@ class _LivingHallState extends State<LivingHall> {
                   otherFeatures.add(otherItems[1]);
                 }
               }
+              
+              
+
             }
           },
         );
@@ -1860,7 +1863,8 @@ class _LivingHallState extends State<LivingHall> {
                   child: TextFormField(
                     initialValue: printData != null &&
                             printData['bungalow_drawing_hall']
-                                    ['specific_req'] != null
+                                    ['specific_req'] !=
+                                null
                         ? printData['bungalow_drawing_hall']['specific_req']
                         : '',
                     style: const TextStyle(fontSize: 14),
