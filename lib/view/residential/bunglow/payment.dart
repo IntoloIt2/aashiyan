@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, use_key_in_widget_constructors, sized_box_for_whitespace
+
 import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,6 @@ class Payment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(value);
     var gst = 0;
     return Scaffold(
       appBar: AppBar(
@@ -84,7 +85,7 @@ class Payment extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               child: TextButton(
                   onPressed: () {},
-                  child: Text('PAY',
+                  child: const Text('PAY',
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

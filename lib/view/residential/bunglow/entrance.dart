@@ -325,8 +325,8 @@ class _EntranceState extends State<Entrance> {
                   ? (printData['bungalow_entrance']['visual_nature'].toString())
                   : visualNaturString;
               carParkingString =
-                  printData['bungalow_entrance']['carParkingString'] != null
-                      ? (printData['bungalow_entrance']['carParkingString']
+                  printData['bungalow_entrance']['car_parking_space'] != null
+                      ? (printData['bungalow_entrance']['car_parking_space']
                           .toString())
                       : carParkingString;
               print(carParkingString);

@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, unused_local_variable, avoid_print, sort_child_properties_last, prefer_const_constructors, duplicate_ignore, sized_box_for_whitespace, avoid_unnecessary_containers
+// ignore_for_file: non_constant_identifier_names, unused_local_variable, avoid_print, sort_child_properties_last, prefer_const_constructors, duplicate_ignore, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_typing_uninitialized_variables
 
 // import 'dart:ui';
 import 'dart:convert';
@@ -20,13 +20,13 @@ class BuiltUp extends StatefulWidget {
   State<BuiltUp> createState() => _BuiltUpState();
 }
 
-List ar_design   = [];
+List ar_design = [];
 
-List str_design  = [];
+List str_design = [];
 
-List mep_design  = [];
+List mep_design = [];
 
-List int_design  = [];
+List int_design = [];
 
 var getData;
 
@@ -3672,7 +3672,8 @@ class _BuiltUpState extends State<BuiltUp> {
                             ]),
                             TableRow(children: [
                               Column(children: const [Text('5.')]),
-                              Column(children: const [Text('Material Selection')]),
+                              Column(
+                                  children: const [Text('Material Selection')]),
                               Column(children: const [Text('3days')]),
                               Column(children: [
                                 Checkbox(

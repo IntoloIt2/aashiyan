@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types, duplicate_ignore, sized_box_for_whitespace, unused_local_variable
+
 import 'package:flutter/material.dart';
 import '../../bunglow/basement.dart';
 
@@ -34,10 +36,10 @@ class _Step_6State extends State<Step_6> {
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             alignment: Alignment.topLeft,
             // decoration: BoxDecoration(border: Border.all(width: 1)),
-            child: Text(
+            child: const Text(
               "Stilt Details",
             ),
           ),
@@ -57,7 +59,7 @@ class _Step_6State extends State<Step_6> {
                               stiltNotRequired = false;
                             });
                           })),
-                      Text("Required"),
+                      const Text("Required"),
                     ],
                   ),
                 ),
@@ -76,7 +78,7 @@ class _Step_6State extends State<Step_6> {
                               stiltRequired = false;
                             });
                           })),
-                      Text("Not Required"),
+                      const Text("Not Required"),
                     ],
                   ),
                 ),
@@ -88,8 +90,8 @@ class _Step_6State extends State<Step_6> {
                   padding: const EdgeInsets.only(left: 10),
                   child: Row(
                     children: [
-                      Text("Stilt"),
-                      SizedBox(
+                      const Text("Stilt"),
+                      const SizedBox(
                         width: 20,
                       ),
                       DropdownButton(
@@ -109,7 +111,7 @@ class _Step_6State extends State<Step_6> {
                   ),
                 )
               : Container(),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           const Divider(
@@ -121,17 +123,21 @@ class _Step_6State extends State<Step_6> {
             color: Colors.grey,
           ),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             alignment: Alignment.topLeft,
             // decoration: BoxDecoration(border: Border.all(width: 1)),
-            child: Text(
+            child: const Text(
               "Amenities",
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
-              children: [Text("Office"), SizedBox(width: 25), Text("Help")],
+              children: const [
+                Text("Office"),
+                SizedBox(width: 25),
+                Text("Help")
+              ],
             ),
           ),
           Row(
@@ -150,7 +156,7 @@ class _Step_6State extends State<Step_6> {
                               amenitiesOfficeNotRequired = false;
                             });
                           })),
-                      Text("Required"),
+                      const Text("Required"),
                     ],
                   ),
                 ),
@@ -169,12 +175,12 @@ class _Step_6State extends State<Step_6> {
                               amenitiesOfficeRequired = false;
                             });
                           })),
-                      Text("Not Required"),
+                      const Text("Not Required"),
                     ],
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
             ],
@@ -186,8 +192,8 @@ class _Step_6State extends State<Step_6> {
                     children: [
                       Row(
                         children: [
-                          Text("Length"),
-                          SizedBox(
+                          const Text("Length"),
+                          const SizedBox(
                             width: 8,
                           ),
                           Container(
@@ -205,11 +211,11 @@ class _Step_6State extends State<Step_6> {
                               //   }),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 16,
                           ),
-                          Text("width"),
-                          SizedBox(
+                          const Text("width"),
+                          const SizedBox(
                             width: 8,
                           ),
                           Container(
@@ -227,15 +233,15 @@ class _Step_6State extends State<Step_6> {
                               //   }),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                         ],
                       ),
                       Row(
                         children: [
-                          Text("Location"),
-                          SizedBox(
+                          const Text("Location"),
+                          const SizedBox(
                             width: 20,
                           ),
                           DropdownButton(
@@ -255,8 +261,8 @@ class _Step_6State extends State<Step_6> {
                       ),
                       Row(
                         children: [
-                          Text("Office Facility"),
-                          SizedBox(
+                          const Text("Office Facility"),
+                          const SizedBox(
                             width: 15,
                           ),
                           Card(
@@ -282,7 +288,7 @@ class _Step_6State extends State<Step_6> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                 ),
-                                child: Text("Office Facility"),
+                                child: const Text("Office Facility"),
                               ),
                             ),
                           ),
@@ -290,8 +296,8 @@ class _Step_6State extends State<Step_6> {
                       ),
                       Row(
                         children: [
-                          Text("Other Requirement"),
-                          SizedBox(
+                          const Text("Other Requirement"),
+                          const SizedBox(
                             width: 20,
                           ),
                           Container(
@@ -320,22 +326,22 @@ class _Step_6State extends State<Step_6> {
             thickness: 1,
             endIndent: 0,
           ),
-          SizedBox(
+          const SizedBox(
             height: 12,
           ),
           Row(
             children: [
               Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 alignment: Alignment.topLeft,
-                child: Text(
+                child: const Text(
                   "Additional Parking garage",
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 alignment: Alignment.topLeft,
-                child: Text(
+                child: const Text(
                   "Help",
                 ),
               ),
@@ -357,7 +363,7 @@ class _Step_6State extends State<Step_6> {
                               notRequiredParking = false;
                             });
                           })),
-                      Text("Required"),
+                      const Text("Required"),
                     ],
                   ),
                 ),
@@ -376,7 +382,7 @@ class _Step_6State extends State<Step_6> {
                               requiredParking = false;
                             });
                           })),
-                      Text("Not Required"),
+                      const Text("Not Required"),
                     ],
                   ),
                 ),
@@ -390,8 +396,8 @@ class _Step_6State extends State<Step_6> {
                     children: [
                       Row(
                         children: [
-                          Text("Length"),
-                          SizedBox(
+                          const Text("Length"),
+                          const SizedBox(
                             width: 8,
                           ),
                           Container(
@@ -409,11 +415,11 @@ class _Step_6State extends State<Step_6> {
                               //   }),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 16,
                           ),
-                          Text("width"),
-                          SizedBox(
+                          const Text("width"),
+                          const SizedBox(
                             width: 8,
                           ),
                           Container(
@@ -431,15 +437,15 @@ class _Step_6State extends State<Step_6> {
                               //   }),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                         ],
                       ),
                       Row(
                         children: [
-                          Text("Location"),
-                          SizedBox(
+                          const Text("Location"),
+                          const SizedBox(
                             width: 20,
                           ),
                           DropdownButton(
@@ -459,8 +465,8 @@ class _Step_6State extends State<Step_6> {
                       ),
                       Row(
                         children: [
-                          Text("Separated Shade"),
-                          SizedBox(
+                          const Text("Separated Shade"),
+                          const SizedBox(
                             width: 20,
                           ),
                           Container(
@@ -482,8 +488,8 @@ class _Step_6State extends State<Step_6> {
                       ),
                       Row(
                         children: [
-                          Text("Special Requirement"),
-                          SizedBox(
+                          const Text("Special Requirement"),
+                          const SizedBox(
                             width: 20,
                           ),
                           Container(

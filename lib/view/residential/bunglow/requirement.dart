@@ -15,7 +15,7 @@ class Requirement extends StatefulWidget {
 }
 
 class _RequirementState extends State<Requirement> {
-  late Future<RequirementModel> futureRequirement;
+  
   String nameController = '';
   String lastNameController = "";
   String emailController = "";
@@ -1587,8 +1587,8 @@ class _RequirementState extends State<Requirement> {
                   );
                   print("d1 ${diagonal1Controller}");
                   print("d2 ${diagonal2Controller}");
-                  futureRequirement = requirementPost(
-                    2342,
+                 requirementPost(
+                    179,
                     978,
                     098,
                     selectedItems,
