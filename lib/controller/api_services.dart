@@ -270,7 +270,7 @@ Future<void> entrancePost(
   String porchLength,
   String porchWidth,
   String porchArea,
-  String porch,
+  var porch,
   String visualNature,
   String carPrkingSpace,
   bool foyerReq,
@@ -285,8 +285,8 @@ Future<void> entrancePost(
   String verandah,
 ) async {
   var projectData = {
-    "project_id": 123,
-    "vastu": 5,
+    "project_id": projectid,
+    "vastu": vastu,
     "floor": floor,
     "entrance_gate": entranceGate,
     "one_gate": oneGate,
@@ -352,7 +352,7 @@ Future<void> entrancePut(
   String porchLength,
   String porchWidth,
   String porchArea,
-  String porch,
+  var porch,
   String visualNature,
   String carPrkingSpace,
   bool foyerReq,
@@ -368,7 +368,7 @@ Future<void> entrancePut(
 ) async {
   var projectData = {
     "project_id": projectid,
-    "vastu": 5,
+    "vastu": vastu,
     "floor": floor,
     "entrance_gate": entranceGate,
     "one_gate": oneGate,
@@ -886,7 +886,7 @@ Future<void> BasementPost(
   String gardenSpecificReq,
 ) async {
   var projectData = {
-    "project_id": 664187,
+    "project_id": projectId,
     "dimension": 1,
     "basement_req": 0,
     "basement_type": basementType,
@@ -1035,7 +1035,7 @@ Future<void> BasementPut(
   var projectData = {
     "project_id": projectId,
     "dimension": 1,
-    "basement_req": 0,
+    "basement_req": basementReq,
     "basement_type": basementType,
     "stilt_req": StiltRequirement,
     "stilt_type": StiltType,

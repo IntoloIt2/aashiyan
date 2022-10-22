@@ -30,9 +30,19 @@ List<String> PROJECT_TYPE = [
   "interior designs"
 ];
 
+
+// Entrance
+String OutSideOpen = '1';
+String OutSideClosed = '2';  
+
+
+
+
+
 // ignore: non_constant_identifier_names
 int STATE_ID = 1;
 // ignore: non_constant_identifier_names
+
 int EAST_OTHER_PROPERTY = 2;
 // ignore: non_constant_identifier_names
 int EAST_PROPERTY = 1;
@@ -56,9 +66,11 @@ int LEVEL_UP = 2;
 int LEVEL_DOWN = 3;
 // ignore: non_constant_identifier_names
 int project_id = 0;
+
 // ignore: non_constant_identifier_names
 String PHONE_NO = "+91 8109093551";
 // ignore: constant_identifier_names
+
 const SITE_NAME = 'SDPL';
 const MR = 1;
 const MRS = 2;

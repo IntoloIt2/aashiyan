@@ -5,25 +5,17 @@ import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/model/requirementmodel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../const.dart';
 import 'package:http/http.dart' as http;
 
-import 'preExisting.dart';
-
-var data;
-
 class Requirement extends StatefulWidget {
-  late String fName;
-
   static const namedRoute = "/intrestedNext";
-
   @override
   State<Requirement> createState() => _RequirementState();
 }
 
 class _RequirementState extends State<Requirement> {
+  
   String nameController = '';
   String lastNameController = "";
   String emailController = "";
@@ -37,7 +29,7 @@ class _RequirementState extends State<Requirement> {
   String levelController = "";
   String? widthController = '';
   String? lengthController = '';
-  var fName = TextEditingController();
+
   var plotValue = TextEditingController();
 
   int isRegular = 1;
@@ -133,7 +125,7 @@ class _RequirementState extends State<Requirement> {
     try {
       var client = http.Client();
       var response =
-          await http.get(Uri.parse("${dotenv.env['APP_URL']}state/1"));
+          await http.get(Uri.parse("https://sdplweb.com/sdpl/api/state/1"));
       // print(response.body.toString());
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
@@ -150,20 +142,9 @@ class _RequirementState extends State<Requirement> {
 
   Future<List?> getCities() async {
     try {
-      // var prefs = await SharedPreferences.getInstance();
-      // String? resultData = prefs.getString('userData');
-      // var decodedJson = jsonDecode(resultData!);
-      // if (!prefs.containsKey('userData')) {
-      //   print("user not login");
-      // } else {
-      //   print("user login");
-      // }
-
-      // print('temp==');
-      // print(temp);
       var client = http.Client();
-      var response =
-          await http.get(Uri.parse("${dotenv.env['APP_URL']}city/$stateId"));
+      var response = await http
+          .get(Uri.parse("https://sdplweb.com/sdpl/api/city/$stateId"));
       // print(response.body.toString());
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
@@ -185,7 +166,7 @@ class _RequirementState extends State<Requirement> {
     try {
       // var client = http.Client();
       var response = await http.get(
-        Uri.parse("${dotenv.env['APP_URL']}edit-project/179"),
+        Uri.parse("http://192.168.0.99:8080/sdplserver/api/edit-project/179"),
       );
 
       if (response.statusCode == 200) {
@@ -198,13 +179,6 @@ class _RequirementState extends State<Requirement> {
     } catch (e) {
       print(e.toString());
     }
-  }
-
-  void fetchData() async {
-    var response = await projects;
-    data = response;
-
-    print(data);
   }
 
   bool isloading = false;
@@ -222,16 +196,13 @@ class _RequirementState extends State<Requirement> {
   @override
   void initState() {
     super.initState();
-
     getData();
     getCities();
     getState();
-    fetchData();
     plotValue.addListener(() => setState(() {}));
     if (printData == null) {
       setState(() {
         isloading = true;
-        // fName = data['first_name'];
       });
     }
   }
@@ -311,7 +282,6 @@ class _RequirementState extends State<Requirement> {
                             ? printData["project"]['first_name'].toString()
                             : '',
                         style: const TextStyle(fontSize: 14),
-                        // controller: fName,
                         decoration: const InputDecoration(
                             hintText: "First name",
                             hintStyle: TextStyle(fontSize: 14),
@@ -1617,8 +1587,8 @@ class _RequirementState extends State<Requirement> {
                   );
                   print("d1 ${diagonal1Controller}");
                   print("d2 ${diagonal2Controller}");
-                  requirementPost(
-                    2342,
+                 requirementPost(
+                    179,
                     978,
                     098,
                     selectedItems,
