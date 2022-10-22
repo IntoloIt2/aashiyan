@@ -1,16 +1,11 @@
-// ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables, empty_catches, unused_local_variable, avoid_unnecessary_containers, sized_box_for_whitespace
-
 import 'dart:convert';
 
 import 'package:aashiyan/components/forms.dart';
-import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
-import '../../../components/contants.dart' as constant;
 
 class FloorStore extends StatefulWidget {
   const FloorStore({Key? key}) : super(key: key);
@@ -117,6 +112,7 @@ class _FloorStoreState extends State<FloorStore> {
         setState(() {
           printData = jsonResponse;
 
+
           if (printData != null) {
             FloorStoreDetail1 =
                 printData["bungalow_floor_store"]["floor_store_req"] == 1
@@ -193,10 +189,13 @@ class _FloorStoreState extends State<FloorStore> {
                 printData["bungalow_floor_store"]["opening_to_li_ha"] != null
                     ? true
                     : openHall;
+
           }
         });
       }
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -212,12 +211,12 @@ class _FloorStoreState extends State<FloorStore> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    var provider = Provider.of<PageNavProvider>(context, listen: true);
     if (printData != null) {
       setState(() {
         isloading = false;
       });
     }
+
 
     return SingleChildScrollView(
       child: Column(
@@ -251,6 +250,7 @@ class _FloorStoreState extends State<FloorStore> {
                                       FloorStoreDetail2 = false;
                                       print(FloorStoreDetail1);
 
+
                                     },
                                   );
                                 }),
@@ -259,6 +259,7 @@ class _FloorStoreState extends State<FloorStore> {
                         ],
                       ),
                     ),
+
                   ),
                 ],
               ),
@@ -267,9 +268,11 @@ class _FloorStoreState extends State<FloorStore> {
               ),
               Row(
                 children: [
+
                   SizedBox(
                     width: width * 0.05,
                   ),
+
                   Material(
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
@@ -288,6 +291,7 @@ class _FloorStoreState extends State<FloorStore> {
                                   () {
                                     FloorStoreDetail2 = value;
                                     FloorStoreDetail1 = false;
+
                                   },
                                 );
                               },
@@ -299,7 +303,9 @@ class _FloorStoreState extends State<FloorStore> {
                           )
                         ],
                       ),
+
                     ),
+
                   ),
                 ],
               ),
@@ -327,6 +333,7 @@ class _FloorStoreState extends State<FloorStore> {
                     margin: const EdgeInsets.all(
                       3,
                     ),
+
 
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
@@ -378,6 +385,7 @@ class _FloorStoreState extends State<FloorStore> {
                               //       ['store_floor'] = 5;
                               // }
 
+
                             },
                           );
                         },
@@ -393,6 +401,7 @@ class _FloorStoreState extends State<FloorStore> {
                   Material(
                     elevation: 5,
                     borderRadius: const BorderRadius.all(Radius.circular(5)),
+
 
                     child: SizedBox(
                       height: height * 0.04,
@@ -437,6 +446,7 @@ class _FloorStoreState extends State<FloorStore> {
                 Material(
                   elevation: 5,
 
+
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
                   child: SizedBox(
                     height: height * 0.04,
@@ -456,6 +466,7 @@ class _FloorStoreState extends State<FloorStore> {
                           hintStyle: TextStyle(fontSize: 14),
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
+
 
                           ),
                           isDense: true,
@@ -483,6 +494,7 @@ class _FloorStoreState extends State<FloorStore> {
                   width: width * 0.015,
                 ),
 
+
                 Material(
                   elevation: 5,
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -504,6 +516,7 @@ class _FloorStoreState extends State<FloorStore> {
                           hintStyle: TextStyle(fontSize: 14),
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
+
 
                           ),
                           isDense: true,
@@ -604,6 +617,7 @@ class _FloorStoreState extends State<FloorStore> {
                         child: const Center(
                           child: CircularProgressIndicator(),
                         ),
+
                       );
                     } else {
                       return CarouselSlider.builder(
@@ -615,6 +629,7 @@ class _FloorStoreState extends State<FloorStore> {
                             child: Image.network(
                               imageUrl + bunglowPageRecentList[i]["img_path"],
                               fit: BoxFit.fill,
+
 
                             ),
                           );
@@ -630,6 +645,7 @@ class _FloorStoreState extends State<FloorStore> {
                     }
                   },
                 ),
+
               ),
             ),
           ),
@@ -705,6 +721,7 @@ class _FloorStoreState extends State<FloorStore> {
                                       notRequiredLift = false;
                                     },
                                   );
+
                                 }),
                           ),
                           requirementText("Required")
@@ -722,6 +739,7 @@ class _FloorStoreState extends State<FloorStore> {
                   SizedBox(
                     width: width * 0.05,
                   ),
+
                   Material(
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
@@ -741,6 +759,7 @@ class _FloorStoreState extends State<FloorStore> {
                                     requiredLift = false;
                                   });
                                 }),
+
                           ),
                           requirementText("Not Required"),
                           SizedBox(
@@ -764,6 +783,7 @@ class _FloorStoreState extends State<FloorStore> {
                 SizedBox(
                   width: width * 0.02,
                 ),
+
 
                 Material(
                   elevation: 5,
@@ -824,6 +844,7 @@ class _FloorStoreState extends State<FloorStore> {
                 SizedBox(
                   width: width * 0.02,
                 ),
+
                 Material(
                   elevation: 5,
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -849,6 +870,7 @@ class _FloorStoreState extends State<FloorStore> {
                           isDense: true,
                           contentPadding: EdgeInsets.all(8)
                           //fillColor: Colors.green
+
                           ),
                       onChanged: ((value) {
                         setState(() {
@@ -909,6 +931,7 @@ class _FloorStoreState extends State<FloorStore> {
                     width: width * 0.05,
                   ),
 
+
                   Material(
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
@@ -927,6 +950,7 @@ class _FloorStoreState extends State<FloorStore> {
                                   setState(() {
                                     poojaRoomNotRequired = value;
                                     poojaRoomRequired = false;
+
                                   });
                                 }),
                           ),
@@ -938,6 +962,7 @@ class _FloorStoreState extends State<FloorStore> {
                       ),
                     ),
                   ),
+
 
                 ],
               ),
@@ -974,6 +999,7 @@ class _FloorStoreState extends State<FloorStore> {
                           hintStyle: TextStyle(fontSize: 14),
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
+
 
                           ),
                           isDense: true,
@@ -1055,6 +1081,7 @@ class _FloorStoreState extends State<FloorStore> {
                   borderRadius: BorderRadius.circular(5),
                   child: Container(
 
+
                     height: height * 0.03,
                     margin: EdgeInsets.all(
                       3,
@@ -1086,6 +1113,7 @@ class _FloorStoreState extends State<FloorStore> {
                                 it.value,
                                 style: TextStyle(
                                   color: Colors.black,
+
 
                                 ),
                               ),
@@ -1177,13 +1205,16 @@ class _FloorStoreState extends State<FloorStore> {
                         },
                       ),
 
+
                     ),
+
 
                   ),
                 ),
                 SizedBox(
                   width: width * 0.02,
                 ),
+
               ],
             )
           ],
@@ -1211,6 +1242,7 @@ class _FloorStoreState extends State<FloorStore> {
                       hintStyle: TextStyle(fontSize: 14),
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
+
                       ),
                       isDense: true,
                       contentPadding: EdgeInsets.all(8)
