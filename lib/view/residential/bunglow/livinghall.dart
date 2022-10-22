@@ -384,10 +384,6 @@ class _LivingHallState extends State<LivingHall> {
     var width = MediaQuery.of(context).size.width;
     final provider = Provider.of<PageNavProvider>(context, listen: true);
 
-    if (printData != null) {
-      isloading = false;
-    }
-
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -671,8 +667,14 @@ class _LivingHallState extends State<LivingHall> {
                       height: height * 0.04,
                       width: width * 0.2,
                       child: TextFormField(
-                        initialValue: printData['bungalow_drawing_hall']
-                            ['drawing_hall_location'],
+                        initialValue: printData != null &&
+                                printData['bungalow_drawing_hall']
+                                        ['drawing_hall_location'] !=
+                                    null
+                            ? printData['bungalow_drawing_hall']
+                                    ['drawing_hall_location']
+                                .toString()
+                            : '',
                         style: const TextStyle(fontSize: 14),
                         decoration: const InputDecoration(
                             hintText: "other Location",
@@ -1858,8 +1860,7 @@ class _LivingHallState extends State<LivingHall> {
                   child: TextFormField(
                     initialValue: printData != null &&
                             printData['bungalow_drawing_hall']
-                                    ['specific_req'] !=
-                                null
+                                    ['specific_req'] != null
                         ? printData['bungalow_drawing_hall']['specific_req']
                         : '',
                     style: const TextStyle(fontSize: 14),
@@ -1919,14 +1920,14 @@ class _LivingHallState extends State<LivingHall> {
                       livingHallLocation = int.parse(ohterLivingHallController);
                     }
 
-                    for (int i = 0; i < otherFeatures.length; i++) {
-                      if (otherFeatures[i] == "Powder Toilet") {
-                        livingHall.add(1);
-                      }
-                      if (otherFeatures[i] == "Double Height") {
-                        livingHall.add(2);
-                      }
-                    }
+                    // for (int i = 0; i < otherFeatures.length; i++) {
+                    //   if (otherFeatures[i] == "Powder Toilet") {
+                    //     livingHall.add(1);
+                    //   }
+                    //   if (otherFeatures[i] == "Double Height") {
+                    //     livingHall.add(2);
+                    //   }
+                    // }
                   }
 
                   if (livingRequired == true) {

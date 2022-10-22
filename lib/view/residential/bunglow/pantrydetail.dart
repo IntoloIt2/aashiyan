@@ -8,6 +8,7 @@ import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
 
 class PantryDetail extends StatefulWidget {
+  
   static const namedRoute = "/pantrydetails";
   @override
   State<PantryDetail> createState() => _PantryDetailState();

@@ -777,7 +777,7 @@ Future<void> BasementPost(
   String gardenSpecificReq,
 ) async {
   var projectData = {
-    "project_id": 664187,
+    "project_id": projectId,
     "dimension": 1,
     "basement_req": 0,
     "basement_type": basementType,
@@ -917,7 +917,7 @@ Future<void> BasementPut(
   var projectData = {
     "project_id": projectId,
     "dimension": 1,
-    "basement_req": 0,
+    "basement_req": basementReq,
     "basement_type": basementType,
     "stilt_req": StiltRequirement,
     "stilt_type": StiltType,
