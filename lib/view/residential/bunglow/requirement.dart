@@ -464,7 +464,6 @@ class _RequirementState extends State<Requirement> {
                       width: width * 0.6,
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
-                          onTap: () {},
                           hint: printData["project"]["state_name"] != null
                               ? Text(printData["project"]["state_name"])
                               : Text(selectedState),

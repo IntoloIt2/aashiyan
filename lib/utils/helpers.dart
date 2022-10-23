@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<dynamic> setProjectId(id) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.remove('projectId');
   var temp = await prefs.setInt('projectId', id);
 }
 
