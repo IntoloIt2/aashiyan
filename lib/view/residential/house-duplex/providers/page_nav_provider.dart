@@ -82,6 +82,9 @@ class PageNavProvider with ChangeNotifier {
       "south_road_width": southRoadWidth,
     };
 
+    print('projectData==');
+    print(projectData);
+
     final response = await http.post(
       Uri.parse('${dotenv.env['APP_URL']}project'),
       headers: <String, String>{
