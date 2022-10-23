@@ -7,14 +7,17 @@ import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/components/project_category.dart';
 import 'package:aashiyan/controller/api_controller.dart';
+import 'package:aashiyan/controller/auth_controller.dart';
 
 import 'package:aashiyan/view/residential/bunglow/bungalow_gallery.dart';
 import 'package:aashiyan/view/residential/bunglow/preExisting.dart';
+import 'package:aashiyan/view/residential/house-duplex/pages/pageNav.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../components/app_bar.dart';
@@ -55,6 +58,22 @@ class _BunglowState extends State<Bunglow> {
         ],
       ),
     );
+  }
+
+  Future<dynamic> projectCount(data, id) async {
+    try {
+      if (data != null) {
+        final temp = await http
+            .get(Uri.parse("${dotenv.env['APP_URL']}project-count/$id"));
+        final response = json.decode(temp.body);
+        setState(() {
+          bungalow_count = response["bungalow_count"];
+        });
+        return bungalow_count;
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -124,37 +143,73 @@ class _BunglowState extends State<Bunglow> {
                   ),
                 ),
                 GestureDetector(
+                  // onTap: () async {
+                  //   final SharedPreferences prefs =
+                  //       await SharedPreferences.getInstance();
+                  //   String? resultData = prefs.getString('userData');
+
+                  //   var decodedJson;
+                  //   if (resultData != null) {
+                  //     decodedJson = jsonDecode(resultData);
+                  //     if (decodedJson['data'] != null) {
+                  //       bungalow_count = await cont.projectCount(
+                  //           decodedJson['data'], decodedJson['data']['id']);
+                  //     }
+                  //   }
+
+                  //   if (decodedJson != null
+                  //       ? decodedJson['status'] == 200 &&
+                  //               decodedJson['data'] != null
+                  //           ? decodedJson['data']['id'] != null
+                  //               ? bungalow_count != null
+                  //                   ? bungalow_count >= 100
+                  //                       ? true
+                  //                       : false
+                  //                   : false
+                  //               : false
+                  //           : false
+                  //       : false) {
+                  //     Navigator.of(context).pushNamed(StepPages.namedRoute);
+                  //     cont.getData();
+                  //     cont.printData;
+                  //   } else {
+                  //     showMaxProjectPremiumDialogue(context);
+                  //   }
+                  // },
                   onTap: () async {
                     final SharedPreferences prefs =
                         await SharedPreferences.getInstance();
                     String? resultData = prefs.getString('userData');
-
                     var decodedJson;
                     if (resultData != null) {
                       decodedJson = jsonDecode(resultData);
+
                       if (decodedJson['data'] != null) {
-                        bungalow_count = await cont.projectCount(
+                        bungalow_count = await projectCount(
                             decodedJson['data'], decodedJson['data']['id']);
                       }
                     }
-
                     if (decodedJson != null
                         ? decodedJson['status'] == 200 &&
                                 decodedJson['data'] != null
                             ? decodedJson['data']['id'] != null
-                                ? bungalow_count != null
-                                    ? bungalow_count <= 1
-                                        ? true
-                                        : false
-                                    : false
+                                ? true
                                 : false
                             : false
                         : false) {
+                      if (bungalow_count != null
+                          ? bungalow_count >= 1
+                              ? true
+                              : false
+                          : false) {
+                        showMaxProjectPremiumDialogue(context);
+                        return;
+                      }
                       Navigator.of(context).pushNamed(StepPages.namedRoute);
-                      cont.getData();
-                      cont.printData;
                     } else {
-                      showMaxProjectPremiumDialogue(context);
+                      showDialog(
+                          builder: (context) => loginDialog(context),
+                          context: (context));
                     }
                   },
                   child: Card(
