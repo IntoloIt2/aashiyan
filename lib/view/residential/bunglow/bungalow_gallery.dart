@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:aashiyan/components/contants.dart';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/controller/api_services.dart';

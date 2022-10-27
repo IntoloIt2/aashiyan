@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:aashiyan/components/bungalow_steps.dart';
-import 'package:aashiyan/components/contants.dart';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/components/project_category.dart';
 import 'package:aashiyan/controller/api_controller.dart';
@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../components/app_bar.dart';
@@ -53,7 +54,16 @@ class _BunglowState extends State<Bunglow> {
               "2. If you want to have similar app with your customization, name and style kindly reach out to us on +918109093551 or by the call option down below."),
         ]),
         actions: <Widget>[
-          TextButton(onPressed: (() {}), child: const Text("CALL")),
+          TextButton(
+              onPressed: (() {
+                final Uri launchUri = Uri(
+                  scheme: 'tel',
+                  path: PHONE_NO,
+                );
+                UrlLauncher.launchUrl(launchUri,
+                    mode: UrlLauncher.LaunchMode.platformDefault);
+              }),
+              child: const Text("CALL")),
           TextButton(onPressed: (() {}), child: const Text("PAYMENT"))
         ],
       ),
@@ -198,7 +208,7 @@ class _BunglowState extends State<Bunglow> {
                             : false
                         : false) {
                       if (bungalow_count != null
-                          ? bungalow_count >= 1
+                          ? bungalow_count >= 100
                               ? true
                               : false
                           : false) {

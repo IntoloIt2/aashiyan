@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../components/contants.dart';
+import '../../../components/constant.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
@@ -342,25 +342,23 @@ class _EntranceState extends State<Entrance> {
     }
   }
 
-    Future<dynamic> getUserId() async {
-       final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  Future<dynamic> getUserId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('userData');
     project_id = prefs.getInt('projectId');
-    
     getData(project_id);
     var decJson;
     if (userData != null) {
       decJson = jsonDecode(userData);
     }
     user_id = decJson['data']['id'];
-
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
     getUserId();
 
     final store = Provider.of<PageNavProvider>(context, listen: false);

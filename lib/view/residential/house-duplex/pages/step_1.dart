@@ -2,7 +2,8 @@
 
 import 'dart:convert';
 import 'dart:core';
-import 'package:aashiyan/components/contants.dart';
+import 'dart:ffi';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/forms.dart' as Forms;
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
@@ -114,7 +115,6 @@ class _Step_1State extends State<Step_1> {
         text: calculation.toString(),
       );
     }
-
     return calculation;
   }
 
@@ -221,23 +221,30 @@ class _Step_1State extends State<Step_1> {
             diagonal2Controller = printData["project"]["diagonal_2"] != null
                 ? printData["project"]["diagonal_2"].toString()
                 : '';
-            eastController = printData["project"]["east_property"] != null
-                ? printData["project"]["east_property"].toString()
+            eastController = printData["project"]["east_road_width"] != null
+                ? printData["project"]["east_road_width"].toString()
                 : "";
-            westController = printData["project"]["west_property"] != null
-                ? printData["project"]["west_property"].toString()
+
+            westController = printData["project"]["west_road_width"] != null
+                ? printData["project"]["west_road_width"].toString()
                 : "";
-            northController = printData["project"]["north_property"] != null
-                ? printData["project"]["north_property"].toString()
+            northController = printData["project"]["north_road_width"] != null
+                ? printData["project"]["north_road_width"].toString()
                 : "";
-            southController = printData["project"]["south_property"] != null
-                ? printData["project"]["south_property"].toString()
+            southController = printData["project"]["south_road_width"] != null
+                ? printData["project"]["south_road_width"].toString()
                 : "";
-            levelController = printData["project"]["level"] != null
-                ? printData["project"]["level"].toString()
+            levelController = printData["project"]["level_value"] != null
+                ? printData["project"]["level_value"].toString()
                 : "";
             plotValue.text = printData["project"]["plot_size"] != null
                 ? printData["project"]["plot_size"].toString()
+                : "";
+            stateId = printData["project"]["state"] != null
+                ? printData["project"]["state"]
+                : "";
+            cityId = printData["project"]["city"] != null
+                ? printData["project"]["city"]
                 : "";
           }
         });
@@ -260,14 +267,25 @@ class _Step_1State extends State<Step_1> {
        final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('userData');
     project_id = prefs.getInt('projectId');
-    // print('project_id==');
-    // print(project_id);
+    projectTypeId = prefs.getInt('projectTypeId');
+    projectGroupId = prefs.getInt('projectGroupId');
+
+    // projectTypeId = prefs.getInt('');
+    // print('projectGroupId==');
+    // print(projectGroupId);
+    // print('projectTypeId==');
+    // print(projectTypeId);
     getData(project_id);
     var decJson;
     if (userData != null) {
       decJson = jsonDecode(userData);
     }
     user_id = decJson['data']['id'];
+  }
+
+  Future<void> setDimension(dimension) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('dimension', dimenInt);
   }
 
   @override
@@ -279,20 +297,20 @@ class _Step_1State extends State<Step_1> {
     var residentProvider =
         Provider.of<ResidentialProvider>(context, listen: false);
 
-    var group_temp = residentProvider.getProjectGroupData();
+    // var group_temp = residentProvider.getProjectGroupData();
 
-    group_temp.then(
-      (value) {
-        projectGroupId = value;
-      },
-    );
+    // group_temp.then(
+    //   (value) {
+    //     projectGroupId = value;
+    //   },
+    // );
 
-    var type_temp = residentProvider.getProjectType();
-    type_temp.then(
-      (value) {
-        projectTypeId = value;
-      },
-    );
+    // var type_temp = residentProvider.getProjectType();
+    // type_temp.then(
+    //   (value) {
+    //     projectTypeId = value;
+    //   },
+    // );
     getCities();
     getState();
 
@@ -1826,21 +1844,26 @@ class _Step_1State extends State<Step_1> {
                                   .toList(),
                               onChanged: (it) => setState(() {
                                 selectedLevel = it!;
-                                if (it == "Up") {
+                                if (it == PLOT_LEVEL_UP) {
                                   if (printData['project'] != null) {
-                                    printData['project']['level'] = 2;
+                                    printData['project']['level'] = LEVEL_UP;
                                   }
-                                  selectedLevelInt = 2;
-                                } else if (it == "Down") {
+                                  selectedLevelInt = LEVEL_UP;
+                                } else if (it == PLOT_LEVEL_DOWN) {
                                   if (printData['project'] != null) {
-                                    printData['project']['level'] = 3;
+                                    printData['project']['level'] = LEVEL_DOWN;
                                   }
-                                  selectedLevelInt = 3;
-                                } else if (it == "Almost same level") {
+                                  selectedLevelInt = LEVEL_DOWN;
+                                } else if (it == PLOT_LEVEL_SAME) {
                                   if (printData['project'] != null) {
-                                    printData['project']['level'] = 1;
+                                    printData['project']['level'] =
+                                        LEVEL_ALMOST;
                                   }
-                                  selectedLevelInt = 1;
+                                  selectedLevelInt = LEVEL_ALMOST;
+                                } else {
+                                  if (printData['project'] != null) {
+                                    printData['project']['level'] = 0;
+                                  }
                                 }
                               }),
                             ),
@@ -1848,7 +1871,11 @@ class _Step_1State extends State<Step_1> {
                         ),
                       ),
                     ),
-                    if (selectedLevel == "Up") ...[
+                    if (printData['project'] != null
+                        ? printData['project']['level'] == LEVEL_UP
+                            ? true
+                            : false
+                        : selectedLevel == PLOT_LEVEL_UP) ...[
                       Material(
                         elevation: 5,
                         borderRadius:
@@ -1859,8 +1886,8 @@ class _Step_1State extends State<Step_1> {
                           child: TextFormField(
                             // controller: nameController,
                             initialValue: printData['project'] != null
-                                ? printData["project"]['level_value_feet']
-                                : lengthController,
+                                ? printData["project"]['level_value']
+                                : levelController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Road width",
@@ -1884,7 +1911,11 @@ class _Step_1State extends State<Step_1> {
                       ),
                       valueContainer(height, width, size, 0.039, 0.05)
                     ],
-                    if (selectedLevel == "Down") ...[
+                    if (printData['project'] != null
+                        ? printData['project']['level'] == LEVEL_DOWN
+                            ? true
+                            : false
+                        : selectedLevel == PLOT_LEVEL_DOWN) ...[
                       Material(
                         elevation: 5,
                         borderRadius:
@@ -1895,7 +1926,7 @@ class _Step_1State extends State<Step_1> {
                           child: TextFormField(
                             // controller: nameController,
                             initialValue: printData['project'] != null
-                                ? printData["project"]['level_value_feet']
+                                ? printData["project"]['level_value']
                                 : levelController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
@@ -1941,6 +1972,10 @@ class _Step_1State extends State<Step_1> {
 
                         if (size == "m") {
                           dimenInt = 2;
+                          setDimension(dimenInt);
+                        } else {
+                          dimenInt = 1;
+                          setDimension(1);
                         }
                         if (regularPlotValue == true) {
                           // isNotRegular = 1;
@@ -1997,7 +2032,7 @@ class _Step_1State extends State<Step_1> {
                       nameController,
                       lastNameController,
                       emailController,
-                      1,
+                      COUNTRY_ID,
                       stateId,
                       cityId,
                       addressController,
