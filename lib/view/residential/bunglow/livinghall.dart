@@ -351,12 +351,12 @@ class _LivingHallState extends State<LivingHall> {
     getData(179);
     final store = Provider.of<PageNavProvider>(context, listen: false);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (store.getId() == 0) {
-      } else {
-        getData(store.getId());
-      }
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (store.getId() == 0) {
+    //   } else {
+    //     getData(store.getId());
+    //   }
+    // });
     if (printData == null) {
       isloading = true;
     }
@@ -1227,7 +1227,6 @@ class _LivingHallState extends State<LivingHall> {
 
                     initialValue: printData != null &&
                             printData['bungalow_drawing_hall'] != null
-
                         ? printData['bungalow_drawing_hall']
                                     ['kitchen_length'] !=
                                 null
@@ -1863,7 +1862,8 @@ class _LivingHallState extends State<LivingHall> {
                   child: TextFormField(
                     initialValue: printData != null &&
                             printData['bungalow_drawing_hall']
-                                    ['specific_req'] != null
+                                    ['specific_req'] !=
+                                null
                         ? printData['bungalow_drawing_hall']['specific_req']
                         : '',
                     style: const TextStyle(fontSize: 14),

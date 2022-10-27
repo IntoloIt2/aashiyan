@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:aashiyan/components/app_bar.dart';
-import 'package:aashiyan/components/contants.dart';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/project_category.dart';
 import 'package:aashiyan/view/residential/house-duplex/pages/pageNav.dart';
 import 'package:flutter/material.dart';

@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, curly_braces_in_flow_control_structures, sized_box_for_whitespace
 
-import 'package:aashiyan/components/contants.dart';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/view/residential/bunglow/bungalow_detail.dart';
 import 'package:aashiyan/view/residential/bunglow/entrance.dart';

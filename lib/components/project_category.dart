@@ -8,7 +8,7 @@ import 'package:aashiyan/view/residential.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../view/residential/bunglow/interior_design.dart';
-import 'contants.dart';
+import 'constant.dart';
 import 'steps_container.dart';
 
 SingleChildScrollView projectCategory() {
