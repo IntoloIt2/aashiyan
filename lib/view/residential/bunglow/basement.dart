@@ -1,7 +1,7 @@
 // ignore_for_file: unused_import, use_key_in_widget_constructors, prefer_typing_uninitialized_variables, unnecessary_null_comparison, non_constant_identifier_names, avoid_print, prefer_if_null_operators, avoid_unnecessary_containers, sized_box_for_whitespace, must_be_immutable
 
 import 'dart:convert';
-import 'package:aashiyan/components/contants.dart';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';

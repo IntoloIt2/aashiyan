@@ -6,7 +6,7 @@ import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../components/contants.dart';
+import '../components/constant.dart';
 
 class Hospitals extends StatefulWidget {
   const Hospitals({super.key});

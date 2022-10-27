@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../components/contants.dart';
+import '../../../components/constant.dart';
 import '../../../utils/helpers.dart';
 
 var projects;

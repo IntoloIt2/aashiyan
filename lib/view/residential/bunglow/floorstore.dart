@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
-import '../../../components/contants.dart' as constant;
+import '../../../components/constant.dart' as constant;
 
 class FloorStore extends StatefulWidget {
   const FloorStore({Key? key}) : super(key: key);

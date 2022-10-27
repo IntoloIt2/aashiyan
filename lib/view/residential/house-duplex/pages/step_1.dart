@@ -2,7 +2,8 @@
 
 import 'dart:convert';
 import 'dart:core';
-import 'package:aashiyan/components/contants.dart';
+import 'dart:ffi';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/forms.dart' as Forms;
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
@@ -260,14 +261,25 @@ class _Step_1State extends State<Step_1> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('userData');
     project_id = prefs.getInt('projectId');
-    // print('project_id==');
-    // print(project_id);
+    projectTypeId = prefs.getInt('projectTypeId');
+    projectGroupId = prefs.getInt('projectGroupId');
+
+    // projectTypeId = prefs.getInt('');
+    // print('projectGroupId==');
+    // print(projectGroupId);
+    // print('projectTypeId==');
+    // print(projectTypeId);
     getData(project_id);
     var decJson;
     if (userData != null) {
       decJson = jsonDecode(userData);
     }
     user_id = decJson['data']['id'];
+  }
+
+  Future<void> setDimension(dimension) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('dimension', dimenInt);
   }
 
   @override
@@ -279,20 +291,20 @@ class _Step_1State extends State<Step_1> {
     var residentProvider =
         Provider.of<ResidentialProvider>(context, listen: false);
 
-    var group_temp = residentProvider.getProjectGroupData();
+    // var group_temp = residentProvider.getProjectGroupData();
 
-    group_temp.then(
-      (value) {
-        projectGroupId = value;
-      },
-    );
+    // group_temp.then(
+    //   (value) {
+    //     projectGroupId = value;
+    //   },
+    // );
 
-    var type_temp = residentProvider.getProjectType();
-    type_temp.then(
-      (value) {
-        projectTypeId = value;
-      },
-    );
+    // var type_temp = residentProvider.getProjectType();
+    // type_temp.then(
+    //   (value) {
+    //     projectTypeId = value;
+    //   },
+    // );
     getCities();
     getState();
 
@@ -1941,6 +1953,7 @@ class _Step_1State extends State<Step_1> {
 
                         if (size == "m") {
                           dimenInt = 2;
+                          setDimension(dimenInt);
                         }
                         if (regularPlotValue == true) {
                           // isNotRegular = 1;
@@ -1997,7 +2010,7 @@ class _Step_1State extends State<Step_1> {
                       nameController,
                       lastNameController,
                       emailController,
-                      1,
+                      COUNTRY_ID,
                       stateId,
                       cityId,
                       addressController,

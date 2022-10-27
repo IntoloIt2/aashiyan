@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:aashiyan/components/bungalow_steps.dart';
-import 'package:aashiyan/components/contants.dart';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/components/project_category.dart';
 import 'package:aashiyan/controller/api_controller.dart';

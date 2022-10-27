@@ -32,6 +32,8 @@ List<String> PROJECT_TYPE = [
 
 // ignore: non_constant_identifier_names
 int STATE_ID = 1;
+
+const COUNTRY_ID = 1;
 // ignore: non_constant_identifier_names
 int EAST_OTHER_PROPERTY = 2;
 // ignore: non_constant_identifier_names
