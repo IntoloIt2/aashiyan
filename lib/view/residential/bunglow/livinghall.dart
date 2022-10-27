@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:aashiyan/components/contants.dart';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -32,7 +33,7 @@ class _LivingHallState extends State<LivingHall> {
     "3rd Floor",
     "other"
   ];
-
+  var project_id;
   String selectedFloor = "Select";
   int livingHallLocation = 1;
   String livingHallArea = "";
@@ -362,9 +363,23 @@ class _LivingHallState extends State<LivingHall> {
 
   bool isloading = false;
 
+  // Future<dynamic> getUserId() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? userData = prefs.getString('userData');
+  //   project_id = prefs.getString('projectId');
+
+  //   getData(project_id);
+  //   var decJson;
+  //   if (userData != null) {
+  //     decJson = jsonDecode(userData);
+  //   }
+  //   user_id = decJson['data']['id'];
+  // }
+
   @override
   void initState() {
     super.initState();
+
 
     final store = Provider.of<PageNavProvider>(context, listen: false);
     
@@ -377,9 +392,11 @@ class _LivingHallState extends State<LivingHall> {
     //   }
     // });
 
+
     if (printData == null) {
       isloading = true;
     }
+
   }
 
   void multiSelected() async {
@@ -2017,7 +2034,7 @@ class _LivingHallState extends State<LivingHall> {
                 print(LivingHallWidthController);
 
                 livingHallput(
-                  provider.project_id,
+                  project_id,
                   drawingInt,
                   drawingHallLocation,
                   drawingHallLengthController,
@@ -2044,7 +2061,7 @@ class _LivingHallState extends State<LivingHall> {
                 );
               } else {
                 livingHallPost(
-                  provider.project_id,
+                  project_id,
                   drawingInt,
                   drawingHallLocation,
                   drawingHallLengthController,
