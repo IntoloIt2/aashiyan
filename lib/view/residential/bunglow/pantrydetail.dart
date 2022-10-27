@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import '../house-duplex/providers/page_nav_provider.dart';
 
 class PantryDetail extends StatefulWidget {
+  
   static const namedRoute = "/pantrydetails";
   @override
   State<PantryDetail> createState() => _PantryDetailState();
