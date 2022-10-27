@@ -4,8 +4,10 @@ import 'package:aashiyan/components/forms.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
+import '../../../components/contants.dart';
 
 class FloorStore extends StatefulWidget {
   const FloorStore({Key? key}) : super(key: key);
@@ -24,7 +26,8 @@ class _FloorStoreState extends State<FloorStore> {
   String passengerCapacityControler = ' ';
   String poojaLengthController = ' ';
   String poojaWidthController = ' ';
-  String poojaRoomLocationController = ' ';
+  String poojaRoomLocationController = '';
+  int? project_id;
 
   String liftArea = "";
 
@@ -95,7 +98,7 @@ class _FloorStoreState extends State<FloorStore> {
 
   var printData;
   int? pageId;
-  Future<void> getData() async {
+  Future<void> getData(int id) async {
     try {
       // var client = http.Client();
       // http://sdplweb.com/sdpl/api/edit-bungalow-floor-store/project_id
@@ -103,7 +106,7 @@ class _FloorStoreState extends State<FloorStore> {
 
       var response = await http.get(
         Uri.parse(
-          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-floor-store/179",
+          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-floor-store/$id",
         ),
       );
 
@@ -111,7 +114,6 @@ class _FloorStoreState extends State<FloorStore> {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
-
 
           if (printData != null) {
             FloorStoreDetail1 =
@@ -189,7 +191,6 @@ class _FloorStoreState extends State<FloorStore> {
                 printData["bungalow_floor_store"]["opening_to_li_ha"] != null
                     ? true
                     : openHall;
-
           }
         });
       }
@@ -198,10 +199,25 @@ class _FloorStoreState extends State<FloorStore> {
     }
   }
 
+  Future<dynamic> getUserId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userData = prefs.getString('userData');
+    project_id = prefs.getInt('projectId');
+
+    getData(project_id!);
+    var decJson;
+    if (userData != null) {
+      decJson = jsonDecode(userData);
+    }
+    user_id = decJson['data']['id'];
+  }
+
   @override
   void initState() {
     super.initState();
-    getData();
+    getUserId();
+
+    getData(project_id!);
     if (printData == null) {
       isloading = true;
     }
@@ -216,7 +232,6 @@ class _FloorStoreState extends State<FloorStore> {
         isloading = false;
       });
     }
-
 
     return SingleChildScrollView(
       child: Column(
@@ -249,8 +264,6 @@ class _FloorStoreState extends State<FloorStore> {
                                       FloorStoreDetail1 = value;
                                       FloorStoreDetail2 = false;
                                       print(FloorStoreDetail1);
-
-
                                     },
                                   );
                                 }),
@@ -259,7 +272,6 @@ class _FloorStoreState extends State<FloorStore> {
                         ],
                       ),
                     ),
-
                   ),
                 ],
               ),
@@ -268,11 +280,9 @@ class _FloorStoreState extends State<FloorStore> {
               ),
               Row(
                 children: [
-
                   SizedBox(
                     width: width * 0.05,
                   ),
-
                   Material(
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
@@ -291,7 +301,6 @@ class _FloorStoreState extends State<FloorStore> {
                                   () {
                                     FloorStoreDetail2 = value;
                                     FloorStoreDetail1 = false;
-
                                   },
                                 );
                               },
@@ -303,9 +312,7 @@ class _FloorStoreState extends State<FloorStore> {
                           )
                         ],
                       ),
-
                     ),
-
                   ),
                 ],
               ),
@@ -333,8 +340,6 @@ class _FloorStoreState extends State<FloorStore> {
                     margin: const EdgeInsets.all(
                       3,
                     ),
-
-
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                         icon: const Visibility(
@@ -384,8 +389,6 @@ class _FloorStoreState extends State<FloorStore> {
                               //   printData['bungalow_floor_store']
                               //       ['store_floor'] = 5;
                               // }
-
-
                             },
                           );
                         },
@@ -396,13 +399,10 @@ class _FloorStoreState extends State<FloorStore> {
                 SizedBox(
                   width: width * 0.02,
                 ),
-
                 if (selectedFloor == "other") ...[
                   Material(
                     elevation: 5,
                     borderRadius: const BorderRadius.all(Radius.circular(5)),
-
-
                     child: SizedBox(
                       height: height * 0.04,
                       width: width * 0.25,
@@ -445,8 +445,6 @@ class _FloorStoreState extends State<FloorStore> {
                 //
                 Material(
                   elevation: 5,
-
-
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
                   child: SizedBox(
                     height: height * 0.04,
@@ -466,8 +464,6 @@ class _FloorStoreState extends State<FloorStore> {
                           hintStyle: TextStyle(fontSize: 14),
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
-
-
                           ),
                           isDense: true,
                           contentPadding: EdgeInsets.all(8)
@@ -494,7 +490,6 @@ class _FloorStoreState extends State<FloorStore> {
                   width: width * 0.015,
                 ),
 
-
                 Material(
                   elevation: 5,
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -516,8 +511,6 @@ class _FloorStoreState extends State<FloorStore> {
                           hintStyle: TextStyle(fontSize: 14),
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
-
-
                           ),
                           isDense: true,
                           contentPadding: EdgeInsets.all(8)
@@ -617,7 +610,6 @@ class _FloorStoreState extends State<FloorStore> {
                         child: const Center(
                           child: CircularProgressIndicator(),
                         ),
-
                       );
                     } else {
                       return CarouselSlider.builder(
@@ -629,8 +621,6 @@ class _FloorStoreState extends State<FloorStore> {
                             child: Image.network(
                               imageUrl + bunglowPageRecentList[i]["img_path"],
                               fit: BoxFit.fill,
-
-
                             ),
                           );
                         },
@@ -645,7 +635,6 @@ class _FloorStoreState extends State<FloorStore> {
                     }
                   },
                 ),
-
               ),
             ),
           ),
@@ -721,7 +710,6 @@ class _FloorStoreState extends State<FloorStore> {
                                       notRequiredLift = false;
                                     },
                                   );
-
                                 }),
                           ),
                           requirementText("Required")
@@ -739,7 +727,6 @@ class _FloorStoreState extends State<FloorStore> {
                   SizedBox(
                     width: width * 0.05,
                   ),
-
                   Material(
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
@@ -759,7 +746,6 @@ class _FloorStoreState extends State<FloorStore> {
                                     requiredLift = false;
                                   });
                                 }),
-
                           ),
                           requirementText("Not Required"),
                           SizedBox(
@@ -783,8 +769,6 @@ class _FloorStoreState extends State<FloorStore> {
                 SizedBox(
                   width: width * 0.02,
                 ),
-
-
                 Material(
                   elevation: 5,
                   borderRadius: BorderRadius.circular(5),
@@ -813,7 +797,6 @@ class _FloorStoreState extends State<FloorStore> {
                                 it.value,
                                 style: const TextStyle(
                                   color: Colors.black,
-
                                 ),
                               ),
                             );
@@ -930,8 +913,6 @@ class _FloorStoreState extends State<FloorStore> {
                   SizedBox(
                     width: width * 0.05,
                   ),
-
-
                   Material(
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
@@ -946,11 +927,9 @@ class _FloorStoreState extends State<FloorStore> {
                                 checkColor: Colors.white,
                                 value: poojaRoomNotRequired,
                                 onChanged: (value) {
-
                                   setState(() {
                                     poojaRoomNotRequired = value;
                                     poojaRoomRequired = false;
-
                                   });
                                 }),
                           ),
@@ -962,8 +941,6 @@ class _FloorStoreState extends State<FloorStore> {
                       ),
                     ),
                   ),
-
-
                 ],
               ),
             ],
@@ -999,8 +976,6 @@ class _FloorStoreState extends State<FloorStore> {
                           hintStyle: TextStyle(fontSize: 14),
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
-
-
                           ),
                           isDense: true,
                           contentPadding: EdgeInsets.all(8)
@@ -1080,8 +1055,6 @@ class _FloorStoreState extends State<FloorStore> {
                   elevation: 5,
                   borderRadius: BorderRadius.circular(5),
                   child: Container(
-
-
                     height: height * 0.03,
                     margin: EdgeInsets.all(
                       3,
@@ -1113,8 +1086,6 @@ class _FloorStoreState extends State<FloorStore> {
                                 it.value,
                                 style: TextStyle(
                                   color: Colors.black,
-
-
                                 ),
                               ),
                             );
@@ -1204,17 +1175,12 @@ class _FloorStoreState extends State<FloorStore> {
                           );
                         },
                       ),
-
-
                     ),
-
-
                   ),
                 ),
                 SizedBox(
                   width: width * 0.02,
                 ),
-
               ],
             )
           ],
@@ -1242,7 +1208,6 @@ class _FloorStoreState extends State<FloorStore> {
                       hintStyle: TextStyle(fontSize: 14),
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
-
                       ),
                       isDense: true,
                       contentPadding: EdgeInsets.all(8)
@@ -1345,19 +1310,19 @@ class _FloorStoreState extends State<FloorStore> {
                   if (FloorStoreDetail1 == true) {
                     floorStoreInt = 1;
 
-                    if (selectedFloor == constant.G_FLOOR_TEXT) {
-                      storeFloor = constant.G_FLOOR.toString();
+                    if (selectedFloor == G_FLOOR_TEXT) {
+                      storeFloor = G_FLOOR.toString();
                     }
-                    if (selectedFloor == constant.G_1_FLOOR_TEXT) {
-                      storeFloor = constant.G_1_FLOOR.toString();
+                    if (selectedFloor == G_1_FLOOR_TEXT) {
+                      storeFloor = G_1_FLOOR.toString();
                     }
-                    if (selectedFloor == constant.G_2_FLOOR_TEXT) {
-                      storeFloor = constant.G_2_FLOOR.toString();
+                    if (selectedFloor == G_2_FLOOR_TEXT) {
+                      storeFloor = G_2_FLOOR.toString();
                     }
-                    if (selectedFloor == constant.G_3_FLOOR_TEXT) {
-                      storeFloor = constant.G_3_FLOOR.toString();
+                    if (selectedFloor == G_3_FLOOR_TEXT) {
+                      storeFloor = G_3_FLOOR.toString();
                     }
-                    if (selectedFloor == constant.OTHER_FLOOR_TEXT) {
+                    if (selectedFloor == OTHER_FLOOR_TEXT) {
                       storeFloor = floorStoreLocationController.toString();
                     }
                   }
@@ -1407,7 +1372,7 @@ class _FloorStoreState extends State<FloorStore> {
               if (pageId != null)
                 {
                   flooreStorePut(
-                    provider.project_id,
+                    project_id!,
                     floorStoreInt,
                     floorStoreLengthController,
                     floorStoreWidthController,
@@ -1427,7 +1392,7 @@ class _FloorStoreState extends State<FloorStore> {
               else
                 {
                   flooreStorePost(
-                    provider.project_id,
+                    project_id!,
                     floorStoreInt,
                     floorStoreLengthController,
                     floorStoreWidthController,

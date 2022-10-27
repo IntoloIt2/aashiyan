@@ -5,6 +5,7 @@ import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provid
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../components/forms.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
@@ -18,6 +19,8 @@ class LivingHall extends StatefulWidget {
 }
 
 class _LivingHallState extends State<LivingHall> {
+  var user_id;
+
   List<String> otherFeatures = [];
   List livingHall = [];
 
@@ -123,6 +126,7 @@ class _LivingHallState extends State<LivingHall> {
   bool? drawingHallNotRequired = false;
 
   int drawingInt = 0;
+
   // String drawingArea = "0";
   List<String> otherItems = ["Double Height", "Powder Toilet"];
 
@@ -343,20 +347,36 @@ class _LivingHallState extends State<LivingHall> {
     }
   }
 
+  Future<dynamic> getUserId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userData = prefs.getString('userData');
+    project_id = prefs.getInt('projectId')!;
+
+    getData(project_id);
+    var decJson;
+    if (userData != null) {
+      decJson = jsonDecode(userData);
+    }
+    user_id = decJson['data']['id'];
+  }
+
   bool isloading = false;
 
   @override
   void initState() {
     super.initState();
-    getData(179);
-    final store = Provider.of<PageNavProvider>(context, listen: false);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (store.getId() == 0) {
-      } else {
-        getData(store.getId());
-      }
-    });
+    final store = Provider.of<PageNavProvider>(context, listen: false);
+    
+    getUserId();
+
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (store.getId() == 0) {
+    //   } else {
+    //     getData(store.getId());
+    //   }
+    // });
+
     if (printData == null) {
       isloading = true;
     }
@@ -1227,7 +1247,6 @@ class _LivingHallState extends State<LivingHall> {
 
                     initialValue: printData != null &&
                             printData['bungalow_drawing_hall'] != null
-
                         ? printData['bungalow_drawing_hall']
                                     ['kitchen_length'] !=
                                 null
@@ -1863,7 +1882,8 @@ class _LivingHallState extends State<LivingHall> {
                   child: TextFormField(
                     initialValue: printData != null &&
                             printData['bungalow_drawing_hall']
-                                    ['specific_req'] != null
+                                    ['specific_req'] !=
+                                null
                         ? printData['bungalow_drawing_hall']['specific_req']
                         : '',
                     style: const TextStyle(fontSize: 14),
