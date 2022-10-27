@@ -105,12 +105,32 @@ class _HouseDuplexState extends State<HouseDuplex> {
                 ),
               ),
               title: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PreExisting(),
-                      ));
+                onTap: () async {
+                  final SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  String? resultData = prefs.getString("userData");
+                  var decodedJson;
+                  if (resultData != null) {
+                    decodedJson = jsonDecode(resultData);
+                  }
+                  if (decodedJson != null
+                      ? decodedJson['status'] == 200 &&
+                              decodedJson['data'] != null
+                          ? decodedJson['data']['id'] != null
+                              ? true
+                              : false
+                          : false
+                      : false) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PreExisting(),
+                        ));
+                  } else {
+                    showDialog(
+                        builder: (context) => loginDialog(context),
+                        context: (context));
+                  }
                 },
                 child: Text(
                   "Pre-existing",
