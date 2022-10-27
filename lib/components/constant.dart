@@ -30,6 +30,10 @@ List<String> PROJECT_TYPE = [
   "interior designs"
 ];
 
+// Entrance
+String OutSideOpen = '1';
+String OutSideClosed = '2';
+
 // ignore: non_constant_identifier_names
 int STATE_ID = 1;
 

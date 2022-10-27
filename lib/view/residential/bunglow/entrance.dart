@@ -5,7 +5,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-import '../../../components/contants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../components/constant.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
@@ -53,6 +54,8 @@ class _EntranceState extends State<Entrance> {
   String verandaWidthController = ' ';
   String verandaLengthController = ' ';
   List porchRequiredFaci = [];
+
+  var project_id;
 
   void floor() {
     setState(() {
@@ -339,21 +342,35 @@ class _EntranceState extends State<Entrance> {
     }
   }
 
+  Future<dynamic> getUserId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userData = prefs.getString('userData');
+    project_id = prefs.getInt('projectId');
+
+    getData(project_id);
+    var decJson;
+    if (userData != null) {
+      decJson = jsonDecode(userData);
+    }
+    user_id = decJson['data']['id'];
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    getUserId();
+
     final store = Provider.of<PageNavProvider>(context, listen: false);
 
-    print('store.getId()');
-    print(store.getId());
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (store.getId() == 0) {
-        printData = {"project": null};
-      } else {
-        getData(store.getId());
-      }
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (store.getId() == 0) {
+    //     printData = {"project": null};
+    //   } else {
+    //     getData(store.getId());
+    //   }
+    // });
 
     if (printData == null) {
       setState(() {
