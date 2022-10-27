@@ -2102,7 +2102,7 @@ class _Step_1State extends State<Step_1> {
                           setDimension(dimenInt);
                         } else {
                           dimenInt = 1;
-                          setDimension(1);
+                          setDimension(dimenInt);
                         }
                         if (regularPlotValue == true) {
                           // isNotRegular = 1;
