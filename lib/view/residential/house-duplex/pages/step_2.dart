@@ -2,10 +2,13 @@
 
 import 'dart:convert';
 
+import 'package:aashiyan/components/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Step_2 extends StatefulWidget {
   const Step_2({super.key});
@@ -16,18 +19,30 @@ class Step_2 extends StatefulWidget {
 
 class _Step_2State extends State<Step_2> {
   String selectedFloorItems = "Select floor";
+  int ConstfloorItems = 0;
   bool vastuStatus = false;
   bool consultExpert = false;
   bool porchRequired = false;
   bool porchNotRequired = false;
-  num porchLength = 0;
-  num porchWidth = 0;
+  String? porchLength;
+  String? porchWidth;
+
+  void showToast(msg, toastColor, GRAVITY) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 0,
+        backgroundColor: toastColor,
+        textColor: Colors.white);
+  }
 
   List<String> floorItems = [
     "Select floor",
     "Ground floor(G)",
     "1st floor(G+1)",
-    "2nd floor(G+1)"
+    "2nd floor(G+1)",
+    "3rd floor(G+1)"
   ];
 
   @override
@@ -37,19 +52,36 @@ class _Step_2State extends State<Step_2> {
 
     Future<void> saveFlatEntrance() async {
       try {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        var dimension = prefs.getInt('dimension');
+        var projectId = prefs.getInt('projectId');
+
         var body = {
+          "project_id": projectId,
+          "dimension": dimension,
           "floor": selectedFloorItems,
-          "vastu": vastuStatus,
+          "vastu": vastuStatus ? 1 : 0,
           "porch_req": porchRequired ? 1 : 0,
           "porch_length": porchLength,
           "porch_width": porchWidth
         };
+        // print('body===');
+        // print(body);
         var response = await http.post(
-            Uri.parse("${dotenv.env['API_URL']}flat-house-entrance"),
+            Uri.parse("${dotenv.env['APP_URL']}flat-house-entrance"),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
             body: jsonEncode(body));
+        // print(response);
+        var temp = jsonDecode(response.body);
+
+        print('temp==');
+        print(temp);
+        // if (temp['status'] == 200) {
+        //   showToast('Entrance Requirement Submitted !', Colors.lightGreen,
+        //       ToastGravity.TOP);
+        // }
       } catch (e) {}
     }
 
@@ -85,7 +117,13 @@ class _Step_2State extends State<Step_2> {
                         .toList(),
                     onChanged: (value) {
                       setState(() {
-                        selectedFloorItems = value!;
+                        if (value == G_FLOOR_TEXT) {
+                          ConstfloorItems = 1;
+                        } else if (value == G_1_FLOOR_TEXT) {
+                          ConstfloorItems = 2;
+                        } else if (value == G_2_FLOOR_TEXT) {
+                          ConstfloorItems = 3;
+                        }
                       });
                     }),
                 // SizedBox(
@@ -229,9 +267,9 @@ class _Step_2State extends State<Step_2> {
                                         hintStyle: TextStyle(fontSize: 14),
                                         isDense: true,
                                         contentPadding: EdgeInsets.all(0)),
-                                    initialValue: porchLength.toString(),
+                                    initialValue: porchLength,
                                     onChanged: (value) {
-                                      porchLength = int.parse(value);
+                                      porchLength = value;
                                     },
                                   )),
                             )
@@ -252,9 +290,9 @@ class _Step_2State extends State<Step_2> {
                                         hintStyle: TextStyle(fontSize: 14),
                                         isDense: true,
                                         contentPadding: EdgeInsets.all(1)),
-                                    initialValue: porchLength.toString(),
+                                    initialValue: porchWidth,
                                     onChanged: (value) {
-                                      porchWidth = int.parse(value);
+                                      porchWidth = value;
                                     },
                                   )),
                             ),

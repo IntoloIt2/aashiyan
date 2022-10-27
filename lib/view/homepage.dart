@@ -1,6 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, deprecated_member_use
 
-import 'package:aashiyan/components/contants.dart';
+import 'package:aashiyan/components/constant.dart';
 
 // ignore_for_file: sort_child_properties_last, sized_box_for_whitespace, avoid_unnecessary_containers
 
@@ -11,6 +11,7 @@ import 'package:aashiyan/view/residential.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../components/project_category.dart';
 import '../controller/api_services.dart';
@@ -80,8 +81,11 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     projectCategory(),
                     InkWell(
-                      onTap: (() {
+                      onTap: (() async {
                         Navigator.of(context).pushNamed(Residential.namedRoute);
+                        final SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        prefs.setInt('projectGroupId', RESIDENTIAL);
                       }),
                       child: Container(
                         height: MediaQuery.of(context).size.height * 0.35,

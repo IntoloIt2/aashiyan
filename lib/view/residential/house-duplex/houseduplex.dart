@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:aashiyan/components/app_bar.dart';
-import 'package:aashiyan/components/contants.dart';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/project_category.dart';
 import 'package:aashiyan/view/residential/house-duplex/pages/pageNav.dart';
 import 'package:flutter/material.dart';
@@ -105,12 +105,32 @@ class _HouseDuplexState extends State<HouseDuplex> {
                 ),
               ),
               title: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PreExisting(),
-                      ));
+                onTap: () async {
+                  final SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  String? resultData = prefs.getString("userData");
+                  var decodedJson;
+                  if (resultData != null) {
+                    decodedJson = jsonDecode(resultData);
+                  }
+                  if (decodedJson != null
+                      ? decodedJson['status'] == 200 &&
+                              decodedJson['data'] != null
+                          ? decodedJson['data']['id'] != null
+                              ? true
+                              : false
+                          : false
+                      : false) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PreExisting(),
+                        ));
+                  } else {
+                    showDialog(
+                        builder: (context) => loginDialog(context),
+                        context: (context));
+                  }
                 },
                 child: Text(
                   "Pre-existing",

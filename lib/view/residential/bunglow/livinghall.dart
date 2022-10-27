@@ -20,6 +20,8 @@ class LivingHall extends StatefulWidget {
 }
 
 class _LivingHallState extends State<LivingHall> {
+  var user_id;
+
   List<String> otherFeatures = [];
   List livingHall = [];
 
@@ -125,6 +127,7 @@ class _LivingHallState extends State<LivingHall> {
   bool? drawingHallNotRequired = false;
 
   int drawingInt = 0;
+
   // String drawingArea = "0";
   List<String> otherItems = ["Double Height", "Powder Toilet"];
 
@@ -345,6 +348,19 @@ class _LivingHallState extends State<LivingHall> {
     }
   }
 
+  Future<dynamic> getUserId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userData = prefs.getString('userData');
+    project_id = prefs.getInt('projectId')!;
+
+    getData(project_id);
+    var decJson;
+    if (userData != null) {
+      decJson = jsonDecode(userData);
+    }
+    user_id = decJson['data']['id'];
+  }
+
   bool isloading = false;
 
   // Future<dynamic> getUserId() async {
@@ -363,9 +379,24 @@ class _LivingHallState extends State<LivingHall> {
   @override
   void initState() {
     super.initState();
-    // getUserId();
-    getData(179);
+
+
     final store = Provider.of<PageNavProvider>(context, listen: false);
+    
+    getUserId();
+
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (store.getId() == 0) {
+    //   } else {
+    //     getData(store.getId());
+    //   }
+    // });
+
+
+    if (printData == null) {
+      isloading = true;
+    }
+
   }
 
   void multiSelected() async {

@@ -7,10 +7,14 @@ import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provid
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
 import 'package:provider/provider.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
-import '../../../components//contants.dart';
+import '../../../components//constant.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class FloorStore extends StatefulWidget {
   const FloorStore({Key? key}) : super(key: key);
@@ -29,7 +33,8 @@ class _FloorStoreState extends State<FloorStore> {
   String passengerCapacityControler = ' ';
   String poojaLengthController = ' ';
   String poojaWidthController = ' ';
-  String poojaRoomLocationController = ' ';
+  String poojaRoomLocationController = '';
+  int? project_id;
 
   String liftArea = "";
 
@@ -101,7 +106,7 @@ class _FloorStoreState extends State<FloorStore> {
   // ignore: prefer_typing_uninitialized_variables
   var printData;
   int? pageId;
-  Future<void> getData() async {
+  Future<void> getData(int id) async {
     try {
       // var client = http.Client();
       // http://sdplweb.com/sdpl/api/edit-bungalow-floor-store/project_id
@@ -109,7 +114,7 @@ class _FloorStoreState extends State<FloorStore> {
 
       var response = await http.get(
         Uri.parse(
-          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-floor-store/179",
+          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-floor-store/$id",
         ),
       );
 
@@ -205,10 +210,25 @@ class _FloorStoreState extends State<FloorStore> {
     }
   }
 
+  Future<dynamic> getUserId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userData = prefs.getString('userData');
+    project_id = prefs.getInt('projectId');
+
+    getData(project_id!);
+    var decJson;
+    if (userData != null) {
+      decJson = jsonDecode(userData);
+    }
+    user_id = decJson['data']['id'];
+  }
+
   @override
   void initState() {
     super.initState();
-    getData();
+    getUserId();
+
+    getData(project_id!);
     if (printData == null) {
       isloading = true;
     }
@@ -255,6 +275,7 @@ class _FloorStoreState extends State<FloorStore> {
                                     () {
                                       FloorStoreDetail1 = value;
                                       FloorStoreDetail2 = false;
+
                                     },
                                   );
                                 }),
@@ -596,8 +617,10 @@ class _FloorStoreState extends State<FloorStore> {
                   future: getRecent(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
+
                       return const Center(
                         child: CircularProgressIndicator(),
+
                       );
                     } else {
                       return CarouselSlider.builder(
@@ -1367,7 +1390,7 @@ class _FloorStoreState extends State<FloorStore> {
                 {
                   print("updating a data "),
                   flooreStorePut(
-                    provider.project_id,
+                    project_id!,
                     floorStoreInt,
                     floorStoreLengthController,
                     floorStoreWidthController,
@@ -1387,7 +1410,7 @@ class _FloorStoreState extends State<FloorStore> {
               else
                 {
                   flooreStorePost(
-                    provider.project_id,
+                    project_id!,
                     floorStoreInt,
                     floorStoreLengthController,
                     floorStoreWidthController,
