@@ -30,10 +30,22 @@ List<String> PROJECT_TYPE = [
   "interior designs"
 ];
 
-
 // Entrance
 String OutSideOpen = '1';
 String OutSideClosed = '2';
+
+String VISUAL_NATURE = '1';
+
+const ENT_SELECT = "Select";
+const ENT_GROUND_FLOOR = "1(G)";
+const ENT_FIRST_FLOOR = "2(G+1)";
+const ENT_SECOND_FLOOR = "3(G+2)";
+const ENT_THIRD_FLOOR = "4(G+3)";
+const ENT_MORE_FLOOR = "more";
+const ENT_ADJACENT = "Adjacent";
+const ONE_GATE = "One Gate";
+const TWO_GATE = "Two Gate";
+const S_ELECT = 0;
 
 // ignore: non_constant_identifier_names
 int STATE_ID = 1;
@@ -101,7 +113,7 @@ const PRAJWAL_SIR = 5;
 const MIX_USE = 1;
 const MALL_MULTIPLESER = 2;
 const HOSPITAL = 3;
-const   HOSPITALITY = 4;
+const HOSPITALITY = 4;
 const RESIDENTIAL = 5;
 //const TOWNSHIP = 6;
 const COMMERCIAL_SHOWROOM_OFFICE = 7;
