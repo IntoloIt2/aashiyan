@@ -2,7 +2,8 @@
 
 import 'dart:convert';
 import 'dart:core';
-import 'package:aashiyan/components/contants.dart';
+import 'dart:ffi';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/forms.dart' as Forms;
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
@@ -114,6 +115,7 @@ class _Step_1State extends State<Step_1> {
         text: calculation.toString(),
       );
     }
+
     plotValue.text = calculation;
     print(plotValue.text);
     print(calculation);
@@ -140,6 +142,7 @@ class _Step_1State extends State<Step_1> {
       print(plotValue.text);
       print(calculation);
     }
+
     return calculation;
   }
 
@@ -260,26 +263,34 @@ class _Step_1State extends State<Step_1> {
             diagonal2Controller = printData["project"]["diagonal_2"] != null
                 ? printData["project"]["diagonal_2"].toString()
                 : '';
-            eastController = printData["project"]["east_property"] != null
-                ? printData["project"]["east_property"].toString()
+            eastController = printData["project"]["east_road_width"] != null
+                ? printData["project"]["east_road_width"].toString()
                 : "";
-            westController = printData["project"]["west_property"] != null
-                ? printData["project"]["west_property"].toString()
+
+            westController = printData["project"]["west_road_width"] != null
+                ? printData["project"]["west_road_width"].toString()
                 : "";
-            northController = printData["project"]["north_property"] != null
-                ? printData["project"]["north_property"].toString()
+            northController = printData["project"]["north_road_width"] != null
+                ? printData["project"]["north_road_width"].toString()
                 : "";
-            southController = printData["project"]["south_property"] != null
-                ? printData["project"]["south_property"].toString()
+            southController = printData["project"]["south_road_width"] != null
+                ? printData["project"]["south_road_width"].toString()
                 : "";
-            levelController = printData["project"]["level"] != null
-                ? printData["project"]["level"].toString()
+            levelController = printData["project"]["level_value"] != null
+                ? printData["project"]["level_value"].toString()
                 : "";
-            totalCalculated();
+         
             plotValue.text = printData["project"]["plot_size"] != null
                 ? printData["project"]["plot_size"].toString()
                 : "";
-            totalCalculated();
+
+            stateId = printData["project"]["state"] != null
+                ? printData["project"]["state"]
+                : "";
+            cityId = printData["project"]["city"] != null
+                ? printData["project"]["city"]
+                : "";
+
           }
         });
       }
@@ -301,14 +312,19 @@ class _Step_1State extends State<Step_1> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('userData');
     project_id = prefs.getInt('projectId');
-    // print('project_id==');
-    // print(project_id);
+    projectTypeId = prefs.getInt('projectTypeId');
+    projectGroupId = prefs.getInt('projectGroupId');
     getData(project_id);
     var decJson;
     if (userData != null) {
       decJson = jsonDecode(userData);
     }
     user_id = decJson['data']['id'];
+  }
+
+  Future<void> setDimension(dimension) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('dimension', dimenInt);
   }
 
   @override
@@ -320,20 +336,20 @@ class _Step_1State extends State<Step_1> {
     var residentProvider =
         Provider.of<ResidentialProvider>(context, listen: false);
 
-    var group_temp = residentProvider.getProjectGroupData();
+    // var group_temp = residentProvider.getProjectGroupData();
 
-    group_temp.then(
-      (value) {
-        projectGroupId = value;
-      },
-    );
+    // group_temp.then(
+    //   (value) {
+    //     projectGroupId = value;
+    //   },
+    // );
 
-    var type_temp = residentProvider.getProjectType();
-    type_temp.then(
-      (value) {
-        projectTypeId = value;
-      },
-    );
+    // var type_temp = residentProvider.getProjectType();
+    // type_temp.then(
+    //   (value) {
+    //     projectTypeId = value;
+    //   },
+    // );
     getCities();
     getState();
     apiRegularCalcuation();
@@ -1901,26 +1917,62 @@ class _Step_1State extends State<Step_1> {
                 SizedBox(
                   width: width * 0.01,
                 ),
-                valueContainer(height, width, size, 0.039, 0.05)
-              ],
-              if (selectedLevel == "Down") ...[
-                Material(
-                  elevation: 5,
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  child: SizedBox(
-                    height: height * 0.04,
-                    width: width * 0.22,
-                    child: TextFormField(
-                      // controller: nameController,
-                      initialValue: printData['project'] != null
-                          ? printData["project"]['level_value_feet']
-                          : levelController,
-                      style: const TextStyle(fontSize: 14),
-                      decoration: const InputDecoration(
-                        hintText: "Road width",
-                        hintStyle: TextStyle(fontSize: 14),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
+
+                Row(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Material(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          height: height * 0.04,
+                          padding: const EdgeInsets.all(5),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              hint: printData['project'] != null
+                                  // ? printData['project']['level'] != null
+                                  ? Text(
+                                      "${levels[printData['project']['level']]}")
+                                  // : Text(selectedLevel)
+                                  : Text(selectedLevel),
+                              // value: selectedLevel,
+                              icon: const Icon(Icons.keyboard_arrow_down_sharp),
+                              elevation: 16,
+                              items: levels
+                                  .map((it) => DropdownMenuItem<String>(
+                                        value: it,
+                                        child: Text(it,
+                                            style: TextStyle(
+                                                fontSize: height * 0.02)),
+                                      ))
+                                  .toList(),
+                              onChanged: (it) => setState(() {
+                                selectedLevel = it!;
+                                if (it == PLOT_LEVEL_UP) {
+                                  if (printData['project'] != null) {
+                                    printData['project']['level'] = LEVEL_UP;
+                                  }
+                                  selectedLevelInt = LEVEL_UP;
+                                } else if (it == PLOT_LEVEL_DOWN) {
+                                  if (printData['project'] != null) {
+                                    printData['project']['level'] = LEVEL_DOWN;
+                                  }
+                                  selectedLevelInt = LEVEL_DOWN;
+                                } else if (it == PLOT_LEVEL_SAME) {
+                                  if (printData['project'] != null) {
+                                    printData['project']['level'] =
+                                        LEVEL_ALMOST;
+                                  }
+                                  selectedLevelInt = LEVEL_ALMOST;
+                                } else {
+                                  if (printData['project'] != null) {
+                                    printData['project']['level'] = 0;
+                                  }
+                                }
+                              }),
+                            ),
+                          ),
+
                         ),
                         isDense: true,
                         contentPadding: EdgeInsets.all(8),
@@ -1930,7 +1982,94 @@ class _Step_1State extends State<Step_1> {
                         levelController = value;
                       },
                     ),
-                  ),
+
+                    if (printData['project'] != null
+                        ? printData['project']['level'] == LEVEL_UP
+                            ? true
+                            : false
+                        : selectedLevel == PLOT_LEVEL_UP) ...[
+                      Material(
+                        elevation: 5,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        child: SizedBox(
+                          height: height * 0.04,
+                          width: width * 0.22,
+                          child: TextFormField(
+                            // controller: nameController,
+                            initialValue: printData['project'] != null
+                                ? printData["project"]['level_value']
+                                : levelController,
+                            style: const TextStyle(fontSize: 14),
+                            decoration: const InputDecoration(
+                                hintText: "Road width",
+                                hintStyle: TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(8)
+                                //fillColor: Colors.green
+
+                                ),
+                            onChanged: (value) {
+                              levelController = value;
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: width * 0.01,
+                      ),
+                      valueContainer(height, width, size, 0.039, 0.05)
+                    ],
+                    if (printData['project'] != null
+                        ? printData['project']['level'] == LEVEL_DOWN
+                            ? true
+                            : false
+                        : selectedLevel == PLOT_LEVEL_DOWN) ...[
+                      Material(
+                        elevation: 5,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        child: SizedBox(
+                          height: height * 0.04,
+                          width: width * 0.22,
+                          child: TextFormField(
+                            // controller: nameController,
+                            initialValue: printData['project'] != null
+                                ? printData["project"]['level_value']
+                                : levelController,
+                            style: const TextStyle(fontSize: 14),
+                            decoration: const InputDecoration(
+                              hintText: "Road width",
+                              hintStyle: TextStyle(fontSize: 14),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
+                              isDense: true,
+                              contentPadding: EdgeInsets.all(8),
+                              // fillColor: Colors.green
+                            ),
+                            onChanged: (value) {
+                              levelController = value;
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: width * 0.01,
+                      ),
+                      valueContainer(
+                        height,
+                        width,
+                        size,
+                        0.039,
+                        0.05,
+                      ),
+                    ]
+                  ],
+
                 ),
                 SizedBox(
                   width: width * 0.01,
@@ -1957,13 +2096,19 @@ class _Step_1State extends State<Step_1> {
                     plot_orientaion = 1;
                   }
 
-                  if (size == "m") {
-                    dimenInt = 2;
-                  }
-                  if (regularPlotValue == true) {
-                    // isNotRegular = 1;
-                    isRegular = 1;
-                  }
+
+                        if (size == "m") {
+                          dimenInt = 2;
+                          setDimension(dimenInt);
+                        } else {
+                          dimenInt = 1;
+                          setDimension(1);
+                        }
+                        if (regularPlotValue == true) {
+                          // isNotRegular = 1;
+                          isRegular = 1;
+                        }
+
 
                   if (isNorthOrientaion == true) {
                     isNorthOrientaion = 1;
@@ -1983,78 +2128,86 @@ class _Step_1State extends State<Step_1> {
                     isEast = EAST_OTHER_PROPERTY;
                   }
 
-                  // if (otherEast == true) {
-                  //   isEast = EAST_OTHER_PROPERTY;
-                  // }
-                  if (nortRoad == true) {
-                    isNorth = NORTH_PROPERTY;
-                  } else if (otherNortn == true) {
-                    isNorth = NORTH_OTHER_PROPERTY;
-                  }
-                  // if (otherNortn == true) {
-                  //   isNorth = "1";
-                  // }
-                  if (southRoad == true) {
-                    isSouth = SOUTH_PROPERTY;
-                  } else if (otherSouth == true) {
-                    isSouth = SOUTH_OTHER_PROPERTY;
-                  }
-                  // if (otherSouth == true) {
-                  //   isSouth = "1";
-                  // }
-                  if (notReqired == true) {
-                    notReqiredInt = 1;
-                  }
-                },
-              );
-              var status = await provider.requirementPost(
-                user_id,
-                projectGroupId,
-                projectTypeId,
-                selectedItems,
-                nameController,
-                lastNameController,
-                emailController,
-                1,
-                stateId,
-                cityId,
-                addressController,
-                isRegular,
-                dimenInt,
-                lengthController!,
-                widthController!,
-                diagonal1Controller!,
-                diagonal2Controller!,
-                plotValue.text,
-                " ",
-                plot_orientaion,
-                " ",
-                isEast,
-                eastController,
-                isWest,
-                westController,
-                isNorth,
-                northController,
-                isSouth,
-                southController,
-                selectedLevelInt,
-                levelController,
-                notReqiredInt,
-              );
-              // project_id = provider.project_id;
-              if (status == 200) {
-                showToast('Project Requirement Submitted !', Colors.lightGreen,
-                    ToastGravity.TOP);
-              }
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                  color: buttonColor, borderRadius: BorderRadius.circular(4)),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: const Text(
-                "save and continue",
-                style: TextStyle(color: Colors.white, fontSize: 14),
-              ),
+
+                        // if (otherEast == true) {
+                        //   isEast = EAST_OTHER_PROPERTY;
+                        // }
+                        if (nortRoad == true) {
+                          isNorth = NORTH_PROPERTY;
+                        } else if (otherNortn == true) {
+                          isNorth = NORTH_OTHER_PROPERTY;
+                        }
+                        // if (otherNortn == true) {
+                        //   isNorth = "1";
+                        // }
+                        if (southRoad == true) {
+                          isSouth = SOUTH_PROPERTY;
+                        } else if (otherSouth == true) {
+                          isSouth = SOUTH_OTHER_PROPERTY;
+                        }
+                        // if (otherSouth == true) {
+                        //   isSouth = "1";
+                        // }
+                        if (notReqired == true) {
+                          notReqiredInt = 1;
+                        }
+                      },
+                    );
+                    var status = await provider.requirementPost(
+                      user_id,
+                      projectGroupId,
+                      projectTypeId,
+                      selectedItems,
+                      nameController,
+                      lastNameController,
+                      emailController,
+                      COUNTRY_ID,
+                      stateId,
+                      cityId,
+                      addressController,
+                      isRegular,
+                      dimenInt,
+                      lengthController!,
+                      widthController!,
+                      diagonal1Controller!,
+                      diagonal2Controller!,
+                      plotValue.text,
+                      " ",
+                      plot_orientaion,
+                      " ",
+                      isEast,
+                      eastController,
+                      isWest,
+                      westController,
+                      isNorth,
+                      northController,
+                      isSouth,
+                      southController,
+                      selectedLevelInt,
+                      levelController,
+                      notReqiredInt,
+                    );
+                    // project_id = provider.project_id;
+                    if (status == 200) {
+                      showToast('Project Requirement Submitted !',
+                          Colors.lightGreen, ToastGravity.TOP);
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: buttonColor,
+                        borderRadius: BorderRadius.circular(4)),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: const Text(
+                      "save and continue",
+                      style: TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                  ),
+                   
+                )
+              ],
+
             ),
           )
         ],

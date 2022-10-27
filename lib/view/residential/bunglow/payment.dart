@@ -1,6 +1,6 @@
 // ignore_for_file: must_be_immutable, use_key_in_widget_constructors, sized_box_for_whitespace
 
-import 'package:aashiyan/components/contants.dart';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:flutter/material.dart';
 

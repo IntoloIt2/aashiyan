@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:aashiyan/components/contants.dart';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/view/residential/bunglow/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -1783,9 +1783,7 @@ class _BuiltUpState extends State<BuiltUp> {
                                                 value: WorkingRequirment,
                                                 onChanged: (value) {
                                                   setState(
-                                                  
                                                     () {
-                                                  
                                                       var design3Percent = double
                                                           .parse(ar_design[2][
                                                               'design_percent']);
@@ -3458,10 +3456,10 @@ class _BuiltUpState extends State<BuiltUp> {
                               ]),
                             ]),
                             TableRow(children: [
-                              Column(children: const [ Text('2.')]),
+                              Column(children: const [Text('2.')]),
                               Column(
-                                  children: const [ Text('3D Front Elevation')]),
-                              Column(children: const [ Text('7 Days')]),
+                                  children: const [Text('3D Front Elevation')]),
+                              Column(children: const [Text('7 Days')]),
                               Column(children: [
                                 Checkbox(
                                     activeColor: checkColor,

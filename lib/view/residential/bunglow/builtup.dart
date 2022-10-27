@@ -2,7 +2,7 @@
 
 // import 'dart:ui';
 import 'dart:convert';
-import 'package:aashiyan/components/contants.dart';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/view/residential/bunglow/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';

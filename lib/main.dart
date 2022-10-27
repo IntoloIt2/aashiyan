@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
         Requirement.namedRoute: (context) => Requirement(),
         Entrance.namedRoute: (context) => const Entrance(),
         LivingHall.namedRoute: (context) => LivingHall(),
-        PantryDetail.namedRoute: (context) => PantryDetail(),
+        PantryDetail.namedRoute: (context) => const PantryDetail(),
         FloorStore.namedRoute: (context) => const FloorStore(),
         Basement.namedRoute: (context) => Basement(),
         StepPages.namedRoute: (context) => const StepPages(),

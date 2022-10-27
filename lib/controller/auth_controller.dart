@@ -8,7 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../components/contants.dart';
+import '../components/constant.dart';
 import '../const.dart';
 import '../view/homepage.dart';
 import 'package:fluttertoast/fluttertoast.dart';

@@ -1,5 +1,6 @@
 // ignore_for_file: sized_box_for_whitespace, unused_local_variable, avoid_unnecessary_containers, prefer_const_constructors
 
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/view/profile.dart';
 import 'package:aashiyan/view/residential/bunglow/bunglow.dart';
@@ -8,6 +9,7 @@ import 'package:aashiyan/view/residential/house-duplex/providers/residential_pro
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/app_bar.dart';
 import '../components/project_category.dart';
@@ -45,8 +47,13 @@ class _ResidentialState extends State<Residential> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
                       Navigator.of(context).pushNamed(Bunglow.namedRoute);
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      var bunglow_const =
+                          prefs.setInt('projectTypeId', BUNGALOW);
+                      // var getProjectTypeId = await provider.getProjectType(bunglow_const);
                     },
                     child: Stack(
                       alignment: Alignment.center,
@@ -80,10 +87,13 @@ class _ResidentialState extends State<Residential> {
                   InkWell(
                     onTap: () async {
                       Navigator.of(context).pushNamed(HouseDuplex.namedRoute);
-                      var getProjectGroupId =
-                          await provider.getProjectGroupData();
-                      // print("getProjectGroupId==");
-                      // print(getProjectGroupId);
+                      // var getProjectGroupId =
+                      //     await provider.getProjectGroupData();
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      var flat_house_const =
+                          prefs.setInt('projectTypeId', FLAT_HOUSE);
+                      // var getProjectTypeId = await provider.getProjectType();
                     },
                     child: Stack(
                       alignment: Alignment.center,
