@@ -55,7 +55,7 @@ class _EntranceState extends State<Entrance> {
   String verandaLengthController = ' ';
   List porchRequiredFaci = [];
 
-  var project_id;
+  var project_id ;
 
   void floor() {
     setState(() {
@@ -342,11 +342,11 @@ class _EntranceState extends State<Entrance> {
     }
   }
 
+
   Future<dynamic> getUserId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('userData');
     project_id = prefs.getInt('projectId');
-
     getData(project_id);
     var decJson;
     if (userData != null) {
@@ -359,10 +359,11 @@ class _EntranceState extends State<Entrance> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     getUserId();
 
+
     final store = Provider.of<PageNavProvider>(context, listen: false);
+
 
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   if (store.getId() == 0) {
@@ -371,12 +372,13 @@ class _EntranceState extends State<Entrance> {
     //     getData(store.getId());
     //   }
     // });
-
+    
     if (printData == null) {
       setState(() {
         isloading = true;
       });
     }
+
   }
 
   @override

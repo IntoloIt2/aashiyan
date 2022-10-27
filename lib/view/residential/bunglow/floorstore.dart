@@ -1,13 +1,20 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 
 import 'package:aashiyan/components/forms.dart';
+import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:provider/provider.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
-import '../../../components/constant.dart';
+import '../../../components//constant.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class FloorStore extends StatefulWidget {
   const FloorStore({Key? key}) : super(key: key);
@@ -84,7 +91,7 @@ class _FloorStoreState extends State<FloorStore> {
   bool? FloorStoreDetail2 = false;
   int floorStoreInt = 0;
 
-  bool? requiredLift = false;
+  bool requiredLift = false;
   bool? notRequiredLift = false;
   int liftRequirement = 0;
 
@@ -96,6 +103,7 @@ class _FloorStoreState extends State<FloorStore> {
 
   bool isloading = false;
 
+  // ignore: prefer_typing_uninitialized_variables
   var printData;
   int? pageId;
   Future<void> getData(int id) async {
@@ -138,13 +146,11 @@ class _FloorStoreState extends State<FloorStore> {
                 ? int.parse(
                     printData["bungalow_floor_store"]["store_floor"].toString())
                 : floorStoreLocationController;
-            print('floorStoreLocationController=======');
-            print(floorStoreLocationController);
+
             floorStoreLengthController = printData["bungalow_floor_store"]
                     ["floor_store_length"] ??
                 floorStoreLengthController;
-            print(floorStoreLengthController);
-            print('floorStoreLengthController======');
+
             floorStoreWidthController = printData["bungalow_floor_store"]
                     ["floor_store_width"] ??
                 floorStoreWidthController;
@@ -153,18 +159,21 @@ class _FloorStoreState extends State<FloorStore> {
             requiredLift = printData["bungalow_floor_store"]["lift_req"] == 1
                 ? true
                 : requiredLift;
+
             notRequiredLift = printData["bungalow_floor_store"]["lift_req"] == 0
                 ? true
                 : notRequiredLift;
+
             selectedLift =
                 printData['bungalow_floor_store']['passanger_capacity'] != null
-                    ? liftItems[int.parse(printData['bungalow_floor_store']
-                            ['passanger_capacity']
-                        .toString())]
+                    ? printData['bungalow_floor_store']['passanger_capacity']
+                        .toString()
                     : selectedLift;
+            print(selectedLift);
             liftSpecialRequirementController = printData["bungalow_floor_store"]
                     ["lift_special_req"] ??
                 liftSpecialRequirementController;
+            print(liftSpecialRequirementController);
             poojaRoomRequired =
                 printData["bungalow_floor_store"]["pooja_room_req"] == 1
                     ? true
@@ -173,20 +182,22 @@ class _FloorStoreState extends State<FloorStore> {
                 printData["bungalow_floor_store"]["pooja_room_req"] == 0
                     ? true
                     : poojaRoomNotRequired;
-            print(poojaRoomRequired);
+
             selectedPooja =
                 printData['bungalow_floor_store']['pooja_room_floor'] != null
                     ? poojaRoomItems[int.parse(printData['bungalow_floor_store']
                             ['pooja_room_floor']
                         .toString())]
                     : (selectedPooja);
-            print(selectedPooja);
+
             poojaLengthController = printData["bungalow_floor_store"]
                     ["pooja_room_length"] ??
                 poojaLengthController;
+
             poojaWidthController = printData["bungalow_floor_store"]
                     ["pooja_room_width"] ??
                 poojaWidthController;
+
             openHall =
                 printData["bungalow_floor_store"]["opening_to_li_ha"] != null
                     ? true
@@ -195,7 +206,7 @@ class _FloorStoreState extends State<FloorStore> {
         });
       }
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
     }
   }
 
@@ -227,6 +238,7 @@ class _FloorStoreState extends State<FloorStore> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+    var provider = Provider.of<PageNavProvider>(context, listen: true);
     if (printData != null) {
       setState(() {
         isloading = false;
@@ -249,7 +261,7 @@ class _FloorStoreState extends State<FloorStore> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -263,7 +275,7 @@ class _FloorStoreState extends State<FloorStore> {
                                     () {
                                       FloorStoreDetail1 = value;
                                       FloorStoreDetail2 = false;
-                                      print(FloorStoreDetail1);
+
                                     },
                                   );
                                 }),
@@ -287,7 +299,7 @@ class _FloorStoreState extends State<FloorStore> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -561,7 +573,6 @@ class _FloorStoreState extends State<FloorStore> {
                       elevation: 16,
                       items: stairItems.asMap().entries.map((it) {
                         int idx = it.key;
-                        String val = it.value;
                         return DropdownMenuItem<String>(
                             value: it.value,
                             onTap: () {
@@ -597,7 +608,7 @@ class _FloorStoreState extends State<FloorStore> {
           Material(
             elevation: 10,
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               color: Colors.white,
               child: SizedBox(
                 width: width * 9,
@@ -606,16 +617,16 @@ class _FloorStoreState extends State<FloorStore> {
                   future: getRecent(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Container(
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
+
+                      return const Center(
+                        child: CircularProgressIndicator(),
+
                       );
                     } else {
                       return CarouselSlider.builder(
                         itemCount: bunglowPageRecentList.length,
                         itemBuilder: (context, i, id) {
-                          return Container(
+                          return SizedBox(
                             height: height * 0.4,
                             width: width * 0.9,
                             child: Image.network(
@@ -644,14 +655,14 @@ class _FloorStoreState extends State<FloorStore> {
           Material(
             elevation: 5,
             child: Container(
-              margin: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Material(
                     elevation: 3,
                     child: Container(
-                      margin: EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(5),
                       child: Row(
                         children: const [
                           Icon(Icons.cloud_upload),
@@ -694,7 +705,7 @@ class _FloorStoreState extends State<FloorStore> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -706,7 +717,7 @@ class _FloorStoreState extends State<FloorStore> {
                                 onChanged: (value) {
                                   setState(
                                     () {
-                                      requiredLift = value;
+                                      requiredLift = value!;
                                       notRequiredLift = false;
                                     },
                                   );
@@ -731,7 +742,7 @@ class _FloorStoreState extends State<FloorStore> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -791,7 +802,7 @@ class _FloorStoreState extends State<FloorStore> {
                             return DropdownMenuItem<String>(
                               value: it.value,
                               onTap: () {
-                                passengerCapacity = idx;
+                                passengerCapacity = int.parse(it.value);
                               },
                               child: Text(
                                 it.value,
@@ -880,7 +891,7 @@ class _FloorStoreState extends State<FloorStore> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -917,7 +928,7 @@ class _FloorStoreState extends State<FloorStore> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -1056,7 +1067,7 @@ class _FloorStoreState extends State<FloorStore> {
                   borderRadius: BorderRadius.circular(5),
                   child: Container(
                     height: height * 0.03,
-                    margin: EdgeInsets.all(
+                    margin: const EdgeInsets.all(
                       3,
                     ),
                     child: DropdownButtonHideUnderline(
@@ -1070,7 +1081,6 @@ class _FloorStoreState extends State<FloorStore> {
                           elevation: 16,
                           items: poojaRoomItems.asMap().entries.map((it) {
                             int idx = it.key;
-                            String val = it.value;
                             return DropdownMenuItem<String>(
                               // "select floor",
                               // "Groung floor",
@@ -1084,7 +1094,7 @@ class _FloorStoreState extends State<FloorStore> {
                               },
                               child: Text(
                                 it.value,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                 ),
                               ),
@@ -1141,7 +1151,7 @@ class _FloorStoreState extends State<FloorStore> {
                   borderRadius: BorderRadius.circular(5),
                   child: Container(
                     height: height * 0.03,
-                    margin: EdgeInsets.all(
+                    margin: const EdgeInsets.all(
                       3,
                     ),
                     child: DropdownButtonHideUnderline(
@@ -1153,7 +1163,6 @@ class _FloorStoreState extends State<FloorStore> {
                         elevation: 16,
                         items: poojaPlaceItems.asMap().entries.map((it) {
                           int idx = it.key;
-                          String val = it.value;
                           return DropdownMenuItem<String>(
                             value: it.value,
                             onTap: () {
@@ -1233,7 +1242,7 @@ class _FloorStoreState extends State<FloorStore> {
           Material(
             elevation: 10,
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               color: Colors.white,
               child: SizedBox(
                 width: width * 9,
@@ -1242,16 +1251,14 @@ class _FloorStoreState extends State<FloorStore> {
                     future: getRecent(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Container(
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
+                        return const Center(
+                          child: CircularProgressIndicator(),
                         );
                       } else {
                         return CarouselSlider.builder(
                           itemCount: bunglowPageRecentList.length,
                           itemBuilder: (context, i, id) {
-                            return Container(
+                            return SizedBox(
                               height: height * 0.4,
                               width: width * 0.9,
                               child: Image.network(
@@ -1295,7 +1302,7 @@ class _FloorStoreState extends State<FloorStore> {
                       }),
                 ),
                 requirementText("Opening toward hall/ lobby"),
-                Card(),
+                const Card(),
                 Container(),
               ],
             ),
@@ -1326,25 +1333,31 @@ class _FloorStoreState extends State<FloorStore> {
                       storeFloor = floorStoreLocationController.toString();
                     }
                   }
-                  // if (requiredLift == true) {
-                  //   liftRequirement = 1;
-                  //   // if (selectedFloor == "4") {
-                  //   //   passengerCapacity = 1;
-                  //   // }
-                  //   // if (selectedFloor == "6") {
-                  //   //   passengerCapacity = 2;
-                  //   // }
-                  //   // if (selectedFloor == "8") {
-                  //   //  passengerCapacity = 3;
-                  //   // }
-                  //   // if (selectedFloor == "10") {
-                  //   //   passengerCapacity = 4;
-                  //   // }
-                  //   // if (selectedFloor == "more") {
-                  //   //   passengerCapacity =int.parse(passengerCapacityControler.text);
-                  //   // }
-                  //   passengerCapacity = int.parse(selectedLift);
-                  // }
+                  if (requiredLift == true) {
+                    liftRequirement = 1;
+
+                    // passengerCapacity = int.parse(selectedFloor);
+                    // if (selectedFloor == "4") {
+                    //   passengerCapacity = 1;
+                    // }
+                    // if (selectedFloor == "6") {
+                    //   passengerCapacity = 2;
+                    // }
+                    // if (selectedFloor == "8") {
+                    //  passengerCapacity = 3;
+                    // }
+                    // if (selectedFloor == "10") {
+                    //   passengerCapacity = 4;
+                    // }
+                    // if (selectedFloor == "more") {
+                    //   passengerCapacity =int.parse(passengerCapacityControler.text);
+                    // }
+                    // passengerCapacity = int.parse(selectedLift);
+
+                  } else {
+                    liftRequirement = 0;
+                  }
+
                   if (poojaRoomRequired == true) {
                     poojaRoomReq = 1;
 
@@ -1363,14 +1376,19 @@ class _FloorStoreState extends State<FloorStore> {
                     if (selectedPooja == "other") {
                       poojaRoomLocation = poojaRoomLocationController;
                     }
+                  } else {
+                    poojaRoomReq = 0;
                   }
                   if (openHall == true) {
                     openingToLiHa = "Opening toward hall/ Lobby";
+                  } else {
+                    openingToLiHa = '';
                   }
                 },
               ),
               if (pageId != null)
                 {
+                  print("updating a data "),
                   flooreStorePut(
                     project_id!,
                     floorStoreInt,

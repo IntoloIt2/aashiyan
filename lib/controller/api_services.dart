@@ -565,35 +565,31 @@ Future<void> pantryPost(
   int pantryFloor,
   String pantryLength,
   String pantryWidth,
-  String pantryArea,
   String specificRequest,
   String diningLength,
   String diningWidth,
-  String diningArea,
   List diningFeatures,
   String diningLocation,
   String diningSeat,
   String diningText,
 ) async {
   var projectData = {
-    "project_id": projectId,
+    "project_id": 179,
     "user_id": 3655,
     "dimension": dimenInt,
     "pantry_req": pantryRequest,
     "pantry_floor": pantryFloor,
     "pantry_length": pantryLength,
     "pantry_width": pantryWidth,
-    "pantry_area": pantryArea,
     "specific_req": specificRequest,
     "dining_length": diningLength,
     "dining_width": diningWidth,
-    "dining_area": diningArea,
     "dining_features": diningFeatures,
     "dining_floor": diningLocation,
     "dining_seat": diningSeat,
     "dining_text": diningText,
   };
-  print("$diningFeatures  dini");
+
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
@@ -612,35 +608,31 @@ Future<void> pantryPut(
   int pantryFloor,
   String pantryLength,
   String pantryWidth,
-  String pantryArea,
   String specificRequest,
   String diningLength,
   String diningWidth,
-  String diningArea,
   List diningFeatures,
   String diningLocation,
   String diningSeat,
   String diningText,
 ) async {
   var projectData = {
-    "project_id": projectId,
+    "project_id": 179,
     "user_id": 19,
     "dimension": dimenInt,
     "pantry_req": pantryRequest,
     "pantry_floor": pantryFloor,
     "pantry_length": pantryLength,
     "pantry_width": pantryWidth,
-    "pantry_area": pantryArea,
     "specific_req": specificRequest,
     "dining_length": diningLength,
     "dining_width": diningWidth,
-    "dining_area": diningArea,
     "dining_features": diningFeatures,
     "dining_floor": diningLocation,
     "dining_seat": diningSeat,
     "dining_text": diningText,
   };
-  print("$diningFeatures  dini");
+
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
@@ -679,7 +671,7 @@ Future<void> flooreStorePost(
     "floor_store_width": floorStoreWidth,
     "store_floor": storeFloor,
     "stair_case": stairCase,
-    "stair_case_image": "sta",
+    "stair_case_image": "",
     "lift_req": liftRequirement,
     "passanger_capacity": passengerCapacity,
     "pooja_room_req": poojaRoomReq,
@@ -694,8 +686,7 @@ Future<void> flooreStorePost(
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse(
-        'http://192.168.0.99:8080/sdplserver/api/bungalow-floor-store/$projectId'),
+    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-floor-store'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -723,14 +714,14 @@ Future<void> flooreStorePut(
   String openingToLiHa,
 ) async {
   var projectData = {
-    "project_id": projectId,
+    "project_id": 179,
     "dimension": 1,
     "floor_store_req": floorStoreRequirement,
     "floor_store_length": floorStoreLength,
     "floor_store_width": floorStoreWidth,
     "store_floor": storeFloor,
     "stair_case": stairCase,
-    "stair_case_image": "sta",
+    "stair_case_image": "",
     "lift_req": liftRequirement,
     "passanger_capacity": passengerCapacity,
     "pooja_room_req": poojaRoomReq,
@@ -739,17 +730,14 @@ Future<void> flooreStorePut(
     "pooja_room_floor": poojaRoomFloor,
     "pooja_room_type": poojaRoomType,
     "opening_to_li_ha": poojaRoomWidth,
-    "lift_special_req": liftRequirement,
+    "lift_special_req": liftSpecialRequirement,
   };
 
-  print('projectId===');
-  print(projectId);
-  print('projectData==');
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
     Uri.parse(
-        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-floor-store/$projectId'),
+        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-floor-store/179'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

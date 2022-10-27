@@ -198,6 +198,8 @@ class _BunglowState extends State<Bunglow> {
                         bungalow_count = await projectCount(
                             decodedJson['data'], decodedJson['data']['id']);
                       }
+                      print('bungalow_count==');
+                      print(bungalow_count);
                     }
                     if (decodedJson != null
                         ? decodedJson['status'] == 200 &&
