@@ -361,7 +361,9 @@ class _EntranceState extends State<Entrance> {
     super.initState();
     getUserId();
 
+
     final store = Provider.of<PageNavProvider>(context, listen: false);
+
 
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   if (store.getId() == 0) {

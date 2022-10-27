@@ -269,12 +269,6 @@ class _Step_1State extends State<Step_1> {
     project_id = prefs.getInt('projectId');
     projectTypeId = prefs.getInt('projectTypeId');
     projectGroupId = prefs.getInt('projectGroupId');
-
-    // projectTypeId = prefs.getInt('');
-    // print('projectGroupId==');
-    // print(projectGroupId);
-    // print('projectTypeId==');
-    // print(projectTypeId);
     getData(project_id);
     var decJson;
     if (userData != null) {
