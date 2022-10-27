@@ -36,7 +36,9 @@ String OutSideClosed = '2';
 
 // ignore: non_constant_identifier_names
 int STATE_ID = 1;
-
+const PLOT_LEVEL_UP = "Up";
+const PLOT_LEVEL_DOWN = "Down";
+const PLOT_LEVEL_SAME = "Almost same level";
 const COUNTRY_ID = 1;
 // ignore: non_constant_identifier_names
 int EAST_OTHER_PROPERTY = 2;
