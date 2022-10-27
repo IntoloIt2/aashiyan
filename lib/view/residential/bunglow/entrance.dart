@@ -345,15 +345,15 @@ class _EntranceState extends State<Entrance> {
     super.initState();
     final store = Provider.of<PageNavProvider>(context, listen: false);
 
-    print('store.getId()');
-    print(store.getId());
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (store.getId() == 0) {
-        printData = {"project": null};
-      } else {
-        getData(store.getId());
-      }
-    });
+    // print('store.getId()');
+    // print(store.getId());
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (store.getId() == 0) {
+    //     printData = {"project": null};
+    //   } else {
+    //     getData(store.getId());
+    //   }
+    // });
 
     if (printData == null) {
       setState(() {

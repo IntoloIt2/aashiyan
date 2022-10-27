@@ -198,7 +198,7 @@ class _BunglowState extends State<Bunglow> {
                             : false
                         : false) {
                       if (bungalow_count != null
-                          ? bungalow_count >= 1
+                          ? bungalow_count >= 100
                               ? true
                               : false
                           : false) {
