@@ -142,7 +142,7 @@ class _LivingHallState extends State<LivingHall> {
           Uri.parse("${dotenv.env['APP_URL']}edit-bungalow-drawing-hall/$id"));
       // "http://192.168.0.99:8080/sdplserver/api//$id"));
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
         setState(
           () {

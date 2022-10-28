@@ -164,7 +164,7 @@ class _EntranceState extends State<Entrance> {
         Uri.parse("${dotenv.env['APP_URL']}edit-bungalow-entrance/$id"),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
 
         setState(
