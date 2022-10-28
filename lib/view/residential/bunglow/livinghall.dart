@@ -1360,7 +1360,7 @@ class _LivingHallState extends State<LivingHall> {
                 borderRadius: BorderRadius.circular(5),
                 child: Container(
                   height: height * 0.03,
-                  width: width * 0.6,
+                  width: width * 0.65,
                   margin: const EdgeInsets.all(
                     3,
                   ),
