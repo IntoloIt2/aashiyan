@@ -15,7 +15,6 @@ class Requirement extends StatefulWidget {
 }
 
 class _RequirementState extends State<Requirement> {
-  
   String nameController = '';
   String lastNameController = "";
   String emailController = "";
@@ -1159,7 +1158,7 @@ class _RequirementState extends State<Requirement> {
                   ),
                   requirementText("Road"),
                   SizedBox(
-                    width: width * 0.01,
+                    width: width * 0.001,
                   ),
                   if (westRoad == true ||
                       printData["project"]["west_property"] == "1") ...[
@@ -1240,7 +1239,7 @@ class _RequirementState extends State<Requirement> {
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
                       child: SizedBox(
                         height: height * 0.04,
-                        width: width * 0.22,
+                        width: width * 0.19,
                         child: TextFormField(
                           // controller: nameController,
                           initialValue: printData["project"]
@@ -1314,7 +1313,7 @@ class _RequirementState extends State<Requirement> {
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
                       child: SizedBox(
                         height: height * 0.04,
-                        width: width * 0.22,
+                        width: width * 0.19,
                         child: TextFormField(
                           // controller: nameController,
                           initialValue: printData["project"]
@@ -1586,7 +1585,7 @@ class _RequirementState extends State<Requirement> {
                   );
                   print("d1 ${diagonal1Controller}");
                   print("d2 ${diagonal2Controller}");
-                 requirementPost(
+                  requirementPost(
                     179,
                     978,
                     098,

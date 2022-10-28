@@ -139,8 +139,8 @@ class _Step_1State extends State<Step_1> {
         );
       }
       plotValue.text = calculation;
-      print(plotValue.text);
-      print(calculation);
+      // print(plotValue.text);
+      // print(calculation);
     }
 
     return calculation;
@@ -196,7 +196,7 @@ class _Step_1State extends State<Step_1> {
       var tempStates;
       var response =
           await http.get(Uri.parse("${dotenv.env['APP_URL']}state/$STATE_ID"));
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         Map jsonResponse = jsonDecode(response.body);
         List tempStates = jsonResponse["states"];
         setState(() {
@@ -211,7 +211,7 @@ class _Step_1State extends State<Step_1> {
       var client = http.Client();
       var response =
           await http.get(Uri.parse("${dotenv.env['APP_URL']}city/$stateId"));
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
         final cityList = jsonResponse['cities'] as List;
         setState(() {
@@ -229,13 +229,11 @@ class _Step_1State extends State<Step_1> {
       var response = await http.get(
         Uri.parse("${dotenv.env['APP_URL']}edit-project/$id"),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
           if (printData != null && printData['project_id'] != null) {
-            print("plotype -----");
-            print(printData["project"]["plot_type"]);
             nameController = printData["project"]['first_name'] != null
                 ? printData["project"]['first_name'].toString()
                 : '';
@@ -356,7 +354,7 @@ class _Step_1State extends State<Step_1> {
     plotValue.addListener(() => setState(() {
           if (printData != null) {
             String plotType = printData["project"]["plot_type"].toString();
-            if (plotType == '1') {
+            if (plotType == STR_ONE) {
               plotValue.text = (int.parse(printData["project"]["plot_length"]) *
                       int.parse(printData["project"]["plot_width"].toString()))
                   .toString();
@@ -828,7 +826,7 @@ class _Step_1State extends State<Step_1> {
                 value: printData != null
                     ? printData['project'] != null
                         // ? printData['project']['plot_type'] != null
-                        ? printData['project']['plot_type'] == 1
+                        ? printData['project']['plot_type'] == INT_ONE
                             ? true
                             : regularPlotValue
                         // : regularPlotValue
@@ -857,7 +855,7 @@ class _Step_1State extends State<Step_1> {
                 checkColor: Colors.white,
                 value: printData != null
                     ? printData['project'] != null
-                        ? printData['project']['plot_type'] == 2
+                        ? printData['project']['plot_type'] == INT_TWO
                             ? true
                             : irregularPlotValue
                         : irregularPlotValue
@@ -915,9 +913,9 @@ class _Step_1State extends State<Step_1> {
                             printData['project']['plot_length'] = val;
                           }
                         } else {
-                          plotLenght = 0;
-                          plotValue.text = '0';
-                          lengthController = '0';
+                          plotLenght = INT_ZERO;
+                          plotValue.text = STR_ZERO;
+                          lengthController = STR_ZERO;
                         }
                       });
                     },
@@ -940,7 +938,7 @@ class _Step_1State extends State<Step_1> {
               // if (irregularPlotValue == true)
               if (printData != null
                   ? printData['project'] != null
-                      ? printData['project']['plot_type'] == 2
+                      ? printData['project']['plot_type'] == INT_TWO
                           ? true
                           : irregularPlotValue == true
                       : irregularPlotValue == true
@@ -982,9 +980,9 @@ class _Step_1State extends State<Step_1> {
                             }
                             diagonalCalculations();
                           } else {
-                            diagonal1 = 0;
-                            plotValue.text = '0';
-                            diagonal1Controller = '0';
+                            diagonal1 = INT_ZERO;
+                            plotValue.text = STR_ZERO;
+                            diagonal1Controller = STR_ZERO;
                           }
                         });
                       },
@@ -1041,17 +1039,17 @@ class _Step_1State extends State<Step_1> {
                           }
                           totalCalculated();
                         } else {
-                          plotWidth = 0;
-                          plotValue.text = '0';
-                          widthController = '0';
+                          plotWidth = INT_ZERO;
+                          plotValue.text = STR_ZERO;
+                          widthController = STR_ZERO;
                         }
                       });
                     },
                     onTap: () {
                       setState(() {
                         // widthController.clear();
-                        if (widthController == 0) {
-                          plotWidth = 0;
+                        if (widthController == INT_ZERO) {
+                          plotWidth = INT_ZERO;
                         }
                       });
                     },
@@ -1068,7 +1066,7 @@ class _Step_1State extends State<Step_1> {
               ),
               if (printData != null
                   ? printData['project'] != null
-                      ? printData['project']['plot_type'] == 2
+                      ? printData['project']['plot_type'] == INT_TWO
                           ? true
                           : irregularPlotValue == true
                       : irregularPlotValue == true
@@ -1111,9 +1109,9 @@ class _Step_1State extends State<Step_1> {
                             }
                             diagonalCalculations();
                           } else {
-                            diagonal2 = 0;
-                            diagonal2Controller = '0';
-                            plotValue.text = '0';
+                            diagonal2 = INT_ZERO;
+                            diagonal2Controller = STR_ZERO;
+                            plotValue.text = STR_ZERO;
                           }
                         });
                       },
@@ -1179,11 +1177,11 @@ class _Step_1State extends State<Step_1> {
                       controller: plotValue,
                       onChanged: (value) {
                         setState(() {
-                          if (plotLenght == 0 || plotWidth == 0) {
-                            value = "0";
+                          if (plotLenght == INT_ZERO || plotWidth == INT_ZERO) {
+                            value = STR_ZERO;
                           } else if (lengthController == '' ||
                               widthController == '') {
-                            value = "0";
+                            value = STR_ZERO;
                           } else {
                             plotValue.value = plotValue.value.copyWith(
                               text: value.toString(),
@@ -1981,24 +1979,24 @@ class _Step_1State extends State<Step_1> {
               setState(
                 () {
                   if (irregularPlotValue == true) {
-                    isRegular = 2;
-                    plot_orientaion = 1;
+                    isRegular = INT_TWO;
+                    plot_orientaion = INT_ONE;
                   }
 
-                  if (size == "m") {
-                    dimenInt = 2;
+                  if (size == METER) {
+                    dimenInt = INT_TWO;
                     setDimension(dimenInt);
                   } else {
-                    dimenInt = 1;
+                    dimenInt = INT_ONE;
                     setDimension(dimenInt);
                   }
                   if (regularPlotValue == true) {
                     // isNotRegular = 1;
-                    isRegular = 1;
+                    isRegular = INT_ONE;
                   }
 
                   if (isNorthOrientaion == true) {
-                    isNorthOrientaion = 1;
+                    isNorthOrientaion = INT_ONE;
                   }
 
                   if (westRoad == true) {
@@ -2035,7 +2033,7 @@ class _Step_1State extends State<Step_1> {
                   //   isSouth = "1";
                   // }
                   if (notReqired == true) {
-                    notReqiredInt = 1;
+                    notReqiredInt = INT_ONE;
                   }
                 },
               );
@@ -2074,7 +2072,7 @@ class _Step_1State extends State<Step_1> {
                 notReqiredInt,
               );
               // project_id = provider.project_id;
-              if (status == 200) {
+              if (status == SUCCESS) {
                 showToast('Project Requirement Submitted !', Colors.lightGreen,
                     ToastGravity.TOP);
               }

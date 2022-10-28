@@ -242,7 +242,8 @@ Future<dynamic> requirementPost(
 
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.0.99:8080/sdplserver/api/project'),
+    Uri.parse("${dotenv.env['APP_URL']}project"),
+    // Uri.parse('http://192.168.0.99:8080/sdplserver/api/project'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -252,7 +253,7 @@ Future<dynamic> requirementPost(
   return project_id = temp['project_id'];
 }
 
-Future<void> entrancePost(
+Future<dynamic> entrancePost(
   int projectid,
   String vastu,
   int floor,
@@ -320,21 +321,26 @@ Future<void> entrancePost(
     "verandah_req": verandahReq,
   };
 
+  print('entrance projectData===');
   print(projectData);
-  print(verandahReq);
+  // print(verandahReq);
 
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-entrance'),
+    Uri.parse("${dotenv.env['APP_URL']}bungalow-entrance"),
+    // Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-entrance'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
+  var resp = jsonDecode(response.body);
   print(response.body);
+
+  return resp["status"];
 }
 
-Future<void> entrancePut(
+Future<dynamic> entrancePut(
   int projectid,
   String vastu,
   int floor,
@@ -402,18 +408,22 @@ Future<void> entrancePut(
     "verandah_req": verandahReq,
   };
 
+  print('projectData==');
   print(projectData);
-  print(verandahReq);
+  // print(verandahReq);
 
   final response = await http.post(
-    Uri.parse(
-        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-entrance/$projectid'),
+    Uri.parse("${dotenv.env['APP_URL']}update-bungalow-entrance/$projectid"),
+    // 'http://192.168.0.99:8080/sdplserver/api/update-bungalow-entrance/$projectid'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
+  var resp = jsonDecode(response.body);
   print(response.body);
+
+  return resp["status"];
 }
 
 Future<void> livingHallPost(
@@ -475,7 +485,8 @@ Future<void> livingHallPost(
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-drawing-hall'),
+    Uri.parse("${dotenv.env['APP_URL']}bungalow-drawing-hall"),
+    // Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-drawing-hall'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

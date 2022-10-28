@@ -113,7 +113,7 @@ class _PantryDetailState extends State<PantryDetail> {
         ),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;

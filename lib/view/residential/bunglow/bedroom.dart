@@ -236,7 +236,7 @@ class _BedRoomState extends State<BedRoom> {
   //           "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-bedroom/179"),
   //     );
 
-  //     if (response.statusCode == 200) {
+  //     if (response.statusCode == SUCCESS) {
   //       final jsonResponse = jsonDecode(response.body);
   //       setState(() {
   //         printData = jsonResponse;

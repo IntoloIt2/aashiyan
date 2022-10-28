@@ -59,16 +59,16 @@ class _BuiltUpState extends State<BuiltUp> {
         if (ConceptRequirment == true) {
           conCost = totalBuild * 1800 * 2 ~/ 100 * 15 ~/ 100;
         } else {
-          conCost = 0;
-          d3Cost = 0;
-          worCost = 0;
-          opeCost = 0;
-          griCost = 0;
-          builCost = 0;
-          d2Cost = 0;
-          bouCost = 0;
-          raiCost = 0;
-          entCost = 0;
+          conCost = INT_ZERO;
+          d3Cost = INT_ZERO;
+          worCost = INT_ZERO;
+          opeCost = INT_ZERO;
+          griCost = INT_ZERO;
+          builCost = INT_ZERO;
+          d2Cost = INT_ZERO;
+          bouCost = INT_ZERO;
+          raiCost = INT_ZERO;
+          entCost = INT_ZERO;
         }
         if (D3Requirment == true) {
           d3Cost = totalBuild * 1800 * 2 ~/ 100 * 15 ~/ 100;
