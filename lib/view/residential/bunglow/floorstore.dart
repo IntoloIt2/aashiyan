@@ -6,6 +6,7 @@ import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:provider/provider.dart';
@@ -14,7 +15,6 @@ import '../../../controller/api_services.dart';
 import '../../../components//constant.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class FloorStore extends StatefulWidget {
   const FloorStore({Key? key}) : super(key: key);
@@ -49,7 +49,7 @@ class _FloorStoreState extends State<FloorStore> {
   String selectedPooja = "select floor";
   List<String> poojaRoomItems = [
     "select floor",
-    "Groung floor",
+    "Ground floor",
     "1st Floor",
     "2nd Floor",
     "3rd Floor",
@@ -106,15 +106,12 @@ class _FloorStoreState extends State<FloorStore> {
   // ignore: prefer_typing_uninitialized_variables
   var printData;
   int? pageId;
-  Future<void> getData(int id) async {
+  Future<void> getData(int? id) async {
     try {
-      // var client = http.Client();
-      // http://sdplweb.com/sdpl/api/edit-bungalow-floor-store/project_id
-      //https://localhost/sdplserver/api/get-design
-
       var response = await http.get(
         Uri.parse(
-          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-floor-store/$id",
+          "${dotenv.env['APP_URL']}edit-bungalow-floor-store/$id",
+          // "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-floor-store/$id",
         ),
       );
 
@@ -169,11 +166,11 @@ class _FloorStoreState extends State<FloorStore> {
                     ? printData['bungalow_floor_store']['passanger_capacity']
                         .toString()
                     : selectedLift;
-            print(selectedLift);
+            // print(selectedLift);
             liftSpecialRequirementController = printData["bungalow_floor_store"]
                     ["lift_special_req"] ??
                 liftSpecialRequirementController;
-            print(liftSpecialRequirementController);
+            // print(liftSpecialRequirementController);
             poojaRoomRequired =
                 printData["bungalow_floor_store"]["pooja_room_req"] == 1
                     ? true
@@ -215,7 +212,7 @@ class _FloorStoreState extends State<FloorStore> {
     String? userData = prefs.getString('userData');
     project_id = prefs.getInt('projectId');
 
-    getData(project_id!);
+    getData(project_id);
     var decJson;
     if (userData != null) {
       decJson = jsonDecode(userData);
@@ -228,7 +225,7 @@ class _FloorStoreState extends State<FloorStore> {
     super.initState();
     getUserId();
 
-    getData(project_id!);
+    getData(project_id);
     if (printData == null) {
       isloading = true;
     }
@@ -275,7 +272,6 @@ class _FloorStoreState extends State<FloorStore> {
                                     () {
                                       FloorStoreDetail1 = value;
                                       FloorStoreDetail2 = false;
-
                                     },
                                   );
                                 }),
@@ -411,7 +407,7 @@ class _FloorStoreState extends State<FloorStore> {
                 SizedBox(
                   width: width * 0.02,
                 ),
-                if (selectedFloor == "other") ...[
+                if (selectedFloor == OTHER_FLOOR) ...[
                   Material(
                     elevation: 5,
                     borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -617,10 +613,8 @@ class _FloorStoreState extends State<FloorStore> {
                   future: getRecent(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-
                       return const Center(
                         child: CircularProgressIndicator(),
-
                       );
                     } else {
                       return CarouselSlider.builder(
@@ -802,7 +796,7 @@ class _FloorStoreState extends State<FloorStore> {
                             return DropdownMenuItem<String>(
                               value: it.value,
                               onTap: () {
-                                passengerCapacity = int.parse(it.value);
+                                passengerCapacity = idx;
                               },
                               child: Text(
                                 it.value,
@@ -1196,7 +1190,7 @@ class _FloorStoreState extends State<FloorStore> {
           SizedBox(
             height: height * 0.01,
           ),
-          if (selectedPooja == "other") ...[
+          if (selectedPooja == OTHER_FLOOR) ...[
             Material(
               elevation: 5,
               borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -1315,7 +1309,7 @@ class _FloorStoreState extends State<FloorStore> {
               setState(
                 () {
                   if (FloorStoreDetail1 == true) {
-                    floorStoreInt = 1;
+                    floorStoreInt = T_RUE;
 
                     if (selectedFloor == G_FLOOR_TEXT) {
                       storeFloor = G_FLOOR.toString();
@@ -1334,7 +1328,7 @@ class _FloorStoreState extends State<FloorStore> {
                     }
                   }
                   if (requiredLift == true) {
-                    liftRequirement = 1;
+                    liftRequirement = T_RUE;
 
                     // passengerCapacity = int.parse(selectedFloor);
                     // if (selectedFloor == "4") {
@@ -1355,32 +1349,32 @@ class _FloorStoreState extends State<FloorStore> {
                     // passengerCapacity = int.parse(selectedLift);
 
                   } else {
-                    liftRequirement = 0;
+                    liftRequirement = F_ALSE;
                   }
 
                   if (poojaRoomRequired == true) {
-                    poojaRoomReq = 1;
+                    poojaRoomReq = T_RUE;
 
-                    if (selectedPooja == "Groung floor") {
-                      poojaRoomLocation = "0";
+                    if (selectedPooja == G_FLOOR_TEXT) {
+                      poojaRoomLocation = STR_ZERO;
                     }
-                    if (selectedPooja == "1st Floor") {
-                      poojaRoomLocation = "1";
+                    if (selectedPooja == G_1_FLOOR_TEXT) {
+                      poojaRoomLocation = STR_ONE;
                     }
-                    if (selectedPooja == "2nd Floor") {
-                      poojaRoomLocation = "2";
+                    if (selectedPooja == G_2_FLOOR_TEXT) {
+                      poojaRoomLocation = STR_TWO;
                     }
-                    if (selectedPooja == "3rd Floor") {
-                      poojaRoomLocation = "3";
+                    if (selectedPooja == G_3_FLOOR_TEXT) {
+                      poojaRoomLocation = STR_THREE;
                     }
-                    if (selectedPooja == "other") {
+                    if (selectedPooja == OTHER_FLOOR) {
                       poojaRoomLocation = poojaRoomLocationController;
                     }
                   } else {
-                    poojaRoomReq = 0;
+                    poojaRoomReq = F_ALSE;
                   }
                   if (openHall == true) {
-                    openingToLiHa = "Opening toward hall/ Lobby";
+                    openingToLiHa = OPENING_TO_LIVING_HALL;
                   } else {
                     openingToLiHa = '';
                   }
@@ -1388,7 +1382,7 @@ class _FloorStoreState extends State<FloorStore> {
               ),
               if (pageId != null)
                 {
-                  print("updating a data "),
+                  // print("updating a data "),
                   flooreStorePut(
                     project_id!,
                     floorStoreInt,
