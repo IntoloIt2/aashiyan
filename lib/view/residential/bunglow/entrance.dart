@@ -11,12 +11,7 @@ import '../../../const.dart';
 import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
 
-Text headingFont(String s) {
-  return Text(
-    s,
-    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-  );
-}
+
 
 class Entrance extends StatefulWidget {
   const Entrance({Key? key}) : super(key: key);
@@ -55,20 +50,20 @@ class _EntranceState extends State<Entrance> {
   String verandaLengthController = ' ';
   List porchRequiredFaci = [];
 
-  var project_id ;
+  var project_id;
 
   void floor() {
     setState(() {
-      if (selectedFloor == "2(G+1)") {
-        floorInt = 2;
+      if (selectedFloor == ENT_FIRST_FLOOR) {
+        floorInt = FIRST_FLOOR;
       }
-      if (selectedFloor == "3(G+2)") {
-        floorInt = 3;
+      if (selectedFloor == ENT_SECOND_FLOOR) {
+        floorInt = SECOND_FLOOR;
       }
-      if (selectedFloor == "4(G+3)") {
-        floorInt = 4;
+      if (selectedFloor == ENT_THIRD_FLOOR) {
+        floorInt = THIRD_FLOOR;
       }
-      if (selectedFloor == "more") {
+      if (selectedFloor == ENT_MORE_FLOOR) {
         floorInt = int.parse(floorController);
       }
     });
@@ -159,7 +154,7 @@ class _EntranceState extends State<Entrance> {
 
   Future<void> getData(int id) async {
     try {
-      print(id);
+      // print(id);
       var response = await http.get(
         Uri.parse("${dotenv.env['APP_URL']}edit-bungalow-entrance/$id"),
       );
@@ -170,39 +165,35 @@ class _EntranceState extends State<Entrance> {
         setState(
           () {
             printData = jsonResponse;
-            print("entrance data");
-            print(printData);
+            // print("entrance data");
+            // print(printData);
             if (printData != null) {
               pageId = printData['bungalow_entrance']['id'] != null
                   ? int.parse(printData['bungalow_entrance']['id'].toString())
                   : pageId;
-              print(pageId);
+              // print(pageId);
 
               floorController = printData['bungalow_entrance']['floor'] != null
                   ? printData['bungalow_entrance']['floor'].toString()
                   : '';
               moderate = printData['bungalow_entrance']['entrance_gate'] != null
-                  ? printData['bungalow_entrance']['entrance_gate'] ==
-                      "One Gate"
+                  ? printData['bungalow_entrance']['entrance_gate'] == ONE_GATE
                   : false;
               oneGate = printData['bungalow_entrance']['entrance_gate'] != null
-                  ? printData['bungalow_entrance']['entrance_gate'] ==
-                      "One Gate"
+                  ? printData['bungalow_entrance']['entrance_gate'] == ONE_GATE
                   : false;
               gateWidthController =
                   printData['bungalow_entrance']['floor'] != null
                       ? printData['bungalow_entrance']['floor'].toString()
                       : '';
               oneGate = printData['bungalow_entrance']['entrance_gate'] != null
-                  ? printData['bungalow_entrance']['entrance_gate'] ==
-                      "One gate"
+                  ? printData['bungalow_entrance']['entrance_gate'] == ONE_GATE
                   : false;
               twoGate = printData['bungalow_entrance']['entrance_gate'] != null
-                  ? printData['bungalow_entrance']['entrance_gate'] ==
-                      "Two gate"
+                  ? printData['bungalow_entrance']['entrance_gate'] == TWO_GATE
                   : false;
               adjascent = printData["bungalow_entrance"]["two_gate"] != null
-                  ? printData["bungalow_entrance"]["two_gate"] == "Adjacent"
+                  ? printData["bungalow_entrance"]["two_gate"] == ENT_ADJACENT
                   : false;
               selectedCarGate = printData['bungalow_entrance']
                           ['main_car_gate'] !=
@@ -214,28 +205,29 @@ class _EntranceState extends State<Entrance> {
                       ? printData['bungalow_entrance']['side_padestrian_gate']
                           .toString()
                       : selectedSidePadest;
-              securityRequired = printData['bungalow_entrance']
-                          ['security_kiosq_req'] !=
-                      null
-                  ? printData['bungalow_entrance']['security_kiosq_req'] == 1
-                  : false;
-              securityNotRequired = printData['bungalow_entrance']
-                          ['security_kiosq_req'] !=
-                      null
-                  ? printData['bungalow_entrance']['security_kiosq_req'] == 0
-                  : false;
+              securityRequired =
+                  printData['bungalow_entrance']['security_kiosq_req'] != null
+                      ? printData['bungalow_entrance']['security_kiosq_req'] ==
+                          T_RUE
+                      : false;
+              securityNotRequired =
+                  printData['bungalow_entrance']['security_kiosq_req'] != null
+                      ? printData['bungalow_entrance']['security_kiosq_req'] ==
+                          F_ALSE
+                      : false;
               porchRequired =
                   printData["bungalow_entrance"]['porch_req'] != null
-                      ? printData["bungalow_entrance"]['porch_req'] == 1
+                      ? printData["bungalow_entrance"]['porch_req'] == T_RUE
                       : false;
 
               visualNature =
                   printData['bungalow_entrance']['visual_nature'] != null
-                      ? printData['bungalow_entrance']['visual_nature'] == "1"
+                      ? printData['bungalow_entrance']['visual_nature'] ==
+                          VISUAL_NATURE
                       : false;
               porchNotRequired =
                   printData["bungalow_entrance"]['porch_req'] != null
-                      ? printData["bungalow_entrance"]['porch_req'] == 0
+                      ? printData["bungalow_entrance"]['porch_req'] == F_ALSE
                       : false;
               SelectedLobbyDesign =
                   printData['bungalow_entrance']['foyer_lobby'] != null
@@ -243,26 +235,26 @@ class _EntranceState extends State<Entrance> {
                       : SelectedLobbyDesign;
               notReqiredWelcomeLobby =
                   printData['bungalow_entrance']['foyer_req'] != null
-                      ? printData['bungalow_entrance']['foyer_req'] == 0
+                      ? printData['bungalow_entrance']['foyer_req'] == F_ALSE
                       : false;
               requiredWelcomeLobyy =
                   printData['bungalow_entrance']['foyer_req'] != null
-                      ? printData['bungalow_entrance']['foyer_req'] == 1
+                      ? printData['bungalow_entrance']['foyer_req'] == T_RUE
                       : false;
               requiredVeranda =
                   printData["bungalow_entrance"]["verandah_req"] != null
-                      ? printData["bungalow_entrance"]["verandah_req"] == 1
+                      ? printData["bungalow_entrance"]["verandah_req"] == T_RUE
                       : false;
               notReqiredVeranda =
                   printData["bungalow_entrance"]["verandah_req"] != null
-                      ? printData["bungalow_entrance"]["verandah_req"] == 0
+                      ? printData["bungalow_entrance"]["verandah_req"] == F_ALSE
                       : false;
               outSideOpen = printData["bungalow_entrance"]["verandah"] != null
-                  ? printData["bungalow_entrance"]["verandah"] == '1'
+                  ? printData["bungalow_entrance"]["verandah"] == OutSideOpen
                   : false;
 
               outSideClosed = printData["bungalow_entrance"]["verandah"] != null
-                  ? printData["bungalow_entrance"]["verandah"] == '2'
+                  ? printData["bungalow_entrance"]["verandah"] == OutSideClosed
                   : false;
               // ignore: prefer_if_null_operators
               securityKioskLengthController = printData["bungalow_entrance"]
@@ -292,7 +284,7 @@ class _EntranceState extends State<Entrance> {
                           .toString()
                           .split(",")
                       : [];
-              print(porchRequiredFaci);
+              // print(porchRequiredFaci);
 
               if (porchRequiredFaci != null) {
                 if (porchRequiredFaci.contains('1')) {
@@ -308,7 +300,7 @@ class _EntranceState extends State<Entrance> {
                               ['visual_nature']
                           .toString())]
                       : selectedVisual;
-              print(selectedVisual);
+              // print(selectedVisual);
 
               SelectedCar =
                   printData['bungalow_entrance']['car_parking_space'] != null
@@ -316,7 +308,7 @@ class _EntranceState extends State<Entrance> {
                               ['car_parking_space']
                           .toString())]
                       : SelectedCar;
-              print(SelectedCar);
+              // print(SelectedCar);
               visualNaturString = printData['bungalow_entrance']
                           ['visual_nature'] !=
                       null
@@ -332,7 +324,7 @@ class _EntranceState extends State<Entrance> {
                       ? (printData['bungalow_entrance']['car_parking_space']
                           .toString())
                       : carParkingString;
-              print(carParkingString);
+              // print(carParkingString);
             }
           },
         );
@@ -341,7 +333,6 @@ class _EntranceState extends State<Entrance> {
       print(e.toString());
     }
   }
-
 
   Future<dynamic> getUserId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -361,9 +352,7 @@ class _EntranceState extends State<Entrance> {
     super.initState();
     getUserId();
 
-
     final store = Provider.of<PageNavProvider>(context, listen: false);
-
 
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   if (store.getId() == 0) {
@@ -372,13 +361,12 @@ class _EntranceState extends State<Entrance> {
     //     getData(store.getId());
     //   }
     // });
-    
+
     if (printData == null) {
       setState(() {
         isloading = true;
       });
     }
-
   }
 
   @override
@@ -441,35 +429,41 @@ class _EntranceState extends State<Entrance> {
                         setState(
                           () {
                             selectedFloor = it!;
-                            if (selectedFloor == "1(G)") {
+                            if (selectedFloor == ENT_GROUND_FLOOR) {
                               if (printData != null &&
                                   printData['bungalow_entrance'] != null)
-                                printData["bungalow_entrance"]["floor"] = 1;
+                                printData["bungalow_entrance"]["floor"] =
+                                    G_FLOOR;
                             }
-                            if (selectedFloor == "Select") {
+                            if (selectedFloor == ENT_SELECT) {
                               if (printData != null &&
                                   printData['bungalow_entrance'] != null)
-                                printData["bungalow_entrance"]["floor"] = 0;
+                                printData["bungalow_entrance"]["floor"] =
+                                    S_ELECT;
                             }
-                            if (selectedFloor == "2(G+1)") {
+                            if (selectedFloor == ENT_FIRST_FLOOR) {
                               if (printData != null &&
                                   printData['bungalow_entrance'] != null)
-                                printData["bungalow_entrance"]["floor"] = 2;
+                                printData["bungalow_entrance"]["floor"] =
+                                    FIRST_FLOOR;
                             }
-                            if (selectedFloor == "3(G+2)") {
+                            if (selectedFloor == ENT_SECOND_FLOOR) {
                               if (printData != null &&
                                   printData['bungalow_entrance'] != null)
-                                printData["bungalow_entrance"]["floor"] = 3;
+                                printData["bungalow_entrance"]["floor"] =
+                                    SECOND_FLOOR;
                             }
-                            if (selectedFloor == "4(G+3)") {
+                            if (selectedFloor == ENT_THIRD_FLOOR) {
                               if (printData != null &&
                                   printData['bungalow_entrance'] != null)
-                                printData["bungalow_entrance"]["floor"] = 4;
+                                printData["bungalow_entrance"]["floor"] =
+                                    THIRD_FLOOR;
                             }
-                            if (selectedFloor == "more") {
+                            if (selectedFloor == ENT_MORE_FLOOR) {
                               if (printData != null &&
                                   printData['bungalow_entrance'] != null)
-                                printData["bungalow_entrance"]["floor"] = 5;
+                                printData["bungalow_entrance"]["floor"] =
+                                    MORE_FLOOR;
                             }
                           },
                         );
@@ -478,7 +472,7 @@ class _EntranceState extends State<Entrance> {
                   ),
                 ),
               ),
-              if (selectedFloor == "more") ...[
+              if (selectedFloor == ENT_MORE_FLOOR) ...[
                 Material(
                   elevation: 5,
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -486,11 +480,15 @@ class _EntranceState extends State<Entrance> {
                     height: height * 0.04,
                     width: width * 0.15,
                     child: TextFormField(
-                      initialValue: printData["bungalow_entrance"]["floor"]
-                                  .toString() !=
-                              null
-                          ? printData["bungalow_entrance"]["floor"].toString()
-                          : "floors",
+                      initialValue: printData != null &&
+                              printData['bungalow_entrance'] != null
+                          ? printData["bungalow_entrance"]["floor"]
+                                      .toString() !=
+                                  null
+                              ? printData["bungalow_entrance"]["floor"]
+                                  .toString()
+                              : ""
+                          : "",
                       style: const TextStyle(fontSize: 14),
                       decoration: const InputDecoration(
                           hintText: "floors",
@@ -686,7 +684,7 @@ class _EntranceState extends State<Entrance> {
                                       printData['bungalow_entrance'] != null
                                   ? printData['bungalow_entrance']
                                               ['entrance_gate'] ==
-                                          "Two gate"
+                                          TWO_GATE
                                       ? true
                                       : twoGate
                                   : twoGate,
@@ -1462,7 +1460,7 @@ class _EntranceState extends State<Entrance> {
                             value: e.value,
                             onTap: () {
                               visualNaturString = idx.toString();
-                              print(visualNaturString);
+                              // print(visualNaturString);
                             },
                             child: Text(e.value),
                           );
@@ -2207,14 +2205,14 @@ class _EntranceState extends State<Entrance> {
                   }
                   floor();
                   if (oneGate == false) {
-                    gate = "Two gate";
+                    gate = TWO_GATE;
                   } else {
-                    gate = "One Gate";
+                    gate = ONE_GATE;
                   }
-                  if (selectedCarGate == "more") {
+                  if (selectedCarGate == MORE) {
                     selectedCarGate = selectedCarGateController.text;
                   }
-                  if (selectedSidePadest == "more") {
+                  if (selectedSidePadest == MORE) {
                     selectedSidePadest = selectedSidePadestController.text;
                   }
 
@@ -2275,9 +2273,9 @@ class _EntranceState extends State<Entrance> {
                 },
               );
               if (pageId != null) {
-                print("put data");
+                // print("put data");
                 entrancePut(
-                  provider.project_id,
+                  project_id,
                   moderateString,
                   floorInt,
                   gate,
@@ -2311,7 +2309,7 @@ class _EntranceState extends State<Entrance> {
                 );
               } else {
                 entrancePost(
-                  provider.project_id,
+                  project_id,
                   moderateString,
                   floorInt,
                   gate,
@@ -2359,4 +2357,13 @@ class _EntranceState extends State<Entrance> {
       ),
     );
   }
+}
+
+
+
+Text headingFont(String s) {
+  return Text(
+    s,
+    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+  );
 }

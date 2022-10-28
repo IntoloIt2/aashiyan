@@ -1,10 +1,12 @@
 import 'dart:convert';
 
-import 'package:aashiyan/components/contants.dart';
+
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../components/forms.dart';
@@ -134,21 +136,19 @@ class _LivingHallState extends State<LivingHall> {
   var printData;
   int? pageId;
   Future<void> getData(int id) async {
-    print('id===');
-    print(id);
-
     try {
       // var client = http.Client();
 
-      var response = await http.get(Uri.parse(
-          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-drawing-hall/$id"));
+      var response = await http.get(
+          Uri.parse("${dotenv.env['APP_URL']}edit-bungalow-drawing-hall/$id"));
+      // "http://192.168.0.99:8080/sdplserver/api//$id"));
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         setState(
           () {
             printData = jsonResponse;
-            print(printData);
+            // print(printData);
             if (printData != null) {
               pageId = printData['bungalow_drawing_hall']['id'] != null
                   ? int.parse(
@@ -156,26 +156,28 @@ class _LivingHallState extends State<LivingHall> {
                     )
                   : 0;
 
-              livingRequired = printData['bungalow_drawing_hall']
-                          ['drawing_hall_req'] !=
-                      null
-                  ? printData['bungalow_drawing_hall']['drawing_hall_req'] == 1
-                  : false;
-              livingNotRequired = printData['bungalow_drawing_hall']
-                          ['drawing_hall_req'] !=
-                      null
-                  ? printData['bungalow_drawing_hall']['drawing_hall_req'] == 0
-                  : false;
-              drawingHallRequired = printData["bungalow_drawing_hall"]
-                          ["living_hall_req"] !=
-                      null
-                  ? printData["bungalow_drawing_hall"]["living_hall_req"] == 1
-                  : false;
-              drawingHallNotRequired = printData["bungalow_drawing_hall"]
-                          ["living_hall_req"] !=
-                      null
-                  ? printData["bungalow_drawing_hall"]["living_hall_req"] == 0
-                  : false;
+              livingRequired =
+                  printData['bungalow_drawing_hall']['drawing_hall_req'] != null
+                      ? printData['bungalow_drawing_hall']
+                              ['drawing_hall_req'] ==
+                          T_RUE
+                      : false;
+              livingNotRequired =
+                  printData['bungalow_drawing_hall']['drawing_hall_req'] != null
+                      ? printData['bungalow_drawing_hall']
+                              ['drawing_hall_req'] ==
+                          F_ALSE
+                      : false;
+              drawingHallRequired =
+                  printData["bungalow_drawing_hall"]["living_hall_req"] != null
+                      ? printData["bungalow_drawing_hall"]["living_hall_req"] ==
+                          T_RUE
+                      : false;
+              drawingHallNotRequired =
+                  printData["bungalow_drawing_hall"]["living_hall_req"] != null
+                      ? printData["bungalow_drawing_hall"]["living_hall_req"] ==
+                          F_ALSE
+                      : false;
               selectedKitchen =
                   printData["bungalow_drawing_hall"]["kitchen_floor"] != null
                       ? kitchenItems[printData["bungalow_drawing_hall"]
@@ -208,7 +210,6 @@ class _LivingHallState extends State<LivingHall> {
                   ? DrawingItems[printData["bungalow_drawing_hall"]
                       ["drawing_hall_location"]]
                   : DrawingSelected;
-              print(DrawingSelected);
 
               LivingHallLengthController = printData['bungalow_drawing_hall']
                           ['living_hall_length'] !=
@@ -330,12 +331,12 @@ class _LivingHallState extends State<LivingHall> {
               if (livingHall != null) {
                 if (livingHall.contains('1') &&
                     !otherFeatures.contains("Double Height")) {
-                  print("object 1");
+                  // print("object 1");
                   otherFeatures.add(otherItems[0]);
                 }
                 if (livingHall.contains('2') &&
                     !otherFeatures.contains("Powder Toilet")) {
-                  print("object 2");
+                  // print("object 2");
                   otherFeatures.add(otherItems[1]);
                 }
               }
@@ -380,9 +381,8 @@ class _LivingHallState extends State<LivingHall> {
   void initState() {
     super.initState();
 
-
     final store = Provider.of<PageNavProvider>(context, listen: false);
-    
+
     getUserId();
 
     // WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -392,11 +392,9 @@ class _LivingHallState extends State<LivingHall> {
     //   }
     // });
 
-
     if (printData == null) {
       isloading = true;
     }
-
   }
 
   void multiSelected() async {
@@ -564,7 +562,7 @@ class _LivingHallState extends State<LivingHall> {
                 SizedBox(
                   width: width * 0.02,
                 ),
-                if (selectedFloor == "other") ...[
+                if (selectedFloor == OTHER_FLOOR) ...[
                   requirementTextField(
                       height, width, 0.04, 0.25, "other location"),
                 ]
@@ -606,7 +604,7 @@ class _LivingHallState extends State<LivingHall> {
                           ),
                       onChanged: (value) {
                         LivingHallLengthController = value;
-                        print(LivingHallLengthController);
+                        // print(LivingHallLengthController);
                       },
                     ),
                   ),
@@ -696,7 +694,7 @@ class _LivingHallState extends State<LivingHall> {
                     ),
                   ),
                 ),
-                if (selectedFeatures == "other") ...[
+                if (selectedFeatures == OTHER_FLOOR) ...[
                   Material(
                     elevation: 5,
                     borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -937,7 +935,7 @@ class _LivingHallState extends State<LivingHall> {
                                 value: it.value,
                                 onTap: () {
                                   drawingHallLocation = idx;
-                                  print(drawingHallLocation);
+                                  // print(drawingHallLocation);
                                 },
                                 child: Text(
                                   it.value,
@@ -961,7 +959,7 @@ class _LivingHallState extends State<LivingHall> {
                 SizedBox(
                   width: width * 0.02,
                 ),
-                if (DrawingSelected == "other") ...[
+                if (DrawingSelected == CONST_OTHER_OPEN) ...[
                   Material(
                     elevation: 5,
                     borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -1027,7 +1025,7 @@ class _LivingHallState extends State<LivingHall> {
                           ),
                       onChanged: (value) {
                         drawingHallLengthController = value;
-                        print(drawingHallLengthController);
+                        // print(drawingHallLengthController);
                       },
                     ),
                   ),
@@ -1069,7 +1067,7 @@ class _LivingHallState extends State<LivingHall> {
                           ),
                       onChanged: (value) {
                         drawingHallWidthController = value;
-                        print(drawingHallWidthController);
+                        // print(drawingHallWidthController);
                       },
                     ),
                   ),
@@ -1238,7 +1236,7 @@ class _LivingHallState extends State<LivingHall> {
               SizedBox(
                 width: width * 0.02,
               ),
-              if (selectedFloor == "other") ...[
+              if (selectedFloor == OTHER_FLOOR) ...[
                 requirementTextField(
                     height, width, 0.04, 0.25, "other location"),
               ]
@@ -1931,32 +1929,31 @@ class _LivingHallState extends State<LivingHall> {
             onTap: () {
               setState(
                 () {
-                  if (selectedRefrigerator == "Single Door ") {
-                    refrigeratorSize = "1";
+                  if (selectedRefrigerator == REFRI_SINGLE_DOOR) {
+                    refrigeratorSize = STR_ONE;
                   }
 
-                  if (selectedRefrigerator == "Double Door") {
-                    refrigeratorSize = "2";
+                  if (selectedRefrigerator == REFRI_DOUBLE_DOOR) {
+                    refrigeratorSize = STR_TWO;
                   }
 
-                  if (selectedRefrigerator ==
-                      "open with a reasonable opening") {
-                    refrigeratorSize = "3";
+                  if (selectedRefrigerator == KITCHEN_REASONABLE_OPEN) {
+                    refrigeratorSize = STR_THREE;
                   }
                   if (livingRequired == true) {
-                    if (selectedFloor == "1 floor") {
-                      livingHallLocation = 1;
+                    if (selectedFloor == G_1_FLOOR_TEXT) {
+                      livingHallLocation = G_FLOOR;
                     }
 
-                    if (selectedFloor == "2 floor") {
-                      livingHallLocation = 2;
+                    if (selectedFloor == G_2_FLOOR_TEXT) {
+                      livingHallLocation = FIRST_FLOOR;
                     }
 
-                    if (selectedFloor == "3 floor") {
-                      livingHallLocation = 3;
+                    if (selectedFloor == G_3_FLOOR_TEXT) {
+                      livingHallLocation = SECOND_FLOOR;
                     }
 
-                    if (selectedFloor == "other") {
+                    if (selectedFloor == OTHER_FLOOR_TEXT) {
                       livingHallLocation = int.parse(ohterLivingHallController);
                     }
 
@@ -2005,19 +2002,18 @@ class _LivingHallState extends State<LivingHall> {
                     drawingInt = 1;
                   }
 
-                  if (selectedKitchenFunction == "full open to dining ") {
-                    kitchenDiningFunction = "1";
+                  if (selectedKitchenFunction == KITCHEN_FULL_OPEN) {
+                    kitchenDiningFunction = CONST_FULL_OPEN;
                   }
 
-                  if (selectedKitchenFunction == "partial open to dining") {
-                    kitchenDiningFunction = "2";
+                  if (selectedKitchenFunction == KITCHEN_PARTIAL_OPEN) {
+                    kitchenDiningFunction = CONST_PARTIAL_OPEN;
                   }
-                  if (selectedKitchenFunction ==
-                      "open with a reasonable opening") {
-                    kitchenDiningFunction = "3";
+                  if (selectedKitchenFunction == KITCHEN_REASONABLE_OPEN) {
+                    kitchenDiningFunction = CONST_REASONABLE_OPEN;
                   }
 
-                  if (DrawingSelected == "other") {
+                  if (DrawingSelected == CONST_OTHER_OPEN) {
                     drawingHallLocation =
                         int.parse(otherDrawingHallLocationController);
                   }
@@ -2029,9 +2025,9 @@ class _LivingHallState extends State<LivingHall> {
               );
 
               if (pageId != null) {
-                print(pageId);
-                print(drawingHallLengthController);
-                print(LivingHallWidthController);
+                // print(pageId);
+                // print(drawingHallLengthController);
+                // print(LivingHallWidthController);
 
                 livingHallput(
                   project_id,
