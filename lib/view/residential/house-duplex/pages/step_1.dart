@@ -454,11 +454,12 @@ class _Step_1State extends State<Step_1> {
                   width: width * 0.25,
                   child: TextFormField(
                     // controller: nameController,
-                    initialValue: printData["project"] != null
-                        ? printData["project"]['first_name'] != null
-                            ? printData["project"]['first_name'].toString()
-                            : nameController
-                        : nameController,
+                    initialValue:
+                        printData != null && printData["project"] != null
+                            ? printData["project"]['first_name'] != null
+                                ? printData["project"]['first_name'].toString()
+                                : nameController
+                            : nameController,
                     style: const TextStyle(fontSize: 14),
                     decoration: const InputDecoration(
                         hintText: "First name",

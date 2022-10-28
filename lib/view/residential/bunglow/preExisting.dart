@@ -37,6 +37,7 @@ class _PreExistingState extends State<PreExisting> {
     String? userData = prefs.getString('userData');
     var decJson;
     var userId;
+
     if (userData != null) {
       decJson = jsonDecode(userData);
       if (decJson['data'] != null) {
@@ -75,8 +76,7 @@ class _PreExistingState extends State<PreExisting> {
                             InkWell(
                               onTap: () {
                                 setProjectId(projects[i]['id']);
-                                projects[i]['project_type_id'] ==
-                                        BUNGALOW.toString()
+                                projects[i]['project_type_id'] == BUNGALOW
                                     ? Get.to(() => const StepPages())
                                     : Get.to(() => const PageNav());
                               },
