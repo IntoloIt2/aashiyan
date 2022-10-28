@@ -75,8 +75,7 @@ class _PreExistingState extends State<PreExisting> {
                             InkWell(
                               onTap: () {
                                 setProjectId(projects[i]['id']);
-                                projects[i]['project_type_id'] ==
-                                        BUNGALOW.toString()
+                                projects[i]['project_type_id'] == BUNGALOW
                                     ? Get.to(() => const StepPages())
                                     : Get.to(() => const PageNav());
                               },
@@ -112,7 +111,9 @@ class _PreExistingState extends State<PreExisting> {
                                                     width: 3,
                                                   ),
                                                   requirementText(
-                                                      projects[i]['last_name'])
+                                                      projects[i]['last_name']),
+                                                  Text(projects[i]['id']
+                                                      .toString())
                                                 ],
                                               ),
                                         trailing: Column(
