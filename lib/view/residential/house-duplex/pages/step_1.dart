@@ -117,8 +117,8 @@ class _Step_1State extends State<Step_1> {
     }
 
     plotValue.text = calculation;
-    print(plotValue.text);
-    print(calculation);
+    // print(plotValue.text);
+    // print(calculation);
     return calculation;
   }
 
@@ -279,7 +279,7 @@ class _Step_1State extends State<Step_1> {
             levelController = printData["project"]["level_value"] != null
                 ? printData["project"]["level_value"].toString()
                 : "";
-         
+
             plotValue.text = printData["project"]["plot_size"] != null
                 ? printData["project"]["plot_size"].toString()
                 : "";
@@ -290,7 +290,6 @@ class _Step_1State extends State<Step_1> {
             cityId = printData["project"]["city"] != null
                 ? printData["project"]["city"]
                 : "";
-
           }
         });
       }
@@ -455,11 +454,12 @@ class _Step_1State extends State<Step_1> {
                   width: width * 0.25,
                   child: TextFormField(
                     // controller: nameController,
-                    initialValue: printData["project"] != null
-                        ? printData["project"]['first_name'] != null
-                            ? printData["project"]['first_name'].toString()
-                            : nameController
-                        : nameController,
+                    initialValue:
+                        printData != null && printData["project"] != null
+                            ? printData["project"]['first_name'] != null
+                                ? printData["project"]['first_name'].toString()
+                                : nameController
+                            : nameController,
                     style: const TextStyle(fontSize: 14),
                     decoration: const InputDecoration(
                         hintText: "First name",
@@ -1862,21 +1862,25 @@ class _Step_1State extends State<Step_1> {
                             .toList(),
                         onChanged: (it) => setState(() {
                           selectedLevel = it!;
-                          if (it == "Up") {
+                          if (it == PLOT_LEVEL_UP) {
                             if (printData['project'] != null) {
-                              printData['project']['level'] = 2;
+                              printData['project']['level'] = LEVEL_UP;
                             }
-                            selectedLevelInt = 2;
-                          } else if (it == "Down") {
+                            selectedLevelInt = LEVEL_UP;
+                          } else if (it == PLOT_LEVEL_DOWN) {
                             if (printData['project'] != null) {
-                              printData['project']['level'] = 3;
+                              printData['project']['level'] = LEVEL_DOWN;
                             }
-                            selectedLevelInt = 3;
-                          } else if (it == "Almost same level") {
+                            selectedLevelInt = LEVEL_DOWN;
+                          } else if (it == PLOT_LEVEL_SAME) {
                             if (printData['project'] != null) {
-                              printData['project']['level'] = 1;
+                              printData['project']['level'] = LEVEL_ALMOST;
                             }
-                            selectedLevelInt = 1;
+                            selectedLevelInt = LEVEL_ALMOST;
+                          } else {
+                            if (printData['project'] != null) {
+                              printData['project']['level'] = 0;
+                            }
                           }
                         }),
                       ),
@@ -1884,7 +1888,11 @@ class _Step_1State extends State<Step_1> {
                   ),
                 ),
               ),
-              if (selectedLevel == "Up") ...[
+              if (printData['project'] != null
+                  ? printData['project']['level'] == LEVEL_UP
+                      ? true
+                      : false
+                  : selectedLevel == PLOT_LEVEL_UP) ...[
                 Material(
                   elevation: 5,
                   borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -1894,8 +1902,8 @@ class _Step_1State extends State<Step_1> {
                     child: TextFormField(
                       // controller: nameController,
                       initialValue: printData['project'] != null
-                          ? printData["project"]['level_value_feet']
-                          : lengthController,
+                          ? printData["project"]['level_value']
+                          : levelController,
                       style: const TextStyle(fontSize: 14),
                       decoration: const InputDecoration(
                           hintText: "Road width",
@@ -1917,62 +1925,30 @@ class _Step_1State extends State<Step_1> {
                 SizedBox(
                   width: width * 0.01,
                 ),
-
-                Row(
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Material(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Container(
-                          height: height * 0.04,
-                          padding: const EdgeInsets.all(5),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              hint: printData['project'] != null
-                                  // ? printData['project']['level'] != null
-                                  ? Text(
-                                      "${levels[printData['project']['level']]}")
-                                  // : Text(selectedLevel)
-                                  : Text(selectedLevel),
-                              // value: selectedLevel,
-                              icon: const Icon(Icons.keyboard_arrow_down_sharp),
-                              elevation: 16,
-                              items: levels
-                                  .map((it) => DropdownMenuItem<String>(
-                                        value: it,
-                                        child: Text(it,
-                                            style: TextStyle(
-                                                fontSize: height * 0.02)),
-                                      ))
-                                  .toList(),
-                              onChanged: (it) => setState(() {
-                                selectedLevel = it!;
-                                if (it == PLOT_LEVEL_UP) {
-                                  if (printData['project'] != null) {
-                                    printData['project']['level'] = LEVEL_UP;
-                                  }
-                                  selectedLevelInt = LEVEL_UP;
-                                } else if (it == PLOT_LEVEL_DOWN) {
-                                  if (printData['project'] != null) {
-                                    printData['project']['level'] = LEVEL_DOWN;
-                                  }
-                                  selectedLevelInt = LEVEL_DOWN;
-                                } else if (it == PLOT_LEVEL_SAME) {
-                                  if (printData['project'] != null) {
-                                    printData['project']['level'] =
-                                        LEVEL_ALMOST;
-                                  }
-                                  selectedLevelInt = LEVEL_ALMOST;
-                                } else {
-                                  if (printData['project'] != null) {
-                                    printData['project']['level'] = 0;
-                                  }
-                                }
-                              }),
-                            ),
-                          ),
-
+                valueContainer(height, width, size, 0.039, 0.05)
+              ],
+              if (printData['project'] != null
+                  ? printData['project']['level'] == LEVEL_DOWN
+                      ? true
+                      : false
+                  : selectedLevel == PLOT_LEVEL_DOWN) ...[
+                Material(
+                  elevation: 5,
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  child: SizedBox(
+                    height: height * 0.04,
+                    width: width * 0.22,
+                    child: TextFormField(
+                      // controller: nameController,
+                      initialValue: printData['project'] != null
+                          ? printData["project"]['level_value']
+                          : levelController,
+                      style: const TextStyle(fontSize: 14),
+                      decoration: const InputDecoration(
+                        hintText: "Road width",
+                        hintStyle: TextStyle(fontSize: 14),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
                         ),
                         isDense: true,
                         contentPadding: EdgeInsets.all(8),
@@ -1982,94 +1958,7 @@ class _Step_1State extends State<Step_1> {
                         levelController = value;
                       },
                     ),
-
-                    if (printData['project'] != null
-                        ? printData['project']['level'] == LEVEL_UP
-                            ? true
-                            : false
-                        : selectedLevel == PLOT_LEVEL_UP) ...[
-                      Material(
-                        elevation: 5,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                        child: SizedBox(
-                          height: height * 0.04,
-                          width: width * 0.22,
-                          child: TextFormField(
-                            // controller: nameController,
-                            initialValue: printData['project'] != null
-                                ? printData["project"]['level_value']
-                                : levelController,
-                            style: const TextStyle(fontSize: 14),
-                            decoration: const InputDecoration(
-                                hintText: "Road width",
-                                hintStyle: TextStyle(fontSize: 14),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                                isDense: true,
-                                contentPadding: EdgeInsets.all(8)
-                                //fillColor: Colors.green
-
-                                ),
-                            onChanged: (value) {
-                              levelController = value;
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: width * 0.01,
-                      ),
-                      valueContainer(height, width, size, 0.039, 0.05)
-                    ],
-                    if (printData['project'] != null
-                        ? printData['project']['level'] == LEVEL_DOWN
-                            ? true
-                            : false
-                        : selectedLevel == PLOT_LEVEL_DOWN) ...[
-                      Material(
-                        elevation: 5,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                        child: SizedBox(
-                          height: height * 0.04,
-                          width: width * 0.22,
-                          child: TextFormField(
-                            // controller: nameController,
-                            initialValue: printData['project'] != null
-                                ? printData["project"]['level_value']
-                                : levelController,
-                            style: const TextStyle(fontSize: 14),
-                            decoration: const InputDecoration(
-                              hintText: "Road width",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              isDense: true,
-                              contentPadding: EdgeInsets.all(8),
-                              // fillColor: Colors.green
-                            ),
-                            onChanged: (value) {
-                              levelController = value;
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: width * 0.01,
-                      ),
-                      valueContainer(
-                        height,
-                        width,
-                        size,
-                        0.039,
-                        0.05,
-                      ),
-                    ]
-                  ],
-
+                  ),
                 ),
                 SizedBox(
                   width: width * 0.01,
@@ -2096,19 +1985,17 @@ class _Step_1State extends State<Step_1> {
                     plot_orientaion = 1;
                   }
 
-
-                        if (size == "m") {
-                          dimenInt = 2;
-                          setDimension(dimenInt);
-                        } else {
-                          dimenInt = 1;
-                          setDimension(dimenInt);
-                        }
-                        if (regularPlotValue == true) {
-                          // isNotRegular = 1;
-                          isRegular = 1;
-                        }
-
+                  if (size == "m") {
+                    dimenInt = 2;
+                    setDimension(dimenInt);
+                  } else {
+                    dimenInt = 1;
+                    setDimension(dimenInt);
+                  }
+                  if (regularPlotValue == true) {
+                    // isNotRegular = 1;
+                    isRegular = 1;
+                  }
 
                   if (isNorthOrientaion == true) {
                     isNorthOrientaion = 1;
@@ -2128,86 +2015,78 @@ class _Step_1State extends State<Step_1> {
                     isEast = EAST_OTHER_PROPERTY;
                   }
 
-
-                        // if (otherEast == true) {
-                        //   isEast = EAST_OTHER_PROPERTY;
-                        // }
-                        if (nortRoad == true) {
-                          isNorth = NORTH_PROPERTY;
-                        } else if (otherNortn == true) {
-                          isNorth = NORTH_OTHER_PROPERTY;
-                        }
-                        // if (otherNortn == true) {
-                        //   isNorth = "1";
-                        // }
-                        if (southRoad == true) {
-                          isSouth = SOUTH_PROPERTY;
-                        } else if (otherSouth == true) {
-                          isSouth = SOUTH_OTHER_PROPERTY;
-                        }
-                        // if (otherSouth == true) {
-                        //   isSouth = "1";
-                        // }
-                        if (notReqired == true) {
-                          notReqiredInt = 1;
-                        }
-                      },
-                    );
-                    var status = await provider.requirementPost(
-                      user_id,
-                      projectGroupId,
-                      projectTypeId,
-                      selectedItems,
-                      nameController,
-                      lastNameController,
-                      emailController,
-                      COUNTRY_ID,
-                      stateId,
-                      cityId,
-                      addressController,
-                      isRegular,
-                      dimenInt,
-                      lengthController!,
-                      widthController!,
-                      diagonal1Controller!,
-                      diagonal2Controller!,
-                      plotValue.text,
-                      " ",
-                      plot_orientaion,
-                      " ",
-                      isEast,
-                      eastController,
-                      isWest,
-                      westController,
-                      isNorth,
-                      northController,
-                      isSouth,
-                      southController,
-                      selectedLevelInt,
-                      levelController,
-                      notReqiredInt,
-                    );
-                    // project_id = provider.project_id;
-                    if (status == 200) {
-                      showToast('Project Requirement Submitted !',
-                          Colors.lightGreen, ToastGravity.TOP);
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: buttonColor,
-                        borderRadius: BorderRadius.circular(4)),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: const Text(
-                      "save and continue",
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                    ),
-                  ),
-                   
-                )
-              ],
-
+                  // if (otherEast == true) {
+                  //   isEast = EAST_OTHER_PROPERTY;
+                  // }
+                  if (nortRoad == true) {
+                    isNorth = NORTH_PROPERTY;
+                  } else if (otherNortn == true) {
+                    isNorth = NORTH_OTHER_PROPERTY;
+                  }
+                  // if (otherNortn == true) {
+                  //   isNorth = "1";
+                  // }
+                  if (southRoad == true) {
+                    isSouth = SOUTH_PROPERTY;
+                  } else if (otherSouth == true) {
+                    isSouth = SOUTH_OTHER_PROPERTY;
+                  }
+                  // if (otherSouth == true) {
+                  //   isSouth = "1";
+                  // }
+                  if (notReqired == true) {
+                    notReqiredInt = 1;
+                  }
+                },
+              );
+              var status = await provider.requirementPost(
+                user_id,
+                projectGroupId,
+                projectTypeId,
+                selectedItems,
+                nameController,
+                lastNameController,
+                emailController,
+                COUNTRY_ID,
+                stateId,
+                cityId,
+                addressController,
+                isRegular,
+                dimenInt,
+                lengthController!,
+                widthController!,
+                diagonal1Controller!,
+                diagonal2Controller!,
+                plotValue.text,
+                " ",
+                plot_orientaion,
+                " ",
+                isEast,
+                eastController,
+                isWest,
+                westController,
+                isNorth,
+                northController,
+                isSouth,
+                southController,
+                selectedLevelInt,
+                levelController,
+                notReqiredInt,
+              );
+              // project_id = provider.project_id;
+              if (status == 200) {
+                showToast('Project Requirement Submitted !', Colors.lightGreen,
+                    ToastGravity.TOP);
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  color: buttonColor, borderRadius: BorderRadius.circular(4)),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: const Text(
+                "save and continue",
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              ),
             ),
           )
         ],
