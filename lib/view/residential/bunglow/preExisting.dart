@@ -37,6 +37,7 @@ class _PreExistingState extends State<PreExisting> {
     String? userData = prefs.getString('userData');
     var decJson;
     var userId;
+
     if (userData != null) {
       decJson = jsonDecode(userData);
       if (decJson['data'] != null) {
