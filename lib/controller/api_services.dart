@@ -426,7 +426,8 @@ Future<dynamic> entrancePut(
   return resp["status"];
 }
 
-Future<void> livingHallPost(
+Future<dynamic> livingHallPost(
+  int user_id,
   int projectId,
   int drawingHallRequirement,
   int drawingHallLocation,
@@ -454,8 +455,8 @@ Future<void> livingHallPost(
 ) async {
   print(specificReq);
   var projectData = {
-    "project_id": 785657,
-    "user_id": 986,
+    "project_id": projectId,
+    "user_id": user_id,
     "dimension": dimenInt,
     "drawing_hall_req": drawingHallRequirement,
     "drawing_hall_location": drawingHallLocation,
@@ -493,9 +494,12 @@ Future<void> livingHallPost(
     body: jsonEncode(projectData),
   );
   print(response.body);
+  var temp = jsonDecode(response.body);
+  return temp['status'];
 }
 
-Future<void> livingHallput(
+Future<dynamic> livingHallput(
+  int user_id,
   int projectId,
   int drawingHallRequirement,
   int drawingHallLocation,
@@ -521,15 +525,15 @@ Future<void> livingHallput(
   String refrigeratorSize,
   String specificReq,
 ) async {
-  print(drawingHallLength);
-  print(drawingHallWidth);
+  // print(drawingHallLength);
+  // print(drawingHallWidth);
 
-  print(livingHallLength);
-  print(livingHallwidth);
+  // print(livingHallLength);
+  // print(livingHallwidth);
 
   var projectData = {
     "project_id": projectId,
-    "user_id": 986,
+    "user_id": user_id,
     "dimension": dimenInt,
     "drawing_hall_req": drawingHallRequirement,
     "drawing_hall_location": drawingHallLocation,
@@ -561,13 +565,16 @@ Future<void> livingHallput(
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
     Uri.parse(
-        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-drawing-hall/$projectId'),
+        "${dotenv.env['APP_URL']}update-bungalow-drawing-hall/$projectId"),
+    // 'http://192.168.0.99:8080/sdplserver/api/update-bungalow-drawing-hall/$projectId'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
   print(response.body);
+  var temp = jsonDecode(response.body);
+  return temp['status'];
 }
 
 Future<void> pantryPost(

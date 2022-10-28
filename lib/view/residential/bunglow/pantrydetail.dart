@@ -215,11 +215,11 @@ class _PantryDetailState extends State<PantryDetail> {
     super.initState();
     getData();
 
-    new Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        isloading = true;
-      });
+    // new Future.delayed(Duration(seconds: 1), () {
+    setState(() {
+      isloading = true;
     });
+    // });
   }
 
   @override
