@@ -12,12 +12,7 @@ import '../../../const.dart';
 import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
 
-Text headingFont(String s) {
-  return Text(
-    s,
-    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-  );
-}
+
 
 class Entrance extends StatefulWidget {
   const Entrance({Key? key}) : super(key: key);
@@ -2290,6 +2285,7 @@ class _EntranceState extends State<Entrance> {
               );
               if (pageId != null) {
                 // print("put data");
+
                 var status = await entrancePut(
                   project_id,
                   // provider.project_id,
@@ -2330,6 +2326,7 @@ class _EntranceState extends State<Entrance> {
                 }
               } else {
                 var status = await entrancePost(
+
                   project_id,
                   moderateString,
                   floorInt,
@@ -2382,4 +2379,13 @@ class _EntranceState extends State<Entrance> {
       ),
     );
   }
+}
+
+
+
+Text headingFont(String s) {
+  return Text(
+    s,
+    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+  );
 }
