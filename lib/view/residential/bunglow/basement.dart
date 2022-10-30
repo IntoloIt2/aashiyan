@@ -259,7 +259,7 @@ class _BasementState extends State<Basement> {
     );
     final jsonResponse = jsonDecode(response.body);
     // print(jsonResponse);
-    if (response.statusCode == 200) {
+    if (response.statusCode == SUCCESS) {
       // print(jsonResponse);
       setState(() {
         viewData = jsonResponse;

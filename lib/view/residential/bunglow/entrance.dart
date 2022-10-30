@@ -4,6 +4,7 @@ import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provid
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../components/constant.dart';
@@ -152,6 +153,16 @@ class _EntranceState extends State<Entrance> {
   bool isloading = false;
   var pageId;
 
+  void showToast(msg, toastColor, GRAVITY) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 0,
+        backgroundColor: toastColor,
+        textColor: Colors.white);
+  }
+
   Future<void> getData(int id) async {
     try {
       // print(id);
@@ -159,7 +170,7 @@ class _EntranceState extends State<Entrance> {
         Uri.parse("${dotenv.env['APP_URL']}edit-bungalow-entrance/$id"),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
 
         setState(
@@ -1533,7 +1544,7 @@ class _EntranceState extends State<Entrance> {
                 borderRadius: BorderRadius.circular(5),
                 elevation: 5,
                 child: Container(
-                  width: width * 0.4,
+                  width: width * 0.45,
                   child: Row(
                     children: [
                       SizedBox(
@@ -2195,7 +2206,7 @@ class _EntranceState extends State<Entrance> {
             height: height * 0.01,
           ),
           InkWell(
-            onTap: () {
+            onTap: () async {
               setState(
                 () {
                   if (moderate == true) {
@@ -2274,8 +2285,10 @@ class _EntranceState extends State<Entrance> {
               );
               if (pageId != null) {
                 // print("put data");
-                entrancePut(
+
+                var status = await entrancePut(
                   project_id,
+                  // provider.project_id,
                   moderateString,
                   floorInt,
                   gate,
@@ -2288,7 +2301,7 @@ class _EntranceState extends State<Entrance> {
                   securityKioskLengthController,
                   securityKioskWidthController,
                   securityKiosqArea,
-                  0,
+                  INT_ZERO,
                   porchReqInt,
                   porchLengthController,
                   porchWidthController,
@@ -2307,8 +2320,13 @@ class _EntranceState extends State<Entrance> {
                   verandaArea,
                   veranda,
                 );
+                if (status == SUCCESS) {
+                  showToast('Entrance Requirement Updated !', Colors.lightGreen,
+                      ToastGravity.TOP);
+                }
               } else {
-                entrancePost(
+                var status = await entrancePost(
+
                   project_id,
                   moderateString,
                   floorInt,
@@ -2322,7 +2340,7 @@ class _EntranceState extends State<Entrance> {
                   securityKioskLengthController,
                   securityKioskWidthController,
                   securityKiosqArea,
-                  0,
+                  INT_ZERO,
                   porchReqInt,
                   porchLengthController,
                   porchWidthController,
@@ -2341,6 +2359,10 @@ class _EntranceState extends State<Entrance> {
                   verandaArea,
                   veranda,
                 );
+                if (status == SUCCESS) {
+                  showToast('Entrance Requirement submitted successfully!',
+                      Colors.lightGreen, ToastGravity.TOP);
+                }
               }
             },
             child: Container(

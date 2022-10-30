@@ -19,6 +19,7 @@
 
 // ignore: non_constant_identifier_names
 String SUCCESS_MESSAGE = " You will be contacted by us very soon.";
+const SUCCESS = 200;
 // ignore: non_constant_identifier_names
 List<String> PROJECT_TYPE = [
   "mix use",
@@ -160,6 +161,8 @@ const ACTIVE = 1;
 const T_RUE = 1;
 const F_ALSE = 0;
 
+const METER = "m";
+const FEET = "ft";
 //this constant save on sddiform and use for email
 const ADMIN = 1;
 const ANURAG_SIR = 4;
