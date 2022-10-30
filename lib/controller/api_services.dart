@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:core';
+import 'dart:ffi';
 
 // import 'dart:html';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -450,7 +451,7 @@ Future<dynamic> livingHallPost(
   String attachStoreWidth,
   String utilityWashWidth,
   String utilityWashLength,
-  String refrigeratorSize,
+  int refrigeratorSize,
   String specificReq,
 ) async {
   print(specificReq);
@@ -522,7 +523,7 @@ Future<dynamic> livingHallput(
   String attachStoreWidth,
   String utilityWashWidth,
   String utilityWashLength,
-  String refrigeratorSize,
+  int refrigeratorSize,
   String specificReq,
 ) async {
   // print(drawingHallLength);
@@ -577,8 +578,9 @@ Future<dynamic> livingHallput(
   return temp['status'];
 }
 
-Future<void> pantryPost(
+Future<dynamic> pantryPost(
   int projectId,
+  int user_id,
   int pantryRequest,
   int pantryFloor,
   String pantryLength,
@@ -592,8 +594,8 @@ Future<void> pantryPost(
   String diningText,
 ) async {
   var projectData = {
-    "project_id": 179,
-    "user_id": 3655,
+    "project_id": projectId,
+    "user_id": user_id,
     "dimension": dimenInt,
     "pantry_req": pantryRequest,
     "pantry_floor": pantryFloor,
@@ -608,20 +610,25 @@ Future<void> pantryPost(
     "dining_text": diningText,
   };
 
+  print("pantry bodyData==");
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-pantry'),
+    Uri.parse("${dotenv.env['APP_URL']}bungalow-pantry"),
+    // Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-pantry'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
+  var resp = jsonDecode(response.body);
   print(response.body);
+  return resp['status'];
 }
 
-Future<void> pantryPut(
+Future<dynamic> pantryPut(
   int projectId,
+  int user_id,
   int pantryRequest,
   int pantryFloor,
   String pantryLength,
@@ -635,8 +642,8 @@ Future<void> pantryPut(
   String diningText,
 ) async {
   var projectData = {
-    "project_id": 179,
-    "user_id": 19,
+    "project_id": projectId,
+    "user_id": user_id,
     "dimension": dimenInt,
     "pantry_req": pantryRequest,
     "pantry_floor": pantryFloor,
@@ -654,14 +661,16 @@ Future<void> pantryPut(
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse(
-        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-pantry/$projectId'),
+    Uri.parse("${dotenv.env['APP_URL']}update-bungalow-pantry/$projectId"),
+    // 'http://192.168.0.99:8080/sdplserver/api/update-bungalow-pantry/$projectId'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
+  var resp = jsonDecode(response.body);
   print(response.body);
+  return resp['status'];
 }
 
 Future<void> flooreStorePost(
