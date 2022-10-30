@@ -112,7 +112,9 @@ class _PreExistingState extends State<PreExisting> {
                                                     width: 3,
                                                   ),
                                                   requirementText(
-                                                      projects[i]['last_name'])
+                                                      projects[i]['last_name']),
+                                                  Text(projects[i]['id']
+                                                      .toString())
                                                 ],
                                               ),
                                         trailing: Column(
