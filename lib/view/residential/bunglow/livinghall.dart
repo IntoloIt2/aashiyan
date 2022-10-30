@@ -7,6 +7,7 @@ import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provid
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../components/forms.dart';
@@ -135,8 +136,21 @@ class _LivingHallState extends State<LivingHall> {
 
   var printData;
   int? pageId;
+
+  void showToast(msg, toastColor, GRAVITY) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 0,
+        backgroundColor: toastColor,
+        textColor: Colors.white);
+  }
+
   Future<void> getData(int id) async {
     try {
+      print("object==");
+      print(id);
       // var client = http.Client();
 
       var response = await http.get(
@@ -148,7 +162,8 @@ class _LivingHallState extends State<LivingHall> {
         setState(
           () {
             printData = jsonResponse;
-            // print(printData);
+            print('printData==');
+            print(printData);
             if (printData != null) {
               pageId = printData['bungalow_drawing_hall']['id'] != null
                   ? int.parse(
@@ -590,7 +605,7 @@ class _LivingHallState extends State<LivingHall> {
                                   null
                           ? printData['bungalow_drawing_hall']
                               ['living_hall_length']
-                          : "",
+                          : LivingHallLengthController,
                       style: const TextStyle(fontSize: 14),
                       decoration: const InputDecoration(
                           hintText: "length",
@@ -604,7 +619,7 @@ class _LivingHallState extends State<LivingHall> {
                           ),
                       onChanged: (value) {
                         LivingHallLengthController = value;
-                        // print(LivingHallLengthController);
+                        print(LivingHallLengthController);
                       },
                     ),
                   ),
@@ -1926,7 +1941,7 @@ class _LivingHallState extends State<LivingHall> {
             height: height * 0.01,
           ),
           InkWell(
-            onTap: () {
+            onTap: () async {
               setState(
                 () {
                   if (selectedRefrigerator == REFRI_SINGLE_DOOR) {
@@ -1968,7 +1983,7 @@ class _LivingHallState extends State<LivingHall> {
                   }
 
                   if (livingRequired == true) {
-                    livingHallInt = 1;
+                    livingHallInt = INT_ONE;
                   }
                   if (utilityWash == true) {
                     // int utility = int.parse(utilityLengthController) *
@@ -1999,7 +2014,7 @@ class _LivingHallState extends State<LivingHall> {
                   if (attachedStore == true) {}
 
                   if (drawingHallRequired == true) {
-                    drawingInt = 1;
+                    drawingInt = INT_ONE;
                   }
 
                   if (selectedKitchenFunction == KITCHEN_FULL_OPEN) {
@@ -2029,7 +2044,8 @@ class _LivingHallState extends State<LivingHall> {
                 // print(drawingHallLengthController);
                 // print(LivingHallWidthController);
 
-                livingHallput(
+                var status = await livingHallput(
+                  user_id,
                   project_id,
                   drawingInt,
                   drawingHallLocation,
@@ -2055,8 +2071,13 @@ class _LivingHallState extends State<LivingHall> {
                   refrigeratorSize,
                   specificReq,
                 );
+                if (status == SUCCESS) {
+                  showToast('Living Hall Requirement Updated !',
+                      Colors.lightGreen, ToastGravity.TOP);
+                }
               } else {
-                livingHallPost(
+                var status = await livingHallPost(
+                  user_id,
                   project_id,
                   drawingInt,
                   drawingHallLocation,
@@ -2082,6 +2103,10 @@ class _LivingHallState extends State<LivingHall> {
                   refrigeratorSize,
                   specificReq,
                 );
+                if (status == SUCCESS) {
+                  showToast('Living Hall Requirement submitted!',
+                      Colors.lightGreen, ToastGravity.TOP);
+                }
               }
             },
             child: Align(
