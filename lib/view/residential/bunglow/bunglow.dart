@@ -153,39 +153,6 @@ class _BunglowState extends State<Bunglow> {
                   ),
                 ),
                 GestureDetector(
-                  // onTap: () async {
-                  //   final SharedPreferences prefs =
-                  //       await SharedPreferences.getInstance();
-                  //   String? resultData = prefs.getString('userData');
-
-                  //   var decodedJson;
-                  //   if (resultData != null) {
-                  //     decodedJson = jsonDecode(resultData);
-                  //     if (decodedJson['data'] != null) {
-                  //       bungalow_count = await cont.projectCount(
-                  //           decodedJson['data'], decodedJson['data']['id']);
-                  //     }
-                  //   }
-
-                  //   if (decodedJson != null
-                  //       ? decodedJson['status'] == 200 &&
-                  //               decodedJson['data'] != null
-                  //           ? decodedJson['data']['id'] != null
-                  //               ? bungalow_count != null
-                  //                   ? bungalow_count >= 100
-                  //                       ? true
-                  //                       : false
-                  //                   : false
-                  //               : false
-                  //           : false
-                  //       : false) {
-                  //     Navigator.of(context).pushNamed(StepPages.namedRoute);
-                  //     cont.getData();
-                  //     cont.printData;
-                  //   } else {
-                  //     showMaxProjectPremiumDialogue(context);
-                  //   }
-                  // },
                   onTap: () async {
                     final SharedPreferences prefs =
                         await SharedPreferences.getInstance();
@@ -208,7 +175,7 @@ class _BunglowState extends State<Bunglow> {
                             : false
                         : false) {
                       if (bungalow_count != null
-                          ? bungalow_count >= 100
+                          ? bungalow_count >= 1
                               ? true
                               : false
                           : false) {

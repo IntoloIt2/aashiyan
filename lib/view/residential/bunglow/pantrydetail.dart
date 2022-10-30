@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
@@ -82,6 +84,7 @@ class _PantryDetailState extends State<PantryDetail> {
   ];
 
   String? selectedDiningFloor = "select floor";
+
   List<String> diningItems = [
     "select floor",
     "Ground floor",
@@ -105,16 +108,17 @@ class _PantryDetailState extends State<PantryDetail> {
       // var client = http.Client();
       var response = await http.get(
         Uri.parse(
-          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-pantry/179",
+          "${dotenv.env['APP_URL']}edit-bungalow-pantry/179",
+          // "http://192.168.0.99:8080/sdplserver/api//179",
         ),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
           pageId = printData['bungalow_pantry']['id'];
-          print(printData);
+          // print(printData);
 
           if (printData != null) {
             diningLengthController = printData["bungalow_pantry"]
@@ -790,7 +794,7 @@ class _PantryDetailState extends State<PantryDetail> {
                         ),
                       ),
                     ),
-                    if (selectedDiningFloor == "more") ...[
+                    if (selectedDiningFloor == MORE) ...[
                       Material(
                         elevation: 5,
                         borderRadius:
@@ -984,25 +988,25 @@ class _PantryDetailState extends State<PantryDetail> {
                       // }
 
                       for (int i = 0; i < diningFaciltiy.length; i++) {
-                        if (diningFaciltiy[i] == "With crockery storage") {
+                        if (diningFaciltiy[i] == DINING_WITH_CROCKERY) {
                           diningFeaturesList.add("1");
                         }
-                        if (diningFaciltiy[i] == "Without crockery storage") {
+                        if (diningFaciltiy[i] == DINING_WITHOUT_CROCKERY) {
                           diningFeaturesList.add("2");
                         }
-                        if (diningFaciltiy[i] == "Double Height") {
+                        if (diningFaciltiy[i] == DINING_DOUBLE_HEIGHT) {
                           diningFeaturesList.add("3");
                         }
-                        if (diningFaciltiy[i] == "Near By Basin") {
+                        if (diningFaciltiy[i] == NEAR_BASIN) {
                           diningFeaturesList.add("4");
                         }
                       }
 
-                      print(diningLocation);
+                      // print(diningLocation);
                     });
                     if (pageId != null) {
                       pantryPut(
-                        provider.project_id,
+                        project_id,
                         pantryDetailInt,
                         pantryFloor,
                         pantryLengthController,
@@ -1017,7 +1021,7 @@ class _PantryDetailState extends State<PantryDetail> {
                       );
                     } else {
                       pantryPost(
-                        provider.project_id,
+                        project_id,
                         pantryDetailInt,
                         pantryFloor,
                         pantryLengthController,

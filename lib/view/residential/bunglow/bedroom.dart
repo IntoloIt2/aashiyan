@@ -1,12 +1,14 @@
 // ignore_for_file: use_key_in_widget_constructors, unused_field, avoid_unnecessary_containers, no_leading_underscores_for_local_identifiers, avoid_print, prefer_generic_function_type_aliases, must_be_immutable, prefer_final_fields, duplicate_ignore, unnecessary_null_comparison, sort_child_properties_last, sized_box_for_whitespace
 
 import 'dart:convert';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/const.dart';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:aashiyan/view/residential/bunglow/statemanagement.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
@@ -127,11 +129,12 @@ class _MultiFormState extends State<MultiForm> {
               _value.putIfAbsent("bedrooms", () => val);
 
               var finalResponse = _value;
-              // print(finalResponse);
               final response = await http.post(
                 // Uri.parse(baseUrlLocal + "project"),
                 Uri.parse(
-                    'http://192.168.0.99:8080/sdplserver/api/bungalow-bedroom'),
+                  "${dotenv.env['APP_URL']}bungalow-bedroom",
+                ),
+                // 'http://192.168.0.99:8080/sdplserver/api/bungalow-bedroom'),
                 headers: <String, String>{
                   'Content-Type': 'application/json; charset=UTF-8',
                 },
@@ -233,7 +236,7 @@ class _BedRoomState extends State<BedRoom> {
   //           "http://192.168.1.99:8080/sdplserver/api/edit-bungalow-bedroom/179"),
   //     );
 
-  //     if (response.statusCode == 200) {
+  //     if (response.statusCode == SUCCESS) {
   //       final jsonResponse = jsonDecode(response.body);
   //       setState(() {
   //         printData = jsonResponse;
@@ -489,17 +492,17 @@ class _BedRoomState extends State<BedRoom> {
                                         )))
                                     .toList(),
                                 onChanged: (it) {
-                                  if (it == "Ground Floor") {
-                                    widget.user!.selectedFloor = 0;
+                                  if (it == G_FLOOR_TEXT) {
+                                    widget.user!.selectedFloor = S_ELECT;
                                   }
-                                  if (it == "1st Floor") {
-                                    widget.user!.selectedFloor = 1;
+                                  if (it == G_1_FLOOR_TEXT) {
+                                    widget.user!.selectedFloor = G_FLOOR;
                                   }
-                                  if (it == "2nd Floor") {
-                                    widget.user!.selectedFloor = 2;
+                                  if (it == G_2_FLOOR_TEXT) {
+                                    widget.user!.selectedFloor = G_1_FLOOR;
                                   }
-                                  if (it == "3rd Floor") {
-                                    widget.user!.selectedFloor = 3;
+                                  if (it == G_3_FLOOR_TEXT) {
+                                    widget.user!.selectedFloor = G_2_FLOOR;
                                   }
 
                                   setState(() => widget.selectedFloor = it);
@@ -507,7 +510,7 @@ class _BedRoomState extends State<BedRoom> {
                           ),
                         ),
                       ),
-                      if (widget.selectedFloor == "other") ...[
+                      if (widget.selectedFloor == OTHER_FLOOR) ...[
                         Material(
                           elevation: 5,
                           borderRadius:
@@ -686,7 +689,7 @@ class _BedRoomState extends State<BedRoom> {
                                           () {
                                             requiredDress = value;
                                             notRequiredDress = false;
-                                            widget.user!.dressReq = 1;
+                                            widget.user!.dressReq = T_RUE;
                                           },
                                         );
                                       },
@@ -724,7 +727,7 @@ class _BedRoomState extends State<BedRoom> {
                                           setState(() {
                                             notRequiredDress = value;
                                             requiredDress = false;
-                                            widget.user!.dressReq = 0;
+                                            widget.user!.dressReq = F_ALSE;
                                           });
                                         }),
                                   ),

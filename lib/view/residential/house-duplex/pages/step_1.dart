@@ -115,7 +115,49 @@ class _Step_1State extends State<Step_1> {
         text: calculation.toString(),
       );
     }
+
+    plotValue.text = calculation;
+    print(plotValue.text);
+    print(calculation);
     return calculation;
+  }
+
+  String apiRegularCalcuation() {
+    if (printData != null) {
+      lengthText = printData["project"]["plot_length"] != null
+          ? printData["project"]["plot_length"].toString()
+          : "";
+      widthText = printData["project"]["plot_width"] != null
+          ? printData["project"]["plot_width"].toString()
+          : "";
+      finalString = plotValue.text;
+
+      if (lengthText != '' && widthText != '') {
+        calculation = (plotLenght * plotWidth).toString();
+        plotValue.value = plotValue.value.copyWith(
+          text: calculation.toString(),
+        );
+      }
+      plotValue.text = calculation;
+      // print(plotValue.text);
+      // print(calculation);
+    }
+
+    return calculation;
+  }
+
+  String apiIregularCalcuation() {
+    diagonal1Text = diagonal1Controller;
+    diagonal2Text = diagonal2Controller;
+    finalDiagonal = plotValue.text;
+
+    if (diagonal1Text != '' && diagonal2Text != '') {
+      diagonalCalculation = (((diagonal1! * diagonal2!) / 2)).toString();
+      plotValue.value = plotValue.value.copyWith(
+        text: diagonalCalculation.toString(),
+      );
+    }
+    return diagonalCalculation;
   }
 
   int? diagonal1 = 0;
@@ -154,7 +196,7 @@ class _Step_1State extends State<Step_1> {
       var tempStates;
       var response =
           await http.get(Uri.parse("${dotenv.env['APP_URL']}state/$STATE_ID"));
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         Map jsonResponse = jsonDecode(response.body);
         List tempStates = jsonResponse["states"];
         setState(() {
@@ -169,7 +211,7 @@ class _Step_1State extends State<Step_1> {
       var client = http.Client();
       var response =
           await http.get(Uri.parse("${dotenv.env['APP_URL']}city/$stateId"));
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
         final cityList = jsonResponse['cities'] as List;
         setState(() {
@@ -181,21 +223,27 @@ class _Step_1State extends State<Step_1> {
   }
 
   var printData;
-
+  int? pageId;
   Future<void> getData(id) async {
     try {
       var response = await http.get(
         Uri.parse("${dotenv.env['APP_URL']}edit-project/$id"),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
           if (printData != null && printData['project_id'] != null) {
+
+            // print("plotype -----");
+            // print(printData["project"]["plot_type"]);
+            pageId = printData['project']['id'] != null
+                ? int.parse(printData['project']['id'].toString())
+                : pageId;
+            print(pageId);
             nameController = printData["project"]['first_name'] != null
                 ? printData["project"]['first_name'].toString()
                 : '';
-
             lastNameController = printData["project"]["last_name"] != null
                 ? printData["project"]["last_name"].toString()
                 : "";
@@ -208,19 +256,30 @@ class _Step_1State extends State<Step_1> {
             selectedState = printData["project"]["state_name"] != null
                 ? printData["project"]["state_name"].toString()
                 : "";
-
             lengthController = printData["project"]["plot_length"] != null
                 ? printData["project"]["plot_length"].toString()
                 : "";
             widthController = printData["project"]["plot_width"] != null
                 ? printData["project"]["plot_width"].toString()
                 : "";
+            plotLenght = printData["project"]["plot_length"] != null
+                ? int.parse(printData["project"]["plot_length"])
+                : 0;
+            plotWidth = printData["project"]["plot_width"] != null
+                ? int.parse(printData["project"]["plot_width"])
+                : 0;
             diagonal1Controller = printData["project"]["diagonal_1"] != null
                 ? printData["project"]["diagonal_1"].toString()
                 : '';
             diagonal2Controller = printData["project"]["diagonal_2"] != null
                 ? printData["project"]["diagonal_2"].toString()
                 : '';
+            diagonal1 = printData["project"]["diagonal_1"] != null
+                ? int.parse(printData["project"]["diagonal_1"].toString())
+                : 0;
+            diagonal2 = printData["project"]["diagonal_2"] != null
+                ? int.parse(printData["project"]["diagonal_2"].toString())
+                : 0;
             eastController = printData["project"]["east_road_width"] != null
                 ? printData["project"]["east_road_width"].toString()
                 : "";
@@ -237,9 +296,11 @@ class _Step_1State extends State<Step_1> {
             levelController = printData["project"]["level_value"] != null
                 ? printData["project"]["level_value"].toString()
                 : "";
+
             plotValue.text = printData["project"]["plot_size"] != null
                 ? printData["project"]["plot_size"].toString()
                 : "";
+
             stateId = printData["project"]["state"] != null
                 ? printData["project"]["state"]
                 : "";
@@ -264,11 +325,13 @@ class _Step_1State extends State<Step_1> {
   //   }
   // }
   Future<dynamic> getUserId() async {
-       final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('userData');
     project_id = prefs.getInt('projectId');
     projectTypeId = prefs.getInt('projectTypeId');
     projectGroupId = prefs.getInt('projectGroupId');
+    print('project_id==');
+    print(project_id);
     getData(project_id);
     var decJson;
     if (userData != null) {
@@ -281,6 +344,8 @@ class _Step_1State extends State<Step_1> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt('dimension', dimenInt);
   }
+
+  String? plotType;
 
   @override
   void initState() {
@@ -307,13 +372,30 @@ class _Step_1State extends State<Step_1> {
     // );
     getCities();
     getState();
+    apiRegularCalcuation();
 
-    plotValue.addListener(() => setState(() {}));
-    if (printData == null) {
-      setState(() {
-        isloading = true;
-      });
-    }
+    plotValue.addListener(
+      () => setState(
+        () {
+          if (printData != null) {
+            plotType = printData["project"]["plot_type"].toString();
+            if (plotType == '1') {
+              plotValue.text = (int.parse(printData["project"]["plot_length"]) *
+                      int.parse(printData["project"]["plot_width"].toString()))
+                  .toString();
+            }
+            if (plotType == '2') {
+              plotValue
+                  .text = ((int.parse(printData["project"]["plot_length"]) *
+                          int.parse(
+                              printData["project"]["plot_width"].toString())) /
+                      2)
+                  .toString();
+            }
+          }
+        },
+      ),
+    );
   }
 
   @override
@@ -325,11 +407,11 @@ class _Step_1State extends State<Step_1> {
 
     if (printData != null) {
       setState(() {
-        isloading = false;
+        isloading = true;
       });
     }
-    return isloading
-        ? const Center(
+    return isloading == false
+        ? Center(
             child: CircularProgressIndicator(),
           )
         : SingleChildScrollView(
@@ -404,11 +486,12 @@ class _Step_1State extends State<Step_1> {
                         width: width * 0.25,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue: printData['project'] != null
-                              ? printData['project']['first_name'] != null
+                          initialValue: printData != null
+                              ? printData["project"]['first_name'] != null
                                   ? printData["project"]['first_name']
-                                  : ''
-                              : '',
+                                      .toString()
+                                  : nameController
+                              : nameController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "First name",
@@ -435,7 +518,7 @@ class _Step_1State extends State<Step_1> {
                         width: width * 0.19,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue: printData["project"] != null
+                          initialValue: printData != null
                               ? printData["project"]['last_name'] != null
                                   ? printData["project"]['last_name'].toString()
                                   : lastNameController
@@ -660,6 +743,7 @@ class _Step_1State extends State<Step_1> {
                             //     )
                             //     .toList(),
                           ),
+
                         ),
                       ),
                     ),
@@ -791,6 +875,18 @@ class _Step_1State extends State<Step_1> {
                         setState(() {
                           regularPlotValue = val;
                           irregularPlotValue = false;
+                          key:
+                          Key(totalCalculated());
+
+                          // if (lengthController != null && widthController != null) {
+                          //   plotValue.text = (int.parse(lengthController!) *
+                          //           int.parse(widthController!))
+                          //       .toString();
+
+                          //   print(" ======");
+                          //   print(plotValue.text);
+                          // }
+
                           if (printData != null &&
                               printData['project'] != null) {
                             printData['project']['plot_type'] = val;
@@ -820,6 +916,7 @@ class _Step_1State extends State<Step_1> {
                           () {
                             irregularPlotValue = val;
                             regularPlotValue = false;
+
                             if (printData != null &&
                                 printData['project'] != null) {
                               printData['project']['plot_type'] = val;
@@ -831,7 +928,7 @@ class _Step_1State extends State<Step_1> {
                     requirementText("Irregular plot"),
                   ],
                 ),
-                // if (regularPlotValue == true) ...[
+                //  if (regularPlotValue == true) ...[
                 Row(
                   children: [
                     requirementText("Length"),
@@ -862,14 +959,15 @@ class _Step_1State extends State<Step_1> {
                           onChanged: (val) {
                             setState(() {
                               if (val != '') {
+                                plotType = '';
                                 plotLenght = int.parse(val.toString());
                                 lengthController = val;
+                                totalCalculated();
                                 if (printData != null &&
                                     printData['project']['plot_length'] !=
                                         null) {
                                   printData['project']['plot_length'] = val;
                                 }
-                                totalCalculated();
                               } else {
                                 plotLenght = 0;
                                 plotValue.text = '0';
@@ -990,6 +1088,7 @@ class _Step_1State extends State<Step_1> {
                           onChanged: (val) {
                             setState(() {
                               if (val != '') {
+                                plotType = '';
                                 plotWidth = int.parse(val.toString());
                                 widthController = val;
                                 if (printData != null &&
@@ -1128,14 +1227,14 @@ class _Step_1State extends State<Step_1> {
                             //         // : plotValue
                             //         : plotValue.value.text
                             //     : plotValue.value.text,
-                            initialValue: printData != null
-                                ? printData['project'] != null
-                                    ? printData['project']['plot_size'] != null
-                                        ? printData['project']['plot_size']
-                                            .toString()
-                                        : plotValue.text
-                                    : plotValue.text
-                                : plotValue.text,
+                            // initialValue: printData != null
+                            //     ? printData['project'] != null
+                            //         ? printData['project']['plot_size'] != null
+                            //             ? printData['project']['plot_size'].toString()
+                            //             : plotValue.text
+                            //         : plotValue.text
+                            //     : plotValue.text,
+                            controller: plotValue,
                             onChanged: (value) {
                               setState(() {
                                 if (plotLenght == 0 || plotWidth == 0) {
@@ -1148,7 +1247,7 @@ class _Step_1State extends State<Step_1> {
                                     text: value.toString(),
                                   );
                                   // printData['project']['plot_size'] =
-                                  //     plotValue.text;
+                                  // plotValue.text;
                                 }
                               });
                             },
@@ -1182,13 +1281,12 @@ class _Step_1State extends State<Step_1> {
                                 //fillColor: Colors.green
                                 ),
                             key: Key(totalCalculated()),
-                            initialValue: printData != null
-                                ? printData['project'] != null
-                                    ? printData['project']['plot_size']
-                                        .toString()
-                                    : plotValue.value.text
-                                : plotValue.value.text,
-                            // controller: plotValue,
+                            // initialValue: printData != null
+                            //     ? printData['project'] != null
+                            //         ? printData['project']['plot_size'].toString()
+                            //         : plotValue.value.text
+                            //     : plotValue.value.text,
+                            controller: plotValue,
                             onChanged: (value) {
                               setState(() {
                                 plotValue.value = plotValue.value.copyWith(
@@ -1838,26 +1936,21 @@ class _Step_1State extends State<Step_1> {
                                   .toList(),
                               onChanged: (it) => setState(() {
                                 selectedLevel = it!;
-                                if (it == PLOT_LEVEL_UP) {
+                                if (it == "Up") {
                                   if (printData['project'] != null) {
-                                    printData['project']['level'] = LEVEL_UP;
+                                    printData['project']['level'] = 2;
                                   }
-                                  selectedLevelInt = LEVEL_UP;
-                                } else if (it == PLOT_LEVEL_DOWN) {
+                                  selectedLevelInt = 2;
+                                } else if (it == "Down") {
                                   if (printData['project'] != null) {
-                                    printData['project']['level'] = LEVEL_DOWN;
+                                    printData['project']['level'] = 3;
                                   }
-                                  selectedLevelInt = LEVEL_DOWN;
-                                } else if (it == PLOT_LEVEL_SAME) {
+                                  selectedLevelInt = 3;
+                                } else if (it == "Almost same level") {
                                   if (printData['project'] != null) {
-                                    printData['project']['level'] =
-                                        LEVEL_ALMOST;
+                                    printData['project']['level'] = 1;
                                   }
-                                  selectedLevelInt = LEVEL_ALMOST;
-                                } else {
-                                  if (printData['project'] != null) {
-                                    printData['project']['level'] = 0;
-                                  }
+                                  selectedLevelInt = 1;
                                 }
                               }),
                             ),
@@ -1865,11 +1958,7 @@ class _Step_1State extends State<Step_1> {
                         ),
                       ),
                     ),
-                    if (printData['project'] != null
-                        ? printData['project']['level'] == LEVEL_UP
-                            ? true
-                            : false
-                        : selectedLevel == PLOT_LEVEL_UP) ...[
+                    if (selectedLevel == "Up") ...[
                       Material(
                         elevation: 5,
                         borderRadius:
@@ -1880,8 +1969,8 @@ class _Step_1State extends State<Step_1> {
                           child: TextFormField(
                             // controller: nameController,
                             initialValue: printData['project'] != null
-                                ? printData["project"]['level_value']
-                                : levelController,
+                                ? printData["project"]['level_value_feet']
+                                : lengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Road width",
@@ -1903,52 +1992,17 @@ class _Step_1State extends State<Step_1> {
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      valueContainer(height, width, size, 0.039, 0.05)
-                    ],
-                    if (printData['project'] != null
-                        ? printData['project']['level'] == LEVEL_DOWN
-                            ? true
-                            : false
-                        : selectedLevel == PLOT_LEVEL_DOWN) ...[
-                      Material(
-                        elevation: 5,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                        child: SizedBox(
-                          height: height * 0.04,
-                          width: width * 0.22,
-                          child: TextFormField(
-                            // controller: nameController,
-                            initialValue: printData['project'] != null
-                                ? printData["project"]['level_value']
-                                : levelController,
-                            style: const TextStyle(fontSize: 14),
-                            decoration: const InputDecoration(
-                              hintText: "Road width",
-                              hintStyle: TextStyle(fontSize: 14),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              isDense: true,
-                              contentPadding: EdgeInsets.all(8),
-                              // fillColor: Colors.green
-                            ),
-                            onChanged: (value) {
-                              levelController = value;
-                            },
-                          ),
-                        ),
-                      ),
+
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      valueContainer(
-                        height,
-                        width,
-                        size,
-                        0.039,
-                        0.05,
-                      ),
+                      // valueContainer(
+                      //   height,
+                      //   width,
+                      //   size,
+                      //   0.039,
+                      //   0.05,
+                      // ),
                     ]
                   ],
                 ),
@@ -2018,40 +2072,85 @@ class _Step_1State extends State<Step_1> {
                         }
                       },
                     );
-                    var status = await provider.requirementPost(
-                      user_id,
-                      projectGroupId,
-                      projectTypeId,
-                      selectedItems,
-                      nameController,
-                      lastNameController,
-                      emailController,
-                      COUNTRY_ID,
-                      stateId,
-                      cityId,
-                      addressController,
-                      isRegular,
-                      dimenInt,
-                      lengthController!,
-                      widthController!,
-                      diagonal1Controller!,
-                      diagonal2Controller!,
-                      plotValue.text,
-                      " ",
-                      plot_orientaion,
-                      " ",
-                      isEast,
-                      eastController,
-                      isWest,
-                      westController,
-                      isNorth,
-                      northController,
-                      isSouth,
-                      southController,
-                      selectedLevelInt,
-                      levelController,
-                      notReqiredInt,
-                    );
+                    // print("upadte is running");
+                    // print(project_id);
+                    var status;
+
+                    if (pageId != null) {
+                      print("upadte is running");
+                      print(project_id);
+                      provider.requirementUpadate(
+                        project_id,
+                        user_id,
+                        projectGroupId,
+                        projectTypeId,
+                        selectedItems,
+                        nameController,
+                        lastNameController,
+                        emailController,
+                        COUNTRY_ID,
+                        stateId,
+                        cityId,
+                        addressController,
+                        isRegular,
+                        dimenInt,
+                        lengthController!,
+                        widthController!,
+                        diagonal1Controller!,
+                        diagonal2Controller!,
+                        plotValue.text,
+                        " ",
+                        plot_orientaion,
+                        " ",
+                        isEast,
+                        eastController,
+                        isWest,
+                        westController,
+                        isNorth,
+                        northController,
+                        isSouth,
+                        southController,
+                        selectedLevelInt,
+                        levelController,
+                        notReqiredInt,
+                      );
+                    } else {
+                      provider.requirementPost(
+                        user_id,
+                        projectGroupId,
+                        projectTypeId,
+                        selectedItems,
+                        nameController,
+                        lastNameController,
+                        emailController,
+                        COUNTRY_ID,
+                        stateId,
+                        cityId,
+                        addressController,
+                        isRegular,
+                        dimenInt,
+                        lengthController!,
+                        widthController!,
+                        diagonal1Controller!,
+                        diagonal2Controller!,
+                        plotValue.text,
+                        " ",
+                        plot_orientaion,
+                        " ",
+                        isEast,
+                        eastController,
+                        isWest,
+                        westController,
+                        isNorth,
+                        northController,
+                        isSouth,
+                        southController,
+                        selectedLevelInt,
+                        levelController,
+                        notReqiredInt,
+                      );
+                    }
+
                     // project_id = provider.project_id;
                     if (status == 200) {
                       showToast('Project Requirement Submitted !',
@@ -2069,14 +2168,10 @@ class _Step_1State extends State<Step_1> {
                       style: TextStyle(color: Colors.white, fontSize: 14),
                     ),
                   ),
-                   
                 )
               ],
             ),
           );
-  
-  
-  
   }
 
   bool sqCheck(String str) {

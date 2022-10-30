@@ -2,9 +2,11 @@
 
 import 'dart:convert';
 import 'dart:core';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../../../components/forms.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
@@ -244,39 +246,40 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
     try {
       var response = await http.get(
         Uri.parse(
-          "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-bedroom/$project_id",
+          "${dotenv.env['APP_URL']}edit-bungalow-bedroom/$project_id",
+          // "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-bedroom/$project_id",
         ),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
         setState(
           () {
             printData = jsonResponse["bungalow_bedroom"];
 
             for (int i = 0; i < printData.length; i++) {
-              if (printData[i]["bedroom"] == "1") {
+              if (printData[i]["bedroom"] == STR_ONE) {
                 mi = i;
               }
-              if (printData[i]["bedroom"] == "2") {
+              if (printData[i]["bedroom"] == STR_TWO) {
                 si = i;
               }
-              if (printData[i]["bedroom"] == "3") {
+              if (printData[i]["bedroom"] == STR_THREE) {
                 di = i;
               }
-              if (printData[i]["bedroom"] == "4") {
+              if (printData[i]["bedroom"] == STR_FOUR) {
                 pi = i;
               }
-              if (printData[i]["bedroom"] == "5") {
+              if (printData[i]["bedroom"] == STR_FIVE) {
                 gi = i;
               }
-              if (printData[i]["bedroom"] == "6") {
+              if (printData[i]["bedroom"] == STR_SIX) {
                 o2i = i;
               }
-              if (printData[i]["bedroom"] == "7") {
+              if (printData[i]["bedroom"] == STR_SEVEN) {
                 o2i = i;
               }
-              if (printData[i]["bedroom"] == "8") {
+              if (printData[i]["bedroom"] == STR_EIGHT) {
                 o3i = i;
               }
             }
@@ -284,29 +287,29 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
             if (printData.asMap().containsKey(mi)) {
               masterLength = printData[mi]['bedroom_length'] != null
                   ? int.parse(printData[mi]['bedroom_length'].toString())
-                  : 0;
+                  : F_ALSE;
               masterWidth = printData[mi]['bedroom_width'] != null
                   ? int.parse(printData[mi]['bedroom_width'].toString())
-                  : 0;
+                  : F_ALSE;
               masterToiletLength = printData[mi]['bedroom_toilet_length'] !=
                       null
                   ? int.parse(printData[mi]['bedroom_toilet_length'].toString())
-                  : 0;
+                  : F_ALSE;
               masterToiletWidth = printData[mi]['bedroom_toilet_width'] != null
                   ? int.parse(printData[mi]['bedroom_toilet_width'].toString())
-                  : 0;
+                  : F_ALSE;
               masterDressLength = printData[mi]['bedroom_dress_length'] != null
                   ? int.parse(printData[mi]['bedroom_dress_length'].toString())
-                  : 0;
+                  : F_ALSE;
               masterLocation = printData[mi]['bedroom_floor'] != null
                   ? int.parse(printData[mi]['bedroom_floor'].toString())
-                  : 0;
+                  : F_ALSE;
               masterDressWidth = printData[mi]['bedroom_dress_width'] != null
                   ? int.parse(printData[mi]['bedroom_dress_width'].toString())
-                  : 0;
+                  : F_ALSE;
               masterDressInt = printData[mi]['bedroom_dress_req'] != null
                   ? int.parse(printData[mi]['bedroom_dress_req'].toString())
-                  : 0;
+                  : F_ALSE;
               masterToiletFacility =
                   printData[mi]['bedroom_toilet_req_text'] != null
                       ? printData[mi]['bedroom_toilet_req_text'].toString()
@@ -331,28 +334,28 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
             if (printData.asMap().containsKey(si)) {
               sonLength = printData[si]['bedroom_length'] != null
                   ? int.parse(printData[si]['bedroom_length'].toString())
-                  : 0;
+                  : F_ALSE;
               sonWidth = printData[si]['bedroom_width'] != null
                   ? int.parse(printData[si]['bedroom_width'].toString())
-                  : 0;
+                  : F_ALSE;
               sonToiletLength = printData[si]['bedroom_toilet_length'] != null
                   ? int.parse(printData[si]['bedroom_toilet_length'].toString())
-                  : 0;
+                  : F_ALSE;
               sonToiletWidth = printData[si]['bedroom_toilet_width'] != null
                   ? int.parse(printData[si]['bedroom_toilet_width'].toString())
-                  : 0;
+                  : F_ALSE;
               sonDressLength = printData[si]['bedroom_dress_length'] != null
                   ? int.parse(printData[si]['bedroom_dress_length'].toString())
-                  : 0;
+                  : F_ALSE;
               sonLocation = printData[si]['bedroom_floor'] != null
                   ? int.parse(printData[si]['bedroom_floor'].toString())
-                  : 0;
+                  : F_ALSE;
               sonDressWidth = printData[si]['bedroom_dress_width'] != null
                   ? int.parse(printData[si]['bedroom_dress_width'].toString())
-                  : 0;
+                  : F_ALSE;
               sonDressInt = printData[si]['bedroom_dress_req'] != null
                   ? int.parse(printData[si]['bedroom_dress_req'].toString())
-                  : 0;
+                  : F_ALSE;
               sonToiletFacility =
                   printData[si]['bedroom_toilet_req_text'] != null
                       ? printData[si]['bedroom_toilet_req_text'].toString()
@@ -376,31 +379,31 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
             if (printData.asMap().containsKey(di)) {
               daughterLength = printData[di]['bedroom_length'] != null
                   ? int.parse(printData[di]['bedroom_length'].toString())
-                  : 0;
+                  : F_ALSE;
               daughterWidth = printData[di]['bedroom_width'] != null
                   ? int.parse(printData[di]['bedroom_width'].toString())
-                  : 0;
+                  : F_ALSE;
               daughterToiletLength = printData[di]['bedroom_toilet_length'] !=
                       null
                   ? int.parse(printData[di]['bedroom_toilet_length'].toString())
-                  : 0;
+                  : F_ALSE;
               daughterToiletWidth = printData[di]['bedroom_toilet_width'] !=
                       null
                   ? int.parse(printData[di]['bedroom_toilet_width'].toString())
-                  : 0;
+                  : F_ALSE;
               daughterDressLength = printData[di]['bedroom_dress_length'] !=
                       null
                   ? int.parse(printData[di]['bedroom_dress_length'].toString())
-                  : 0;
+                  : F_ALSE;
               daughterLocation = printData[di]['bedroom_floor'] != null
                   ? int.parse(printData[di]['bedroom_floor'].toString())
-                  : 0;
+                  : F_ALSE;
               daughterDressWidth = printData[di]['bedroom_dress_width'] != null
                   ? int.parse(printData[di]['bedroom_dress_width'].toString())
-                  : 0;
+                  : F_ALSE;
               daughterDressInt = printData[di]['bedroom_dress_req'] != null
                   ? int.parse(printData[di]['bedroom_dress_req'].toString())
-                  : 0;
+                  : F_ALSE;
               daughterToiletFacility =
                   printData[di]['bedroom_toilet_req_text'] != null
                       ? printData[di]['bedroom_toilet_req_text'].toString()
@@ -426,29 +429,29 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
             if (printData.asMap().containsKey(pi)) {
               parentLength = printData[pi]['bedroom_length'] != null
                   ? int.parse(printData[pi]['bedroom_length'].toString())
-                  : 0;
+                  : F_ALSE;
               parentWidth = printData[pi]['bedroom_width'] != null
                   ? int.parse(printData[pi]['bedroom_width'].toString())
-                  : 0;
+                  : F_ALSE;
               parentToiletLength = printData[pi]['bedroom_toilet_length'] !=
                       null
                   ? int.parse(printData[pi]['bedroom_toilet_length'].toString())
-                  : 0;
+                  : F_ALSE;
               parentToiletWidth = printData[pi]['bedroom_toilet_width'] != null
                   ? int.parse(printData[pi]['bedroom_toilet_width'].toString())
-                  : 0;
+                  : F_ALSE;
               parentDressLength = printData[pi]['bedroom_dress_length'] != null
                   ? int.parse(printData[pi]['bedroom_dress_length'].toString())
-                  : 0;
+                  : F_ALSE;
               parentLocation = printData[pi]['bedroom_floor'] != null
                   ? int.parse(printData[pi]['bedroom_floor'].toString())
-                  : 0;
+                  : F_ALSE;
               parentDressWidth = printData[pi]['bedroom_dress_width'] != null
                   ? int.parse(printData[pi]['bedroom_dress_width'].toString())
-                  : 0;
+                  : F_ALSE;
               parentDressInt = printData[pi]['bedroom_dress_req'] != null
                   ? int.parse(printData[pi]['bedroom_dress_req'].toString())
-                  : 0;
+                  : F_ALSE;
               parentToiletFacility =
                   printData[pi]['bedroom_toilet_req_text'] != null
                       ? printData[pi]['bedroom_toilet_req_text'].toString()
@@ -473,28 +476,28 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
             if (printData.asMap().containsKey(gi)) {
               guestLength = printData[gi]['bedroom_length'] != null
                   ? int.parse(printData[gi]['bedroom_length'].toString())
-                  : 0;
+                  : F_ALSE;
               guestWidth = printData[gi]['bedroom_width'] != null
                   ? int.parse(printData[gi]['bedroom_width'].toString())
-                  : 0;
+                  : F_ALSE;
               guestToiletLength = printData[gi]['bedroom_toilet_length'] != null
                   ? int.parse(printData[gi]['bedroom_toilet_length'].toString())
-                  : 0;
+                  : F_ALSE;
               guestToiletWidth = printData[gi]['bedroom_toilet_width'] != null
                   ? int.parse(printData[gi]['bedroom_toilet_width'].toString())
-                  : 0;
+                  : F_ALSE;
               guestDressLength = printData[gi]['bedroom_dress_length'] != null
                   ? int.parse(printData[gi]['bedroom_dress_length'].toString())
-                  : 0;
+                  : F_ALSE;
               guestLocation = printData[gi]['bedroom_floor'] != null
                   ? int.parse(printData[gi]['bedroom_floor'].toString())
-                  : 0;
+                  : F_ALSE;
               guestDressWidth = printData[gi]['bedroom_dress_width'] != null
                   ? int.parse(printData[gi]['bedroom_dress_width'].toString())
-                  : 0;
+                  : F_ALSE;
               guestDressInt = printData[gi]['bedroom_dress_req'] != null
                   ? int.parse(printData[gi]['bedroom_dress_req'].toString())
-                  : 0;
+                  : F_ALSE;
               guestToiletFacility =
                   printData[gi]['bedroom_toilet_req_text'] != null
                       ? printData[gi]['bedroom_toilet_req_text'].toString()
@@ -519,30 +522,30 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
             if (printData.asMap().containsKey(o1i)) {
               other1Length = printData[o1i]['bedroom_length'] != null
                   ? int.parse(printData[o1i]['bedroom_length'].toString())
-                  : 0;
+                  : F_ALSE;
               other1Width = printData[o1i]['bedroom_width'] != null
                   ? int.parse(printData[o1i]['bedroom_width'].toString())
-                  : 0;
+                  : F_ALSE;
               other1ToiletLength =
                   printData[o1i]['bedroom_toilet_length'] != null
                       ? int.parse(
                           printData[o1i]['bedroom_toilet_length'].toString())
-                      : 0;
+                      : F_ALSE;
               other1ToiletWidth = printData[o1i]['bedroom_toilet_width'] != null
                   ? int.parse(printData[o1i]['bedroom_toilet_width'].toString())
-                  : 0;
+                  : F_ALSE;
               other1DressLength = printData[o1i]['bedroom_dress_length'] != null
                   ? int.parse(printData[o1i]['bedroom_dress_length'].toString())
-                  : 0;
+                  : F_ALSE;
               other1Location = printData[o1i]['bedroom_floor'] != null
                   ? int.parse(printData[o1i]['bedroom_floor'].toString())
-                  : 0;
+                  : F_ALSE;
               other1DressWidth = printData[o1i]['bedroom_dress_width'] != null
                   ? int.parse(printData[o1i]['bedroom_dress_width'].toString())
-                  : 0;
+                  : F_ALSE;
               other1DressInt = printData[o1i]['bedroom_dress_req'] != null
                   ? int.parse(printData[o1i]['bedroom_dress_req'].toString())
-                  : 0;
+                  : F_ALSE;
               other1ToiletFacility =
                   printData[o1i]['bedroom_toilet_req_text'] != null
                       ? printData[o1i]['bedroom_toilet_req_text'].toString()
@@ -567,30 +570,30 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
             if (printData.asMap().containsKey(o2i)) {
               other2Length = printData[o2i]['bedroom_length'] != null
                   ? int.parse(printData[o2i]['bedroom_length'].toString())
-                  : 0;
+                  : F_ALSE;
               other2Width = printData[o2i]['bedroom_width'] != null
                   ? int.parse(printData[o2i]['bedroom_width'].toString())
-                  : 0;
+                  : F_ALSE;
               other2ToiletLength =
                   printData[o2i]['bedroom_toilet_length'] != null
                       ? int.parse(
                           printData[o2i]['bedroom_toilet_length'].toString())
-                      : 0;
+                      : F_ALSE;
               other2ToiletWidth = printData[o2i]['bedroom_toilet_width'] != null
                   ? int.parse(printData[o2i]['bedroom_toilet_width'].toString())
-                  : 0;
+                  : F_ALSE;
               other2DressLength = printData[o2i]['bedroom_dress_length'] != null
                   ? int.parse(printData[o2i]['bedroom_dress_length'].toString())
-                  : 0;
+                  : F_ALSE;
               other2Location = printData[o2i]['bedroom_floor'] != null
                   ? int.parse(printData[o2i]['bedroom_floor'].toString())
-                  : 0;
+                  : F_ALSE;
               other2DressWidth = printData[o2i]['bedroom_dress_width'] != null
                   ? int.parse(printData[o2i]['bedroom_dress_width'].toString())
-                  : 0;
+                  : F_ALSE;
               other2DressInt = printData[o2i]['bedroom_dress_req'] != null
                   ? int.parse(printData[o2i]['bedroom_dress_req'].toString())
-                  : 0;
+                  : F_ALSE;
               other2ToiletFacility =
                   printData[o2i]['bedroom_toilet_req_text'] != null
                       ? printData[o2i]['bedroom_toilet_req_text'].toString()
@@ -615,30 +618,30 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
             if (printData.asMap().containsKey(o3i)) {
               other3Length = printData[o3i]['bedroom_length'] != null
                   ? int.parse(printData[o3i]['bedroom_length'].toString())
-                  : 0;
+                  : F_ALSE;
               other3Width = printData[o3i]['bedroom_width'] != null
                   ? int.parse(printData[o3i]['bedroom_width'].toString())
-                  : 0;
+                  : F_ALSE;
               other3ToiletLength =
                   printData[o3i]['bedroom_toilet_length'] != null
                       ? int.parse(
                           printData[o3i]['bedroom_toilet_length'].toString())
-                      : 0;
+                      : F_ALSE;
               other3ToiletWidth = printData[o3i]['bedroom_toilet_width'] != null
                   ? int.parse(printData[o3i]['bedroom_toilet_width'].toString())
-                  : 0;
+                  : F_ALSE;
               other3DressLength = printData[o3i]['bedroom_dress_length'] != null
                   ? int.parse(printData[o3i]['bedroom_dress_length'].toString())
-                  : 0;
+                  : F_ALSE;
               other3Location = printData[o3i]['bedroom_floor'] != null
                   ? int.parse(printData[o3i]['bedroom_floor'].toString())
-                  : 0;
+                  : F_ALSE;
               other3DressWidth = printData[o3i]['bedroom_dress_width'] != null
                   ? int.parse(printData[o3i]['bedroom_dress_width'].toString())
-                  : 0;
+                  : F_ALSE;
               other3DressInt = printData[o3i]['bedroom_dress_req'] != null
                   ? int.parse(printData[o3i]['bedroom_dress_req'].toString())
-                  : 0;
+                  : F_ALSE;
               other3ToiletFacility =
                   printData[o3i]['bedroom_toilet_req_text'] != null
                       ? printData[o3i]['bedroom_toilet_req_text'].toString()
@@ -926,7 +929,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
                                           value: mi != null
-                                              ? printData[mi]['bedroom'] == '1'
+                                              ? printData[mi]['bedroom'] ==
+                                                      STR_ONE
                                                   ? true
                                                   : masterBedroom
                                               : masterBedroom,
@@ -937,11 +941,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 if (mi != null) {
                                                   if (masterBedroom == true) {
                                                     printData[mi]['bedroom'] =
-                                                        "1";
+                                                        STR_ONE;
                                                   } else if (masterBedroom ==
                                                       false) {
                                                     printData[mi]['bedroom'] =
-                                                        "10";
+                                                        STR_TEN;
                                                   }
                                                 }
 
@@ -977,7 +981,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                         activeColor: checkColor,
                                         checkColor: Colors.white,
                                         value: si != null
-                                            ? printData[si]['bedroom'] == '2'
+                                            ? printData[si]['bedroom'] ==
+                                                    STR_TWO
                                                 ? true
                                                 : sonBedRoom
                                             : sonBedRoom,
@@ -988,11 +993,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               if (si != null) {
                                                 if (sonBedRoom == true) {
                                                   printData[si]['bedroom'] =
-                                                      "2";
+                                                      STR_TWO;
                                                 } else if (sonBedRoom ==
                                                     false) {
                                                   printData[si]['bedroom'] =
-                                                      "10";
+                                                      STR_TEN;
                                                 }
                                               }
                                             },
@@ -1032,7 +1037,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
                                           value: di != null
-                                              ? printData[di]['bedroom'] == '3'
+                                              ? printData[di]['bedroom'] ==
+                                                      STR_THREE
                                                   ? true
                                                   : daughterBedRoom
                                               : daughterBedRoom,
@@ -1043,11 +1049,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 if (di != null) {
                                                   if (daughterBedRoom == true) {
                                                     printData[di]['bedroom'] =
-                                                        "3";
+                                                        STR_THREE;
                                                   } else if (daughterBedRoom ==
                                                       false) {
                                                     printData[di]['bedroom'] =
-                                                        "10";
+                                                        STR_TEN;
                                                   }
                                                 }
                                               },
@@ -1079,7 +1085,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
                                           value: pi != null
-                                              ? printData[pi]['bedroom'] == '4'
+                                              ? printData[pi]['bedroom'] ==
+                                                      STR_FOUR
                                                   ? true
                                                   : parentBedRoom
                                               : parentBedRoom,
@@ -1089,11 +1096,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               if (pi != null) {
                                                 if (parentBedRoom == true) {
                                                   printData[pi]['bedroom'] =
-                                                      "4";
+                                                      STR_FOUR;
                                                 } else if (parentBedRoom ==
                                                     false) {
                                                   printData[pi]['bedroom'] =
-                                                      "10";
+                                                      STR_TEN;
                                                 }
                                               }
                                             });
@@ -1131,7 +1138,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
                                           value: gi != null
-                                              ? printData[gi]['bedroom'] == '5'
+                                              ? printData[gi]['bedroom'] ==
+                                                      STR_FIVE
                                                   ? true
                                                   : guestBedRoom
                                               : guestBedRoom,
@@ -1144,11 +1152,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                   if (guestBedRoom == true) {
                                                     printData[gi]['bedroom'] =
-                                                        "5";
+                                                        STR_FIVE;
                                                   } else if (guestBedRoom ==
                                                       false) {
                                                     printData[gi]['bedroom'] =
-                                                        "10";
+                                                        STR_TEN;
                                                   }
                                                 }
                                               },
@@ -1180,7 +1188,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
                                           value: o1i != null
-                                              ? printData[o1i]['bedroom'] == '6'
+                                              ? printData[o1i]['bedroom'] ==
+                                                      STR_SIX
                                                   ? true
                                                   : other1BedRoom
                                               : other1BedRoom,
@@ -1194,11 +1203,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                   if (other1BedRoom == true) {
                                                     printData[o1i]['bedroom'] =
-                                                        "6";
+                                                        STR_SIX;
                                                   } else if (other1BedRoom ==
                                                       false) {
                                                     printData[o1i]['bedroom'] =
-                                                        "10";
+                                                        STR_TEN;
                                                   }
                                                 }
                                               },
@@ -1237,7 +1246,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
                                           value: o2i != null
-                                              ? printData[o2i]['bedroom'] == '7'
+                                              ? printData[o2i]['bedroom'] ==
+                                                      STR_SEVEN
                                                   ? true
                                                   : other2BedRoom
                                               : other2BedRoom,
@@ -1249,11 +1259,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 if (o2i != null) {
                                                   if (other2BedRoom == true) {
                                                     printData[o3i]['bedroom'] =
-                                                        "7";
+                                                        STR_SEVEN;
                                                   } else if (other2BedRoom ==
                                                       false) {
                                                     printData[o3i]['bedroom'] =
-                                                        "10";
+                                                        STR_TEN;
                                                   }
                                                 }
                                               },
@@ -1285,7 +1295,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           activeColor: checkColor,
                                           checkColor: Colors.white,
                                           value: o3i != null
-                                              ? printData[o3i]['bedroom'] == '8'
+                                              ? printData[o3i]['bedroom'] ==
+                                                      STR_EIGHT
                                                   ? true
                                                   : other3BedRoom
                                               : other3BedRoom,
@@ -1295,11 +1306,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                               if (o3i != null) {
                                                 if (other3BedRoom == true) {
                                                   printData[o3i]['bedroom'] =
-                                                      "8";
+                                                      STR_EIGHT;
                                                 } else if (other3BedRoom ==
                                                     false) {
                                                   printData[o3i]['bedroom'] =
-                                                      "10";
+                                                      STR_TEN;
                                                 }
                                               }
                                             });
@@ -1323,7 +1334,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
               Column(
                 children: [
                   if (mi != null
-                      ? printData[mi]['bedroom'] == "1"
+                      ? printData[mi]['bedroom'] == STR_ONE
                       : masterBedroom) ...[
                     SizedBox(
                       height: height * 0.01,
@@ -1368,7 +1379,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.018,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -1405,7 +1416,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       ),
                                     ),
                                     valueContainer(
-                                        height, width, size, 0.04, 0.05),
+                                        height, width, size, 0.04, 0.04),
                                     SizedBox(
                                       width: width * 0.02,
                                     ),
@@ -1509,19 +1520,19 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 () {
                                                   selectedFloor = it;
                                                   if (selectedFloor ==
-                                                      "Ground Floor") {
+                                                      G_FLOOR_TEXT) {
                                                     printData[mi]
                                                             ['bedroom_floor'] =
                                                         null;
 
-                                                    masterLocation = 0;
+                                                    masterLocation = F_ALSE;
                                                   }
                                                   if (selectedFloor ==
-                                                      "1st Floor") {
+                                                      G_1_FLOOR_TEXT) {
                                                     printData[mi]
                                                             ['bedroom_floor'] =
                                                         null;
-                                                    masterLocation = 1;
+                                                    masterLocation = T_RUE;
                                                   }
                                                 },
                                               );
@@ -1546,7 +1557,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.018,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -1582,7 +1593,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       ),
                                     ),
                                     valueContainer(
-                                        height, width, size, 0.04, 0.05),
+                                        height, width, size, 0.04, 0.04),
                                     SizedBox(
                                       width: width * 0.02,
                                     ),
@@ -1711,7 +1722,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       value: mi != null
                                                           ? printData[mi][
                                                                       'bedroom_dress_req'] ==
-                                                                  1
+                                                                  T_RUE
                                                               ? true
                                                               : masterRequiredDress
                                                           : masterRequiredDress,
@@ -1719,7 +1730,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         setState(() {
                                                           if (mi != null) {
                                                             printData[mi][
-                                                                'bedroom_dress_req'] = 1;
+                                                                    'bedroom_dress_req'] =
+                                                                T_RUE;
                                                           }
                                                           masterRequiredDress =
                                                               value;
@@ -1728,9 +1740,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                           if (masterRequiredDress ==
                                                               true) {
-                                                            masterDressInt = 1;
+                                                            masterDressInt =
+                                                                T_RUE;
                                                           } else {
-                                                            masterDressInt = 0;
+                                                            masterDressInt =
+                                                                F_ALSE;
                                                           }
                                                         });
                                                       }),
@@ -1767,7 +1781,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     value: mi != null
                                                         ? printData[mi][
                                                                     'bedroom_dress_req'] ==
-                                                                0
+                                                                F_ALSE
                                                             ? true
                                                             : masterNotRequiredDress
                                                         : masterNotRequiredDress,
@@ -1776,7 +1790,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         () {
                                                           if (mi != null) {
                                                             printData[mi][
-                                                                'bedroom_dress_req'] = 2;
+                                                                    'bedroom_dress_req'] =
+                                                                INT_TWO;
                                                           }
                                                           masterNotRequiredDress =
                                                               value;
@@ -1785,9 +1800,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                           if (masterRequiredDress ==
                                                               true) {
-                                                            masterDressInt = 1;
+                                                            masterDressInt =
+                                                                INT_ONE;
                                                           } else {
-                                                            masterDressInt = 0;
+                                                            masterDressInt =
+                                                                INT_ZERO;
                                                           }
                                                         },
                                                       );
@@ -1810,13 +1827,14 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   height: height * 0.01,
                                 ),
                                 if (masterRequiredDress == true || mi != null
-                                    ? printData[mi]["bedroom_dress_req"] == 1
+                                    ? printData[mi]["bedroom_dress_req"] ==
+                                        INT_ONE
                                     : masterRequiredDress == true) ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
                                       SizedBox(
-                                        width: width * 0.015,
+                                        width: width * 0.008,
                                       ),
                                       Material(
                                         elevation: 5,
@@ -2340,7 +2358,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                 children: [
                   if (si == null
                       ? sonBedRoom == true
-                      : printData[si]['bedroom'] == "2") ...[
+                      : printData[si]['bedroom'] == STR_TWO) ...[
                     SizedBox(
                       height: height * 0.01,
                     ),
@@ -2370,7 +2388,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.008,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -2516,12 +2534,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   }
                                                   selectedFloorSon = it;
                                                   if (selectedFloor ==
-                                                      "Ground Floor") {
-                                                    sonLocation = 0;
+                                                      G_FLOOR_TEXT) {
+                                                    sonLocation = INT_ZERO;
                                                   }
                                                   if (selectedFloorSon ==
-                                                      "1st Floor") {
-                                                    sonLocation = 1;
+                                                      G_1_FLOOR_TEXT) {
+                                                    sonLocation = INT_ONE;
                                                   }
                                                 },
                                               );
@@ -2546,7 +2564,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.008,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -2711,7 +2729,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       value: si != null
                                                           ? printData[si][
                                                                       'bedroom_dress_req'] ==
-                                                                  1
+                                                                  INT_ONE
                                                               ? true
                                                               : sonRequiredDress
                                                           : sonRequiredDress,
@@ -2719,7 +2737,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         setState(() {
                                                           if (si != null) {
                                                             printData[si][
-                                                                'bedroom_dress_req'] = 4;
+                                                                    'bedroom_dress_req'] =
+                                                                INT_FOUR;
                                                           }
                                                           sonRequiredDress =
                                                               value;
@@ -2728,9 +2747,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                           if (sonRequiredDress ==
                                                               true) {
-                                                            sonDressInt = 1;
+                                                            sonDressInt =
+                                                                INT_ONE;
                                                           } else {
-                                                            sonDressInt = 0;
+                                                            sonDressInt =
+                                                                INT_ZERO;
                                                           }
                                                         });
                                                       }),
@@ -2767,7 +2788,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     value: si != null
                                                         ? printData[si][
                                                                     'bedroom_dress_req'] ==
-                                                                0
+                                                                INT_ZERO
                                                             ? true
                                                             : sonNotRequiredDress
                                                         : sonNotRequiredDress,
@@ -2780,13 +2801,16 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               false;
                                                           if (si != null) {
                                                             printData[si][
-                                                                'bedroom_dress_req'] = 4;
+                                                                    'bedroom_dress_req'] =
+                                                                INT_FOUR;
                                                           }
                                                           if (sonRequiredDress ==
                                                               true) {
-                                                            sonDressInt = 1;
+                                                            sonDressInt =
+                                                                INT_ONE;
                                                           } else {
-                                                            sonDressInt = 0;
+                                                            sonDressInt =
+                                                                INT_ZERO;
                                                           }
                                                         },
                                                       );
@@ -2810,12 +2834,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 ),
                                 if (si == null
                                     ? sonRequiredDress == true
-                                    : printData[si]['bedroom'] == "2") ...[
+                                    : printData[si]['bedroom'] == STR_TWO) ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
                                       SizedBox(
-                                        width: width * 0.015,
+                                        width: width * 0.008,
                                       ),
                                       Material(
                                         elevation: 5,
@@ -3344,7 +3368,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
               Column(
                 children: [
                   if (di != null
-                      ? printData[di]['bedroom'] == "3"
+                      ? printData[di]['bedroom'] == STR_THREE
                       : daughterBedRoom == true) ...[
                     SizedBox(
                       height: height * 0.01,
@@ -3388,7 +3412,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.008,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -3534,16 +3558,17 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 () {
                                                   if (di != null) {
                                                     printData[2]
-                                                        ['bedroom_floor'] = 3;
+                                                            ['bedroom_floor'] =
+                                                        INT_THREE;
                                                   }
                                                   selectedFloorDaughter = it;
                                                   if (selectedFloorDaughter ==
-                                                      "Ground Floor") {
-                                                    daughterLocation = 0;
+                                                      G_FLOOR_TEXT) {
+                                                    daughterLocation = INT_ZERO;
                                                   }
                                                   if (selectedFloorDaughter ==
-                                                      "1st Floor") {
-                                                    daughterLocation = 1;
+                                                      G_1_FLOOR_TEXT) {
+                                                    daughterLocation = INT_ONE;
                                                   }
                                                 },
                                               );
@@ -3568,7 +3593,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.008,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -3733,7 +3758,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       value: di != null
                                                           ? printData[di][
                                                                       'bedroom_dress_req'] ==
-                                                                  1
+                                                                  INT_ONE
                                                               ? true
                                                               : daughterRequiredDress
                                                           : daughterRequiredDress,
@@ -3741,7 +3766,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         setState(() {
                                                           if (di != null) {
                                                             printData[2][
-                                                                'bedroom_dress_req'] = 4;
+                                                                    'bedroom_dress_req'] =
+                                                                INT_FOUR;
                                                           }
                                                           daughterRequiredDress =
                                                               value;
@@ -3751,10 +3777,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                           if (daughterRequiredDress ==
                                                               true) {
                                                             daughterDressInt =
-                                                                1;
+                                                                INT_ONE;
                                                           } else {
                                                             daughterDressInt =
-                                                                0;
+                                                                INT_ZERO;
                                                           }
                                                         });
                                                       }),
@@ -3791,7 +3817,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     value: di != null
                                                         ? printData[di][
                                                                     'bedroom_dress_req'] ==
-                                                                0
+                                                                INT_ZERO
                                                             ? true
                                                             : daughterNotRequiredDress
                                                         : daughterNotRequiredDress,
@@ -3804,15 +3830,16 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               false;
                                                           if (di != null) {
                                                             printData[di][
-                                                                'bedroom_dress_req'] = 4;
+                                                                    'bedroom_dress_req'] =
+                                                                INT_FOUR;
                                                           }
                                                           if (daughterRequiredDress ==
                                                               true) {
                                                             daughterDressInt =
-                                                                1;
+                                                                INT_ONE;
                                                           } else {
                                                             daughterDressInt =
-                                                                0;
+                                                                INT_ZERO;
                                                           }
                                                         },
                                                       );
@@ -3835,7 +3862,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   height: height * 0.01,
                                 ),
                                 if (di != null
-                                    ? printData[di]['bedroom'] == "1"
+                                    ? printData[di]['bedroom'] == STR_ONE
                                     : daughterRequiredDress == true) ...[
                                   Row(
                                     children: [
@@ -4372,7 +4399,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
               Column(
                 children: [
                   if (pi != null
-                      ? printData[3]['bedroom'] == "4"
+                      ? printData[3]['bedroom'] == STR_FOUR
                       : parentBedRoom == true) ...[
                     SizedBox(
                       height: height * 0.01,
@@ -4416,7 +4443,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.008,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -4563,12 +4590,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   }
                                                   selectedFloorParent = it;
                                                   if (selectedFloorParent ==
-                                                      "Ground Floor") {
-                                                    parentLocation = 0;
+                                                      G_FLOOR_TEXT) {
+                                                    parentLocation = INT_ZERO;
                                                   }
                                                   if (selectedFloorParent ==
-                                                      "1st Floor") {
-                                                    parentLocation = 1;
+                                                      G_1_FLOOR_TEXT) {
+                                                    parentLocation = INT_ONE;
                                                   }
                                                 },
                                               );
@@ -4593,7 +4620,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.008,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -4758,7 +4785,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       value: pi != null
                                                           ? printData[pi][
                                                                       'bedroom_dress_req'] ==
-                                                                  1
+                                                                  INT_ONE
                                                               ? true
                                                               : parentsRequiredDress
                                                           : parentsRequiredDress,
@@ -4766,7 +4793,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         setState(() {
                                                           if (pi != null) {
                                                             printData[pi][
-                                                                'bedroom_dress_req'] = 4;
+                                                                    'bedroom_dress_req'] =
+                                                                INT_FOUR;
                                                           }
 
                                                           parentsRequiredDress =
@@ -4776,9 +4804,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                           if (parentsRequiredDress ==
                                                               true) {
-                                                            parentDressInt = 1;
+                                                            parentDressInt =
+                                                                INT_ONE;
                                                           } else {
-                                                            parentDressInt = 0;
+                                                            parentDressInt =
+                                                                INT_ZERO;
                                                           }
                                                         });
                                                       }),
@@ -4817,7 +4847,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     value: pi != null
                                                         ? printData[pi][
                                                                     'bedroom_dress_req'] ==
-                                                                0
+                                                                F_ALSE
                                                             ? true
                                                             : parentsNotRequiredDress
                                                         : parentsNotRequiredDress,
@@ -4830,13 +4860,16 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               false;
                                                           if (pi != null) {
                                                             printData[pi][
-                                                                'bedroom_dress_req'] = 4;
+                                                                    'bedroom_dress_req'] =
+                                                                INT_FOUR;
                                                           }
                                                           if (parentsRequiredDress ==
                                                               true) {
-                                                            parentDressInt = 1;
+                                                            parentDressInt =
+                                                                INT_ONE;
                                                           } else {
-                                                            parentDressInt = 0;
+                                                            parentDressInt =
+                                                                INT_ZERO;
                                                           }
                                                         },
                                                       );
@@ -4859,7 +4892,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   height: height * 0.01,
                                 ),
                                 if (pi != null
-                                    ? printData[pi]['bedroom_dress_req'] == "1"
+                                    ? printData[pi]['bedroom_dress_req'] ==
+                                        STR_ONE
                                     : parentsRequiredDress == true) ...[
                                   Row(
                                     children: [
@@ -5411,7 +5445,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
               Column(
                 children: [
                   if (gi != null
-                      ? printData[gi]['bedroom'] == "5"
+                      ? printData[gi]['bedroom'] == STR_FIVE
                       : guestBedRoom == true) ...[
                     SizedBox(
                       height: height * 0.01,
@@ -5442,7 +5476,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.008,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -5589,12 +5623,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   }
                                                   selectedFloorGuest = it;
                                                   if (selectedFloorGuest ==
-                                                      "Ground Floor") {
-                                                    guestLocation = 0;
+                                                      G_FLOOR_TEXT) {
+                                                    guestLocation = INT_ZERO;
                                                   }
                                                   if (selectedFloorGuest ==
-                                                      "1st Floor") {
-                                                    guestLocation = 1;
+                                                      G_1_FLOOR_TEXT) {
+                                                    guestLocation = INT_ONE;
                                                   }
                                                 },
                                               );
@@ -5619,7 +5653,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.008,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -5792,7 +5826,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         setState(() {
                                                           if (gi != null) {
                                                             printData[gi][
-                                                                'bedroom_dress_req'] = 4;
+                                                                    'bedroom_dress_req'] =
+                                                                INT_FOUR;
                                                           }
                                                           guestRequiredDress =
                                                               value;
@@ -5801,9 +5836,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                           if (guestRequiredDress ==
                                                               true) {
-                                                            guestDressInt = 1;
+                                                            guestDressInt =
+                                                                INT_ONE;
                                                           } else {
-                                                            guestDressInt = 0;
+                                                            guestDressInt =
+                                                                INT_ZERO;
                                                           }
                                                         });
                                                       }),
@@ -5840,7 +5877,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     value: gi != null
                                                         ? printData[gi][
                                                                     'bedroom_dress_req'] ==
-                                                                0
+                                                                INT_ZERO
                                                             ? true
                                                             : guestNotRequiredDress
                                                         : guestNotRequiredDress,
@@ -5853,13 +5890,16 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               false;
                                                           if (gi != null) {
                                                             printData[gi][
-                                                                'bedroom_dress_req'] = 4;
+                                                                    'bedroom_dress_req'] =
+                                                                INT_FOUR;
                                                           }
                                                           if (guestRequiredDress ==
                                                               true) {
-                                                            guestDressInt = 1;
+                                                            guestDressInt =
+                                                                INT_ONE;
                                                           } else {
-                                                            guestDressInt = 0;
+                                                            guestDressInt =
+                                                                INT_ZERO;
                                                           }
                                                         },
                                                       );
@@ -5883,7 +5923,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 ),
                                 if (gi == null
                                     ? guestRequiredDress == true
-                                    : printData[gi]['bedroom'] == "1") ...[
+                                    : printData[gi]['bedroom'] == STR_ONE) ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -6433,7 +6473,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
               Column(
                 children: [
                   if (o1i != null
-                      ? printData[o1i]['bedroom'] == "6"
+                      ? printData[o1i]['bedroom'] == STR_SIX
                       : other1BedRoom == true) ...[
                     SizedBox(
                       height: height * 0.01,
@@ -6478,7 +6518,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.008,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -6625,12 +6665,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   }
                                                   selectedFloorOther1 = it;
                                                   if (selectedFloorOther1 ==
-                                                      "Ground Floor") {
-                                                    other1Location = 0;
+                                                      G_FLOOR_TEXT) {
+                                                    other1Location = INT_ZERO;
                                                   }
                                                   if (selectedFloorOther1 ==
-                                                      "1st Floor") {
-                                                    other1Location = 1;
+                                                      G_1_FLOOR_TEXT) {
+                                                    other1Location = INT_ONE;
                                                   }
                                                 },
                                               );
@@ -6655,7 +6695,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.008,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -6820,7 +6860,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       value: o1i != null
                                                           ? printData[o1i][
                                                                       'bedroom_dress_req'] ==
-                                                                  1
+                                                                  INT_ONE
                                                               ? true
                                                               : other1RequiredDress
                                                           : other1RequiredDress,
@@ -6828,7 +6868,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         setState(() {
                                                           if (o1i != null) {
                                                             printData[o1i][
-                                                                'bedroom_dress_req'] = 4;
+                                                                    'bedroom_dress_req'] =
+                                                                INT_FOUR;
                                                           }
                                                           other1RequiredDress =
                                                               value;
@@ -6837,9 +6878,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                           if (other1RequiredDress ==
                                                               true) {
-                                                            other1DressInt = 1;
+                                                            other1DressInt =
+                                                                INT_ONE;
                                                           } else {
-                                                            other1DressInt = 0;
+                                                            other1DressInt =
+                                                                INT_ZERO;
                                                           }
                                                         });
                                                       }),
@@ -6876,7 +6919,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     value: o1i != null
                                                         ? printData[o1i][
                                                                     'bedroom_dress_req'] ==
-                                                                0
+                                                                INT_ZERO
                                                             ? true
                                                             : other1NotRequiredDress
                                                         : other1NotRequiredDress,
@@ -6889,13 +6932,16 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               false;
                                                           if (o1i != null) {
                                                             printData[o1i][
-                                                                'bedroom_dress_req'] = 4;
+                                                                    'bedroom_dress_req'] =
+                                                                INT_FOUR;
                                                           }
                                                           if (other1RequiredDress ==
                                                               true) {
-                                                            other1DressInt = 1;
+                                                            other1DressInt =
+                                                                INT_ONE;
                                                           } else {
-                                                            other1DressInt = 0;
+                                                            other1DressInt =
+                                                                INT_ZERO;
                                                           }
                                                         },
                                                       );
@@ -6919,7 +6965,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 ),
                                 if (o1i == null
                                     ? other1RequiredDress == true
-                                    : printData[o1i]['bedroom'] == "1") ...[
+                                    : printData[o1i]['bedroom'] == STR_ONE) ...[
                                   Row(
                                     children: [
                                       requirementText("Length"),
@@ -7468,7 +7514,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
               Column(
                 children: [
                   if (o2i != null
-                      ? printData[o2i]['bedroom'] == "7"
+                      ? printData[o2i]['bedroom'] == STR_SEVEN
                       : other2BedRoom == true) ...{
                     SizedBox(
                       height: height * 0.01,
@@ -7499,7 +7545,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.008,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -7647,12 +7693,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                   selectedFloorOther2 = it;
                                                   if (selectedFloorOther2 ==
-                                                      "Ground Floor") {
-                                                    other2Location = 0;
+                                                      G_FLOOR_TEXT) {
+                                                    other2Location = INT_ZERO;
                                                   }
                                                   if (selectedFloorOther2 ==
-                                                      "1st Floor") {
-                                                    other2Location = 1;
+                                                      G_1_FLOOR_TEXT) {
+                                                    other2Location = INT_ONE;
                                                   }
                                                 },
                                               );
@@ -7677,7 +7723,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.008,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -7842,7 +7888,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       value: o2i != null
                                                           ? printData[o2i][
                                                                       'bedroom_dress_req'] ==
-                                                                  1
+                                                                  INT_ONE
                                                               ? true
                                                               : other2RequiredDress
                                                           : other2RequiredDress,
@@ -7850,7 +7896,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         setState(() {
                                                           if (o2i != null) {
                                                             printData[o2i][
-                                                                'bedroom_dress_req'] = 4;
+                                                                    'bedroom_dress_req'] =
+                                                                INT_FOUR;
                                                           }
                                                           other2RequiredDress =
                                                               value;
@@ -7859,9 +7906,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                           if (other2RequiredDress ==
                                                               true) {
-                                                            other2DressInt = 1;
+                                                            other2DressInt =
+                                                                INT_ONE;
                                                           } else {
-                                                            other2DressInt = 0;
+                                                            other2DressInt =
+                                                                INT_ZERO;
                                                           }
                                                         });
                                                       }),
@@ -7898,7 +7947,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     value: o2i != null
                                                         ? printData[o2i][
                                                                     'bedroom_dress_req'] ==
-                                                                0
+                                                                INT_ZERO
                                                             ? true
                                                             : other2NotRequiredDress
                                                         : other2NotRequiredDress,
@@ -7911,13 +7960,16 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               false;
                                                           if (o2i != null) {
                                                             printData[o2i][
-                                                                'bedroom_dress_req'] = 4;
+                                                                    'bedroom_dress_req'] =
+                                                                INT_FOUR;
                                                           }
                                                           if (other2RequiredDress ==
                                                               true) {
-                                                            other2DressInt = 1;
+                                                            other2DressInt =
+                                                                INT_ONE;
                                                           } else {
-                                                            other2DressInt = 0;
+                                                            other2DressInt =
+                                                                INT_ZERO;
                                                           }
                                                         },
                                                       );
@@ -7940,7 +7992,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   height: height * 0.01,
                                 ),
                                 if (o2i != null
-                                    ? printData[o2i]['bedroom'] == "1"
+                                    ? printData[o2i]['bedroom'] == STR_ONE
                                     : other2RequiredDress == true) ...[
                                   Row(
                                     children: [
@@ -8490,7 +8542,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
               Column(
                 children: [
                   if (o3i != null
-                      ? printData[o3i]['bedroom'] == "8"
+                      ? printData[o3i]['bedroom'] == STR_EIGHT
                       : other3BedRoom == true) ...{
                     SizedBox(
                       height: height * 0.01,
@@ -8535,7 +8587,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.008,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -8679,12 +8731,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   //     ['bedroom_floor'] = null;
                                                   selectedFloorOther3 = it;
                                                   if (selectedFloorOther3 ==
-                                                      "Ground Floor") {
-                                                    other3Location = 0;
+                                                      G_FLOOR_TEXT) {
+                                                    other3Location = INT_ZERO;
                                                   }
                                                   if (selectedFloorOther3 ==
-                                                      "1st Floor") {
-                                                    other3Location = 1;
+                                                      G_1_FLOOR_TEXT) {
+                                                    other3Location = INT_ONE;
                                                   }
                                                 },
                                               );
@@ -8709,7 +8761,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   children: [
                                     requirementText("Length"),
                                     SizedBox(
-                                      width: width * 0.015,
+                                      width: width * 0.008,
                                     ),
                                     Material(
                                       elevation: 5,
@@ -8874,7 +8926,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       value: o3i != null
                                                           ? printData[o3i][
                                                                       'bedroom_dress_req'] ==
-                                                                  1
+                                                                  INT_ONE
                                                               ? true
                                                               : other3RequiredDress
                                                           : other3RequiredDress,
@@ -8882,7 +8934,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                         setState(() {
                                                           if (o3i != null) {
                                                             printData[o3i][
-                                                                'bedroom_dress_req'] = 4;
+                                                                    'bedroom_dress_req'] =
+                                                                INT_FOUR;
                                                           }
                                                           other3RequiredDress =
                                                               value;
@@ -8891,9 +8944,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                           if (other3RequiredDress ==
                                                               true) {
-                                                            other3DressInt = 1;
+                                                            other3DressInt =
+                                                                INT_ONE;
                                                           } else {
-                                                            other3DressInt = 0;
+                                                            other3DressInt =
+                                                                INT_ZERO;
                                                           }
                                                         });
                                                       }),
@@ -8930,7 +8985,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                     value: o3i != null
                                                         ? printData[o3i][
                                                                     'bedroom_dress_req'] ==
-                                                                0
+                                                                INT_ZERO
                                                             ? true
                                                             : other3NotRequiredDress
                                                         : other3NotRequiredDress,
@@ -8943,13 +8998,16 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                               false;
                                                           if (o3i != null) {
                                                             printData[o3i][
-                                                                'bedroom_dress_req'] = 4;
+                                                                    'bedroom_dress_req'] =
+                                                                INT_FOUR;
                                                           }
                                                           if (other3RequiredDress ==
                                                               true) {
-                                                            other3DressInt = 1;
+                                                            other3DressInt =
+                                                                INT_ONE;
                                                           } else {
-                                                            other3DressInt = 0;
+                                                            other3DressInt =
+                                                                INT_ZERO;
                                                           }
                                                         },
                                                       );
@@ -8972,7 +9030,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                   height: height * 0.01,
                                 ),
                                 if (o3i != null
-                                    ? printData[o3i]['bedroom_dress_req'] == "1"
+                                    ? printData[o3i]['bedroom_dress_req'] ==
+                                        STR_ONE
                                     : other3RequiredDress == true) ...[
                                   Row(
                                     children: [
@@ -9529,12 +9588,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                     var ab = jsonEncode(json);
 
                     Map<dynamic, dynamic> _value = {};
-                    _value["dimension"] = 1;
+                    _value["dimension"] = INT_ONE;
                     _value["project_id"] = project_id;
 
                     List<Bedtypes> bedData = [
                       if (mi != null
-                          ? printData[mi]['bedroom'] == "1"
+                          ? printData[mi]['bedroom'] == STR_ONE
                           : masterBedroom == true)
                         Bedtypes(
                           bedroomLength: masterLength,
@@ -9548,13 +9607,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressFacility: masterDressFacility,
                           bedroomImg: "",
                           bedroomFacility: masterRoomFacility,
-                          bedroomName: "1",
+                          bedroomName: STR_ONE,
                           bedroomDressReq: masterDressInt,
                           bedroomDressText: masterDresstext,
                           bedroomText: masterOtherRequirement,
                         ),
                       if (si != null
-                          ? printData[si]['bedroom'] == "2"
+                          ? printData[si]['bedroom'] == STR_TWO
                           : sonBedRoom == true)
                         Bedtypes(
                           bedroomLength: sonLength,
@@ -9568,13 +9627,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressFacility: sonDressFacility,
                           bedroomImg: "",
                           bedroomFacility: sonRoomFacility,
-                          bedroomName: "2",
+                          bedroomName: STR_TWO,
                           bedroomDressReq: sonDressInt,
                           bedroomDressText: sonDresstext,
                           bedroomText: sonOtherRequirement,
                         ),
                       if (di != null
-                          ? printData[si]['bedroom'] == "3"
+                          ? printData[si]['bedroom'] == STR_THREE
                           : daughterBedRoom == true)
                         Bedtypes(
                           bedroomLength: daughterLength,
@@ -9588,13 +9647,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressFacility: daughterDressFacility,
                           bedroomImg: "",
                           bedroomFacility: daughterRoomFacility,
-                          bedroomName: "3",
+                          bedroomName: STR_THREE,
                           bedroomDressReq: daughterDressInt,
                           bedroomDressText: daughterDresstext,
                           bedroomText: daughterOtherRequirement,
                         ),
                       if (pi != null
-                          ? printData[pi]['bedroom'] == "4"
+                          ? printData[pi]['bedroom'] == STR_FOUR
                           : sonBedRoom == true)
                         Bedtypes(
                           bedroomLength: parentLength,
@@ -9608,13 +9667,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressFacility: parentDressFacility,
                           bedroomImg: "",
                           bedroomFacility: parentRoomFacility,
-                          bedroomName: "4",
+                          bedroomName: STR_FOUR,
                           bedroomDressReq: parentDressInt,
                           bedroomDressText: parentDresstext,
                           bedroomText: parentOtherRequirement,
                         ),
                       if (di != null
-                          ? printData[4]['bedroom'] == "5"
+                          ? printData[4]['bedroom'] == STR_FIVE
                           : guestBedRoom == true)
                         Bedtypes(
                           bedroomLength: guestLength,
@@ -9628,13 +9687,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressFacility: guestDressFacility,
                           bedroomImg: "",
                           bedroomFacility: guestRoomFacility,
-                          bedroomName: "5",
+                          bedroomName: STR_FIVE,
                           bedroomDressReq: guestDressInt,
                           bedroomDressText: guestDresstext,
                           bedroomText: guestOtherRequirement,
                         ),
                       if (o1i != null
-                          ? printData[5]['bedroom'] == "6"
+                          ? printData[5]['bedroom'] == STR_SIX
                           : other1BedRoom == true)
                         Bedtypes(
                           bedroomLength: other1Length,
@@ -9648,13 +9707,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressFacility: other1DressFacility,
                           bedroomImg: "",
                           bedroomFacility: other1RoomFacility,
-                          bedroomName: "6",
+                          bedroomName: STR_SIX,
                           bedroomDressReq: other1DressInt,
                           bedroomDressText: other1Dresstext,
                           bedroomText: other1OtherRequirement,
                         ),
                       if (o2i != null
-                          ? printData[6]['bedroom'] == "7"
+                          ? printData[6]['bedroom'] == STR_SEVEN
                           : other2BedRoom == true)
                         Bedtypes(
                           bedroomLength: other2Length,
@@ -9668,13 +9727,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressFacility: other2DressFacility,
                           bedroomImg: "",
                           bedroomFacility: other2RoomFacility,
-                          bedroomName: "7",
+                          bedroomName: STR_SEVEN,
                           bedroomDressReq: other2DressInt,
                           bedroomDressText: other2Dresstext,
                           bedroomText: other2OtherRequirement,
                         ),
                       if (o3i != null
-                          ? printData[o3i]['bedroom'] == "8"
+                          ? printData[o3i]['bedroom'] == STR_EIGHT
                           : other3BedRoom == true)
                         Bedtypes(
                           bedroomLength: other3Length,
@@ -9688,7 +9747,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           bedroomDressFacility: other3DressFacility,
                           bedroomImg: "",
                           bedroomFacility: other3RoomFacility,
-                          bedroomName: "8",
+                          bedroomName: STR_EIGHT,
                           bedroomDressReq: other3DressInt,
                           bedroomDressText: other3Dresstext,
                           bedroomText: other3OtherRequirement,
@@ -9713,8 +9772,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                     if (project_id == null) {
                       final update = await http.post(
-                        Uri.parse(
-                            'http://192.168.0.99:8080/sdplserver/api/bungalow-bedroom'),
+                        Uri.parse("${dotenv.env['APP_URL']}bungalow-bedroom"),
+                        // 'http://192.168.0.99:8080/sdplserver/api/bungalow-bedroom'),
                         headers: <String, String>{
                           'Content-Type': 'application/json; charset=UTF-8',
                         },
@@ -9725,7 +9784,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                     } else {
                       final submit = await http.post(
                         Uri.parse(
-                            'http://192.168.0.99:8080/sdplserver/api/update-bungalow-bedroom/$project_id'),
+                            "${dotenv.env['APP_URL']}update-bungalow-bedroom/$project_id"),
+                        // 'http://192.168.0.99:8080/sdplserver/api/update-bungalow-bedroom/$project_id'),
                         headers: <String, String>{
                           'Content-Type': 'application/json; charset=UTF-8',
                         },

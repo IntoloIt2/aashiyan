@@ -19,6 +19,7 @@
 
 // ignore: non_constant_identifier_names
 String SUCCESS_MESSAGE = " You will be contacted by us very soon.";
+const SUCCESS = 200;
 // ignore: non_constant_identifier_names
 List<String> PROJECT_TYPE = [
   "mix use",
@@ -30,10 +31,22 @@ List<String> PROJECT_TYPE = [
   "interior designs"
 ];
 
-
 // Entrance
 String OutSideOpen = '1';
 String OutSideClosed = '2';
+
+String VISUAL_NATURE = '1';
+
+const ENT_SELECT = "Select";
+const ENT_GROUND_FLOOR = "1(G)";
+const ENT_FIRST_FLOOR = "2(G+1)";
+const ENT_SECOND_FLOOR = "3(G+2)";
+const ENT_THIRD_FLOOR = "4(G+3)";
+const ENT_MORE_FLOOR = "more";
+const ENT_ADJACENT = "Adjacent";
+const ONE_GATE = "One Gate";
+const TWO_GATE = "Two Gate";
+const S_ELECT = 0;
 
 // ignore: non_constant_identifier_names
 int STATE_ID = 1;
@@ -41,6 +54,62 @@ const PLOT_LEVEL_UP = "Up";
 const PLOT_LEVEL_DOWN = "Down";
 const PLOT_LEVEL_SAME = "Almost same level";
 const COUNTRY_ID = 1;
+
+//LIVING HALL
+const KITCHEN_FULL_OPEN = "full open to dining";
+const KITCHEN_PARTIAL_OPEN = "partial open to dining";
+const KITCHEN_REASONABLE_OPEN = "open with a reasonable opening";
+
+const CONST_FULL_OPEN = "1";
+const CONST_PARTIAL_OPEN = "2";
+const CONST_REASONABLE_OPEN = "3";
+const CONST_OTHER_OPEN = "other";
+
+const REFRI_SINGLE_DOOR = "Single Door ";
+const REFRI_DOUBLE_DOOR = "Double Door";
+
+//PANTRY DETAILS
+const SELECT_SIX_SEATS = "6";
+const SELECT_EIGHT_SEATS = "8";
+const SELECT_TEN_SEATS = "10";
+
+const DINING_WITH_CROCKERY = "with crockery storage";
+const DINING_WITHOUT_CROCKERY = "without crockery storage";
+const DINING_DOUBLE_HEIGHT = "Double Height";
+const NEAR_BASIN = "near by basin";
+
+const BASE_PANTRY = "Pantry";
+const BASE_STAFF_TOILET = "Staff Toilet";
+const BASE_TOILET = "Toilet";
+
+//FLOOR STORES
+const OPENING_TO_LIVING_HALL = "Opening toward hall/ Lobby";
+
+//BED ROOM
+
+const STR_ZERO = "0";
+const STR_ONE = "1";
+const STR_TWO = "2";
+const STR_THREE = "3";
+const STR_FOUR = "4";
+const STR_FIVE = "5";
+const STR_SIX = "6";
+const STR_SEVEN = "7";
+const STR_EIGHT = "8";
+const STR_NINE = "9";
+const STR_TEN = "10";
+
+const INT_ZERO = 0;
+const INT_ONE = 1;
+const INT_TWO = 2;
+const INT_THREE = 3;
+const INT_FOUR = 4;
+const INT_FIVE = 5;
+const INT_SIX = 6;
+const INT_SEVEN = 7;
+const INT_EIGHT = 8;
+const INT_NINE = 9;
+const INT_TEN = 10;
 // ignore: non_constant_identifier_names
 
 int EAST_OTHER_PROPERTY = 2;
@@ -92,6 +161,8 @@ const ACTIVE = 1;
 const T_RUE = 1;
 const F_ALSE = 0;
 
+const METER = "m";
+const FEET = "ft";
 //this constant save on sddiform and use for email
 const ADMIN = 1;
 const ANURAG_SIR = 4;
@@ -101,7 +172,7 @@ const PRAJWAL_SIR = 5;
 const MIX_USE = 1;
 const MALL_MULTIPLESER = 2;
 const HOSPITAL = 3;
-const   HOSPITALITY = 4;
+const HOSPITALITY = 4;
 const RESIDENTIAL = 5;
 //const TOWNSHIP = 6;
 const COMMERCIAL_SHOWROOM_OFFICE = 7;
