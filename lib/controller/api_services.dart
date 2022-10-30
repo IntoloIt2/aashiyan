@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:core';
+import 'dart:ffi';
 
 // import 'dart:html';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -426,7 +427,8 @@ Future<dynamic> entrancePut(
   return resp["status"];
 }
 
-Future<void> livingHallPost(
+Future<dynamic> livingHallPost(
+  int user_id,
   int projectId,
   int drawingHallRequirement,
   int drawingHallLocation,
@@ -449,13 +451,13 @@ Future<void> livingHallPost(
   String attachStoreWidth,
   String utilityWashWidth,
   String utilityWashLength,
-  String refrigeratorSize,
+  int refrigeratorSize,
   String specificReq,
 ) async {
   print(specificReq);
   var projectData = {
-    "project_id": 785657,
-    "user_id": 986,
+    "project_id": projectId,
+    "user_id": user_id,
     "dimension": dimenInt,
     "drawing_hall_req": drawingHallRequirement,
     "drawing_hall_location": drawingHallLocation,
@@ -493,9 +495,12 @@ Future<void> livingHallPost(
     body: jsonEncode(projectData),
   );
   print(response.body);
+  var temp = jsonDecode(response.body);
+  return temp['status'];
 }
 
-Future<void> livingHallput(
+Future<dynamic> livingHallput(
+  int user_id,
   int projectId,
   int drawingHallRequirement,
   int drawingHallLocation,
@@ -518,18 +523,18 @@ Future<void> livingHallput(
   String attachStoreWidth,
   String utilityWashWidth,
   String utilityWashLength,
-  String refrigeratorSize,
+  int refrigeratorSize,
   String specificReq,
 ) async {
-  print(drawingHallLength);
-  print(drawingHallWidth);
+  // print(drawingHallLength);
+  // print(drawingHallWidth);
 
-  print(livingHallLength);
-  print(livingHallwidth);
+  // print(livingHallLength);
+  // print(livingHallwidth);
 
   var projectData = {
     "project_id": projectId,
-    "user_id": 986,
+    "user_id": user_id,
     "dimension": dimenInt,
     "drawing_hall_req": drawingHallRequirement,
     "drawing_hall_location": drawingHallLocation,
@@ -561,17 +566,21 @@ Future<void> livingHallput(
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
     Uri.parse(
-        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-drawing-hall/$projectId'),
+        "${dotenv.env['APP_URL']}update-bungalow-drawing-hall/$projectId"),
+    // 'http://192.168.0.99:8080/sdplserver/api/update-bungalow-drawing-hall/$projectId'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
   print(response.body);
+  var temp = jsonDecode(response.body);
+  return temp['status'];
 }
 
-Future<void> pantryPost(
+Future<dynamic> pantryPost(
   int projectId,
+  int user_id,
   int pantryRequest,
   int pantryFloor,
   String pantryLength,
@@ -585,8 +594,56 @@ Future<void> pantryPost(
   String diningText,
 ) async {
   var projectData = {
-    "project_id": 179,
-    "user_id": 3655,
+    "project_id": projectId,
+    "user_id": user_id,
+    "dimension": dimenInt,
+    "pantry_req": pantryRequest,
+    "pantry_floor": pantryFloor,
+    "pantry_length": pantryLength,
+    "pantry_width": pantryWidth,
+    "specific_req": specificRequest,
+    "dining_length": diningLength,
+    "dining_width": diningWidth,
+    "dining_features": diningFeatures,
+    "dining_floor": diningLocation,
+    "dining_seat": diningSeat,
+    "dining_text": diningText,
+  };
+
+  print("pantry bodyData==");
+  print(projectData);
+  final response = await http.post(
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse("${dotenv.env['APP_URL']}bungalow-pantry"),
+    // Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-pantry'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+  var resp = jsonDecode(response.body);
+  print(response.body);
+  return resp['status'];
+}
+
+Future<dynamic> pantryPut(
+  int projectId,
+  int user_id,
+  int pantryRequest,
+  int pantryFloor,
+  String pantryLength,
+  String pantryWidth,
+  String specificRequest,
+  String diningLength,
+  String diningWidth,
+  List diningFeatures,
+  String diningLocation,
+  String diningSeat,
+  String diningText,
+) async {
+  var projectData = {
+    "project_id": projectId,
+    "user_id": user_id,
     "dimension": dimenInt,
     "pantry_req": pantryRequest,
     "pantry_floor": pantryFloor,
@@ -604,57 +661,16 @@ Future<void> pantryPost(
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-pantry'),
+    Uri.parse("${dotenv.env['APP_URL']}update-bungalow-pantry/$projectId"),
+    // 'http://192.168.0.99:8080/sdplserver/api/update-bungalow-pantry/$projectId'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
+  var resp = jsonDecode(response.body);
   print(response.body);
-}
-
-Future<void> pantryPut(
-  int projectId,
-  int pantryRequest,
-  int pantryFloor,
-  String pantryLength,
-  String pantryWidth,
-  String specificRequest,
-  String diningLength,
-  String diningWidth,
-  List diningFeatures,
-  String diningLocation,
-  String diningSeat,
-  String diningText,
-) async {
-  var projectData = {
-    "project_id": 179,
-    "user_id": 19,
-    "dimension": dimenInt,
-    "pantry_req": pantryRequest,
-    "pantry_floor": pantryFloor,
-    "pantry_length": pantryLength,
-    "pantry_width": pantryWidth,
-    "specific_req": specificRequest,
-    "dining_length": diningLength,
-    "dining_width": diningWidth,
-    "dining_features": diningFeatures,
-    "dining_floor": diningLocation,
-    "dining_seat": diningSeat,
-    "dining_text": diningText,
-  };
-
-  print(projectData);
-  final response = await http.post(
-    // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse(
-        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-pantry/$projectId'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(projectData),
-  );
-  print(response.body);
+  return resp['status'];
 }
 
 Future<void> flooreStorePost(
