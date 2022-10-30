@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:aashiyan/components/contants.dart';
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -380,9 +380,8 @@ class _LivingHallState extends State<LivingHall> {
   void initState() {
     super.initState();
 
-
     final store = Provider.of<PageNavProvider>(context, listen: false);
-    
+
     getUserId();
 
     // WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -392,11 +391,9 @@ class _LivingHallState extends State<LivingHall> {
     //   }
     // });
 
-
     if (printData == null) {
       isloading = true;
     }
-
   }
 
   void multiSelected() async {
