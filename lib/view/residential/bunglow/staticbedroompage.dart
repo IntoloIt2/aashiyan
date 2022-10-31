@@ -251,7 +251,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
         ),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
         setState(
           () {

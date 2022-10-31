@@ -139,8 +139,8 @@ class _Step_1State extends State<Step_1> {
         );
       }
       plotValue.text = calculation;
-      print(plotValue.text);
-      print(calculation);
+      // print(plotValue.text);
+      // print(calculation);
     }
 
     return calculation;
@@ -196,7 +196,7 @@ class _Step_1State extends State<Step_1> {
       var tempStates;
       var response =
           await http.get(Uri.parse("${dotenv.env['APP_URL']}state/$STATE_ID"));
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         Map jsonResponse = jsonDecode(response.body);
         List tempStates = jsonResponse["states"];
         setState(() {
@@ -211,7 +211,7 @@ class _Step_1State extends State<Step_1> {
       var client = http.Client();
       var response =
           await http.get(Uri.parse("${dotenv.env['APP_URL']}city/$stateId"));
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
         final cityList = jsonResponse['cities'] as List;
         setState(() {
@@ -229,11 +229,12 @@ class _Step_1State extends State<Step_1> {
       var response = await http.get(
         Uri.parse("${dotenv.env['APP_URL']}edit-project/$id"),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
           if (printData != null && printData['project_id'] != null) {
+
             // print("plotype -----");
             // print(printData["project"]["plot_type"]);
             pageId = printData['project']['id'] != null
@@ -742,6 +743,7 @@ class _Step_1State extends State<Step_1> {
                             //     )
                             //     .toList(),
                           ),
+
                         ),
                       ),
                     ),

@@ -4,6 +4,7 @@ import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provid
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../components/constant.dart';
@@ -26,7 +27,7 @@ class _EntranceState extends State<Entrance> {
     "2(G+1)",
     "3(G+2)",
     "4(G+3)",
-    "more"
+    // "more"
   ];
 
   String selectedFloor = "Select";
@@ -62,9 +63,9 @@ class _EntranceState extends State<Entrance> {
       if (selectedFloor == ENT_THIRD_FLOOR) {
         floorInt = THIRD_FLOOR;
       }
-      if (selectedFloor == ENT_MORE_FLOOR) {
-        floorInt = int.parse(floorController);
-      }
+      // if (selectedFloor == ENT_MORE_FLOOR) {
+      //   floorInt = int.parse(floorController);
+      // }
     });
   }
 
@@ -158,31 +159,30 @@ class _EntranceState extends State<Entrance> {
         Uri.parse("${dotenv.env['APP_URL']}edit-bungalow-entrance/$id"),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
 
         setState(
           () {
             printData = jsonResponse;
-            // print("entrance data");
+            print('printData===');
             print(printData);
             if (printData != null) {
               pageId = printData['bungalow_entrance']['id'] != null
                   ? int.parse(printData['bungalow_entrance']['id'].toString())
                   : pageId;
               // print(pageId);
+              selectedFloor = printData['bungalow_entrance']['floor'] != null
+                  ? floors[int.parse(
+                      printData['bungalow_entrance']['floor'].toString())]
+                  : entranceSelectedGates;
               entranceSelectedGates =
                   printData['bungalow_entrance']['id'] != null
                       ? printData['bungalow_entrance']['one_gate'].toString()
                       : entranceSelectedGates;
-              selectedFloor = printData['bungalow_entrance']['floor'] != null
-                  ? (printData['bungalow_entrance']['floor'].toString())
-                  : selectedFloor;
-
               floorController = printData['bungalow_entrance']['floor'] != null
                   ? printData['bungalow_entrance']['floor'].toString()
                   : '';
-
               moderate = printData['bungalow_entrance']['vastu'] != null
                   ? printData['bungalow_entrance']['vastu'] == "1"
                   : false;
@@ -212,6 +212,10 @@ class _EntranceState extends State<Entrance> {
                       null
                   ? printData["bungalow_entrance"]["two_gate"] == ENT_ADJACENTWO
                   : false;
+              // diffrentCustom = printData["bungalow_entrance"]["two_gate"] !=
+              //         null
+              //     ? printData["bungalow_entrance"]["two_gate"] == ENT_ADJACENT
+              //     : false;
               selectedCarGate = printData['bungalow_entrance']
                           ['main_car_gate'] !=
                       null
@@ -236,12 +240,13 @@ class _EntranceState extends State<Entrance> {
                   printData["bungalow_entrance"]['porch_req'] != null
                       ? printData["bungalow_entrance"]['porch_req'] == T_RUE
                       : false;
-
               visualNature =
                   printData['bungalow_entrance']['visual_nature'] != null
-                      ? printData['bungalow_entrance']['visual_nature'] ==
-                          VISUAL_NATURE
+                      ? printData['bungalow_entrance']['visual_nature'] !=
+                          INT_ZERO.toString()
                       : false;
+              // print("visual nature");
+              // print(visualNature);
               porchNotRequired =
                   printData["bungalow_entrance"]['porch_req'] != null
                       ? printData["bungalow_entrance"]['porch_req'] == F_ALSE
@@ -289,18 +294,24 @@ class _EntranceState extends State<Entrance> {
                   printData['bungalow_entrance']['foyer_length'] ?? '';
               foyerWidthController =
                   printData['bungalow_entrance']['foyer_width'] ?? '';
-              verandaLengthController = printData['bungalow_entrance'] != null
-                  ? printData['bungalow_entrance']['verandah_length']
-                  : '';
-              verandaWidthController = printData['bungalow_entrance'] != null
-                  ? printData['bungalow_entrance']['verandah_width']
-                  : '';
-              porchRequiredFaci =
-                  printData['bungalow_entrance']['porch'] != null
+
+              verandaLengthController =
+                  printData['bungalow_entrance']['verandah_length'] != null
+                      ? printData['bungalow_entrance']['verandah_length']
+                      : '';
+
+              verandaWidthController =
+                  printData['bungalow_entrance']['verandah_width'] != null
+                      ? printData['bungalow_entrance']['verandah_width']
+                      : '';
+
+              porchRequiredFaci = printData['bungalow_entrance'] != null
+                  ? printData['bungalow_entrance']['porch'] != null
                       ? printData['bungalow_entrance']['porch']
                           .toString()
                           .split(",")
-                      : [];
+                      : []
+                  : [];
               // print(porchRequiredFaci);
 
               if (porchRequiredFaci != null) {
@@ -317,7 +328,6 @@ class _EntranceState extends State<Entrance> {
                               ['visual_nature']
                           .toString())]
                       : selectedVisual;
-              // print(selectedVisual);
 
               SelectedCar =
                   printData['bungalow_entrance']['car_parking_space'] != null
@@ -325,17 +335,21 @@ class _EntranceState extends State<Entrance> {
                               ['car_parking_space']
                           .toString())]
                       : SelectedCar;
-              // print(SelectedCar);
+
               visualNaturString = printData['bungalow_entrance']
                           ['visual_nature'] !=
                       null
                   ? (printData['bungalow_entrance']['visual_nature'].toString())
                   : visualNaturString;
-              visualNaturString = printData['bungalow_entrance']
-                          ['visual_nature'] !=
-                      null
-                  ? (printData['bungalow_entrance']['visual_nature'].toString())
-                  : visualNaturString;
+              // print('visual nature string');
+              // print(visualNaturString);
+
+              // visualNaturString = printData['bungalow_entrance']
+              //             ['visual_nature'] !=
+              //         null
+              //     ? (printData['bungalow_entrance']['visual_nature'].toString())
+              //     : visualNaturString;
+
               carParkingString =
                   printData['bungalow_entrance']['car_parking_space'] != null
                       ? (printData['bungalow_entrance']['car_parking_space']
@@ -362,6 +376,16 @@ class _EntranceState extends State<Entrance> {
       decJson = jsonDecode(userData);
     }
     user_id = decJson['data']['id'];
+  }
+
+  void showToast(msg, toastColor, GRAVITY) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 0,
+        backgroundColor: toastColor,
+        textColor: Colors.white);
   }
 
   @override
@@ -394,7 +418,9 @@ class _EntranceState extends State<Entrance> {
     var provider = Provider.of<PageNavProvider>(context, listen: true);
 
     return isloading == false
-        ? const Center(child: CircularProgressIndicator())
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
         : SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -420,11 +446,21 @@ class _EntranceState extends State<Entrance> {
                               visible: false,
                               child: Icon(Icons.arrow_downward),
                             ),
-                            hint: printData != null &&
-                                    printData["bungalow_entrance"] != null
-                                ? Text(floors[printData["bungalow_entrance"]
-                                        ["floor"]]
-                                    .toString())
+                            // hint: printData != null &&
+                            //         printData["bungalow_entrance"] != null
+                            //     ? Text(floors[printData["bungalow_entrance"]["floor"]]
+                            //         .toString())
+                            //     : Text(selectedFloor),
+                            hint: printData != null
+                                ? printData['project'] != null
+                                    ? printData['project']
+                                                ['bungalow_entrance'] !=
+                                            null
+                                        ? Text(floors[printData['project']
+                                                ['bungalow_entrance']]
+                                            .toString())
+                                        : Text(selectedFloor)
+                                    : Text(selectedFloor)
                                 : Text(selectedFloor),
                             elevation: 16,
                             items: floors
@@ -474,12 +510,12 @@ class _EntranceState extends State<Entrance> {
                                       printData["bungalow_entrance"]["floor"] =
                                           THIRD_FLOOR;
                                   }
-                                  if (selectedFloor == ENT_MORE_FLOOR) {
-                                    if (printData != null &&
-                                        printData['bungalow_entrance'] != null)
-                                      printData["bungalow_entrance"]["floor"] =
-                                          MORE_FLOOR;
-                                  }
+                                  // if (selectedFloor == ENT_MORE_FLOOR) {
+                                  //   if (printData != null &&
+                                  //       printData['bungalow_entrance'] != null)
+                                  //     printData["bungalow_entrance"]["floor"] =
+                                  //         MORE_FLOOR;
+                                  // }
                                 },
                               );
                             },
@@ -487,42 +523,42 @@ class _EntranceState extends State<Entrance> {
                         ),
                       ),
                     ),
-                    if (selectedFloor == ENT_MORE_FLOOR) ...[
-                      Material(
-                        elevation: 5,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                        child: SizedBox(
-                          height: height * 0.04,
-                          width: width * 0.15,
-                          child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData['bungalow_entrance'] != null
-                                ? printData["bungalow_entrance"]["floor"]
-                                            .toString() !=
-                                        null
-                                    ? printData["bungalow_entrance"]["floor"]
-                                        .toString()
-                                    : ""
-                                : "",
-                            style: const TextStyle(fontSize: 14),
-                            decoration: const InputDecoration(
-                                hintText: "floors",
-                                hintStyle: TextStyle(fontSize: 14),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                                isDense: true,
-                                contentPadding: EdgeInsets.all(8)
-                                //fillColor: Colors.green
-                                ),
-                            onChanged: ((value) {
-                              floorController = value;
-                            }),
-                          ),
-                        ),
-                      )
-                    ]
+                    // if (selectedFloor == ENT_MORE_FLOOR) ...[
+                    //   Material(
+                    //     elevation: 5,
+                    //     borderRadius:
+                    //         const BorderRadius.all(Radius.circular(5)),
+                    //     child: SizedBox(
+                    //       height: height * 0.04,
+                    //       width: width * 0.15,
+                    //       child: TextFormField(
+                    //         initialValue: printData != null &&
+                    //                 printData['bungalow_entrance'] != null
+                    //             ? printData["bungalow_entrance"]["floor"]
+                    //                         .toString() !=
+                    //                     null
+                    //                 ? printData["bungalow_entrance"]["floor"]
+                    //                     .toString()
+                    //                 : ""
+                    //             : "",
+                    //         style: const TextStyle(fontSize: 14),
+                    //         decoration: const InputDecoration(
+                    //             hintText: "floors",
+                    //             hintStyle: TextStyle(fontSize: 14),
+                    //             border: OutlineInputBorder(
+                    //               borderSide: BorderSide.none,
+                    //             ),
+                    //             isDense: true,
+                    //             contentPadding: EdgeInsets.all(8)
+                    //             //fillColor: Colors.green
+                    //             ),
+                    //         onChanged: ((value) {
+                    //           floorController = value;
+                    //         }),
+                    //       ),
+                    //     ),
+                    //   )
+                    // ]
                   ],
                 ),
                 SizedBox(
@@ -1496,7 +1532,7 @@ class _EntranceState extends State<Entrance> {
                                   value: e.value,
                                   onTap: () {
                                     visualNaturString = idx.toString();
-                                    // print(visualNaturString);
+                                    print(visualNaturString);
                                   },
                                   child: Text(e.value),
                                 );
@@ -1570,7 +1606,7 @@ class _EntranceState extends State<Entrance> {
                       borderRadius: BorderRadius.circular(5),
                       elevation: 5,
                       child: Container(
-                        width: width * 0.4,
+                        width: width * 0.5,
                         child: Row(
                           children: [
                             SizedBox(
@@ -2244,7 +2280,7 @@ class _EntranceState extends State<Entrance> {
                   height: height * 0.01,
                 ),
                 InkWell(
-                  onTap: () {
+                  onTap: () async {
                     setState(
                       () {
                         if (adjascent == true) {
@@ -2253,9 +2289,9 @@ class _EntranceState extends State<Entrance> {
                           twoGateType = 'diffrent';
                         }
                         if (moderate == true) {
-                          moderateString = "1";
+                          moderateString = STR_ONE;
                         } else {
-                          moderateString = "0";
+                          moderateString = STR_ZERO;
                         }
                         floor();
                         if (oneGate == false) {
@@ -2272,14 +2308,14 @@ class _EntranceState extends State<Entrance> {
                         }
 
                         if (securityRequired == true) {
-                          securityReqInt = 1;
+                          securityReqInt = INT_ONE;
                           int securityArea =
                               int.parse(securityKioskLengthController) *
                                   int.parse(securityKioskWidthController);
                           securityKiosqArea = securityArea.toString();
                         }
                         if (porchRequired == true) {
-                          porchReqInt = 1;
+                          porchReqInt = INT_ONE;
                           int pArea = int.parse(porchLengthController) *
                               int.parse(porchWidthController);
                           porchArea = pArea.toString();
@@ -2307,14 +2343,14 @@ class _EntranceState extends State<Entrance> {
                         }
 
                         if (requiredWelcomeLobyy == true) {
-                          requiredWelcomeLobyyInt = 1;
+                          requiredWelcomeLobyyInt = INT_ONE;
                           int fArea = int.parse(foyerLengthController) *
                               int.parse(foyerWidthController);
                           porchArea = fArea.toString();
                         }
                         if (requiredVeranda == true) {
-                          requiredVerandaInt = 1;
-                          int vArea = 0;
+                          requiredVerandaInt = INT_ONE;
+                          int vArea = INT_ZERO;
 
                           vArea = int.parse(verandaLengthController) *
                               int.parse(verandaWidthController);
@@ -2330,8 +2366,7 @@ class _EntranceState extends State<Entrance> {
                       },
                     );
                     if (pageId != null) {
-                      // print("put data");
-                      entrancePut(
+                      var status = await entrancePut(
                         project_id,
                         moderateString,
                         floorInt,
@@ -2345,7 +2380,7 @@ class _EntranceState extends State<Entrance> {
                         securityKioskLengthController,
                         securityKioskWidthController,
                         securityKiosqArea,
-                        0,
+                        INT_ZERO,
                         porchReqInt,
                         porchLengthController,
                         porchWidthController,
@@ -2364,14 +2399,18 @@ class _EntranceState extends State<Entrance> {
                         verandaArea,
                         veranda,
                       );
+                      if (status == SUCCESS) {
+                        showToast('Entrance Requirement Updated !',
+                            Colors.lightGreen, ToastGravity.TOP);
+                      }
                     } else {
-                      entrancePost(
+                      var status = await entrancePost(
                         project_id,
                         moderateString,
                         floorInt,
                         gate,
                         entranceSelectedGates,
-                        twoGateType!,
+                        twoGateType,
                         selectedCarGate,
                         selectedSidePadest,
                         diffrentCustomizedLocationController,
@@ -2379,7 +2418,7 @@ class _EntranceState extends State<Entrance> {
                         securityKioskLengthController,
                         securityKioskWidthController,
                         securityKiosqArea,
-                        0,
+                        INT_ZERO,
                         porchReqInt,
                         porchLengthController,
                         porchWidthController,
@@ -2398,6 +2437,10 @@ class _EntranceState extends State<Entrance> {
                         verandaArea,
                         veranda,
                       );
+                      if (status == SUCCESS) {
+                        showToast('Entrance Requirement Submitted !',
+                            Colors.lightGreen, ToastGravity.TOP);
+                      }
                     }
                   },
                   child: Container(
