@@ -82,6 +82,7 @@ const DINING_DOUBLE_HEIGHT = "Double Height";
 const NEAR_BASIN = "Near By Basin";
 
 const BASE_PANTRY = "Pantry";
+
 const BASE_STAFF_TOILET = "Staff Toilet";
 const BASE_TOILET = "Toilet";
 

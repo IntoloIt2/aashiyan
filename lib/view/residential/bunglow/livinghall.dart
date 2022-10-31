@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:aashiyan/components/constant.dart';
@@ -149,21 +150,14 @@ class _LivingHallState extends State<LivingHall> {
 
   Future<void> getData(int id) async {
     try {
-      print("object==");
-      print(id);
-      // var client = http.Client();
-
       var response = await http.get(
           Uri.parse("${dotenv.env['APP_URL']}edit-bungalow-drawing-hall/$id"));
-      // "http://192.168.0.99:8080/sdplserver/api//$id"));
 
       if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
         setState(
           () {
             printData = jsonResponse;
-            print('printData==');
-            print(printData);
             if (printData != null) {
               pageId = printData['bungalow_drawing_hall']['id'] != null
                   ? int.parse(
@@ -395,6 +389,8 @@ class _LivingHallState extends State<LivingHall> {
   //   user_id = decJson['data']['id'];
   // }
 
+  late var timer;
+
   @override
   void initState() {
     super.initState();
@@ -409,13 +405,25 @@ class _LivingHallState extends State<LivingHall> {
     //     getData(store.getId());
     //   }
     // });
-    Future.delayed(Duration(seconds: 1), (() {
-      // if (printData == null) {
-      setState(() {
-        isloading = true;
-      });
-      // }
-    }));
+    // Future.delayed(Duration(seconds: 1), (() {
+    //   // if (printData == null) {
+    //   setState(() {
+
+    //   });
+    //   // }
+    // }));
+
+    timer = Timer.periodic(
+        Duration(seconds: 5),
+        (Timer t) => setState(() {
+              isloading = true;
+            }));
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
   void multiSelected() async {
@@ -544,7 +552,7 @@ class _LivingHallState extends State<LivingHall> {
                           child: Container(
                             height: height * 0.03,
                             width: width * 0.25,
-                            margin: EdgeInsets.all(
+                            margin: const EdgeInsets.all(
                               3,
                             ),
                             child: DropdownButtonHideUnderline(
@@ -561,8 +569,16 @@ class _LivingHallState extends State<LivingHall> {
 
                                   return DropdownMenuItem<String>(
                                     value: it.value,
-                                    onTap: () {
-                                      drawingHallLocation = idx;
+                                    onTap: () async {
+                                      final SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      var floorCount =
+                                          prefs.getInt('floorCount')!;
+                                      if (idx <= floorCount) {
+                                        drawingHallLocation = idx;
+                                      } else {
+                                        drawingHallLocation = INT_ZERO;
+                                      }
                                     },
                                     child: Text(
                                       it.value,
@@ -587,10 +603,10 @@ class _LivingHallState extends State<LivingHall> {
                       SizedBox(
                         width: width * 0.02,
                       ),
-                      if (selectedFloor == OTHER_FLOOR) ...[
-                        requirementTextField(
-                            height, width, 0.04, 0.25, "other location"),
-                      ]
+                      // if (selectedFloor == OTHER_FLOOR) ...[
+                      //   requirementTextField(
+                      //       height, width, 0.04, 0.25, "other location"),
+                      // ]
                     ],
                   ),
                   SizedBox(
@@ -617,13 +633,16 @@ class _LivingHallState extends State<LivingHall> {
                             //     ? printData['bungalow_drawing_hall']
                             //         ['living_hall_length']
                             //     : LivingHallLengthController,
-                            initialValue: printData['project'] != null
-                                ? printData['project']['living_hall_length'] !=
-                                        null
-                                    ? printData['project']['living_hall_length']
-                                        .toString()
-                                    : LivingHallLengthController
-                                : LivingHallLengthController,
+                            initialValue:
+                                printData['bungalow_drawing_hall'] != null
+                                    ? printData['bungalow_drawing_hall']
+                                                ['living_hall_length'] !=
+                                            null
+                                        ? printData['bungalow_drawing_hall']
+                                                ['living_hall_length']
+                                            .toString()
+                                        : LivingHallLengthController
+                                    : LivingHallLengthController,
 
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
@@ -666,13 +685,16 @@ class _LivingHallState extends State<LivingHall> {
                             //         ['living_hall_width']
                             //     : "",
 
-                            initialValue: printData['project'] != null
-                                ? printData['project']['living_hall_width'] !=
-                                        null
-                                    ? printData['project']['living_hall_width']
-                                        .toString()
-                                    : LivingHallWidthController
-                                : LivingHallWidthController,
+                            initialValue:
+                                printData['bungalow_drawing_hall'] != null
+                                    ? printData['bungalow_drawing_hall']
+                                                ['living_hall_width'] !=
+                                            null
+                                        ? printData['bungalow_drawing_hall']
+                                                ['living_hall_width']
+                                            .toString()
+                                        : LivingHallWidthController
+                                    : LivingHallWidthController,
 
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
@@ -800,13 +822,16 @@ class _LivingHallState extends State<LivingHall> {
                             //     ? printData['bungalow_drawing_hall']
                             //         ['drawing_hall_text']
                             //     : "",
-                            initialValue: printData['project'] != null
-                                ? printData['project']['drawing_hall_text'] !=
-                                        null
-                                    ? printData['project']['drawing_hall_text']
-                                        .toString()
-                                    : livingSpecialFeaturesController
-                                : livingSpecialFeaturesController,
+                            initialValue:
+                                printData['bungalow_drawing_hall'] != null
+                                    ? printData['bungalow_drawing_hall']
+                                                ['drawing_hall_text'] !=
+                                            null
+                                        ? printData['bungalow_drawing_hall']
+                                                ['drawing_hall_text']
+                                            .toString()
+                                        : livingSpecialFeaturesController
+                                    : livingSpecialFeaturesController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "special features",
@@ -1271,8 +1296,16 @@ class _LivingHallState extends State<LivingHall> {
                                   String val = it.value;
                                   return DropdownMenuItem<String>(
                                     value: it.value,
-                                    onTap: () {
-                                      KitchenFloor = idx;
+                                    onTap: () async {
+                                      final SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      var floorCount =
+                                          prefs.getInt('floorCount')!;
+                                      if (idx <= floorCount) {
+                                        KitchenFloor = idx;
+                                      } else {
+                                        KitchenFloor = INT_ZERO;
+                                      }
                                     },
                                     child: Text(
                                       it.value,
@@ -1296,10 +1329,10 @@ class _LivingHallState extends State<LivingHall> {
                     SizedBox(
                       width: width * 0.02,
                     ),
-                    if (selectedFloor == OTHER_FLOOR) ...[
-                      requirementTextField(
-                          height, width, 0.04, 0.25, "other location"),
-                    ]
+                    // if (selectedFloor == OTHER_FLOOR) ...[
+                    //   requirementTextField(
+                    //       height, width, 0.04, 0.25, "other location"),
+                    // ]
                   ],
                 ),
                 SizedBox(
@@ -1327,12 +1360,16 @@ class _LivingHallState extends State<LivingHall> {
                           //     ? printData['bungalow_drawing_hall']
                           //         ['kitchen_length']
                           //     : '',
-                          initialValue: printData['project'] != null
-                              ? printData['project']['kitchen_length'] != null
-                                  ? printData['project']['kitchen_length']
-                                      .toString()
-                                  : KitchenLengthController
-                              : KitchenLengthController,
+                          initialValue:
+                              printData['bungalow_drawing_hall'] != null
+                                  ? printData['bungalow_drawing_hall']
+                                              ['kitchen_length'] !=
+                                          null
+                                      ? printData['bungalow_drawing_hall']
+                                              ['kitchen_length']
+                                          .toString()
+                                      : KitchenLengthController
+                                  : KitchenLengthController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "length",
@@ -1376,12 +1413,16 @@ class _LivingHallState extends State<LivingHall> {
                           //             .toString()
                           //         : ''
                           //     : '',
-                          initialValue: printData['project'] != null
-                              ? printData['project']['kitchen_width'] != null
-                                  ? printData['project']['kitchen_width']
-                                      .toString()
-                                  : kitchenWidthController
-                              : kitchenWidthController,
+                          initialValue:
+                              printData['bungalow_drawing_hall'] != null
+                                  ? printData['bungalow_drawing_hall']
+                                              ['kitchen_width'] !=
+                                          null
+                                      ? printData['bungalow_drawing_hall']
+                                              ['kitchen_width']
+                                          .toString()
+                                      : kitchenWidthController
+                                  : kitchenWidthController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "Width",
@@ -1965,12 +2006,16 @@ class _LivingHallState extends State<LivingHall> {
                         height: height * 0.04,
                         width: width * 0.4,
                         child: TextFormField(
-                          initialValue: printData['project'] != null
-                              ? printData['project']['specific_req'] != null
-                                  ? printData['project']['specific_req']
-                                      .toString()
-                                  : specificReq
-                              : specificReq,
+                          initialValue:
+                              printData['bungalow_drawing_hall'] != null
+                                  ? printData['bungalow_drawing_hall']
+                                              ['specific_req'] !=
+                                          null
+                                      ? printData['bungalow_drawing_hall']
+                                              ['specific_req']
+                                          .toString()
+                                      : specificReq
+                                  : specificReq,
                           // initialValue: printData != null &&
                           //         printData['bungalow_drawing_hall']
                           //                 ['specific_req'] !=
@@ -2049,9 +2094,6 @@ class _LivingHallState extends State<LivingHall> {
                             }
                           }
                         }
-                        print("livingHall == ");
-
-                        print(livingHall);
 
                         if (livingRequired == true) {
                           livingHallInt = INT_ONE;
