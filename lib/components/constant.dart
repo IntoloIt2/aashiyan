@@ -19,6 +19,7 @@
 
 // ignore: non_constant_identifier_names
 String SUCCESS_MESSAGE = " You will be contacted by us very soon.";
+const SUCCESS = 200;
 // ignore: non_constant_identifier_names
 List<String> PROJECT_TYPE = [
   "mix use",
@@ -67,17 +68,21 @@ const CONST_OTHER_OPEN = "other";
 const REFRI_SINGLE_DOOR = "Single Door ";
 const REFRI_DOUBLE_DOOR = "Double Door";
 
+const LIV_DOUBLE_HEIGHT = "Double Height";
+const LIV_POWDER_TOILET = "Powder Toilet";
+
 //PANTRY DETAILS
 const SELECT_SIX_SEATS = "6";
 const SELECT_EIGHT_SEATS = "8";
 const SELECT_TEN_SEATS = "10";
 
-const DINING_WITH_CROCKERY = "with crockery storage";
-const DINING_WITHOUT_CROCKERY = "without crockery storage";
+const DINING_WITH_CROCKERY = "With crockery storage";
+const DINING_WITHOUT_CROCKERY = "Without crockery storage";
 const DINING_DOUBLE_HEIGHT = "Double Height";
-const NEAR_BASIN = "near by basin";
+const NEAR_BASIN = "Near By Basin";
 
 const BASE_PANTRY = "Pantry";
+
 const BASE_STAFF_TOILET = "Staff Toilet";
 const BASE_TOILET = "Toilet";
 
@@ -160,6 +165,8 @@ const ACTIVE = 1;
 const T_RUE = 1;
 const F_ALSE = 0;
 
+const METER = "m";
+const FEET = "ft";
 //this constant save on sddiform and use for email
 const ADMIN = 1;
 const ANURAG_SIR = 4;
@@ -271,12 +278,14 @@ const G_FLOOR_TEXT = "Ground Floor";
 const G_1_FLOOR_TEXT = "1st floor";
 const G_2_FLOOR_TEXT = "2nd floor";
 const G_3_FLOOR_TEXT = "3rd floor";
+const G_4_FLOOR_TEXT = "4th floor";
 const OTHER_FLOOR_TEXT = "Other Floor";
 
 const FIRST_FLOOR = 2;
 const SECOND_FLOOR = 3;
 const THIRD_FLOOR = 4;
 const MORE_FLOOR = 5;
+const KITCHEN_OTHER_FLOOR = 5;
 const OTHER_FLOOR = "other";
 const MORE = "more";
 
