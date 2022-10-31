@@ -238,7 +238,7 @@ class _RequirementState extends State<Requirement> {
             pageId = printData['project']['id'] != null
                 ? int.parse(printData['project']['id'].toString())
                 : pageId;
-            print(pageId);
+
             nameController = printData["project"]['first_name'] != null
                 ? printData["project"]['first_name'].toString()
                 : '';
@@ -330,8 +330,12 @@ class _RequirementState extends State<Requirement> {
                 ? printData["project"]["south_property"] == 1
                 : southRoad;
             selectedLevel = printData["project"]["level"] != null
-                ? levels[int.parse(printData["project"]["level"])]
+                ? levels[int.parse(printData["project"]["level"].toString())]
                 : selectedLevel;
+
+            selectedLevelInt = printData["project"]["level"] != null
+                ? int.parse(printData["project"]["level"].toString())
+                : selectedLevelInt;
           }
         });
       }
@@ -1943,57 +1947,49 @@ class _RequirementState extends State<Requirement> {
                           padding: const EdgeInsets.all(5),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
-                              hint: printData['project'] != null
-                                  // ? printData['project']['level'] != null
-                                  ? Text(
-                                      "${levels[printData['project']['level']]}")
-                                  // : Text(selectedLevel)
-                                  : Text(selectedLevel),
+                              hint: Text(selectedLevel),
                               // value: selectedLevel,
                               icon: const Icon(Icons.keyboard_arrow_down_sharp),
                               elevation: 16,
-                              items: levels
-                                  .map((it) => DropdownMenuItem<String>(
-                                        value: it,
-                                        child: Text(it,
-                                            style: TextStyle(
-                                                fontSize: height * 0.02)),
-                                      ))
-                                  .toList(),
+                              items: levels.asMap().entries.map((it) {
+                                int idx = it.key;
+                                String val = it.value;
+                                return DropdownMenuItem<String>(
+                                  value: it.value,
+                                  onTap: () {
+                                    selectedLevelInt = idx;
+                                    print(selectedLevelInt);
+                                  },
+                                  child: Text(it.value,
+                                      style:
+                                          TextStyle(fontSize: height * 0.02)),
+                                );
+                              }).toList(),
                               onChanged: (it) => setState(() {
                                 selectedLevel = it!;
-                                if (it == "Up") {
-                                  if (printData['project'] != null) {
-                                    printData['project']['level'] = 2;
-                                  }
-                                  selectedLevelInt = 2;
-                                } else if (it == "Down") {
-                                  if (printData['project'] != null) {
-                                    printData['project']['level'] = 3;
-                                  }
-                                  selectedLevelInt = 3;
-                                } else if (it == "Almost same level") {
-                                  if (printData['project'] != null) {
-                                    printData['project']['level'] = 1;
-                                  }
-                                  selectedLevelInt = 1;
-                                }
+                                // if (it == "Up") {
+                                //   if (printData['project'] != null) {
+                                //     printData['project']['level'] = 2;
+                                //   }
+                                //   selectedLevelInt = 2;
+                                // } else if (it == "Down") {
+                                //   if (printData['project'] != null) {
+                                //     printData['project']['level'] = 3;
+                                //   }
+                                //   selectedLevelInt = 3;
+                                // } else if (it == "Almost same level") {
+                                //   if (printData['project'] != null) {
+                                //     printData['project']['level'] = 1;
+                                //   }
+                                //   selectedLevelInt = 1;
+                                // }
                               }),
                             ),
                           ),
                         ),
                       ),
                     ),
-                    if (selectedLevel == "Up" ||
-                            selectedLevel == "Down" ||
-                            printData != null &&
-                                printData['project']['level'] != null
-                        ? printData['project']['level'] == 2
-                        : false ||
-                                printData != null &&
-                                    printData['project']['level'] != null
-                            ? printData['project']['level'] == 3
-                            : false) ...[
+                    if (selectedLevel == "Up" || selectedLevelInt == 2) ...[
                       Material(
                         elevation: 5,
                         borderRadius:
@@ -2039,11 +2035,7 @@ class _RequirementState extends State<Requirement> {
                       //   0.05,
                       // ),
                     ],
-                    if (selectedLevel == "Down" ||
-                        (printData != null &&
-                                printData['project']['level'] != null
-                            ? printData['project']['level'] == 3
-                            : false)) ...[
+                    if (selectedLevel == "Down" || selectedLevelInt == 3) ...[
                       Material(
                         elevation: 5,
                         borderRadius:
@@ -2152,7 +2144,7 @@ class _RequirementState extends State<Requirement> {
                     // print("upadte is running");
                     // print(project_id);
                     var status;
-
+                    print(selectedLevelInt);
                     if (pageId != null) {
                       print("upadte is running");
                       print(project_id);

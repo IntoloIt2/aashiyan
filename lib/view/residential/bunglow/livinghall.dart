@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-
 import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
@@ -585,6 +583,7 @@ class _LivingHallState extends State<LivingHall> {
                     width: width * 0.15,
                     child: TextFormField(
                       initialValue: printData != null &&
+                              printData['bungalow_drawing_hall'] != null &&
                               printData['bungalow_drawing_hall']
                                       ['living_hall_length'] !=
                                   null
@@ -2028,7 +2027,7 @@ class _LivingHallState extends State<LivingHall> {
                 // print(pageId);
                 // print(drawingHallLengthController);
                 // print(LivingHallWidthController);
-
+                
                 livingHallput(
                   project_id,
                   drawingInt,

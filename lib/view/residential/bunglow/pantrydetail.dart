@@ -6,6 +6,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
@@ -32,6 +33,25 @@ class _PantryDetailState extends State<PantryDetail> {
     "Double Height",
     "Near By Basin",
   ];
+  int? project_id;
+  var projectGroupId;
+  var projectTypeId;
+
+  Future<dynamic> getUserId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userData = prefs.getString('userData');
+    project_id = prefs.getInt('projectId');
+    projectTypeId = prefs.getInt('projectTypeId');
+    projectGroupId = prefs.getInt('projectGroupId');
+    print('project_id==');
+    print(project_id);
+    getData(project_id);
+    var decJson;
+    if (userData != null) {
+      decJson = jsonDecode(userData);
+    }
+    user_id = decJson['data']['id'];
+  }
 
   void multiSelected() async {
     final List<String> result = await showDialog(
@@ -103,7 +123,7 @@ class _PantryDetailState extends State<PantryDetail> {
   // ignore: prefer_typing_uninitialized_variables
   var printData;
   int? pageId;
-  Future<void> getData() async {
+  Future<void> getData(project_id) async {
     try {
       // var client = http.Client();
       var response = await http.get(
@@ -213,9 +233,8 @@ class _PantryDetailState extends State<PantryDetail> {
   @override
   void initState() {
     super.initState();
-    getData();
-
-    new Future.delayed(Duration(seconds: 1), () {
+    getData(project_id);
+    Future.delayed(Duration(seconds: 1), () {
       setState(() {
         isloading = true;
       });
@@ -1006,7 +1025,7 @@ class _PantryDetailState extends State<PantryDetail> {
                     });
                     if (pageId != null) {
                       pantryPut(
-                        project_id,
+                        project_id!,
                         pantryDetailInt,
                         pantryFloor,
                         pantryLengthController,
@@ -1021,7 +1040,7 @@ class _PantryDetailState extends State<PantryDetail> {
                       );
                     } else {
                       pantryPost(
-                        project_id,
+                        project_id!,
                         pantryDetailInt,
                         pantryFloor,
                         pantryLengthController,
