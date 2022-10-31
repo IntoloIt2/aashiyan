@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/controller/auth_controller.dart';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
