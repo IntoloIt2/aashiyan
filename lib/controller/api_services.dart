@@ -8,6 +8,7 @@ import 'dart:ffi';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 var baseUrl = 'http://sdplweb.com/sdpl/api/';
 var baseUrlLocal = 'http://192.168.0.99:8080/sdplserver/api/';
@@ -324,10 +325,8 @@ Future<dynamic> entrancePost(
 
   print('entrance projectData===');
   print(projectData);
-  // print(verandahReq);
 
   final response = await http.post(
-    // Uri.parse(baseUrlLocal + "project"),
     Uri.parse("${dotenv.env['APP_URL']}bungalow-entrance"),
     // Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-entrance'),
     headers: <String, String>{
@@ -336,8 +335,8 @@ Future<dynamic> entrancePost(
     body: jsonEncode(projectData),
   );
   var resp = jsonDecode(response.body);
-  print(response.body);
-
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setInt('floorCount', resp['floor']);
   return resp["status"];
 }
 
@@ -411,7 +410,6 @@ Future<dynamic> entrancePut(
 
   print('projectData==');
   print(projectData);
-  // print(verandahReq);
 
   final response = await http.post(
     Uri.parse("${dotenv.env['APP_URL']}update-bungalow-entrance/$projectid"),
@@ -422,8 +420,8 @@ Future<dynamic> entrancePut(
     body: jsonEncode(projectData),
   );
   var resp = jsonDecode(response.body);
-  print(response.body);
-
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setInt('floorCount', resp['floor']);
   return resp["status"];
 }
 
@@ -484,7 +482,7 @@ Future<dynamic> livingHallPost(
     "specific_req": specificReq,
   };
 
-  print(projectData);
+  // print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
     Uri.parse("${dotenv.env['APP_URL']}bungalow-drawing-hall"),
@@ -494,8 +492,9 @@ Future<dynamic> livingHallPost(
     },
     body: jsonEncode(projectData),
   );
-  print(response.body);
+  // print(response.body);
   var temp = jsonDecode(response.body);
+
   return temp['status'];
 }
 
@@ -610,8 +609,8 @@ Future<dynamic> pantryPost(
     "dining_text": diningText,
   };
 
-  print("pantry bodyData==");
-  print(projectData);
+  // print("pantry bodyData==");
+  // print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
     Uri.parse("${dotenv.env['APP_URL']}bungalow-pantry"),
@@ -622,7 +621,6 @@ Future<dynamic> pantryPost(
     body: jsonEncode(projectData),
   );
   var resp = jsonDecode(response.body);
-  print(response.body);
   return resp['status'];
 }
 
@@ -658,6 +656,7 @@ Future<dynamic> pantryPut(
     "dining_text": diningText,
   };
 
+  print('projectData===');
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
@@ -669,7 +668,8 @@ Future<dynamic> pantryPut(
     body: jsonEncode(projectData),
   );
   var resp = jsonDecode(response.body);
-  print(response.body);
+  print('resp===');
+  print(resp);
   return resp['status'];
 }
 
