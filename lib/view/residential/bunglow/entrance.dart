@@ -190,25 +190,32 @@ class _EntranceState extends State<Entrance> {
               oneGate = printData['bungalow_entrance']['entrance_gate'] != null
                   ? printData['bungalow_entrance']['entrance_gate'] == ONE_GATE
                   : false;
+
               gateWidthController =
                   printData['bungalow_entrance']['one_gate'] != null
                       ? printData['bungalow_entrance']['one_gate'].toString()
-                      : '';
+                      : gateWidthController;
 
               oneGate = printData['bungalow_entrance']['entrance_gate'] != null
                   ? printData['bungalow_entrance']['entrance_gate'] == ONE_GATE
                   : false;
+
               twoGate = printData['bungalow_entrance']['entrance_gate'] != null
                   ? printData['bungalow_entrance']['entrance_gate'] == TWO_GATE
                   : false;
 
               adjascent = printData["bungalow_entrance"]["two_gate"] != null
-                  ? printData["bungalow_entrance"]["two_gate"] == ENT_ADJACENT
+                  ? printData["bungalow_entrance"]["two_gate"] ==
+                      ENT_ADJACENTONE
                   : false;
               diffrentCustom = printData["bungalow_entrance"]["two_gate"] !=
                       null
-                  ? printData["bungalow_entrance"]["two_gate"] == ENT_ADJACENT
+                  ? printData["bungalow_entrance"]["two_gate"] == ENT_ADJACENTWO
                   : false;
+              // diffrentCustom = printData["bungalow_entrance"]["two_gate"] !=
+              //         null
+              //     ? printData["bungalow_entrance"]["two_gate"] == ENT_ADJACENT
+              //     : false;
               selectedCarGate = printData['bungalow_entrance']
                           ['main_car_gate'] !=
                       null
@@ -349,6 +356,7 @@ class _EntranceState extends State<Entrance> {
                           .toString())
                       : carParkingString;
               // print(carParkingString);
+
             }
           },
         );
@@ -357,7 +365,7 @@ class _EntranceState extends State<Entrance> {
       print(e.toString());
     }
   }
-
+  
   Future<dynamic> getUserId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('userData');
