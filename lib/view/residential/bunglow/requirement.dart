@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../const.dart';
 import 'package:http/http.dart' as http;
 
+  var plotValue = TextEditingController();
 class Requirement extends StatefulWidget {
   // static const namedRoute = "/intrestedNext";
   static const namedRoute = "/Requirement";
@@ -39,7 +40,6 @@ class _RequirementState extends State<Requirement> {
   String? widthController = '';
   String? lengthController = '';
   var project_id;
-  var plotValue = TextEditingController();
   var projectGroupId;
   var projectTypeId;
 
