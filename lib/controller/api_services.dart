@@ -706,7 +706,7 @@ Future<void> flooreStorePost(
     "pooja_room_width": poojaRoomWidth,
     "pooja_room_floor": poojaRoomFloor,
     "pooja_room_type": poojaRoomType,
-    "opening_to_li_ha": poojaRoomWidth,
+    "opening_to_li_ha": openingToLiHa,
     "lift_special_req": liftRequirement,
   };
 
@@ -756,7 +756,7 @@ Future<void> flooreStorePut(
     "pooja_room_width": poojaRoomWidth,
     "pooja_room_floor": poojaRoomFloor,
     "pooja_room_type": poojaRoomType,
-    "opening_to_li_ha": poojaRoomWidth,
+    "opening_to_li_ha": openingToLiHa,
     "lift_special_req": liftSpecialRequirement,
   };
 
