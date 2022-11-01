@@ -7,6 +7,7 @@ import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../components/forms.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
@@ -132,7 +133,10 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
     //Initialize with 1 item
     super.initState();
     _values;
+
     getData();
+    print('project_id');
+    print(project_id);
   }
 
   List<String> otherFacilities = [];
@@ -240,10 +244,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
   var get = [];
 
-  int project_id = 179;
+  int project_id = 0;
 
   Future<void> getData() async {
     try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? userData = prefs.getString('userData');
+      project_id = prefs.getInt('projectId')!;
       var response = await http.get(
         Uri.parse(
           "${dotenv.env['APP_URL']}edit-bungalow-bedroom/$project_id",
@@ -9584,9 +9591,11 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                 alignment: Alignment.bottomLeft,
                 child: InkWell(
                   onTap: () async {
-                    JsonFront json = JsonFront(dimension: 1, projectId: 65);
+                    JsonFront json =
+                        JsonFront(dimension: 1, projectId: project_id);
                     var ab = jsonEncode(json);
-
+                    print('ab==');
+                    print(ab);
                     Map<dynamic, dynamic> _value = {};
                     _value["dimension"] = INT_ONE;
                     _value["project_id"] = project_id;
@@ -9770,7 +9779,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                     // print(masterLength);
                     // print({'dimension': 1, "project_id": 567, "bedrooms": jsonUser});
 
-                    if (project_id == null) {
+                    if (project_id == INT_ZERO) {
                       final update = await http.post(
                         Uri.parse("${dotenv.env['APP_URL']}bungalow-bedroom"),
                         // 'http://192.168.0.99:8080/sdplserver/api/bungalow-bedroom'),
