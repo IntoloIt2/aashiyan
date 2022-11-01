@@ -1204,6 +1204,7 @@ class _FloorStoreState extends State<FloorStore> {
                                   ["pooja_room_floor"] !=
                               null
                       ? printData["bungalow_floor_store"]["pooja_room_floor"]
+                          .toString()
                       : '',
                   style: const TextStyle(fontSize: 14),
                   decoration: const InputDecoration(
