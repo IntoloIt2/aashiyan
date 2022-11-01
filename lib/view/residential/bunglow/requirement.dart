@@ -24,7 +24,6 @@ class Requirement extends StatefulWidget {
 }
 
 class _RequirementState extends State<Requirement> {
-
   // late Future<RequirementModel> futureRequirement;
   String nameController = '';
   String lastNameController = "";
@@ -117,8 +116,8 @@ class _RequirementState extends State<Requirement> {
     }
 
     plotValue.text = calculation;
-    print(plotValue.text);
-    print(calculation);
+    // print(plotValue.text);
+    // print(calculation);
     return calculation;
   }
 
@@ -139,8 +138,8 @@ class _RequirementState extends State<Requirement> {
         );
       }
       plotValue.text = calculation;
-      print(plotValue.text);
-      print(calculation);
+      // print(plotValue.text);
+      // print(calculation);
     }
 
     return calculation;
@@ -211,7 +210,7 @@ class _RequirementState extends State<Requirement> {
       var client = http.Client();
       var response =
           await http.get(Uri.parse("${dotenv.env['APP_URL']}city/$stateId"));
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
         final cityList = jsonResponse['cities'] as List;
         setState(() {
@@ -229,7 +228,7 @@ class _RequirementState extends State<Requirement> {
       var response = await http.get(
         Uri.parse("${dotenv.env['APP_URL']}edit-project/$id"),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
@@ -239,7 +238,7 @@ class _RequirementState extends State<Requirement> {
             pageId = printData['project']['id'] != null
                 ? int.parse(printData['project']['id'].toString())
                 : pageId;
-            print(pageId);
+            // print(pageId);
             nameController = printData["project"]['first_name'] != null
                 ? printData["project"]['first_name'].toString()
                 : '';
@@ -263,10 +262,10 @@ class _RequirementState extends State<Requirement> {
                 : "";
             plotLenght = printData["project"]["plot_length"] != null
                 ? int.parse(printData["project"]["plot_length"])
-                : 0;
+                : INT_ZERO;
             plotWidth = printData["project"]["plot_width"] != null
                 ? int.parse(printData["project"]["plot_width"])
-                : 0;
+                : INT_ZERO;
             diagonal1Controller = printData["project"]["diagonal_1"] != null
                 ? printData["project"]["diagonal_1"].toString()
                 : '';
@@ -275,10 +274,10 @@ class _RequirementState extends State<Requirement> {
                 : '';
             diagonal1 = printData["project"]["diagonal_1"] != null
                 ? int.parse(printData["project"]["diagonal_1"].toString())
-                : 0;
+                : INT_ZERO;
             diagonal2 = printData["project"]["diagonal_2"] != null
                 ? int.parse(printData["project"]["diagonal_2"].toString())
-                : 0;
+                : INT_ZERO;
             eastController = printData["project"]["east_road_width"] != null
                 ? printData["project"]["east_road_width"].toString()
                 : "";
@@ -331,8 +330,12 @@ class _RequirementState extends State<Requirement> {
                 ? printData["project"]["south_property"] == 1
                 : southRoad;
             selectedLevel = printData["project"]["level"] != null
-                ? levels[int.parse(printData["project"]["level"])]
+                ? levels[int.parse(printData["project"]["level"].toString())]
                 : selectedLevel;
+
+            selectedLevelInt = printData["project"]["level"] != null
+                ? int.parse(printData["project"]["level"].toString())
+                : selectedLevelInt;
           }
         });
       }
@@ -356,8 +359,6 @@ class _RequirementState extends State<Requirement> {
     project_id = prefs.getInt('projectId');
     projectTypeId = prefs.getInt('projectTypeId');
     projectGroupId = prefs.getInt('projectGroupId');
-    print('project_id==');
-    print(project_id);
     getData(project_id);
     var decJson;
     if (userData != null) {
@@ -405,12 +406,12 @@ class _RequirementState extends State<Requirement> {
         () {
           if (printData != null) {
             plotType = printData["project"]["plot_type"].toString();
-            if (plotType == '1') {
+            if (plotType == STR_ONE) {
               plotValue.text = (int.parse(printData["project"]["plot_length"]) *
                       int.parse(printData["project"]["plot_width"].toString()))
                   .toString();
             }
-            if (plotType == '2') {
+            if (plotType == STR_TWO) {
               plotValue
                   .text = ((int.parse(printData["project"]["plot_length"]) *
                           int.parse(
@@ -709,18 +710,7 @@ class _RequirementState extends State<Requirement> {
                         width: width * 0.6,
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            // value: printData["project"] != null
-                            //     ? printData["project"]["state_name"] != null
-                            //         ? printData["project"]["state_name"]
-                            //         : selectedState
-                            //     : selectedState,
                             hint: Text(selectedState),
-
-                            // hint: printData['project'] != null
-                            //     ? printData["project"]["state_name"] != null
-                            //         ? Text(printData["project"]["state_name"])
-                            //         : Text(selectedState)
-                            //     : Text(selectedState),
                             elevation: 16,
                             items: stateData.asMap().entries.map((e) {
                               int idx = e.key;
@@ -889,7 +879,7 @@ class _RequirementState extends State<Requirement> {
                       value: printData != null
                           ? printData['project'] != null
                               // ? printData['project']['plot_type'] != null
-                              ? printData['project']['plot_type'] == 1
+                              ? printData['project']['plot_type'] == INT_ONE
                                   ? true
                                   : regularPlotValue
                               // : regularPlotValue
@@ -931,7 +921,7 @@ class _RequirementState extends State<Requirement> {
                       checkColor: Colors.white,
                       value: printData != null
                           ? printData['project'] != null
-                              ? printData['project']['plot_type'] == 2
+                              ? printData['project']['plot_type'] == INT_TWO
                                   ? true
                                   : irregularPlotValue
                               : irregularPlotValue
@@ -994,9 +984,9 @@ class _RequirementState extends State<Requirement> {
                                   printData['project']['plot_length'] = val;
                                 }
                               } else {
-                                plotLenght = 0;
-                                plotValue.text = '0';
-                                lengthController = '0';
+                                plotLenght = INT_ZERO;
+                                plotValue.text = STR_ZERO;
+                                lengthController = STR_ZERO;
                               }
                             });
                           },
@@ -1019,7 +1009,7 @@ class _RequirementState extends State<Requirement> {
                     // if (irregularPlotValue == true)
                     if (printData != null
                         ? printData['project'] != null
-                            ? printData['project']['plot_type'] == 2
+                            ? printData['project']['plot_type'] == INT_TWO
                                 ? true
                                 : irregularPlotValue == true
                             : irregularPlotValue == true
@@ -1062,9 +1052,9 @@ class _RequirementState extends State<Requirement> {
                                   }
                                   diagonalCalculations();
                                 } else {
-                                  diagonal1 = 0;
-                                  plotValue.text = '0';
-                                  diagonal1Controller = '0';
+                                  diagonal1 = INT_ZERO;
+                                  plotValue.text = STR_ZERO;
+                                  diagonal1Controller = STR_ZERO;
                                 }
                               });
                             },
@@ -1089,7 +1079,6 @@ class _RequirementState extends State<Requirement> {
                     SizedBox(
                       width: width * 0.05,
                     ),
-
                     Material(
                       borderRadius: BorderRadius.circular(5),
                       elevation: 5,
@@ -1124,17 +1113,17 @@ class _RequirementState extends State<Requirement> {
                                 }
                                 totalCalculated();
                               } else {
-                                plotWidth = 0;
-                                plotValue.text = '0';
-                                widthController = '0';
+                                plotWidth = INT_ZERO;
+                                plotValue.text = STR_ZERO;
+                                widthController = STR_ZERO;
                               }
                             });
                           },
                           onTap: () {
                             setState(() {
                               // widthController.clear();
-                              if (widthController == 0) {
-                                plotWidth = 0;
+                              if (widthController == INT_ZERO) {
+                                plotWidth = INT_ZERO;
                               }
                             });
                           },
@@ -1151,7 +1140,7 @@ class _RequirementState extends State<Requirement> {
                     ),
                     if (printData != null
                         ? printData['project'] != null
-                            ? printData['project']['plot_type'] == 2
+                            ? printData['project']['plot_type'] == INT_TWO
                                 ? true
                                 : irregularPlotValue == true
                             : irregularPlotValue == true
@@ -1195,9 +1184,9 @@ class _RequirementState extends State<Requirement> {
                                   }
                                   diagonalCalculations();
                                 } else {
-                                  diagonal2 = 0;
-                                  diagonal2Controller = '0';
-                                  plotValue.text = '0';
+                                  diagonal2 = INT_ZERO;
+                                  diagonal2Controller = STR_ZERO;
+                                  plotValue.text = STR_ZERO;
                                 }
                               });
                             },
@@ -1263,11 +1252,12 @@ class _RequirementState extends State<Requirement> {
                             controller: plotValue,
                             onChanged: (value) {
                               setState(() {
-                                if (plotLenght == 0 || plotWidth == 0) {
-                                  value = "0";
+                                if (plotLenght == INT_ZERO ||
+                                    plotWidth == INT_ZERO) {
+                                  value = STR_ZERO;
                                 } else if (lengthController == '' ||
                                     widthController == '') {
-                                  value = "0";
+                                  value = STR_ZERO;
                                 } else {
                                   plotValue.value = plotValue.value.copyWith(
                                     text: value.toString(),
@@ -1493,7 +1483,6 @@ class _RequirementState extends State<Requirement> {
                           //   otherEast = false;
                           // }
                         });
-
                       },
                     ),
                     requirementText("Road"),
@@ -1594,7 +1583,6 @@ class _RequirementState extends State<Requirement> {
                           //   otherwest = false;
                           // }
                         });
-
                       },
                     ),
                     requirementText("Road"),
@@ -1636,7 +1624,6 @@ class _RequirementState extends State<Requirement> {
                                 isDense: true,
                                 contentPadding: EdgeInsets.all(8)
                                 //fillColor: Colors.green
-
 
                                 ),
                             onChanged: (value) {
@@ -1948,40 +1935,41 @@ class _RequirementState extends State<Requirement> {
                           padding: const EdgeInsets.all(5),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
-                              hint: printData['project'] != null
-                                  // ? printData['project']['level'] != null
-                                  ? Text(
-                                      "${levels[printData['project']['level']]}")
-                                  // : Text(selectedLevel)
-                                  : Text(selectedLevel),
+                              hint: Text(selectedLevel),
                               // value: selectedLevel,
                               icon: const Icon(Icons.keyboard_arrow_down_sharp),
                               elevation: 16,
-                              items: levels
-                                  .map((it) => DropdownMenuItem<String>(
-                                        value: it,
-                                        child: Text(it,
-                                            style: TextStyle(
-                                                fontSize: height * 0.02)),
-                                      ))
-                                  .toList(),
+                              items: levels.asMap().entries.map((it) {
+                                int idx = it.key;
+                                String val = it.value;
+                                return DropdownMenuItem<String>(
+                                  value: it.value,
+                                  onTap: () {
+                                    selectedLevelInt = idx;
+                                    print(selectedLevelInt);
+                                  },
+                                  child: Text(it.value,
+                                      style:
+                                          TextStyle(fontSize: height * 0.02)),
+                                );
+                              }).toList(),
                               onChanged: (it) => setState(() {
                                 selectedLevel = it!;
-                                if (it == "Up") {
+                                if (it == PLOT_LEVEL_UP) {
                                   if (printData['project'] != null) {
-                                    printData['project']['level'] = 2;
+                                    printData['project']['level'] = INT_TWO;
                                   }
-                                  selectedLevelInt = 2;
-                                } else if (it == "Down") {
+                                  selectedLevelInt = INT_TWO;
+                                } else if (it == PLOT_LEVEL_DOWN) {
                                   if (printData['project'] != null) {
-                                    printData['project']['level'] = 3;
+                                    printData['project']['level'] = INT_THREE;
                                   }
-                                  selectedLevelInt = 3;
-                                } else if (it == "Almost same level") {
+                                  selectedLevelInt = INT_THREE;
+                                } else if (it == PLOT_LEVEL_SAME) {
                                   if (printData['project'] != null) {
-                                    printData['project']['level'] = 1;
+                                    printData['project']['level'] = INT_ONE;
                                   }
-                                  selectedLevelInt = 1;
+                                  selectedLevelInt = INT_ONE;
                                 }
                               }),
                             ),
@@ -1989,15 +1977,15 @@ class _RequirementState extends State<Requirement> {
                         ),
                       ),
                     ),
-                    if (selectedLevel == "Up" ||
-                            selectedLevel == "Down" ||
+                    if (selectedLevel == PLOT_LEVEL_UP ||
+                            selectedLevel == PLOT_LEVEL_DOWN ||
                             printData != null &&
                                 printData['project']['level'] != null
-                        ? printData['project']['level'] == 2
+                        ? printData['project']['level'] == INT_TWO
                         : false ||
                                 printData != null &&
                                     printData['project']['level'] != null
-                            ? printData['project']['level'] == 3
+                            ? printData['project']['level'] == INT_THREE
                             : false) ...[
                       Material(
                         elevation: 5,
@@ -2044,10 +2032,10 @@ class _RequirementState extends State<Requirement> {
                       //   0.05,
                       // ),
                     ],
-                    if (selectedLevel == "Down" ||
+                    if (selectedLevel == PLOT_LEVEL_DOWN ||
                         (printData != null &&
                                 printData['project']['level'] != null
-                            ? printData['project']['level'] == 3
+                            ? printData['project']['level'] == INT_THREE
                             : false)) ...[
                       Material(
                         elevation: 5,
@@ -2096,24 +2084,24 @@ class _RequirementState extends State<Requirement> {
                     setState(
                       () {
                         if (irregularPlotValue == true) {
-                          isRegular = 2;
-                          plot_orientaion = 1;
+                          isRegular = INT_TWO;
+                          plot_orientaion = INT_ONE;
                         }
 
-                        if (size == "m") {
-                          dimenInt = 2;
+                        if (size == METER) {
+                          dimenInt = INT_TWO;
                           setDimension(dimenInt);
                         } else {
-                          dimenInt = 1;
-                          setDimension(1);
+                          dimenInt = INT_ONE;
+                          setDimension(dimenInt);
                         }
                         if (regularPlotValue == true) {
                           // isNotRegular = 1;
-                          isRegular = 1;
+                          isRegular = INT_ONE;
                         }
 
                         if (isNorthOrientaion == true) {
-                          isNorthOrientaion = 1;
+                          isNorthOrientaion = INT_ONE;
                         }
 
                         if (westRoad == true) {
@@ -2150,18 +2138,16 @@ class _RequirementState extends State<Requirement> {
                         //   isSouth = "1";
                         // }
                         if (notReqired == true) {
-                          notReqiredInt = 1;
+                          notReqiredInt = INT_ONE;
                         }
                       },
                     );
                     // print("upadte is running");
                     // print(project_id);
                     var status;
-
+                    print(selectedLevelInt);
                     if (pageId != null) {
-                      print("upadte is running");
-                      print(project_id);
-                      provider.requirementUpadate(
+                      var status = await provider.requirementUpadate(
                         project_id,
                         user_id,
                         projectGroupId,
@@ -2196,8 +2182,12 @@ class _RequirementState extends State<Requirement> {
                         levelController,
                         notReqiredInt,
                       );
+                      if (status == SUCCESS) {
+                        showToast('Project Requirement Updated !',
+                            Colors.lightGreen, ToastGravity.TOP);
+                      }
                     } else {
-                      provider.requirementPost(
+                      var status = await provider.requirementPost(
                         user_id,
                         projectGroupId,
                         projectTypeId,
@@ -2233,8 +2223,7 @@ class _RequirementState extends State<Requirement> {
                       );
                     }
 
-                    // project_id = provider.project_id;
-                    if (status == 200) {
+                    if (status == SUCCESS) {
                       showToast('Project Requirement Submitted !',
                           Colors.lightGreen, ToastGravity.TOP);
                     }

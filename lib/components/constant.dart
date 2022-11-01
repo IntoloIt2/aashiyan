@@ -43,7 +43,8 @@ const ENT_FIRST_FLOOR = "2(G+1)";
 const ENT_SECOND_FLOOR = "3(G+2)";
 const ENT_THIRD_FLOOR = "4(G+3)";
 const ENT_MORE_FLOOR = "more";
-const ENT_ADJACENT = "Adjacent";
+const ENT_ADJACENTONE = "Adjacent";
+const ENT_ADJACENTWO = 'diffrent';
 const ONE_GATE = "One Gate";
 const TWO_GATE = "Two Gate";
 const S_ELECT = 0;
@@ -68,17 +69,21 @@ const CONST_OTHER_OPEN = "other";
 const REFRI_SINGLE_DOOR = "Single Door ";
 const REFRI_DOUBLE_DOOR = "Double Door";
 
+const LIV_DOUBLE_HEIGHT = "Double Height";
+const LIV_POWDER_TOILET = "Powder Toilet";
+
 //PANTRY DETAILS
 const SELECT_SIX_SEATS = "6";
 const SELECT_EIGHT_SEATS = "8";
 const SELECT_TEN_SEATS = "10";
 
-const DINING_WITH_CROCKERY = "with crockery storage";
-const DINING_WITHOUT_CROCKERY = "without crockery storage";
+const DINING_WITH_CROCKERY = "With crockery storage";
+const DINING_WITHOUT_CROCKERY = "Without crockery storage";
 const DINING_DOUBLE_HEIGHT = "Double Height";
-const NEAR_BASIN = "near by basin";
+const NEAR_BASIN = "Near By Basin";
 
 const BASE_PANTRY = "Pantry";
+
 const BASE_STAFF_TOILET = "Staff Toilet";
 const BASE_TOILET = "Toilet";
 
@@ -274,12 +279,14 @@ const G_FLOOR_TEXT = "Ground Floor";
 const G_1_FLOOR_TEXT = "1st floor";
 const G_2_FLOOR_TEXT = "2nd floor";
 const G_3_FLOOR_TEXT = "3rd floor";
+const G_4_FLOOR_TEXT = "4th floor";
 const OTHER_FLOOR_TEXT = "Other Floor";
 
 const FIRST_FLOOR = 2;
 const SECOND_FLOOR = 3;
 const THIRD_FLOOR = 4;
 const MORE_FLOOR = 5;
+const KITCHEN_OTHER_FLOOR = 5;
 const OTHER_FLOOR = "other";
 const MORE = "more";
 
