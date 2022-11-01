@@ -118,9 +118,8 @@ class _PantryDetailState extends State<PantryDetail> {
   bool? pantryDetails1 = false;
   bool? pantryDetails2 = false;
   int pantryDetailInt = 0;
-
-  var project_id;
-
+  // var project_id;
+  var user_id;
 
 // http://sdplweb.com/sdpl/api/edit-bungalow-pantry/project_id
   bool isloading = false;
@@ -131,13 +130,9 @@ class _PantryDetailState extends State<PantryDetail> {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       project_id = prefs.getInt('projectId');
-
-      // var client = http.Client();
       var response = await http.get(
         Uri.parse(
           "${dotenv.env['APP_URL']}edit-bungalow-pantry/$project_id",
-          // "http://192.168.0.99:8080/sdplserver/api//179",
-
         ),
       );
 
