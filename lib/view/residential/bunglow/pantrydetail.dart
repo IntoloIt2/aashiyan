@@ -34,6 +34,25 @@ class _PantryDetailState extends State<PantryDetail> {
     "Double Height",
     "Near By Basin",
   ];
+  int? project_id;
+  var projectGroupId;
+  var projectTypeId;
+
+  Future<dynamic> getUserId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userData = prefs.getString('userData');
+    project_id = prefs.getInt('projectId');
+    projectTypeId = prefs.getInt('projectTypeId');
+    projectGroupId = prefs.getInt('projectGroupId');
+    print('project_id==');
+    print(project_id);
+    getData(project_id);
+    var decJson;
+    if (userData != null) {
+      decJson = jsonDecode(userData);
+    }
+    user_id = decJson['data']['id'];
+  }
 
   void multiSelected() async {
     final List<String> result = await showDialog(
@@ -99,7 +118,7 @@ class _PantryDetailState extends State<PantryDetail> {
   bool? pantryDetails1 = false;
   bool? pantryDetails2 = false;
   int pantryDetailInt = 0;
-  var project_id;
+  // var project_id;
   var user_id;
 
 // http://sdplweb.com/sdpl/api/edit-bungalow-pantry/project_id
@@ -107,7 +126,7 @@ class _PantryDetailState extends State<PantryDetail> {
   // ignore: prefer_typing_uninitialized_variables
   var printData;
   int? pageId;
-  Future<void> getData() async {
+  Future<void> getData(project_id) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       project_id = prefs.getInt('projectId');
@@ -223,21 +242,21 @@ class _PantryDetailState extends State<PantryDetail> {
     } catch (e) {}
   }
 
-  Future<dynamic> getUserId() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userData = prefs.getString('userData');
-    // project_id = prefs.getInt('projectId');
-    // projectTypeId = prefs.getInt('projectTypeId');
-    // projectGroupId = prefs.getInt('projectGroupId');
-    // print('project_id==');
-    // print(project_id);
-    // getData(project_id);
-    var decJson;
-    if (userData != null) {
-      decJson = jsonDecode(userData);
-    }
-    user_id = decJson['data']['id'];
-  }
+  // Future<dynamic> getUserId() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? userData = prefs.getString('userData');
+  //   // project_id = prefs.getInt('projectId');
+  //   // projectTypeId = prefs.getInt('projectTypeId');
+  //   // projectGroupId = prefs.getInt('projectGroupId');
+  //   // print('project_id==');
+  //   // print(project_id);
+  //   // getData(project_id);
+  //   var decJson;
+  //   if (userData != null) {
+  //     decJson = jsonDecode(userData);
+  //   }
+  //   user_id = decJson['data']['id'];
+  // }
 
   void showToast(msg, toastColor, GRAVITY) {
     Fluttertoast.showToast(
@@ -252,7 +271,7 @@ class _PantryDetailState extends State<PantryDetail> {
   @override
   void initState() {
     super.initState();
-    getData();
+    // getData();
     getUserId();
     Future.delayed(Duration(seconds: 1), () {
       setState(() {
@@ -1087,7 +1106,7 @@ class _PantryDetailState extends State<PantryDetail> {
                     });
                     if (pageId != null) {
                       var status = await pantryPut(
-                        project_id,
+                        project_id!,
                         user_id,
                         pantryDetailInt,
                         pantryFloor,
@@ -1109,7 +1128,7 @@ class _PantryDetailState extends State<PantryDetail> {
                       }
                     } else {
                       var status = await pantryPost(
-                        project_id,
+                        project_id!,
                         user_id,
                         pantryDetailInt,
                         pantryFloor,

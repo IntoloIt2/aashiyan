@@ -686,13 +686,13 @@ Future<void> flooreStorePost(
   int poojaRoomReq,
   String poojaRoomLength,
   String poojaRoomWidth,
-  String poojaRoomFloor,
+  int poojaRoomFloor,
   String poojaRoomType,
   String openingToLiHa,
 ) async {
   var projectData = {
     "project_id": projectId,
-    "dimension": 1,
+    "dimension": dimenInt,
     "floor_store_req": floorStoreRequirement,
     "floor_store_length": floorStoreLength,
     "floor_store_width": floorStoreWidth,
@@ -736,19 +736,19 @@ Future<void> flooreStorePut(
   int poojaRoomReq,
   String poojaRoomLength,
   String poojaRoomWidth,
-  String poojaRoomFloor,
+  int poojaRoomFloor,
   String poojaRoomType,
   String openingToLiHa,
 ) async {
   var projectData = {
-    "project_id": 179,
-    "dimension": 1,
+    "project_id": projectId,
+    "dimension": dimenInt,
     "floor_store_req": floorStoreRequirement,
     "floor_store_length": floorStoreLength,
     "floor_store_width": floorStoreWidth,
     "store_floor": storeFloor,
     "stair_case": stairCase,
-    "stair_case_image": "",
+    "stair_case_image": null,
     "lift_req": liftRequirement,
     "passanger_capacity": passengerCapacity,
     "pooja_room_req": poojaRoomReq,
@@ -760,11 +760,12 @@ Future<void> flooreStorePut(
     "lift_special_req": liftSpecialRequirement,
   };
 
+  print("projectData===");
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
     Uri.parse(
-        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-floor-store/179'),
+        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-floor-store/$projectId'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

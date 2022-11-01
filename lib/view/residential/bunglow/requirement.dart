@@ -330,8 +330,12 @@ class _RequirementState extends State<Requirement> {
                 ? printData["project"]["south_property"] == 1
                 : southRoad;
             selectedLevel = printData["project"]["level"] != null
-                ? levels[int.parse(printData["project"]["level"])]
+                ? levels[int.parse(printData["project"]["level"].toString())]
                 : selectedLevel;
+
+            selectedLevelInt = printData["project"]["level"] != null
+                ? int.parse(printData["project"]["level"].toString())
+                : selectedLevelInt;
           }
         });
       }
@@ -1931,23 +1935,24 @@ class _RequirementState extends State<Requirement> {
                           padding: const EdgeInsets.all(5),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
-                              hint: printData['project'] != null
-                                  // ? printData['project']['level'] != null
-                                  ? Text(
-                                      "${levels[printData['project']['level']]}")
-                                  // : Text(selectedLevel)
-                                  : Text(selectedLevel),
+                              hint: Text(selectedLevel),
                               // value: selectedLevel,
                               icon: const Icon(Icons.keyboard_arrow_down_sharp),
                               elevation: 16,
-                              items: levels
-                                  .map((it) => DropdownMenuItem<String>(
-                                        value: it,
-                                        child: Text(it,
-                                            style: TextStyle(
-                                                fontSize: height * 0.02)),
-                                      ))
-                                  .toList(),
+                              items: levels.asMap().entries.map((it) {
+                                int idx = it.key;
+                                String val = it.value;
+                                return DropdownMenuItem<String>(
+                                  value: it.value,
+                                  onTap: () {
+                                    selectedLevelInt = idx;
+                                    print(selectedLevelInt);
+                                  },
+                                  child: Text(it.value,
+                                      style:
+                                          TextStyle(fontSize: height * 0.02)),
+                                );
+                              }).toList(),
                               onChanged: (it) => setState(() {
                                 selectedLevel = it!;
                                 if (it == PLOT_LEVEL_UP) {
@@ -2140,7 +2145,7 @@ class _RequirementState extends State<Requirement> {
                     // print("upadte is running");
                     // print(project_id);
                     var status;
-
+                    print(selectedLevelInt);
                     if (pageId != null) {
                       var status = await provider.requirementUpadate(
                         project_id,
