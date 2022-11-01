@@ -1152,3 +1152,13 @@ Future<void> HouseDuplexFloorPost(
   print('resp.body--');
   print(resp.body);
 }
+
+Future<dynamic> getAreaSuggest(area_id, segment_id) async {
+  var response = await http.get(Uri.parse(
+      'https://sdplweb.com/sdpl/api/area-suggest/$area_id/$segment_id'));
+  final jsonResponse = jsonDecode(response.body);
+  final finalart = jsonResponse['areas'] as List;
+  // print(finalart);
+
+  return finalart;
+}
