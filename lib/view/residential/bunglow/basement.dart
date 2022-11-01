@@ -1,11 +1,13 @@
 // ignore_for_file: unused_import, use_key_in_widget_constructors, prefer_typing_uninitialized_variables, unnecessary_null_comparison, non_constant_identifier_names, avoid_print, prefer_if_null_operators, avoid_unnecessary_containers, sized_box_for_whitespace, must_be_immutable
 
+import 'dart:async';
 import 'dart:convert';
 import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../const.dart';
@@ -27,14 +29,29 @@ class _BasementState extends State<Basement> {
   var viewData;
   var barFaci = [];
   var officeFac = [];
+  var project_id = 0;
+  late var timer;
 
   @override
   void initState() {
     // ignore: todo
     // TODO: implement initState
+
     super.initState();
+
+    timer = Timer.periodic(
+        Duration(seconds: 1),
+        (Timer t) => setState(() {
+              isloading = true;
+            }));
     // print(id);
     getData();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
   List<String> otherFacilities = [];
@@ -52,6 +69,16 @@ class _BasementState extends State<Basement> {
         otherFacilities = result;
       });
     }
+  }
+
+  void showToast(msg, toastColor, GRAVITY) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 0,
+        backgroundColor: toastColor,
+        textColor: Colors.white);
   }
 
   int officeLengthController = 0;
@@ -250,11 +277,16 @@ class _BasementState extends State<Basement> {
   bool? gardenRequirement = false;
   int gardenRequirementInt = 0;
 
+  bool isloading = false;
+
   Future<void> getData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    project_id = prefs.getInt('projectId')!;
+    print('project_id===');
+    // print(project_id);
     var response = await http.get(
       Uri.parse(
-        "${dotenv.env['APP_URL']}edit-bungalow-basement/179",
-        // "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-basement/179",
+        "${dotenv.env['APP_URL']}edit-bungalow-basement/$project_id",
       ),
     );
     final jsonResponse = jsonDecode(response.body);
@@ -263,45 +295,57 @@ class _BasementState extends State<Basement> {
       // print(jsonResponse);
       setState(() {
         viewData = jsonResponse;
-        pageId = viewData['bungalow_basement']['id'];
+        print('viewData------');
+        print(viewData);
 
-        if (viewData != null) {
+        if (viewData['status'] == SUCCESS) {
+          pageId = viewData['bungalow_basement']['id'] != null
+              ? viewData['bungalow_basement']['id'].toString()
+              : pageId;
+
           BasementRequirement =
               viewData["bungalow_basement"]['basement_req'] == T_RUE
                   ? true
                   : false;
+
           slectedBasement =
               viewData["bungalow_basement"]['basement_type'] != null
-                  ? viewData["bungalow_basement"]['basement_type']
-                  : "ForParking";
+                  ? viewData["bungalow_basement"]['basement_type'].toString()
+                  : slectedBasement;
+
           StiltRequirement = viewData["bungalow_basement"]['stilt_req'] == T_RUE
               ? true
               : false;
+
           officeRequirement =
               viewData["bungalow_basement"]['office_req'] == T_RUE
                   ? true
                   : false;
+
           selectedOfficeLocation =
               viewData["bungalow_basement"]['office_location'] != null
                   ? viewData["bungalow_basement"]['office_location']
                   : "ForParking";
+
           officeLengthController =
               viewData["bungalow_basement"]['office_length'] != null
                   ? int.parse(
                       viewData["bungalow_basement"]['office_length'].toString())
                   : INT_ZERO;
+
           officeWidthController =
               viewData["bungalow_basement"]['office_width'] != null
                   ? int.parse(
                       viewData["bungalow_basement"]['office_width'].toString())
                   : INT_ZERO;
 
-          officeFac = viewData != null
+          officeFac = viewData["bungalow_basement"] != null
               ? viewData["bungalow_basement"]['office_facility']
                   .toString()
                   .split(',')
               : [];
-          if (viewData != null
+
+          if (viewData["bungalow_basement"] != null
               ? viewData['bungalow_basement']['office_facility'] != null
               : officeFac != null) {
             for (int i = 0; i < officeFac.length; i++) {
@@ -315,15 +359,19 @@ class _BasementState extends State<Basement> {
                   .toString()
                   .split(',')
               : [];
+
           officeSpecificReqController = viewData["bungalow_basement"]
                       ['office_specific_req'] !=
                   null
               ? viewData["bungalow_basement"]['office_specific_req'].toString()
               : '';
+
           servantRequirement =
               viewData["bungalow_basement"]['servent_quarter_req'] == STR_ONE
                   ? true
                   : false;
+          print('servantRequirement------');
+          print(servantRequirement);
           serventLengthController =
               viewData["bungalow_basement"]['servent_quarter_length'] != null
                   ? int.parse(viewData["bungalow_basement"]
@@ -551,7 +599,7 @@ class _BasementState extends State<Basement> {
 
     // print(otherFacilities);
 
-    return viewData == null
+    return isloading == false
         ? Container(child: const CircularProgressIndicator())
         : Container(
             child: Column(
@@ -577,23 +625,30 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData["bungalow_basement"]
-                                                  ["basement_req"] !=
+                                      value: viewData["bungalow_basement"] !=
                                               null
                                           ? viewData["bungalow_basement"]
-                                                      ["basement_req"] ==
-                                                  T_RUE
-                                              ? true
+                                                      ["basement_req"] !=
+                                                  null
+                                              ? viewData["bungalow_basement"]
+                                                          ["basement_req"] ==
+                                                      T_RUE
+                                                  ? true
+                                                  : BasementRequirement
                                               : BasementRequirement
                                           : BasementRequirement,
+                                      // value: BasementRequirement,
                                       onChanged: (value) {
                                         setState(
                                           () {
                                             BasementRequirement = value;
                                             BasementNotRequire = false;
-                                            if (viewData["bungalow_basement"]
-                                                    ["basement_req"] !=
-                                                null) {
+                                            if (viewData["bungalow_basement"] !=
+                                                    null
+                                                ? viewData["bungalow_basement"]
+                                                        ["basement_req"] !=
+                                                    null
+                                                : false) {
                                               viewData["bungalow_basement"]
                                                   ["basement_req"] = null;
                                             }
@@ -628,22 +683,28 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData["bungalow_basement"]
-                                                  ["basement_req"] !=
+                                      value: viewData["bungalow_basement"] !=
                                               null
                                           ? viewData["bungalow_basement"]
-                                                      ["basement_req"] ==
-                                                  F_ALSE
-                                              ? true
+                                                      ["basement_req"] !=
+                                                  null
+                                              ? viewData["bungalow_basement"]
+                                                          ["basement_req"] ==
+                                                      F_ALSE
+                                                  ? true
+                                                  : BasementNotRequire
                                               : BasementNotRequire
                                           : BasementNotRequire,
                                       onChanged: (value) {
                                         setState(() {
                                           BasementNotRequire = value;
                                           BasementRequirement = false;
-                                          if (viewData["bungalow_basement"]
-                                                  ["basement_req"] !=
-                                              null) {
+                                          if (viewData["bungalow_basement"] !=
+                                                  null
+                                              ? viewData["bungalow_basement"]
+                                                      ["basement_req"] !=
+                                                  null
+                                              : false) {
                                             viewData["bungalow_basement"]
                                                 ["basement_req"] = null;
                                           }
@@ -665,8 +726,10 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                if (viewData["bungalow_basement"]["basement_req"] != null
-                    ? viewData["bungalow_basement"]["basement_req"] == T_RUE
+                if (viewData["bungalow_basement"] != null
+                    ? viewData["bungalow_basement"]["basement_req"] != null
+                        ? viewData["bungalow_basement"]["basement_req"] == T_RUE
+                        : BasementRequirement == true
                     : BasementRequirement == true) ...[
                   Row(
                     children: [
@@ -685,25 +748,23 @@ class _BasementState extends State<Basement> {
                                 icon: const Visibility(
                                     visible: false,
                                     child: Icon(Icons.arrow_downward)),
-                                hint: viewData['bungalow_basement']
-                                            ['basement_type'] !=
-                                        null
-                                    ? Text(basementList[
-                                        viewData['bungalow_basement']
-                                            ['basement_type']])
-                                    : Text(slectedBasement),
+                                hint: Text(slectedBasement),
+
+                                //  viewData['bungalow_basement'] != null
+                                //     ? viewData['bungalow_basement']
+                                //                 ['basement_type'] !=
+                                //             null
+                                //         ? Text(basementList[
+                                //             viewData['bungalow_basement']
+                                //                 ['basement_type']])
+                                //         : Text(slectedBasement)
+                                //     : Text(slectedBasement),
                                 // value:  slectedBasement,
                                 items: basementList
                                     .map((it) => DropdownMenuItem<String>(
                                         value: it, child: Text(it)))
                                     .toList(),
                                 onChanged: (it) => setState(() {
-                                      if (viewData['bungalow_basement']
-                                              ['basement_type'] !=
-                                          null) {
-                                        viewData['bungalow_basement']
-                                            ['basement_type'] = null;
-                                      }
                                       slectedBasement = it!;
                                     })),
                           ),
@@ -735,13 +796,16 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData['bungalow_basement']
-                                                  ['stilt_req'] !=
+                                      value: viewData['bungalow_basement'] !=
                                               null
                                           ? viewData['bungalow_basement']
-                                                      ['stilt_req'] ==
-                                                  T_RUE
-                                              ? true
+                                                      ['stilt_req'] !=
+                                                  null
+                                              ? viewData['bungalow_basement']
+                                                          ['stilt_req'] ==
+                                                      T_RUE
+                                                  ? true
+                                                  : StiltRequirement
                                               : StiltRequirement
                                           : StiltRequirement,
                                       onChanged: (value) {
@@ -786,13 +850,16 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData['bungalow_basement']
-                                                  ['stilt_req'] !=
+                                      value: viewData['bungalow_basement'] !=
                                               null
                                           ? viewData['bungalow_basement']
-                                                      ['stilt_req'] ==
-                                                  F_ALSE
-                                              ? true
+                                                      ['stilt_req'] !=
+                                                  null
+                                              ? viewData['bungalow_basement']
+                                                          ['stilt_req'] ==
+                                                      F_ALSE
+                                                  ? true
+                                                  : StiltNotRequire
                                               : StiltNotRequire
                                           : StiltNotRequire,
                                       onChanged: (value) {
@@ -823,8 +890,10 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                if (viewData['bungalow_basement']['stilt_req'] != null
-                    ? viewData['bungalow_basement']['stilt_req'] == T_RUE
+                if (viewData['bungalow_basement'] != null
+                    ? viewData['bungalow_basement']['stilt_req'] != null
+                        ? viewData['bungalow_basement']['stilt_req'] == T_RUE
+                        : StiltRequirement == true
                     : StiltRequirement == true) ...[
                   Row(
                     children: [
@@ -887,13 +956,16 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData['bungalow_basement']
-                                                  ['office_req'] !=
+                                      value: viewData['bungalow_basement'] !=
                                               null
                                           ? viewData['bungalow_basement']
-                                                      ['office_req'] ==
-                                                  T_RUE
-                                              ? true
+                                                      ['office_req'] !=
+                                                  null
+                                              ? viewData['bungalow_basement']
+                                                          ['office_req'] ==
+                                                      T_RUE
+                                                  ? true
+                                                  : officeRequirement
                                               : officeRequirement
                                           : officeRequirement,
                                       onChanged: (value) {
@@ -938,13 +1010,16 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData['bungalow_basement']
-                                                  ['office_req'] !=
+                                      value: viewData['bungalow_basement'] !=
                                               null
                                           ? viewData['bungalow_basement']
-                                                      ['office_req'] ==
-                                                  F_ALSE
-                                              ? true
+                                                      ['office_req'] !=
+                                                  null
+                                              ? viewData['bungalow_basement']
+                                                          ['office_req'] ==
+                                                      F_ALSE
+                                                  ? true
+                                                  : officeNotRequire
                                               : officeNotRequire
                                           : officeNotRequire,
                                       onChanged: (value) {
@@ -975,8 +1050,10 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                if (viewData['bungalow_basement']['office_req'] != null
-                    ? viewData['bungalow_basement']['office_req'] == T_RUE
+                if (viewData['bungalow_basement'] != null
+                    ? viewData['bungalow_basement']['office_req'] != null
+                        ? viewData['bungalow_basement']['office_req'] == T_RUE
+                        : officeRequirement == true
                     : officeRequirement == true) ...[
                   Row(
                     children: [
@@ -1262,7 +1339,8 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
+                                      value: viewData["bungalow_basement"] !=
+                                              null
                                           ? viewData["bungalow_basement"]
                                                       ["servent_quarter_req"] ==
                                                   STR_ONE
@@ -1312,11 +1390,14 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
-                                          ? viewData["bungalow_basement"]
-                                                      ["servent_quarter_req"] ==
-                                                  STR_ZERO
-                                              ? true
+                                      value: viewData["bungalow_basement"] !=
+                                              null
+                                          ? viewData != null
+                                              ? viewData["bungalow_basement"][
+                                                          "servent_quarter_req"] ==
+                                                      STR_ZERO
+                                                  ? true
+                                                  : servantNotRequired
                                               : servantNotRequired
                                           : servantNotRequired,
                                       onChanged: (value) {
@@ -1349,8 +1430,10 @@ class _BasementState extends State<Basement> {
                   height: height * 0.01,
                 ),
                 if (servantRequirement == true ||
-                    viewData["bungalow_basement"]["servent_quarter_req"] ==
-                        STR_ONE) ...[
+                        viewData["bungalow_basement"] != null
+                    ? viewData["bungalow_basement"]["servent_quarter_req"] ==
+                        STR_ONE
+                    : servantRequirement == true) ...[
                   Row(
                     children: [
                       Flexible(
@@ -1778,8 +1861,9 @@ class _BasementState extends State<Basement> {
                   height: height * 0.01,
                 ),
                 if (HomeTheaterRequirement == true ||
-                    viewData["bungalow_basement"]["home_theater_req"] ==
-                        T_RUE) ...[
+                        viewData["bungalow_basement"] != null
+                    ? viewData["bungalow_basement"]["home_theater_req"] == T_RUE
+                    : HomeTheaterRequirement == true) ...[
                   Row(
                     children: [
                       Flexible(
@@ -2915,7 +2999,8 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                if (barRequirement == true || viewData != null
+                if (barRequirement == true ||
+                        viewData['bungalow_basement'] != null
                     ? viewData['bungalow_basement']['bar_req'] == T_RUE
                         ? true
                         : barRequirement == true
@@ -3248,7 +3333,8 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
+                                      value: viewData['bungalow_basement'] !=
+                                              null
                                           ? viewData['bungalow_basement']
                                                       ["swimming_pool_req"] ==
                                                   T_RUE
@@ -3300,7 +3386,8 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
+                                      value: viewData['bungalow_basement'] !=
+                                              null
                                           ? viewData['bungalow_basement']
                                                       ["swimming_pool_req"] ==
                                                   F_ALSE
@@ -3338,7 +3425,8 @@ class _BasementState extends State<Basement> {
                   ],
                 ),
                 SizedBox(height: height * 0.01),
-                if (swimmingRequirement == true || viewData != null
+                if (swimmingRequirement == true ||
+                        viewData['bungalow_basement'] != null
                     ? viewData['bungalow_basement']["swimming_pool_req"] ==
                             T_RUE
                         ? true
@@ -3590,13 +3678,14 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
-                                          ? viewData['bungalow_basement']
-                                                      ["gym_req"] ==
-                                                  T_RUE
-                                              ? true
-                                              : gymRequirement
-                                          : gymRequirement,
+                                      value:
+                                          viewData['bungalow_basement'] != null
+                                              ? viewData['bungalow_basement']
+                                                          ["gym_req"] ==
+                                                      T_RUE
+                                                  ? true
+                                                  : gymRequirement
+                                              : gymRequirement,
                                       onChanged: (value) {
                                         setState(
                                           () {
@@ -3641,7 +3730,7 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                     activeColor: checkColor,
                                     checkColor: Colors.white,
-                                    value: viewData != null
+                                    value: viewData['bungalow_basement'] != null
                                         ? viewData['bungalow_basement']
                                                     ["gym_req"] ==
                                                 F_ALSE
@@ -3679,7 +3768,8 @@ class _BasementState extends State<Basement> {
                   ],
                 ),
                 SizedBox(height: height * 0.01),
-                if (gymRequirement == true || viewData != null
+                if (gymRequirement == true ||
+                        viewData['bungalow_basement'] != null
                     ? viewData["bungalow_basement"]['gym_req'] == T_RUE
                         ? true
                         : gymRequirement == true
@@ -3919,13 +4009,14 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
-                                          ? viewData['bungalow_basement']
-                                                      ["spa_req"] ==
-                                                  T_RUE
-                                              ? true
-                                              : spaRequirement
-                                          : spaRequirement,
+                                      value:
+                                          viewData['bungalow_basement'] != null
+                                              ? viewData['bungalow_basement']
+                                                          ["spa_req"] ==
+                                                      T_RUE
+                                                  ? true
+                                                  : spaRequirement
+                                              : spaRequirement,
                                       onChanged: (value) {
                                         setState(
                                           () {
@@ -3970,13 +4061,14 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
-                                          ? viewData['bungalow_basement']
-                                                      ["spa_req"] ==
-                                                  F_ALSE
-                                              ? true
-                                              : spaNotRequired
-                                          : spaNotRequired,
+                                      value:
+                                          viewData['bungalow_basement'] != null
+                                              ? viewData['bungalow_basement']
+                                                          ["spa_req"] ==
+                                                      F_ALSE
+                                                  ? true
+                                                  : spaNotRequired
+                                              : spaNotRequired,
                                       onChanged: (value) {
                                         setState(() {
                                           spaNotRequired = value;
@@ -4005,7 +4097,8 @@ class _BasementState extends State<Basement> {
                   ],
                 ),
                 SizedBox(height: height * 0.01),
-                if (spaRequirement == true || viewData != null
+                if (spaRequirement == true ||
+                        viewData['bungalow_basement'] != null
                     ? viewData["bungalow_basement"]["spa_req"] == T_RUE
                         ? true
                         : spaRequirement == true
@@ -4244,13 +4337,14 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
-                                          ? viewData['bungalow_basement']
-                                                      ["garden_req"] ==
-                                                  T_RUE
-                                              ? true
-                                              : gardenRequirement
-                                          : gardenRequirement,
+                                      value:
+                                          viewData['bungalow_basement'] != null
+                                              ? viewData['bungalow_basement']
+                                                          ["garden_req"] ==
+                                                      T_RUE
+                                                  ? true
+                                                  : gardenRequirement
+                                              : gardenRequirement,
                                       onChanged: (value) {
                                         setState(
                                           () {
@@ -4295,13 +4389,14 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
-                                          ? viewData['bungalow_basement']
-                                                      ["garden_req"] ==
-                                                  F_ALSE
-                                              ? true
-                                              : gardenNotRequired
-                                          : gardenNotRequired,
+                                      value:
+                                          viewData['bungalow_basement'] != null
+                                              ? viewData['bungalow_basement']
+                                                          ["garden_req"] ==
+                                                      F_ALSE
+                                                  ? true
+                                                  : gardenNotRequired
+                                              : gardenNotRequired,
                                       onChanged: (value) {
                                         setState(() {
                                           gardenNotRequired = value;
@@ -4332,7 +4427,8 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                if (gardenRequirement == true || viewData != null
+                if (gardenRequirement == true ||
+                        viewData['bungalow_basement'] != null
                     ? viewData['bungalow_basement']["garden_req"] == T_RUE
                         ? true
                         : gardenRequirement == true
@@ -4491,7 +4587,7 @@ class _BasementState extends State<Basement> {
                 Align(
                   alignment: Alignment.center,
                   child: InkWell(
-                    onTap: () {
+                    onTap: () async {
                       setState(() {
                         if (BasementRequirement == true) {
                           basementReqInt = INT_ONE;
@@ -4563,9 +4659,8 @@ class _BasementState extends State<Basement> {
                       });
 
                       if (pageId != null) {
-                        print("value is updating");
-                        BasementPut(
-                          179,
+                        var status = await BasementPut(
+                          project_id,
                           BasementRequirement!,
                           slectedBasement,
                           stilitReqInt,
@@ -4627,11 +4722,13 @@ class _BasementState extends State<Basement> {
                           gardenLocation,
                           gardenSpecificRequiremnt,
                         );
+                        if (status == SUCCESS) {
+                          showToast('Basement Requirement Updated !',
+                              Colors.lightGreen, ToastGravity.TOP);
+                        }
                       } else {
-                        print("value is posting");
-
-                        BasementPost(
-                          123,
+                        var status = await BasementPost(
+                          project_id,
                           basementReqInt,
                           slectedBasement,
                           stilitReqInt,
@@ -4693,6 +4790,10 @@ class _BasementState extends State<Basement> {
                           gardenLocation,
                           gardenSpecificRequiremnt,
                         );
+                        if (status == SUCCESS) {
+                          showToast('Basement Requirement Submitted !',
+                              Colors.lightGreen, ToastGravity.TOP);
+                        }
                       }
                     },
                     child: Container(

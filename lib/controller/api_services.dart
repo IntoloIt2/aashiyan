@@ -830,7 +830,7 @@ Future<void> BedRoomPost(
   print(response.body);
 }
 
-Future<void> BasementPost(
+Future<dynamic> BasementPost(
   int projectId,
   int basementReq,
   String basementType,
@@ -958,14 +958,15 @@ Future<void> BasementPost(
   };
 
   final response = await http.post(
-    // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-basement'),
+    Uri.parse("${dotenv.env['APP_URL']}bungalow-basement"),
+    // Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-basement'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
-  print(response.body);
+  var temp = jsonDecode(response.body);
+  return temp['status'];
 }
 
 Future<dynamic> getGalleryAPI(int category) async {
@@ -977,7 +978,7 @@ Future<dynamic> getGalleryAPI(int category) async {
   return finalArt;
 }
 
-Future<void> BasementPut(
+Future<dynamic> BasementPut(
   int projectId,
   bool basementReq,
   String basementType,
@@ -1105,15 +1106,14 @@ Future<void> BasementPut(
   };
   print(jsonEncode(projectData));
   final response = await http.post(
-    // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse(
-        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-basement/$projectId'),
+    Uri.parse("${dotenv.env['APP_URL']}update-bungalow-basement/$projectId"),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
-  print(response.body);
+  var temp = jsonDecode(response.body);
+  return temp['status'];
 }
 
 Future<void> HouseDuplexFloorPost(

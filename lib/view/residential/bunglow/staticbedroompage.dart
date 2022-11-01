@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_null_comparison, prefer_typing_uninitialized_variables, non_constant_identifier_names, empty_catches, prefer_final_fields, avoid_unnecessary_containers, sized_box_for_whitespace, unused_local_variable, no_leading_underscores_for_local_identifiers
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'package:aashiyan/components/constant.dart';
@@ -7,6 +8,7 @@ import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../components/forms.dart';
 import '../../../const.dart';
@@ -75,6 +77,16 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
     }
   }
 
+  void showToast(msg, toastColor, GRAVITY) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 0,
+        backgroundColor: toastColor,
+        textColor: Colors.white);
+  }
+
   void multi() async {
     final List<String> otherIt = [
       "Walk in Cupboard",
@@ -127,6 +139,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
   bool? other3NotRequiredDress = false;
 
   var result;
+  bool isloading = false;
+  late var timer;
 
   @override
   void initState() {
@@ -135,8 +149,19 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
     _values;
 
     getData();
+    timer = Timer.periodic(
+        Duration(seconds: 3),
+        (Timer t) => setState(() {
+              isloading = true;
+            }));
     print('project_id');
     print(project_id);
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
   List<String> otherFacilities = [];
@@ -245,12 +270,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
   var get = [];
 
   int project_id = 0;
+  int pageId = 0;
 
   Future<void> getData() async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       String? userData = prefs.getString('userData');
       project_id = prefs.getInt('projectId')!;
+      // print("project_id==");
+      // print(project_id);
       var response = await http.get(
         Uri.parse(
           "${dotenv.env['APP_URL']}edit-bungalow-bedroom/$project_id",
@@ -260,6 +288,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
       if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
+        print('jsonResponse---');
+        print(jsonResponse);
         setState(
           () {
             printData = jsonResponse["bungalow_bedroom"];
@@ -267,6 +297,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
             for (int i = 0; i < printData.length; i++) {
               if (printData[i]["bedroom"] == STR_ONE) {
                 mi = i;
+
+                print('mi==');
+                print(mi);
               }
               if (printData[i]["bedroom"] == STR_TWO) {
                 si = i;
@@ -290,387 +323,435 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                 o3i = i;
               }
             }
-
-            if (printData.asMap().containsKey(mi)) {
-              masterLength = printData[mi]['bedroom_length'] != null
-                  ? int.parse(printData[mi]['bedroom_length'].toString())
-                  : F_ALSE;
-              masterWidth = printData[mi]['bedroom_width'] != null
-                  ? int.parse(printData[mi]['bedroom_width'].toString())
-                  : F_ALSE;
-              masterToiletLength = printData[mi]['bedroom_toilet_length'] !=
-                      null
-                  ? int.parse(printData[mi]['bedroom_toilet_length'].toString())
-                  : F_ALSE;
-              masterToiletWidth = printData[mi]['bedroom_toilet_width'] != null
-                  ? int.parse(printData[mi]['bedroom_toilet_width'].toString())
-                  : F_ALSE;
-              masterDressLength = printData[mi]['bedroom_dress_length'] != null
-                  ? int.parse(printData[mi]['bedroom_dress_length'].toString())
-                  : F_ALSE;
-              masterLocation = printData[mi]['bedroom_floor'] != null
-                  ? int.parse(printData[mi]['bedroom_floor'].toString())
-                  : F_ALSE;
-              masterDressWidth = printData[mi]['bedroom_dress_width'] != null
-                  ? int.parse(printData[mi]['bedroom_dress_width'].toString())
-                  : F_ALSE;
-              masterDressInt = printData[mi]['bedroom_dress_req'] != null
-                  ? int.parse(printData[mi]['bedroom_dress_req'].toString())
-                  : F_ALSE;
-              masterToiletFacility =
-                  printData[mi]['bedroom_toilet_req_text'] != null
-                      ? printData[mi]['bedroom_toilet_req_text'].toString()
-                      : " ";
-              masterDresstext = printData[mi]['bedroom_dress_req_text'] != null
-                  ? printData[mi]['bedroom_dress_req_text'].toString()
-                  : " ";
-              masterOtherRequirement =
-                  printData[mi]['bedroom_facility_req_text'] != null
-                      ? printData[mi]['bedroom_facility_req_text'].toString()
-                      : " ";
-              masterDressFacility =
-                  printData[mi]['bedroom_dress_facility'] != null
-                      ? printData[mi]['bedroom_dress_facility']
-                          .toString()
-                          .split(',')
-                      : [];
-              masterRoomFacility = printData[mi]['bedroom_facility'] != null
-                  ? printData[mi]['bedroom_facility'].toString().split(',')
-                  : [];
+            if (printData != null) {
+              if (printData.asMap().containsKey(mi)) {
+                pageId = printData[mi]['id'] != null
+                    ? int.parse(printData[mi]['id'].toString())
+                    : INT_ZERO;
+                selectedFloor = (printData[mi]['bedroom_floor'] != null
+                    ? int.parse(printData[mi]['bedroom_floor'])
+                    : selectedFloor) as String?;
+                masterLength = printData[mi]['bedroom_length'] != null
+                    ? int.parse(printData[mi]['bedroom_length'].toString())
+                    : F_ALSE;
+                masterWidth = printData[mi]['bedroom_width'] != null
+                    ? int.parse(printData[mi]['bedroom_width'].toString())
+                    : F_ALSE;
+                masterToiletLength =
+                    printData[mi]['bedroom_toilet_length'] != null
+                        ? int.parse(
+                            printData[mi]['bedroom_toilet_length'].toString())
+                        : F_ALSE;
+                masterToiletWidth =
+                    printData[mi]['bedroom_toilet_width'] != null
+                        ? int.parse(
+                            printData[mi]['bedroom_toilet_width'].toString())
+                        : F_ALSE;
+                masterDressLength =
+                    printData[mi]['bedroom_dress_length'] != null
+                        ? int.parse(
+                            printData[mi]['bedroom_dress_length'].toString())
+                        : F_ALSE;
+                masterLocation = printData[mi]['bedroom_floor'] != null
+                    ? int.parse(printData[mi]['bedroom_floor'].toString())
+                    : F_ALSE;
+                masterDressWidth = printData[mi]['bedroom_dress_width'] != null
+                    ? int.parse(printData[mi]['bedroom_dress_width'].toString())
+                    : F_ALSE;
+                masterDressInt = printData[mi]['bedroom_dress_req'] != null
+                    ? int.parse(printData[mi]['bedroom_dress_req'].toString())
+                    : F_ALSE;
+                masterToiletFacility =
+                    printData[mi]['bedroom_toilet_req_text'] != null
+                        ? printData[mi]['bedroom_toilet_req_text'].toString()
+                        : " ";
+                masterDresstext =
+                    printData[mi]['bedroom_dress_req_text'] != null
+                        ? printData[mi]['bedroom_dress_req_text'].toString()
+                        : " ";
+                masterOtherRequirement =
+                    printData[mi]['bedroom_facility_req_text'] != null
+                        ? printData[mi]['bedroom_facility_req_text'].toString()
+                        : " ";
+                masterDressFacility =
+                    printData[mi]['bedroom_dress_facility'] != null
+                        ? printData[mi]['bedroom_dress_facility']
+                            .toString()
+                            .split(',')
+                        : [];
+                masterRoomFacility = printData[mi]['bedroom_facility'] != null
+                    ? printData[mi]['bedroom_facility'].toString().split(',')
+                    : [];
+              }
+              if (printData.asMap().containsKey(si)) {
+                sonLength = printData[si]['bedroom_length'] != null
+                    ? int.parse(printData[si]['bedroom_length'].toString())
+                    : F_ALSE;
+                sonWidth = printData[si]['bedroom_width'] != null
+                    ? int.parse(printData[si]['bedroom_width'].toString())
+                    : F_ALSE;
+                sonToiletLength = printData[si]['bedroom_toilet_length'] != null
+                    ? int.parse(
+                        printData[si]['bedroom_toilet_length'].toString())
+                    : F_ALSE;
+                sonToiletWidth = printData[si]['bedroom_toilet_width'] != null
+                    ? int.parse(
+                        printData[si]['bedroom_toilet_width'].toString())
+                    : F_ALSE;
+                sonDressLength = printData[si]['bedroom_dress_length'] != null
+                    ? int.parse(
+                        printData[si]['bedroom_dress_length'].toString())
+                    : F_ALSE;
+                sonLocation = printData[si]['bedroom_floor'] != null
+                    ? int.parse(printData[si]['bedroom_floor'].toString())
+                    : F_ALSE;
+                sonDressWidth = printData[si]['bedroom_dress_width'] != null
+                    ? int.parse(printData[si]['bedroom_dress_width'].toString())
+                    : F_ALSE;
+                sonDressInt = printData[si]['bedroom_dress_req'] != null
+                    ? int.parse(printData[si]['bedroom_dress_req'].toString())
+                    : F_ALSE;
+                sonToiletFacility =
+                    printData[si]['bedroom_toilet_req_text'] != null
+                        ? printData[si]['bedroom_toilet_req_text'].toString()
+                        : " ";
+                sonDresstext = printData[si]['bedroom_dress_req_text'] != null
+                    ? printData[si]['bedroom_dress_req_text'].toString()
+                    : " ";
+                sonOtherRequirement =
+                    printData[si]['bedroom_facility_req_text'] != null
+                        ? printData[si]['bedroom_facility_req_text'].toString()
+                        : " ";
+                sonDressFacility =
+                    printData[si]['bedroom_dress_facility'] != null
+                        ? printData[si]['bedroom_dress_facility']
+                            .toString()
+                            .split(',')
+                        : [];
+                sonRoomFacility = printData[si]['bedroom_facility'] != null
+                    ? printData[si]['bedroom_facility'].toString().split(',')
+                    : [];
+              }
+              if (printData.asMap().containsKey(di)) {
+                daughterLength = printData[di]['bedroom_length'] != null
+                    ? int.parse(printData[di]['bedroom_length'].toString())
+                    : F_ALSE;
+                daughterWidth = printData[di]['bedroom_width'] != null
+                    ? int.parse(printData[di]['bedroom_width'].toString())
+                    : F_ALSE;
+                daughterToiletLength =
+                    printData[di]['bedroom_toilet_length'] != null
+                        ? int.parse(
+                            printData[di]['bedroom_toilet_length'].toString())
+                        : F_ALSE;
+                daughterToiletWidth =
+                    printData[di]['bedroom_toilet_width'] != null
+                        ? int.parse(
+                            printData[di]['bedroom_toilet_width'].toString())
+                        : F_ALSE;
+                daughterDressLength =
+                    printData[di]['bedroom_dress_length'] != null
+                        ? int.parse(
+                            printData[di]['bedroom_dress_length'].toString())
+                        : F_ALSE;
+                daughterLocation = printData[di]['bedroom_floor'] != null
+                    ? int.parse(printData[di]['bedroom_floor'].toString())
+                    : F_ALSE;
+                daughterDressWidth = printData[di]['bedroom_dress_width'] !=
+                        null
+                    ? int.parse(printData[di]['bedroom_dress_width'].toString())
+                    : F_ALSE;
+                daughterDressInt = printData[di]['bedroom_dress_req'] != null
+                    ? int.parse(printData[di]['bedroom_dress_req'].toString())
+                    : F_ALSE;
+                daughterToiletFacility =
+                    printData[di]['bedroom_toilet_req_text'] != null
+                        ? printData[di]['bedroom_toilet_req_text'].toString()
+                        : " ";
+                daughterDresstext =
+                    printData[di]['bedroom_dress_req_text'] != null
+                        ? printData[di]['bedroom_dress_req_text'].toString()
+                        : " ";
+                daughterOtherRequirement =
+                    printData[di]['bedroom_facility_req_text'] != null
+                        ? printData[di]['bedroom_facility_req_text'].toString()
+                        : " ";
+                daughterDressFacility =
+                    printData[di]['bedroom_dress_facility'] != null
+                        ? printData[di]['bedroom_dress_facility']
+                            .toString()
+                            .split(',')
+                        : [];
+                daughterRoomFacility = printData[di]['bedroom_facility'] != null
+                    ? printData[di]['bedroom_facility'].toString().split(',')
+                    : [];
+              }
+              if (printData.asMap().containsKey(pi)) {
+                parentLength = printData[pi]['bedroom_length'] != null
+                    ? int.parse(printData[pi]['bedroom_length'].toString())
+                    : F_ALSE;
+                parentWidth = printData[pi]['bedroom_width'] != null
+                    ? int.parse(printData[pi]['bedroom_width'].toString())
+                    : F_ALSE;
+                parentToiletLength =
+                    printData[pi]['bedroom_toilet_length'] != null
+                        ? int.parse(
+                            printData[pi]['bedroom_toilet_length'].toString())
+                        : F_ALSE;
+                parentToiletWidth =
+                    printData[pi]['bedroom_toilet_width'] != null
+                        ? int.parse(
+                            printData[pi]['bedroom_toilet_width'].toString())
+                        : F_ALSE;
+                parentDressLength =
+                    printData[pi]['bedroom_dress_length'] != null
+                        ? int.parse(
+                            printData[pi]['bedroom_dress_length'].toString())
+                        : F_ALSE;
+                parentLocation = printData[pi]['bedroom_floor'] != null
+                    ? int.parse(printData[pi]['bedroom_floor'].toString())
+                    : F_ALSE;
+                parentDressWidth = printData[pi]['bedroom_dress_width'] != null
+                    ? int.parse(printData[pi]['bedroom_dress_width'].toString())
+                    : F_ALSE;
+                parentDressInt = printData[pi]['bedroom_dress_req'] != null
+                    ? int.parse(printData[pi]['bedroom_dress_req'].toString())
+                    : F_ALSE;
+                parentToiletFacility =
+                    printData[pi]['bedroom_toilet_req_text'] != null
+                        ? printData[pi]['bedroom_toilet_req_text'].toString()
+                        : " ";
+                parentDresstext =
+                    printData[pi]['bedroom_dress_req_text'] != null
+                        ? printData[pi]['bedroom_dress_req_text'].toString()
+                        : " ";
+                parentOtherRequirement =
+                    printData[pi]['bedroom_facility_req_text'] != null
+                        ? printData[pi]['bedroom_facility_req_text'].toString()
+                        : " ";
+                parentDressFacility =
+                    printData[pi]['bedroom_dress_facility'] != null
+                        ? printData[pi]['bedroom_dress_facility']
+                            .toString()
+                            .split(',')
+                        : [];
+                parentRoomFacility = printData[pi]['bedroom_facility'] != null
+                    ? printData[pi]['bedroom_facility'].toString().split(',')
+                    : [];
+              }
+              if (printData.asMap().containsKey(gi)) {
+                guestLength = printData[gi]['bedroom_length'] != null
+                    ? int.parse(printData[gi]['bedroom_length'].toString())
+                    : F_ALSE;
+                guestWidth = printData[gi]['bedroom_width'] != null
+                    ? int.parse(printData[gi]['bedroom_width'].toString())
+                    : F_ALSE;
+                guestToiletLength =
+                    printData[gi]['bedroom_toilet_length'] != null
+                        ? int.parse(
+                            printData[gi]['bedroom_toilet_length'].toString())
+                        : F_ALSE;
+                guestToiletWidth = printData[gi]['bedroom_toilet_width'] != null
+                    ? int.parse(
+                        printData[gi]['bedroom_toilet_width'].toString())
+                    : F_ALSE;
+                guestDressLength = printData[gi]['bedroom_dress_length'] != null
+                    ? int.parse(
+                        printData[gi]['bedroom_dress_length'].toString())
+                    : F_ALSE;
+                guestLocation = printData[gi]['bedroom_floor'] != null
+                    ? int.parse(printData[gi]['bedroom_floor'].toString())
+                    : F_ALSE;
+                guestDressWidth = printData[gi]['bedroom_dress_width'] != null
+                    ? int.parse(printData[gi]['bedroom_dress_width'].toString())
+                    : F_ALSE;
+                guestDressInt = printData[gi]['bedroom_dress_req'] != null
+                    ? int.parse(printData[gi]['bedroom_dress_req'].toString())
+                    : F_ALSE;
+                guestToiletFacility =
+                    printData[gi]['bedroom_toilet_req_text'] != null
+                        ? printData[gi]['bedroom_toilet_req_text'].toString()
+                        : " ";
+                guestDresstext = printData[gi]['bedroom_dress_req_text'] != null
+                    ? printData[gi]['bedroom_dress_req_text'].toString()
+                    : " ";
+                guestOtherRequirement =
+                    printData[gi]['bedroom_facility_req_text'] != null
+                        ? printData[gi]['bedroom_facility_req_text'].toString()
+                        : " ";
+                guestDressFacility =
+                    printData[gi]['bedroom_dress_facility'] != null
+                        ? printData[gi]['bedroom_dress_facility']
+                            .toString()
+                            .split(',')
+                        : [];
+                guestRoomFacility = printData[gi]['bedroom_facility'] != null
+                    ? printData[gi]['bedroom_facility'].toString().split(',')
+                    : [];
+              }
+              if (printData.asMap().containsKey(o1i)) {
+                other1Length = printData[o1i]['bedroom_length'] != null
+                    ? int.parse(printData[o1i]['bedroom_length'].toString())
+                    : F_ALSE;
+                other1Width = printData[o1i]['bedroom_width'] != null
+                    ? int.parse(printData[o1i]['bedroom_width'].toString())
+                    : F_ALSE;
+                other1ToiletLength =
+                    printData[o1i]['bedroom_toilet_length'] != null
+                        ? int.parse(
+                            printData[o1i]['bedroom_toilet_length'].toString())
+                        : F_ALSE;
+                other1ToiletWidth =
+                    printData[o1i]['bedroom_toilet_width'] != null
+                        ? int.parse(
+                            printData[o1i]['bedroom_toilet_width'].toString())
+                        : F_ALSE;
+                other1DressLength =
+                    printData[o1i]['bedroom_dress_length'] != null
+                        ? int.parse(
+                            printData[o1i]['bedroom_dress_length'].toString())
+                        : F_ALSE;
+                other1Location = printData[o1i]['bedroom_floor'] != null
+                    ? int.parse(printData[o1i]['bedroom_floor'].toString())
+                    : F_ALSE;
+                other1DressWidth = printData[o1i]['bedroom_dress_width'] != null
+                    ? int.parse(
+                        printData[o1i]['bedroom_dress_width'].toString())
+                    : F_ALSE;
+                other1DressInt = printData[o1i]['bedroom_dress_req'] != null
+                    ? int.parse(printData[o1i]['bedroom_dress_req'].toString())
+                    : F_ALSE;
+                other1ToiletFacility =
+                    printData[o1i]['bedroom_toilet_req_text'] != null
+                        ? printData[o1i]['bedroom_toilet_req_text'].toString()
+                        : " ";
+                other1Dresstext =
+                    printData[o1i]['bedroom_dress_req_text'] != null
+                        ? printData[o1i]['bedroom_dress_req_text'].toString()
+                        : " ";
+                other1OtherRequirement =
+                    printData[o1i]['bedroom_facility_req_text'] != null
+                        ? printData[o1i]['bedroom_facility_req_text'].toString()
+                        : " ";
+                other1DressFacility =
+                    printData[o1i]['bedroom_dress_facility'] != null
+                        ? printData[o1i]['bedroom_dress_facility']
+                            .toString()
+                            .split(',')
+                        : [];
+                other1RoomFacility = printData[o1i]['bedroom_facility'] != null
+                    ? printData[o1i]['bedroom_facility'].toString().split(',')
+                    : [];
+              }
+              if (printData.asMap().containsKey(o2i)) {
+                other2Length = printData[o2i]['bedroom_length'] != null
+                    ? int.parse(printData[o2i]['bedroom_length'].toString())
+                    : F_ALSE;
+                other2Width = printData[o2i]['bedroom_width'] != null
+                    ? int.parse(printData[o2i]['bedroom_width'].toString())
+                    : F_ALSE;
+                other2ToiletLength =
+                    printData[o2i]['bedroom_toilet_length'] != null
+                        ? int.parse(
+                            printData[o2i]['bedroom_toilet_length'].toString())
+                        : F_ALSE;
+                other2ToiletWidth =
+                    printData[o2i]['bedroom_toilet_width'] != null
+                        ? int.parse(
+                            printData[o2i]['bedroom_toilet_width'].toString())
+                        : F_ALSE;
+                other2DressLength =
+                    printData[o2i]['bedroom_dress_length'] != null
+                        ? int.parse(
+                            printData[o2i]['bedroom_dress_length'].toString())
+                        : F_ALSE;
+                other2Location = printData[o2i]['bedroom_floor'] != null
+                    ? int.parse(printData[o2i]['bedroom_floor'].toString())
+                    : F_ALSE;
+                other2DressWidth = printData[o2i]['bedroom_dress_width'] != null
+                    ? int.parse(
+                        printData[o2i]['bedroom_dress_width'].toString())
+                    : F_ALSE;
+                other2DressInt = printData[o2i]['bedroom_dress_req'] != null
+                    ? int.parse(printData[o2i]['bedroom_dress_req'].toString())
+                    : F_ALSE;
+                other2ToiletFacility =
+                    printData[o2i]['bedroom_toilet_req_text'] != null
+                        ? printData[o2i]['bedroom_toilet_req_text'].toString()
+                        : " ";
+                other2Dresstext =
+                    printData[o2i]['bedroom_dress_req_text'] != null
+                        ? printData[o2i]['bedroom_dress_req_text'].toString()
+                        : " ";
+                other2OtherRequirement =
+                    printData[o2i]['bedroom_facility_req_text'] != null
+                        ? printData[o2i]['bedroom_facility_req_text'].toString()
+                        : " ";
+                other2DressFacility =
+                    printData[o2i]['bedroom_dress_facility'] != null
+                        ? printData[o2i]['bedroom_dress_facility']
+                            .toString()
+                            .split(',')
+                        : [];
+                other2RoomFacility = printData[o2i]['bedroom_facility'] != null
+                    ? printData[o2i]['bedroom_facility'].toString().split(',')
+                    : [];
+              }
+              if (printData.asMap().containsKey(o3i)) {
+                other3Length = printData[o3i]['bedroom_length'] != null
+                    ? int.parse(printData[o3i]['bedroom_length'].toString())
+                    : F_ALSE;
+                other3Width = printData[o3i]['bedroom_width'] != null
+                    ? int.parse(printData[o3i]['bedroom_width'].toString())
+                    : F_ALSE;
+                other3ToiletLength =
+                    printData[o3i]['bedroom_toilet_length'] != null
+                        ? int.parse(
+                            printData[o3i]['bedroom_toilet_length'].toString())
+                        : F_ALSE;
+                other3ToiletWidth =
+                    printData[o3i]['bedroom_toilet_width'] != null
+                        ? int.parse(
+                            printData[o3i]['bedroom_toilet_width'].toString())
+                        : F_ALSE;
+                other3DressLength =
+                    printData[o3i]['bedroom_dress_length'] != null
+                        ? int.parse(
+                            printData[o3i]['bedroom_dress_length'].toString())
+                        : F_ALSE;
+                other3Location = printData[o3i]['bedroom_floor'] != null
+                    ? int.parse(printData[o3i]['bedroom_floor'].toString())
+                    : F_ALSE;
+                other3DressWidth = printData[o3i]['bedroom_dress_width'] != null
+                    ? int.parse(
+                        printData[o3i]['bedroom_dress_width'].toString())
+                    : F_ALSE;
+                other3DressInt = printData[o3i]['bedroom_dress_req'] != null
+                    ? int.parse(printData[o3i]['bedroom_dress_req'].toString())
+                    : F_ALSE;
+                other3ToiletFacility =
+                    printData[o3i]['bedroom_toilet_req_text'] != null
+                        ? printData[o3i]['bedroom_toilet_req_text'].toString()
+                        : " ";
+                other3Dresstext =
+                    printData[o3i]['bedroom_dress_req_text'] != null
+                        ? printData[o3i]['bedroom_dress_req_text'].toString()
+                        : " ";
+                other3OtherRequirement =
+                    printData[o3i]['bedroom_facility_req_text'] != null
+                        ? printData[o3i]['bedroom_facility_req_text'].toString()
+                        : " ";
+                other3DressFacility =
+                    printData[o3i]['bedroom_dress_facility'] != null
+                        ? printData[o3i]['bedroom_dress_facility']
+                            .toString()
+                            .split(',')
+                        : [];
+                other3RoomFacility = printData[o3i]['bedroom_facility'] != null
+                    ? printData[o3i]['bedroom_facility'].toString().split(',')
+                    : [];
+              }
             }
-            if (printData.asMap().containsKey(si)) {
-              sonLength = printData[si]['bedroom_length'] != null
-                  ? int.parse(printData[si]['bedroom_length'].toString())
-                  : F_ALSE;
-              sonWidth = printData[si]['bedroom_width'] != null
-                  ? int.parse(printData[si]['bedroom_width'].toString())
-                  : F_ALSE;
-              sonToiletLength = printData[si]['bedroom_toilet_length'] != null
-                  ? int.parse(printData[si]['bedroom_toilet_length'].toString())
-                  : F_ALSE;
-              sonToiletWidth = printData[si]['bedroom_toilet_width'] != null
-                  ? int.parse(printData[si]['bedroom_toilet_width'].toString())
-                  : F_ALSE;
-              sonDressLength = printData[si]['bedroom_dress_length'] != null
-                  ? int.parse(printData[si]['bedroom_dress_length'].toString())
-                  : F_ALSE;
-              sonLocation = printData[si]['bedroom_floor'] != null
-                  ? int.parse(printData[si]['bedroom_floor'].toString())
-                  : F_ALSE;
-              sonDressWidth = printData[si]['bedroom_dress_width'] != null
-                  ? int.parse(printData[si]['bedroom_dress_width'].toString())
-                  : F_ALSE;
-              sonDressInt = printData[si]['bedroom_dress_req'] != null
-                  ? int.parse(printData[si]['bedroom_dress_req'].toString())
-                  : F_ALSE;
-              sonToiletFacility =
-                  printData[si]['bedroom_toilet_req_text'] != null
-                      ? printData[si]['bedroom_toilet_req_text'].toString()
-                      : " ";
-              sonDresstext = printData[si]['bedroom_dress_req_text'] != null
-                  ? printData[si]['bedroom_dress_req_text'].toString()
-                  : " ";
-              sonOtherRequirement =
-                  printData[si]['bedroom_facility_req_text'] != null
-                      ? printData[si]['bedroom_facility_req_text'].toString()
-                      : " ";
-              sonDressFacility = printData[si]['bedroom_dress_facility'] != null
-                  ? printData[si]['bedroom_dress_facility']
-                      .toString()
-                      .split(',')
-                  : [];
-              sonRoomFacility = printData[si]['bedroom_facility'] != null
-                  ? printData[si]['bedroom_facility'].toString().split(',')
-                  : [];
-            }
-            if (printData.asMap().containsKey(di)) {
-              daughterLength = printData[di]['bedroom_length'] != null
-                  ? int.parse(printData[di]['bedroom_length'].toString())
-                  : F_ALSE;
-              daughterWidth = printData[di]['bedroom_width'] != null
-                  ? int.parse(printData[di]['bedroom_width'].toString())
-                  : F_ALSE;
-              daughterToiletLength = printData[di]['bedroom_toilet_length'] !=
-                      null
-                  ? int.parse(printData[di]['bedroom_toilet_length'].toString())
-                  : F_ALSE;
-              daughterToiletWidth = printData[di]['bedroom_toilet_width'] !=
-                      null
-                  ? int.parse(printData[di]['bedroom_toilet_width'].toString())
-                  : F_ALSE;
-              daughterDressLength = printData[di]['bedroom_dress_length'] !=
-                      null
-                  ? int.parse(printData[di]['bedroom_dress_length'].toString())
-                  : F_ALSE;
-              daughterLocation = printData[di]['bedroom_floor'] != null
-                  ? int.parse(printData[di]['bedroom_floor'].toString())
-                  : F_ALSE;
-              daughterDressWidth = printData[di]['bedroom_dress_width'] != null
-                  ? int.parse(printData[di]['bedroom_dress_width'].toString())
-                  : F_ALSE;
-              daughterDressInt = printData[di]['bedroom_dress_req'] != null
-                  ? int.parse(printData[di]['bedroom_dress_req'].toString())
-                  : F_ALSE;
-              daughterToiletFacility =
-                  printData[di]['bedroom_toilet_req_text'] != null
-                      ? printData[di]['bedroom_toilet_req_text'].toString()
-                      : " ";
-              daughterDresstext =
-                  printData[di]['bedroom_dress_req_text'] != null
-                      ? printData[di]['bedroom_dress_req_text'].toString()
-                      : " ";
-              daughterOtherRequirement =
-                  printData[di]['bedroom_facility_req_text'] != null
-                      ? printData[di]['bedroom_facility_req_text'].toString()
-                      : " ";
-              daughterDressFacility =
-                  printData[di]['bedroom_dress_facility'] != null
-                      ? printData[di]['bedroom_dress_facility']
-                          .toString()
-                          .split(',')
-                      : [];
-              daughterRoomFacility = printData[di]['bedroom_facility'] != null
-                  ? printData[di]['bedroom_facility'].toString().split(',')
-                  : [];
-            }
-            if (printData.asMap().containsKey(pi)) {
-              parentLength = printData[pi]['bedroom_length'] != null
-                  ? int.parse(printData[pi]['bedroom_length'].toString())
-                  : F_ALSE;
-              parentWidth = printData[pi]['bedroom_width'] != null
-                  ? int.parse(printData[pi]['bedroom_width'].toString())
-                  : F_ALSE;
-              parentToiletLength = printData[pi]['bedroom_toilet_length'] !=
-                      null
-                  ? int.parse(printData[pi]['bedroom_toilet_length'].toString())
-                  : F_ALSE;
-              parentToiletWidth = printData[pi]['bedroom_toilet_width'] != null
-                  ? int.parse(printData[pi]['bedroom_toilet_width'].toString())
-                  : F_ALSE;
-              parentDressLength = printData[pi]['bedroom_dress_length'] != null
-                  ? int.parse(printData[pi]['bedroom_dress_length'].toString())
-                  : F_ALSE;
-              parentLocation = printData[pi]['bedroom_floor'] != null
-                  ? int.parse(printData[pi]['bedroom_floor'].toString())
-                  : F_ALSE;
-              parentDressWidth = printData[pi]['bedroom_dress_width'] != null
-                  ? int.parse(printData[pi]['bedroom_dress_width'].toString())
-                  : F_ALSE;
-              parentDressInt = printData[pi]['bedroom_dress_req'] != null
-                  ? int.parse(printData[pi]['bedroom_dress_req'].toString())
-                  : F_ALSE;
-              parentToiletFacility =
-                  printData[pi]['bedroom_toilet_req_text'] != null
-                      ? printData[pi]['bedroom_toilet_req_text'].toString()
-                      : " ";
-              parentDresstext = printData[pi]['bedroom_dress_req_text'] != null
-                  ? printData[pi]['bedroom_dress_req_text'].toString()
-                  : " ";
-              parentOtherRequirement =
-                  printData[pi]['bedroom_facility_req_text'] != null
-                      ? printData[pi]['bedroom_facility_req_text'].toString()
-                      : " ";
-              parentDressFacility =
-                  printData[pi]['bedroom_dress_facility'] != null
-                      ? printData[pi]['bedroom_dress_facility']
-                          .toString()
-                          .split(',')
-                      : [];
-              parentRoomFacility = printData[pi]['bedroom_facility'] != null
-                  ? printData[pi]['bedroom_facility'].toString().split(',')
-                  : [];
-            }
-            if (printData.asMap().containsKey(gi)) {
-              guestLength = printData[gi]['bedroom_length'] != null
-                  ? int.parse(printData[gi]['bedroom_length'].toString())
-                  : F_ALSE;
-              guestWidth = printData[gi]['bedroom_width'] != null
-                  ? int.parse(printData[gi]['bedroom_width'].toString())
-                  : F_ALSE;
-              guestToiletLength = printData[gi]['bedroom_toilet_length'] != null
-                  ? int.parse(printData[gi]['bedroom_toilet_length'].toString())
-                  : F_ALSE;
-              guestToiletWidth = printData[gi]['bedroom_toilet_width'] != null
-                  ? int.parse(printData[gi]['bedroom_toilet_width'].toString())
-                  : F_ALSE;
-              guestDressLength = printData[gi]['bedroom_dress_length'] != null
-                  ? int.parse(printData[gi]['bedroom_dress_length'].toString())
-                  : F_ALSE;
-              guestLocation = printData[gi]['bedroom_floor'] != null
-                  ? int.parse(printData[gi]['bedroom_floor'].toString())
-                  : F_ALSE;
-              guestDressWidth = printData[gi]['bedroom_dress_width'] != null
-                  ? int.parse(printData[gi]['bedroom_dress_width'].toString())
-                  : F_ALSE;
-              guestDressInt = printData[gi]['bedroom_dress_req'] != null
-                  ? int.parse(printData[gi]['bedroom_dress_req'].toString())
-                  : F_ALSE;
-              guestToiletFacility =
-                  printData[gi]['bedroom_toilet_req_text'] != null
-                      ? printData[gi]['bedroom_toilet_req_text'].toString()
-                      : " ";
-              guestDresstext = printData[gi]['bedroom_dress_req_text'] != null
-                  ? printData[gi]['bedroom_dress_req_text'].toString()
-                  : " ";
-              guestOtherRequirement =
-                  printData[gi]['bedroom_facility_req_text'] != null
-                      ? printData[gi]['bedroom_facility_req_text'].toString()
-                      : " ";
-              guestDressFacility =
-                  printData[gi]['bedroom_dress_facility'] != null
-                      ? printData[gi]['bedroom_dress_facility']
-                          .toString()
-                          .split(',')
-                      : [];
-              guestRoomFacility = printData[gi]['bedroom_facility'] != null
-                  ? printData[gi]['bedroom_facility'].toString().split(',')
-                  : [];
-            }
-            if (printData.asMap().containsKey(o1i)) {
-              other1Length = printData[o1i]['bedroom_length'] != null
-                  ? int.parse(printData[o1i]['bedroom_length'].toString())
-                  : F_ALSE;
-              other1Width = printData[o1i]['bedroom_width'] != null
-                  ? int.parse(printData[o1i]['bedroom_width'].toString())
-                  : F_ALSE;
-              other1ToiletLength =
-                  printData[o1i]['bedroom_toilet_length'] != null
-                      ? int.parse(
-                          printData[o1i]['bedroom_toilet_length'].toString())
-                      : F_ALSE;
-              other1ToiletWidth = printData[o1i]['bedroom_toilet_width'] != null
-                  ? int.parse(printData[o1i]['bedroom_toilet_width'].toString())
-                  : F_ALSE;
-              other1DressLength = printData[o1i]['bedroom_dress_length'] != null
-                  ? int.parse(printData[o1i]['bedroom_dress_length'].toString())
-                  : F_ALSE;
-              other1Location = printData[o1i]['bedroom_floor'] != null
-                  ? int.parse(printData[o1i]['bedroom_floor'].toString())
-                  : F_ALSE;
-              other1DressWidth = printData[o1i]['bedroom_dress_width'] != null
-                  ? int.parse(printData[o1i]['bedroom_dress_width'].toString())
-                  : F_ALSE;
-              other1DressInt = printData[o1i]['bedroom_dress_req'] != null
-                  ? int.parse(printData[o1i]['bedroom_dress_req'].toString())
-                  : F_ALSE;
-              other1ToiletFacility =
-                  printData[o1i]['bedroom_toilet_req_text'] != null
-                      ? printData[o1i]['bedroom_toilet_req_text'].toString()
-                      : " ";
-              other1Dresstext = printData[o1i]['bedroom_dress_req_text'] != null
-                  ? printData[o1i]['bedroom_dress_req_text'].toString()
-                  : " ";
-              other1OtherRequirement =
-                  printData[o1i]['bedroom_facility_req_text'] != null
-                      ? printData[o1i]['bedroom_facility_req_text'].toString()
-                      : " ";
-              other1DressFacility =
-                  printData[o1i]['bedroom_dress_facility'] != null
-                      ? printData[o1i]['bedroom_dress_facility']
-                          .toString()
-                          .split(',')
-                      : [];
-              other1RoomFacility = printData[o1i]['bedroom_facility'] != null
-                  ? printData[o1i]['bedroom_facility'].toString().split(',')
-                  : [];
-            }
-            if (printData.asMap().containsKey(o2i)) {
-              other2Length = printData[o2i]['bedroom_length'] != null
-                  ? int.parse(printData[o2i]['bedroom_length'].toString())
-                  : F_ALSE;
-              other2Width = printData[o2i]['bedroom_width'] != null
-                  ? int.parse(printData[o2i]['bedroom_width'].toString())
-                  : F_ALSE;
-              other2ToiletLength =
-                  printData[o2i]['bedroom_toilet_length'] != null
-                      ? int.parse(
-                          printData[o2i]['bedroom_toilet_length'].toString())
-                      : F_ALSE;
-              other2ToiletWidth = printData[o2i]['bedroom_toilet_width'] != null
-                  ? int.parse(printData[o2i]['bedroom_toilet_width'].toString())
-                  : F_ALSE;
-              other2DressLength = printData[o2i]['bedroom_dress_length'] != null
-                  ? int.parse(printData[o2i]['bedroom_dress_length'].toString())
-                  : F_ALSE;
-              other2Location = printData[o2i]['bedroom_floor'] != null
-                  ? int.parse(printData[o2i]['bedroom_floor'].toString())
-                  : F_ALSE;
-              other2DressWidth = printData[o2i]['bedroom_dress_width'] != null
-                  ? int.parse(printData[o2i]['bedroom_dress_width'].toString())
-                  : F_ALSE;
-              other2DressInt = printData[o2i]['bedroom_dress_req'] != null
-                  ? int.parse(printData[o2i]['bedroom_dress_req'].toString())
-                  : F_ALSE;
-              other2ToiletFacility =
-                  printData[o2i]['bedroom_toilet_req_text'] != null
-                      ? printData[o2i]['bedroom_toilet_req_text'].toString()
-                      : " ";
-              other2Dresstext = printData[o2i]['bedroom_dress_req_text'] != null
-                  ? printData[o2i]['bedroom_dress_req_text'].toString()
-                  : " ";
-              other2OtherRequirement =
-                  printData[o2i]['bedroom_facility_req_text'] != null
-                      ? printData[o2i]['bedroom_facility_req_text'].toString()
-                      : " ";
-              other2DressFacility =
-                  printData[o2i]['bedroom_dress_facility'] != null
-                      ? printData[o2i]['bedroom_dress_facility']
-                          .toString()
-                          .split(',')
-                      : [];
-              other2RoomFacility = printData[o2i]['bedroom_facility'] != null
-                  ? printData[o2i]['bedroom_facility'].toString().split(',')
-                  : [];
-            }
-            if (printData.asMap().containsKey(o3i)) {
-              other3Length = printData[o3i]['bedroom_length'] != null
-                  ? int.parse(printData[o3i]['bedroom_length'].toString())
-                  : F_ALSE;
-              other3Width = printData[o3i]['bedroom_width'] != null
-                  ? int.parse(printData[o3i]['bedroom_width'].toString())
-                  : F_ALSE;
-              other3ToiletLength =
-                  printData[o3i]['bedroom_toilet_length'] != null
-                      ? int.parse(
-                          printData[o3i]['bedroom_toilet_length'].toString())
-                      : F_ALSE;
-              other3ToiletWidth = printData[o3i]['bedroom_toilet_width'] != null
-                  ? int.parse(printData[o3i]['bedroom_toilet_width'].toString())
-                  : F_ALSE;
-              other3DressLength = printData[o3i]['bedroom_dress_length'] != null
-                  ? int.parse(printData[o3i]['bedroom_dress_length'].toString())
-                  : F_ALSE;
-              other3Location = printData[o3i]['bedroom_floor'] != null
-                  ? int.parse(printData[o3i]['bedroom_floor'].toString())
-                  : F_ALSE;
-              other3DressWidth = printData[o3i]['bedroom_dress_width'] != null
-                  ? int.parse(printData[o3i]['bedroom_dress_width'].toString())
-                  : F_ALSE;
-              other3DressInt = printData[o3i]['bedroom_dress_req'] != null
-                  ? int.parse(printData[o3i]['bedroom_dress_req'].toString())
-                  : F_ALSE;
-              other3ToiletFacility =
-                  printData[o3i]['bedroom_toilet_req_text'] != null
-                      ? printData[o3i]['bedroom_toilet_req_text'].toString()
-                      : " ";
-              other3Dresstext = printData[o3i]['bedroom_dress_req_text'] != null
-                  ? printData[o3i]['bedroom_dress_req_text'].toString()
-                  : " ";
-              other3OtherRequirement =
-                  printData[o3i]['bedroom_facility_req_text'] != null
-                      ? printData[o3i]['bedroom_facility_req_text'].toString()
-                      : " ";
-              other3DressFacility =
-                  printData[o3i]['bedroom_dress_facility'] != null
-                      ? printData[o3i]['bedroom_dress_facility']
-                          .toString()
-                          .split(',')
-                      : [];
-              other3RoomFacility = printData[o3i]['bedroom_facility'] != null
-                  ? printData[o3i]['bedroom_facility'].toString().split(',')
-                  : [];
-            }
-
             if (printData != null) {
               if (mi != null) {
                 if (printData[mi]['bedroom_facility'] != null) {
@@ -911,7 +992,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
     // print(printData[1]['bedroom_facility']);
 
-    return printData == null
+    return isloading == false
         ? Container(child: const CircularProgressIndicator())
         : Column(
             children: [
@@ -1505,10 +1586,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 visible: false,
                                                 child:
                                                     Icon(Icons.arrow_downward)),
-                                            hint: mi != null
-                                                ? Text(floorItems[printData[mi]
-                                                    ['bedroom_floor']])
-                                                : Text(selectedFloor!),
+                                            // hint: mi != null
+                                            //     ? printData[mi] != null
+                                            //         ? Text(floorItems[printData[
+                                            //                     mi]
+                                            //                 ['bedroom_floor']]
+                                            //             .toString())
+                                            //         : Text(selectedFloor!)
+                                            //     : Text(selectedFloor!),
+                                            hint: Text(selectedFloor!),
                                             elevation: 16,
                                             items: floorItems
                                                 .map((it) =>
@@ -1527,7 +1613,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                 () {
                                                   selectedFloor = it;
                                                   if (selectedFloor ==
-                                                      G_FLOOR_TEXT) {
+                                                          G_FLOOR_TEXT &&
+                                                      mi != null &&
+                                                      printData != null) {
                                                     printData[mi]
                                                             ['bedroom_floor'] =
                                                         null;
@@ -1833,7 +1921,9 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 SizedBox(
                                   height: height * 0.01,
                                 ),
-                                if (masterRequiredDress == true || mi != null
+                                if (mi != null &&
+                                        printData[mi]["bedroom_dress_req"] !=
+                                            null
                                     ? printData[mi]["bedroom_dress_req"] ==
                                         INT_ONE
                                     : masterRequiredDress == true) ...[
@@ -1988,9 +2078,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                                 setState(() {
                                                   masterDressFacility = ab;
-                                                  printData[mi][
-                                                          'bedroom_dress_facility'] =
-                                                      null;
+                                                  if (printData != null &&
+                                                      mi != null) {
+                                                    printData[mi][
+                                                            'bedroom_dress_facility'] =
+                                                        null;
+                                                  }
                                                 });
                                               },
                                               child: Container(
@@ -2014,10 +2107,12 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                   )
                                                 ])
                                             ],
-                                            if (printData[mi][
+                                            if (printData != null
+                                                ? printData[mi][
                                                         'bedroom_dress_facility'] ==
-                                                    null ||
-                                                sonDFac == null) ...[
+                                                    null
+                                                : sonDFac == null ||
+                                                    sonDFac == null) ...[
                                               Wrap(
                                                 children: masterDressFacility
                                                     .map((e) => Chip(
@@ -2225,38 +2320,40 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             child: const Text("Room Facility"),
                                           ),
                                         ),
-                                        if (printData
-                                            .asMap()
-                                            .containsKey(1)) ...[
-                                          if (masterDFac != null || mi != null
-                                              ? printData[mi]
-                                                      ['bedroom_facility'] !=
-                                                  null
-                                              : masterRFac != null) ...[
-                                            for (int i = 0;
-                                                i < masterRFac!.length;
-                                                i++)
-                                              Wrap(children: [
-                                                Chip(
-                                                  label: Text(masterRFac![i]
-                                                      .toString()),
-                                                )
-                                              ])
+                                        if (printData != null) ...[
+                                          if (printData
+                                              .asMap()
+                                              .containsKey(1)) ...[
+                                            if (masterDFac != null || mi != null
+                                                ? printData[mi]
+                                                        ['bedroom_facility'] !=
+                                                    null
+                                                : masterRFac != null) ...[
+                                              for (int i = 0;
+                                                  i < masterRFac!.length;
+                                                  i++)
+                                                Wrap(children: [
+                                                  Chip(
+                                                    label: Text(masterRFac![i]
+                                                        .toString()),
+                                                  )
+                                                ])
+                                            ],
                                           ],
+                                          if (masterRFac == null || mi != null
+                                              ? printData[mi]
+                                                      ['bedroom_facility'] ==
+                                                  null
+                                              : masterRFac == null) ...[
+                                            Wrap(
+                                              children: masterRoomFacility
+                                                  .map((e) => Chip(
+                                                        label: Text(e),
+                                                      ))
+                                                  .toList(),
+                                            )
+                                          ]
                                         ],
-                                        if (masterRFac == null || mi != null
-                                            ? printData[mi]
-                                                    ['bedroom_facility'] ==
-                                                null
-                                            : masterRFac == null) ...[
-                                          Wrap(
-                                            children: masterRoomFacility
-                                                .map((e) => Chip(
-                                                      label: Text(e),
-                                                    ))
-                                                .toList(),
-                                          )
-                                        ]
                                       ],
                                     ),
                                   ),
@@ -2734,15 +2831,19 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                                       activeColor: checkColor,
                                                       checkColor: Colors.white,
                                                       value: si != null
-                                                          ? printData[si][
-                                                                      'bedroom_dress_req'] ==
-                                                                  INT_ONE
-                                                              ? true
+                                                          ? printData != null
+                                                              ? printData[si][
+                                                                          'bedroom_dress_req'] ==
+                                                                      INT_ONE
+                                                                  ? true
+                                                                  : sonRequiredDress
                                                               : sonRequiredDress
                                                           : sonRequiredDress,
                                                       onChanged: (value) {
                                                         setState(() {
-                                                          if (si != null) {
+                                                          if (si != null &&
+                                                              printData !=
+                                                                  null) {
                                                             printData[si][
                                                                     'bedroom_dress_req'] =
                                                                 INT_FOUR;
@@ -9594,8 +9695,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                     JsonFront json =
                         JsonFront(dimension: 1, projectId: project_id);
                     var ab = jsonEncode(json);
-                    print('ab==');
-                    print(ab);
+                    // print('ab==');
+                    // print(ab);
                     Map<dynamic, dynamic> _value = {};
                     _value["dimension"] = INT_ONE;
                     _value["project_id"] = project_id;
@@ -9764,8 +9865,6 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                     ];
 
                     List jsonUser = [];
-                    // String dim = "dimension";
-                    // String id = "Project_id";
 
                     for (int i = 0; i < bedData.length; i++) {
                       jsonUser.add(bedData[i]);
@@ -9773,33 +9872,44 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                     _value["bedrooms"] = jsonUser;
 
+                    print("----------------------");
+
                     // _value.putIfAbsent("bedrooms", () => jsonUser);
                     // print(jsonEncode(_value));
                     // print(_values[0]["bedroom_length"]);
                     // print(masterLength);
                     // print({'dimension': 1, "project_id": 567, "bedrooms": jsonUser});
 
-                    if (project_id == INT_ZERO) {
+                    if (pageId == INT_ZERO) {
                       final update = await http.post(
                         Uri.parse("${dotenv.env['APP_URL']}bungalow-bedroom"),
-                        // 'http://192.168.0.99:8080/sdplserver/api/bungalow-bedroom'),
                         headers: <String, String>{
                           'Content-Type': 'application/json; charset=UTF-8',
                         },
                         body: jsonEncode(_value),
-                        // body: _valu
                       );
-                      // print(update.body);
+                      var temp = await jsonDecode(update.body);
+                      print('temp==');
+                      print(temp);
+                      if (temp['status'] == SUCCESS) {
+                        showToast('Bed Room Requirement Submitted !',
+                            Colors.lightGreen, ToastGravity.TOP);
+                      }
                     } else {
                       final submit = await http.post(
                         Uri.parse(
                             "${dotenv.env['APP_URL']}update-bungalow-bedroom/$project_id"),
-                        // 'http://192.168.0.99:8080/sdplserver/api/update-bungalow-bedroom/$project_id'),
                         headers: <String, String>{
                           'Content-Type': 'application/json; charset=UTF-8',
                         },
                         body: jsonEncode(_value),
                       );
+                      var temp = await jsonDecode(submit.body);
+
+                      if (temp['status'] == SUCCESS) {
+                        showToast('Bed Room Requirement Updated !',
+                            Colors.lightGreen, ToastGravity.TOP);
+                      }
                     }
                   },
                   child: Container(
