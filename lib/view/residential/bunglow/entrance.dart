@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'package:aashiyan/components/forms.dart';
-import 'package:aashiyan/view/residential/bunglow/requirement.dart';
-
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -13,97 +11,6 @@ import '../../../components/constant.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
-
-
-import '../../../controller/auth_controller.dart';
-
-class HintDailog extends StatefulWidget {
-  int segment_id;
-  HintDailog({required this.segment_id});
-  @override
-  _HintDailogState createState() => _HintDailogState();
-}
-
-class _HintDailogState extends State<HintDailog> {
-  Future futureCall() async {
-    var plotArea = plotValue.text;
-    var area_id;
-    if ((int.parse(plotArea) >= 800) && (int.parse(plotArea) <= 1200)) {
-      area_id = AREA_800_1200;
-    } else if ((int.parse(plotArea) >= 1201) && (int.parse(plotArea) <= 2000)) {
-      area_id = AREA_1200_2000;
-    } else if ((int.parse(plotArea) >= 2001) && (int.parse(plotArea) <= 5000)) {
-      area_id = AREA_2000_5000;
-    } else if ((int.parse(plotArea) >= 5001) &&
-        (int.parse(plotArea) <= 10000)) {
-      area_id = AREA_5000_10000;
-    } else if ((int.parse(plotArea) >= 10001) &&
-        (int.parse(plotArea) <= 50000)) {
-      area_id = AREA_10000_50000;
-    }
-
-    var response = await http.get(Uri.parse(
-        'https://sdplweb.com/sdpl/api/area-suggest/$area_id/${widget.segment_id}'));
-    print("$area_id======");
-    final jsonResponse = jsonDecode(response.body);
-    final finalart = jsonResponse['areas'] as List;
-    print(finalart);
-    setState(() {
-      data = finalart;
-      print(data);
-      // if(data != null) {
-      //   hasData = true;
-      //   print("hasData");
-      //   print(hasData);
-      // }
-    });
-
-    await Future.delayed(const Duration(seconds: 2));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: futureCall(),
-      builder: (_, dataSnapshot) {
-        if (dataSnapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else {
-          Future(() {
-            // Future Callback
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Text('Employee Data'),
-                content: Container(
-                  padding: EdgeInsets.only(top: 15),
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  width: MediaQuery.of(context).size.width * 0.2,
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                          itemCount: data.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: requirementText(
-                                "${data[index]['suggest_length_ft']} X ${data[index]['suggest_width_ft']} ft",
-                              ),
-                            );
-                          })
-                    ],
-                  ),
-                ),
-              ),
-            );
-          });
-          return Container();
-        }
-      },
-    );
-  }
-}
-
 
 class Entrance extends StatefulWidget {
   const Entrance({Key? key}) : super(key: key);
@@ -122,42 +29,6 @@ class _EntranceState extends State<Entrance> {
     "4(G+3)",
     // "more"
   ];
-
-  var data;
-  bool hasData = false;
-  void getAreaData(area_id, segment_id) async {
-    // data = await getAreaSuggest(area_id, segment_id);
-  }
-
-  AlertDialog helpDialog(BuildContext context) {
-    return AlertDialog(
-      icon: IconButton(
-        icon: Icon(Icons.close),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      ),
-      content: Container(
-        padding: EdgeInsets.only(top: 15),
-        height: MediaQuery.of(context).size.height * 0.3,
-        width: MediaQuery.of(context).size.width * 0.2,
-        child: Column(
-          children: [
-            ListView.builder(
-                itemCount: data.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: requirementText(
-                      "${data[index]['suggest_length_ft']} X ${data[index]['suggest_width_ft']} ft",
-                    ),
-                  );
-                })
-          ],
-        ),
-      ),
-    );
-  }
 
   String selectedFloor = "Select";
   int floorInt = 1;
@@ -180,10 +51,6 @@ class _EntranceState extends State<Entrance> {
   List porchRequiredFaci = [];
 
   var project_id;
-
-  get area_id => null;
-  var segment_id = 0;
-  // get segment_id => null;
 
   void floor() {
     setState(() {
@@ -364,7 +231,6 @@ class _EntranceState extends State<Entrance> {
                       ? printData['bungalow_entrance']['security_kiosq_req'] ==
                           T_RUE
                       : false;
-
               securityNotRequired =
                   printData['bungalow_entrance']['security_kiosq_req'] != null
                       ? printData['bungalow_entrance']['security_kiosq_req'] ==
@@ -1306,55 +1172,35 @@ class _EntranceState extends State<Entrance> {
                     ),
                   ],
                 ),
-
-                InkWell(
-                    onTap: () {
-                      if (securityRequired == true) {
-                        segment_id = SEGMENT_SECURITY_KIOSK;
-                        getAreaData(area_id, segment_id);
-                      }
-
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              helpDialog(context));
-                    },
-                    child: requirementText("help ?"))
-              ],
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Material(
-              elevation: 10,
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                color: Colors.white,
-                child: SizedBox(
-                  width: width * 9,
-                  height: height * 0.3,
-                  child: FutureBuilder(
-                      future: getRecent(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Container(
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        } else {
-                          return CarouselSlider.builder(
-                            itemCount: bunglowPageRecentList.length,
-                            itemBuilder: (context, i, id) {
-                              return Container(
-                                height: height * 0.4,
-                                width: width * 0.9,
-                                child: Image.network(
-                                  imageUrl +
-                                      bunglowPageRecentList[i]["img_path"],
-                                  fit: BoxFit.fill,
-
+                if (securityRequired == true) ...[
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
+                  Row(
+                    children: [
+                      requirementText("Length"),
+                      SizedBox(
+                        width: width * 0.015,
+                      ),
+                      Material(
+                        elevation: 5,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        child: SizedBox(
+                          height: height * 0.04,
+                          width: width * 0.15,
+                          child: TextFormField(
+                            initialValue: printData != null &&
+                                    printData["bungalow_entrance"] != null
+                                ? printData["bungalow_entrance"]
+                                    ["security_kiosq_length"]
+                                : '',
+                            style: const TextStyle(fontSize: 14),
+                            decoration: const InputDecoration(
+                                hintText: "lenght",
+                                hintStyle: TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
                                 ),
                                 isDense: true,
                                 contentPadding: EdgeInsets.all(8)
@@ -1505,40 +1351,7 @@ class _EntranceState extends State<Entrance> {
                         ),
                       ],
                     ),
-
-                  ),
-                ),
-                valueContainer(height, width, size, 0.04, 0.05),
-                SizedBox(
-                  width: width * 0.01,
-                ),
-                InkWell(
-                    onTap: () {
-                      if (porchRequired == true) {
-                        segment_id = SEGMENT_PORCH;
-                        getAreaData(area_id, segment_id);
-                      }
-                      showDialog(
-                          useSafeArea: true,
-                          context: context,
-                          builder: (BuildContext context) =>
-                              helpDialog(context));
-                    },
-                    child: requirementText("help ?"))
-              ],
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Row(
-              children: [
-                Material(
-                  borderRadius: BorderRadius.circular(5),
-                  elevation: 5,
-                  child: Container(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Row(
-
+                    Row(
                       children: [
                         SizedBox(
                           width: width * 0.05,
@@ -2629,100 +2442,6 @@ class _EntranceState extends State<Entrance> {
                             Colors.lightGreen, ToastGravity.TOP);
                       }
                     }
-
-                  }
-                },
-              );
-              if (pageId != null) {
-                // print("put data");
-
-                var status = await entrancePut(
-                  project_id,
-                  // provider.project_id,
-                  moderateString,
-                  floorInt,
-                  gate,
-                  entranceSelectedGates,
-                  gate,
-                  selectedCarGate,
-                  selectedSidePadest,
-                  diffrentCustomizedLocationController,
-                  securityReqInt,
-                  securityKioskLengthController,
-                  securityKioskWidthController,
-                  securityKiosqArea,
-                  INT_ZERO,
-                  porchReqInt,
-                  porchLengthController,
-                  porchWidthController,
-                  porchArea,
-                  porchRequiredFaci,
-                  visualNaturString,
-                  carParkingString,
-                  requiredWelcomeLobyy!,
-                  foyerLengthController,
-                  foyerWidthController,
-                  foyerArea,
-                  SelectedLobbyDesign,
-                  requiredVerandaInt,
-                  verandaLengthController,
-                  verandaWidthController,
-                  verandaArea,
-                  veranda,
-                );
-                if (status == SUCCESS) {
-                  showToast('Entrance Requirement Updated !', Colors.lightGreen,
-                      ToastGravity.TOP);
-                }
-              } else {
-                var status = await entrancePost(
-                  project_id,
-                  moderateString,
-                  floorInt,
-                  gate,
-                  entranceSelectedGates,
-                  gate,
-                  selectedCarGate,
-                  selectedSidePadest,
-                  diffrentCustomizedLocationController,
-                  securityReqInt,
-                  securityKioskLengthController,
-                  securityKioskWidthController,
-                  securityKiosqArea,
-                  INT_ZERO,
-                  porchReqInt,
-                  porchLengthController,
-                  porchWidthController,
-                  porchArea,
-                  porchRequiredFaci,
-                  visualNaturString,
-                  carParkingString,
-                  requiredWelcomeLobyy!,
-                  foyerLengthController,
-                  foyerWidthController,
-                  foyerArea,
-                  SelectedLobbyDesign,
-                  requiredVerandaInt,
-                  verandaLengthController,
-                  verandaWidthController,
-                  verandaArea,
-                  veranda,
-                );
-                if (status == SUCCESS) {
-                  showToast('Entrance Requirement submitted successfully!',
-                      Colors.lightGreen, ToastGravity.TOP);
-                }
-              }
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                  color: buttonColor, borderRadius: BorderRadius.circular(4)),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: const Text(
-                "save and continue",
-                style: TextStyle(color: Colors.white, fontSize: 14),
-              ),
-
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -2737,7 +2456,6 @@ class _EntranceState extends State<Entrance> {
                   ),
                 )
               ],
-
             ),
           );
   }
