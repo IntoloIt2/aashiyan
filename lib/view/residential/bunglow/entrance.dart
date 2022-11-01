@@ -365,7 +365,7 @@ class _EntranceState extends State<Entrance> {
       print(e.toString());
     }
   }
-  
+
   Future<dynamic> getUserId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('userData');
