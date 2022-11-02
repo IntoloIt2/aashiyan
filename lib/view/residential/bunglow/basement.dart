@@ -1,11 +1,13 @@
 // ignore_for_file: unused_import, use_key_in_widget_constructors, prefer_typing_uninitialized_variables, unnecessary_null_comparison, non_constant_identifier_names, avoid_print, prefer_if_null_operators, avoid_unnecessary_containers, sized_box_for_whitespace, must_be_immutable
 
+import 'dart:async';
 import 'dart:convert';
 import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../const.dart';
@@ -27,14 +29,29 @@ class _BasementState extends State<Basement> {
   var viewData;
   var barFaci = [];
   var officeFac = [];
+  var project_id = 0;
+  late var timer;
 
   @override
   void initState() {
     // ignore: todo
     // TODO: implement initState
+
     super.initState();
+
+    timer = Timer.periodic(
+        Duration(seconds: 1),
+        (Timer t) => setState(() {
+              isloading = true;
+            }));
     // print(id);
     getData();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
   List<String> otherFacilities = [];
@@ -52,6 +69,16 @@ class _BasementState extends State<Basement> {
         otherFacilities = result;
       });
     }
+  }
+
+  void showToast(msg, toastColor, GRAVITY) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 0,
+        backgroundColor: toastColor,
+        textColor: Colors.white);
   }
 
   int officeLengthController = 0;
@@ -110,6 +137,7 @@ class _BasementState extends State<Basement> {
   ];
 
   String homeTheaterFloor = "Select Floor";
+
   List<String> homeTheaterFloorItems = [
     "Select Floor",
     "Ground Floor",
@@ -250,11 +278,16 @@ class _BasementState extends State<Basement> {
   bool? gardenRequirement = false;
   int gardenRequirementInt = 0;
 
+  bool isloading = false;
+
   Future<void> getData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    project_id = prefs.getInt('projectId')!;
+    print('project_id===');
+    // print(project_id);
     var response = await http.get(
       Uri.parse(
-        "${dotenv.env['APP_URL']}edit-bungalow-basement/179",
-        // "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-basement/179",
+        "${dotenv.env['APP_URL']}edit-bungalow-basement/$project_id",
       ),
     );
     final jsonResponse = jsonDecode(response.body);
@@ -263,45 +296,69 @@ class _BasementState extends State<Basement> {
       // print(jsonResponse);
       setState(() {
         viewData = jsonResponse;
-        pageId = viewData['bungalow_basement']['id'];
+        print('viewData------');
+        print(viewData);
 
-        if (viewData != null) {
+        if (viewData['status'] == SUCCESS) {
+          pageId = viewData['bungalow_basement']['id'] != null
+              ? viewData['bungalow_basement']['id'].toString()
+              : pageId;
+
           BasementRequirement =
               viewData["bungalow_basement"]['basement_req'] == T_RUE
                   ? true
                   : false;
+
           slectedBasement =
               viewData["bungalow_basement"]['basement_type'] != null
-                  ? viewData["bungalow_basement"]['basement_type']
-                  : "ForParking";
-          StiltRequirement = viewData["bungalow_basement"]['stilt_req'] == T_RUE
-              ? true
+                  ? viewData["bungalow_basement"]['basement_type'].toString()
+                  : slectedBasement;
+
+          StiltRequirement = viewData["bungalow_basement"]['stilt_req'] != null
+              ? viewData["bungalow_basement"]['stilt_req'] == T_RUE
+                  ? true
+                  : false
               : false;
+          StiltNotRequire = viewData["bungalow_basement"]['stilt_req'] != null
+              ? viewData["bungalow_basement"]['stilt_req'] == T_RUE
+                  ? true
+                  : false
+              : false;
+          slectedstilt = viewData["bungalow_basement"]['stilt_type'] != null
+              ? viewData["bungalow_basement"]["stilt_type"].toString()
+              : slectedstilt;
           officeRequirement =
               viewData["bungalow_basement"]['office_req'] == T_RUE
+                  ? true
+                  : false;
+          officeNotRequire =
+              viewData["bungalow_basement"]["office_req"] == T_RUE
                   ? true
                   : false;
           selectedOfficeLocation =
               viewData["bungalow_basement"]['office_location'] != null
                   ? viewData["bungalow_basement"]['office_location']
                   : "ForParking";
+
           officeLengthController =
               viewData["bungalow_basement"]['office_length'] != null
                   ? int.parse(
                       viewData["bungalow_basement"]['office_length'].toString())
                   : INT_ZERO;
+
           officeWidthController =
               viewData["bungalow_basement"]['office_width'] != null
                   ? int.parse(
                       viewData["bungalow_basement"]['office_width'].toString())
                   : INT_ZERO;
 
-          officeFac = viewData != null
+          officeFac = viewData["bungalow_basement"] != null
               ? viewData["bungalow_basement"]['office_facility']
                   .toString()
                   .split(',')
               : [];
-          if (viewData != null
+
+          if (viewData["bungalow_basement"] != null
               ? viewData['bungalow_basement']['office_facility'] != null
               : officeFac != null) {
             for (int i = 0; i < officeFac.length; i++) {
@@ -315,13 +372,20 @@ class _BasementState extends State<Basement> {
                   .toString()
                   .split(',')
               : [];
+
           officeSpecificReqController = viewData["bungalow_basement"]
                       ['office_specific_req'] !=
                   null
               ? viewData["bungalow_basement"]['office_specific_req'].toString()
               : '';
+
           servantRequirement =
-              viewData["bungalow_basement"]['servent_quarter_req'] == STR_ONE
+              viewData["bungalow_basement"]['servent_quarter_req'] == T_RUE
+                  ? true
+                  : false;
+
+          servantNotRequired =
+              viewData["bungalow_basement"]['servent_quarter_req'] == T_RUE
                   ? true
                   : false;
           serventLengthController =
@@ -360,7 +424,11 @@ class _BasementState extends State<Basement> {
                   : [];
 
           HomeTheaterRequirement =
-              viewData["bungalow_basement"]['home_theater_req'] == 1
+              viewData["bungalow_basement"]['home_theater_req'] == T_RUE
+                  ? true
+                  : false;
+          HomeTheaterNotRequired =
+              viewData["bungalow_basement"]['home_theater_req'] == T_RUE
                   ? true
                   : false;
           homeTheaterLengthController =
@@ -380,6 +448,17 @@ class _BasementState extends State<Basement> {
                   ? viewData["bungalow_basement"]['home_theater_location']
                       .toString()
                   : '';
+          homeTheaterSpecificController =
+              viewData["bungalow_basement"]['home_theater_specific_req'] != null
+                  ? viewData["bungalow_basement"]['home_theater_specific_req']
+                      .toString()
+                  : '';
+
+          selectedSeats = viewData["bungalow_basement"]['home_theater_seats'] !=
+                  null
+              ? viewData["bungalow_basement"]['home_theater_seats'].toString()
+              : '';
+
           AdditionalRequirement =
               viewData["bungalow_basement"]['parking_garage_req'] == T_RUE
                   ? true
@@ -396,6 +475,12 @@ class _BasementState extends State<Basement> {
                           ['parking_garage_width']
                       .toString())
                   : INT_ZERO;
+          additionalCarsController =
+              viewData["bungalow_basement"]['no_of_cars'] != null
+                  ? int.parse(
+                      viewData["bungalow_basement"]['no_of_cars'].toString())
+                  : INT_ZERO;
+
           sepratedShadeController =
               viewData["bungalow_basement"]['saperate_shade'] != null
                   ? viewData["bungalow_basement"]['saperate_shade'].toString()
@@ -437,6 +522,9 @@ class _BasementState extends State<Basement> {
           barRequirement =
               viewData["bungalow_basement"]['bar_req'] == T_RUE ? true : false;
 
+          barNotRequired =
+              viewData["bungalow_basement"]['bar_req'] == T_RUE ? true : false;
+
           barLengthController =
               viewData["bungalow_basement"]['bar_length'] != null
                   ? int.parse(
@@ -450,7 +538,7 @@ class _BasementState extends State<Basement> {
               viewData["bungalow_basement"]['bar_location'] != null
                   ? viewData["bungalow_basement"]['bar_location'].toString()
                   : '';
-          if (barFaci != null) {
+          if (barFaci != null && barFaci != []) {
             if (barFaci.asMap().containsKey(0)) {
               if (barFaci[0] == STR_ONE) barFacility1 = true;
             }
@@ -537,7 +625,6 @@ class _BasementState extends State<Basement> {
                   null
               ? viewData["bungalow_basement"]['garden_specific_req'].toString()
               : '';
-          // print(barFaci);
         }
         // print(viewData);
       });
@@ -551,7 +638,7 @@ class _BasementState extends State<Basement> {
 
     // print(otherFacilities);
 
-    return viewData == null
+    return isloading == false
         ? Container(child: const CircularProgressIndicator())
         : Container(
             child: Column(
@@ -577,23 +664,30 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData["bungalow_basement"]
-                                                  ["basement_req"] !=
-                                              null
-                                          ? viewData["bungalow_basement"]
-                                                      ["basement_req"] ==
-                                                  T_RUE
-                                              ? true
-                                              : BasementRequirement
-                                          : BasementRequirement,
+                                      // value: viewData["bungalow_basement"] !=
+                                      //         null
+                                      //     ? viewData["bungalow_basement"]
+                                      //                 ["basement_req"] !=
+                                      //             null
+                                      //         ? viewData["bungalow_basement"]
+                                      //                     ["basement_req"] ==
+                                      //                 T_RUE
+                                      //             ? true
+                                      //             : BasementRequirement
+                                      //         : BasementRequirement
+                                      //     : BasementRequirement,
+                                      value: BasementRequirement,
                                       onChanged: (value) {
                                         setState(
                                           () {
                                             BasementRequirement = value;
                                             BasementNotRequire = false;
-                                            if (viewData["bungalow_basement"]
-                                                    ["basement_req"] !=
-                                                null) {
+                                            if (viewData["bungalow_basement"] !=
+                                                    null
+                                                ? viewData["bungalow_basement"]
+                                                        ["basement_req"] !=
+                                                    null
+                                                : false) {
                                               viewData["bungalow_basement"]
                                                   ["basement_req"] = null;
                                             }
@@ -628,22 +722,29 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData["bungalow_basement"]
-                                                  ["basement_req"] !=
-                                              null
-                                          ? viewData["bungalow_basement"]
-                                                      ["basement_req"] ==
-                                                  F_ALSE
-                                              ? true
-                                              : BasementNotRequire
-                                          : BasementNotRequire,
+                                      // value: viewData["bungalow_basement"] !=
+                                      //         null
+                                      //     ? viewData["bungalow_basement"]
+                                      //                 ["basement_req"] !=
+                                      //             null
+                                      //         ? viewData["bungalow_basement"]
+                                      //                     ["basement_req"] ==
+                                      //                 F_ALSE
+                                      //             ? true
+                                      //             : BasementNotRequire
+                                      //         : BasementNotRequire
+                                      //     : BasementNotRequire,
+                                      value: BasementNotRequire,
                                       onChanged: (value) {
                                         setState(() {
                                           BasementNotRequire = value;
                                           BasementRequirement = false;
-                                          if (viewData["bungalow_basement"]
-                                                  ["basement_req"] !=
-                                              null) {
+                                          if (viewData["bungalow_basement"] !=
+                                                  null
+                                              ? viewData["bungalow_basement"]
+                                                      ["basement_req"] !=
+                                                  null
+                                              : false) {
                                             viewData["bungalow_basement"]
                                                 ["basement_req"] = null;
                                           }
@@ -665,8 +766,10 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                if (viewData["bungalow_basement"]["basement_req"] != null
-                    ? viewData["bungalow_basement"]["basement_req"] == T_RUE
+                if (viewData["bungalow_basement"] != null
+                    ? viewData["bungalow_basement"]["basement_req"] != null
+                        ? viewData["bungalow_basement"]["basement_req"] == T_RUE
+                        : BasementRequirement == true
                     : BasementRequirement == true) ...[
                   Row(
                     children: [
@@ -685,25 +788,23 @@ class _BasementState extends State<Basement> {
                                 icon: const Visibility(
                                     visible: false,
                                     child: Icon(Icons.arrow_downward)),
-                                hint: viewData['bungalow_basement']
-                                            ['basement_type'] !=
-                                        null
-                                    ? Text(basementList[
-                                        viewData['bungalow_basement']
-                                            ['basement_type']])
-                                    : Text(slectedBasement),
+                                hint: Text(slectedBasement),
+
+                                //  viewData['bungalow_basement'] != null
+                                //     ? viewData['bungalow_basement']
+                                //                 ['basement_type'] !=
+                                //             null
+                                //         ? Text(basementList[
+                                //             viewData['bungalow_basement']
+                                //                 ['basement_type']])
+                                //         : Text(slectedBasement)
+                                //     : Text(slectedBasement),
                                 // value:  slectedBasement,
                                 items: basementList
                                     .map((it) => DropdownMenuItem<String>(
                                         value: it, child: Text(it)))
                                     .toList(),
                                 onChanged: (it) => setState(() {
-                                      if (viewData['bungalow_basement']
-                                              ['basement_type'] !=
-                                          null) {
-                                        viewData['bungalow_basement']
-                                            ['basement_type'] = null;
-                                      }
                                       slectedBasement = it!;
                                     })),
                           ),
@@ -735,21 +836,28 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData['bungalow_basement']
-                                                  ['stilt_req'] !=
-                                              null
-                                          ? viewData['bungalow_basement']
-                                                      ['stilt_req'] ==
-                                                  T_RUE
-                                              ? true
-                                              : StiltRequirement
-                                          : StiltRequirement,
+                                      // value: viewData['bungalow_basement'] !=
+                                      //         null
+                                      //     ? viewData['bungalow_basement']
+                                      //                 ['stilt_req'] !=
+                                      //             null
+                                      //         ? viewData['bungalow_basement']
+                                      //                     ['stilt_req'] ==
+                                      //                 T_RUE
+                                      //             ? true
+                                      //             : StiltRequirement
+                                      //         : StiltRequirement
+                                      //     : StiltRequirement,
+                                      value: StiltRequirement,
                                       onChanged: (value) {
                                         setState(
                                           () {
-                                            if (viewData['bungalow_basement']
-                                                    ['stilt_req'] !=
-                                                null) {
+                                            if (viewData['bungalow_basement'] !=
+                                                    null
+                                                ? viewData['bungalow_basement']
+                                                        ['stilt_req'] !=
+                                                    null
+                                                : false) {
                                               viewData['bungalow_basement']
                                                   ['stilt_req'] = null;
                                             }
@@ -786,15 +894,19 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData['bungalow_basement']
-                                                  ['stilt_req'] !=
-                                              null
-                                          ? viewData['bungalow_basement']
-                                                      ['stilt_req'] ==
-                                                  F_ALSE
-                                              ? true
-                                              : StiltNotRequire
-                                          : StiltNotRequire,
+                                      // value: viewData['bungalow_basement'] !=
+                                      //         null
+                                      //     ? viewData['bungalow_basement']
+                                      //                 ['stilt_req'] !=
+                                      //             null
+                                      //         ? viewData['bungalow_basement']
+                                      //                     ['stilt_req'] ==
+                                      //                 F_ALSE
+                                      //             ? true
+                                      //             : StiltNotRequire
+                                      //         : StiltNotRequire
+                                      //     : StiltNotRequire,
+                                      value: StiltNotRequire,
                                       onChanged: (value) {
                                         setState(() {
                                           if (viewData['bungalow_basement']
@@ -823,8 +935,10 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                if (viewData['bungalow_basement']['stilt_req'] != null
-                    ? viewData['bungalow_basement']['stilt_req'] == T_RUE
+                if (viewData['bungalow_basement'] != null
+                    ? viewData['bungalow_basement']['stilt_req'] != null
+                        ? viewData['bungalow_basement']['stilt_req'] == T_RUE
+                        : StiltRequirement == true
                     : StiltRequirement == true) ...[
                   Row(
                     children: [
@@ -843,13 +957,17 @@ class _BasementState extends State<Basement> {
                               icon: const Visibility(
                                   visible: false,
                                   child: Icon(Icons.arrow_downward)),
-                              hint: viewData["bungalow_basement"]
-                                          ["basement_type"] !=
-                                      null
-                                  ? Text(stiltList[int.parse(
-                                      viewData["bungalow_basement"]
-                                          ["basement_type"])])
-                                  : Text(slectedstilt),
+                              // hint: viewData["bungalow_basement"] != null
+                              //     ? viewData["bungalow_basement"]
+                              //                 ["stilt_type"] !=
+                              //             null
+                              //         ? Text(stiltList[int.parse(
+                              //             viewData["bungalow_basement"]
+                              //                 ["basement_type"])])
+                              //         : Text(slectedstilt)
+                              //     : Text(slectedstilt),
+                              hint: Text(slectedstilt),
+                              // hint:Text(),
                               items: stiltList
                                   .map((it) => DropdownMenuItem<String>(
                                       value: it, child: Text(it)))
@@ -887,21 +1005,28 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData['bungalow_basement']
-                                                  ['office_req'] !=
-                                              null
-                                          ? viewData['bungalow_basement']
-                                                      ['office_req'] ==
-                                                  T_RUE
-                                              ? true
-                                              : officeRequirement
-                                          : officeRequirement,
+                                      // value: viewData['bungalow_basement'] !=
+                                      //         null
+                                      //     ? viewData['bungalow_basement']
+                                      //                 ['office_req'] !=
+                                      //             null
+                                      //         ? viewData['bungalow_basement']
+                                      //                     ['office_req'] ==
+                                      //                 T_RUE
+                                      //             ? true
+                                      //             : officeRequirement
+                                      //         : officeRequirement
+                                      //     : officeRequirement,
+                                      value: officeRequirement,
                                       onChanged: (value) {
                                         setState(
                                           () {
-                                            if (viewData['bungalow_basement']
-                                                    ['office_req'] !=
-                                                null) {
+                                            if (viewData['bungalow_basement'] !=
+                                                    null
+                                                ? viewData['bungalow_basement']
+                                                        ['office_req'] !=
+                                                    null
+                                                : false) {
                                               viewData['bungalow_basement']
                                                   ['office_req'] = null;
                                             }
@@ -938,22 +1063,29 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData['bungalow_basement']
-                                                  ['office_req'] !=
-                                              null
-                                          ? viewData['bungalow_basement']
-                                                      ['office_req'] ==
-                                                  F_ALSE
-                                              ? true
-                                              : officeNotRequire
-                                          : officeNotRequire,
+                                      // value: viewData['bungalow_basement'] !=
+                                      //         null
+                                      //     ? viewData['bungalow_basement']
+                                      //                 ['office_req'] !=
+                                      //             null
+                                      //         ? viewData['bungalow_basement']
+                                      //                     ['office_req'] ==
+                                      //                 F_ALSE
+                                      //             ? true
+                                      //             : officeNotRequire
+                                      //         : officeNotRequire
+                                      //     : officeNotRequire,
+                                      value: officeNotRequire,
                                       onChanged: (value) {
                                         setState(() {
                                           officeNotRequire = value;
                                           officeRequirement = false;
-                                          if (viewData['bungalow_basement']
-                                                  ['office_req'] !=
-                                              null) {
+                                          if (viewData['bungalow_basement'] !=
+                                                  null
+                                              ? viewData['bungalow_basement']
+                                                      ['office_req'] !=
+                                                  null
+                                              : false) {
                                             viewData['bungalow_basement']
                                                 ['office_req'] = null;
                                           }
@@ -975,8 +1107,10 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                if (viewData['bungalow_basement']['office_req'] != null
-                    ? viewData['bungalow_basement']['office_req'] == T_RUE
+                if (viewData['bungalow_basement'] != null
+                    ? viewData['bungalow_basement']['office_req'] != null
+                        ? viewData['bungalow_basement']['office_req'] == T_RUE
+                        : officeRequirement == true
                     : officeRequirement == true) ...[
                   Row(
                     children: [
@@ -1001,8 +1135,10 @@ class _BasementState extends State<Basement> {
                                   height: height * 0.04,
                                   width: width * 0.15,
                                   child: TextFormField(
-                                    initialValue: viewData["bungalow_basement"]
-                                        ["office_length"],
+                                    // initialValue: viewData["bungalow_basement"]
+                                    //     ["office_length"],
+                                    initialValue:
+                                        officeLengthController.toString(),
                                     style: const TextStyle(fontSize: 14),
                                     decoration: const InputDecoration(
                                         hintText: "length",
@@ -1014,6 +1150,14 @@ class _BasementState extends State<Basement> {
                                         contentPadding: EdgeInsets.all(8)),
                                     onChanged: (value) {
                                       officeLengthController = int.parse(value);
+                                      if (viewData['bungalow_basement'] != null
+                                          ? viewData['bungalow_basement']
+                                                  ['office_length'] !=
+                                              null
+                                          : false) {
+                                        viewData['bungalow_basement']
+                                            ['office_length'] = null;
+                                      }
                                     },
                                   ),
                                 ),
@@ -1040,8 +1184,10 @@ class _BasementState extends State<Basement> {
                                   height: height * 0.04,
                                   width: width * 0.15,
                                   child: TextFormField(
-                                    initialValue: viewData["bungalow_basement"]
-                                        ["office_width"],
+                                    // initialValue: viewData["bungalow_basement"]
+                                    //     ["office_width"],
+                                    initialValue:
+                                        officeWidthController.toString(),
                                     style: const TextStyle(fontSize: 14),
                                     decoration: const InputDecoration(
                                         hintText: "length",
@@ -1053,6 +1199,14 @@ class _BasementState extends State<Basement> {
                                         contentPadding: EdgeInsets.all(8)),
                                     onChanged: (value) {
                                       officeLengthController = int.parse(value);
+                                      if (viewData['bungalow_basement'] != null
+                                          ? viewData['bungalow_basement']
+                                                  ['office_width'] !=
+                                              null
+                                          : false) {
+                                        viewData['bungalow_basement']
+                                            ['office_width'] = null;
+                                      }
                                     },
                                   ),
                                 ),
@@ -1104,15 +1258,14 @@ class _BasementState extends State<Basement> {
                                 icon: const Visibility(
                                     visible: false,
                                     child: Icon(Icons.arrow_downward)),
-                                hint: viewData['bungalow_basement']
-                                            ["office_location"] !=
-                                        null
-                                    ? Text(viewData['bungalow_basement']
-                                        ["office_location"])
-                                    : Text(selectedOfficeLocation),
-
-                                //value: selectedOfficeLocation,
-
+                                // hint: viewData['bungalow_basement']
+                                //             ["office_location"] !=
+                                //         null
+                                //     ? Text(viewData['bungalow_basement']
+                                //         ["office_location"])
+                                //     : Text(selectedOfficeLocation),
+                                hint: Text(selectedOfficeLocation),
+                                // value: selectedOfficeLocation,
                                 elevation: 16,
                                 items: listOfficeLocation
                                     .map((it) => DropdownMenuItem<String>(
@@ -1215,12 +1368,13 @@ class _BasementState extends State<Basement> {
                           height: height * 0.04,
                           width: width * 0.5,
                           child: TextFormField(
-                            initialValue: viewData["bungalow_basement"]
-                                        ["office_specific_req"] !=
-                                    null
-                                ? viewData["bungalow_basement"]
-                                    ["office_specific_req"]
-                                : '',
+                            // initialValue: viewData["bungalow_basement"]
+                            //             ["office_specific_req"] !=
+                            //         null
+                            //     ? viewData["bungalow_basement"]
+                            //         ["office_specific_req"]
+                            //     : '',
+                            initialValue: officeSpecificReqController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Other requirement",
@@ -1232,6 +1386,13 @@ class _BasementState extends State<Basement> {
                                 contentPadding: EdgeInsets.all(8)),
                             onChanged: (value) {
                               officeSpecificReqController = value;
+                              if (viewData['bungalow_basement']
+                                      ["office_specific_req"] !=
+                                  null) {
+                                viewData['bungalow_basement']
+                                        ["office_specific_req"] =
+                                    officeSpecificReqController;
+                              }
                             },
                           ),
                         ),
@@ -1262,25 +1423,27 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
-                                          ? viewData["bungalow_basement"]
-                                                      ["servent_quarter_req"] ==
-                                                  STR_ONE
-                                              ? true
-                                              : servantRequirement
-                                          : servantRequirement,
+                                      // value: viewData["bungalow_basement"] !=
+                                      //         null
+                                      //     ? viewData["bungalow_basement"]
+                                      //                 ["servent_quarter_req"] ==
+                                      //             STR_ONE
+                                      //         ? true
+                                      //         : servantRequirement
+                                      //     : servantRequirement,
+                                      value: servantRequirement,
                                       onChanged: (value) {
                                         setState(
                                           () {
-                                            servantRequirement = value;
-                                            servantNotRequired = false;
                                             if (viewData["bungalow_basement"]
                                                     ["servent_quarter_req"] !=
                                                 null) {
                                               viewData["bungalow_basement"]
                                                       ["servent_quarter_req"] =
-                                                  INT_THREE;
+                                                  null;
                                             }
+                                            servantRequirement = value;
+                                            servantNotRequired = false;
                                           },
                                         );
                                       }),
@@ -1312,13 +1475,17 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
-                                          ? viewData["bungalow_basement"]
-                                                      ["servent_quarter_req"] ==
-                                                  STR_ZERO
-                                              ? true
-                                              : servantNotRequired
-                                          : servantNotRequired,
+                                      // value: viewData["bungalow_basement"] !=
+                                      //         null
+                                      //     ? viewData != null
+                                      //         ? viewData["bungalow_basement"][
+                                      //                     "servent_quarter_req"] ==
+                                      //                 STR_ZERO
+                                      //             ? true
+                                      //             : servantNotRequired
+                                      //         : servantNotRequired
+                                      //     : servantNotRequired,
+                                      value: servantNotRequired,
                                       onChanged: (value) {
                                         setState(() {
                                           servantNotRequired = value;
@@ -1327,8 +1494,7 @@ class _BasementState extends State<Basement> {
                                                   ["servent_quarter_req"] !=
                                               null) {
                                             viewData["bungalow_basement"]
-                                                    ["servent_quarter_req"] =
-                                                STR_THREE;
+                                                ["servent_quarter_req"] = null;
                                           }
                                         });
                                       }),
@@ -1348,9 +1514,14 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                if (servantRequirement == true ||
-                    viewData["bungalow_basement"]["servent_quarter_req"] ==
-                        STR_ONE) ...[
+                if (viewData['bungalow_basement'] != null
+                    ? viewData['bungalow_basement']['servent_quarter_req'] !=
+                            null
+                        ? viewData['bungalow_basement']
+                                ['servent_quarter_req'] ==
+                            T_RUE
+                        : servantRequirement == true
+                    : servantRequirement == true) ...[
                   Row(
                     children: [
                       Flexible(
@@ -1372,12 +1543,14 @@ class _BasementState extends State<Basement> {
                                 height: height * 0.04,
                                 width: width * 0.15,
                                 child: TextFormField(
-                                  initialValue: viewData["bungalow_basement"]
-                                              ["servent_quarter_length"] !=
-                                          null
-                                      ? viewData["bungalow_basement"]
-                                          ["servent_quarter_length"]
-                                      : '',
+                                  // initialValue: viewData["bungalow_basement"]
+                                  //             ["servent_quarter_length"] !=
+                                  //         null
+                                  //     ? viewData["bungalow_basement"]
+                                  //         ["servent_quarter_length"]
+                                  //     : '',
+                                  initialValue:
+                                      serventLengthController.toString(),
                                   style: const TextStyle(fontSize: 14),
                                   decoration: const InputDecoration(
                                       hintText: "Length",
@@ -1388,6 +1561,14 @@ class _BasementState extends State<Basement> {
                                       isDense: true,
                                       contentPadding: EdgeInsets.all(8)),
                                   onChanged: (value) {
+                                    // if (viewData['bungalow_basement'] != null
+                                    //     ? viewData['bungalow_basement']
+                                    //             ['servent_quarter_length'] !=
+                                    //         null
+                                    //     : false) {
+                                    //   viewData['bungalow_basement']
+                                    //       ['servent_quarter_length'] = null;
+                                    // }
                                     serventLengthController = int.parse(value);
                                   },
                                 ),
@@ -1416,12 +1597,14 @@ class _BasementState extends State<Basement> {
                                   height: height * 0.04,
                                   width: width * 0.15,
                                   child: TextFormField(
-                                    initialValue: viewData["bungalow_basement"]
-                                                ["servent_quarter_width"] !=
-                                            null
-                                        ? viewData["bungalow_basement"]
-                                            ["servent_quarter_width"]
-                                        : '',
+                                    // initialValue: viewData["bungalow_basement"]
+                                    //             ["servent_quarter_width"] !=
+                                    //         null
+                                    //     ? viewData["bungalow_basement"]
+                                    //         ["servent_quarter_width"]
+                                    //     : '',
+                                    initialValue:
+                                        serventWidthController.toString(),
                                     style: const TextStyle(fontSize: 14),
                                     decoration: const InputDecoration(
                                         hintText: "width",
@@ -1487,16 +1670,17 @@ class _BasementState extends State<Basement> {
                                 icon: const Visibility(
                                     visible: false,
                                     child: Icon(Icons.arrow_downward)),
-                                hint: viewData['bungalow_basement'] != null
-                                    ? viewData['bungalow_basement']
-                                                ['servent_quarter_location'] !=
-                                            null
-                                        ? Text(viewData['bungalow_basement']
-                                                ['servent_quarter_location']
-                                            .toString())
-                                        : Text(serventLocation)
-                                    : Text(serventLocation),
+                                // hint: viewData['bungalow_basement'] != null
+                                //     ? viewData['bungalow_basement']
+                                //                 ['servent_quarter_location'] !=
+                                //             null
+                                //         ? Text(viewData['bungalow_basement']
+                                //                 ['servent_quarter_location']
+                                //             .toString())
+                                //         : Text(serventLocation)
+                                //     : Text(serventLocation),
                                 // value: serventLocation,
+                                hint: Text(serventLocation),
                                 elevation: 16,
                                 items: serventItems
                                     .map((it) => DropdownMenuItem<String>(
@@ -1543,15 +1727,16 @@ class _BasementState extends State<Basement> {
                                 icon: const Visibility(
                                     visible: false,
                                     child: Icon(Icons.arrow_downward)),
-                                hint: viewData['bungalow_basement'] != null
-                                    ? viewData['bungalow_basement']
-                                                ['no_of_servent_quarter'] !=
-                                            null
-                                        ? Text(viewData['bungalow_basement']
-                                                ['no_of_servent_quarter']
-                                            .toString())
-                                        : Text(selectedServent)
-                                    : Text(selectedServent),
+                                // hint: viewData['bungalow_basement'] != null
+                                //     ? viewData['bungalow_basement']
+                                //                 ['no_of_servent_quarter'] !=
+                                //             null
+                                //         ? Text(viewData['bungalow_basement']
+                                //                 ['no_of_servent_quarter']
+                                //             .toString())
+                                //         : Text(selectedServent)
+                                //     : Text(selectedServent),
+                                hint: Text(selectedServent),
                                 // value: selectedServent,
                                 elevation: 16,
                                 items: noOfServents
@@ -1640,17 +1825,18 @@ class _BasementState extends State<Basement> {
                             const BorderRadius.all(Radius.circular(5)),
                         child: SizedBox(
                           height: height * 0.04,
-                          width: width * 0.15,
+                          width: width * 0.5,
                           child: TextFormField(
-                            initialValue: viewData["bungalow_basement"]
-                                        ["servent_quarter_width"] !=
-                                    null
-                                ? viewData["bungalow_basement"]
-                                    ["servent_quarter_width"]
-                                : '',
+                            // initialValue: viewData["bungalow_basement"]
+                            //             ["servent_quarter_specific_req"] !=
+                            //         null
+                            //     ? viewData["bungalow_basement"]
+                            //         ["servent_quarter_specific_req"]
+                            //     : '',
+                            initialValue: serventSpecificController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
-                                hintText: "width",
+                                hintText: "specific requirement",
                                 hintStyle: TextStyle(fontSize: 14),
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide.none,
@@ -1658,7 +1844,7 @@ class _BasementState extends State<Basement> {
                                 isDense: true,
                                 contentPadding: EdgeInsets.all(8)),
                             onChanged: (value) {
-                              serventWidthController = int.parse(value);
+                              serventSpecificController = value;
                             },
                           ),
                         ),
@@ -1689,26 +1875,26 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData["bungalow_basement"] !=
-                                              null
-                                          ? viewData["bungalow_basement"]
-                                                      ["home_theater_req"] ==
-                                                  T_RUE
-                                              ? true
-                                              : HomeTheaterRequirement
-                                          : HomeTheaterRequirement,
+                                      // value: viewData["bungalow_basement"] !=
+                                      //         null
+                                      //     ? viewData["bungalow_basement"]
+                                      //                 ["home_theater_req"] ==
+                                      //             T_RUE
+                                      //         ? true
+                                      //         : HomeTheaterRequirement
+                                      //     : HomeTheaterRequirement,
+                                      value: HomeTheaterRequirement,
                                       onChanged: (value) {
                                         setState(
                                           () {
-                                            HomeTheaterRequirement = value;
-                                            HomeTheaterNotRequired = false;
                                             if (viewData["bungalow_basement"]
                                                     ["home_theater_req"] !=
                                                 null) {
                                               viewData["bungalow_basement"]
-                                                      ["home_theater_req"] =
-                                                  INT_THREE;
+                                                  ["home_theater_req"] = null;
                                             }
+                                            HomeTheaterRequirement = value;
+                                            HomeTheaterNotRequired = false;
                                           },
                                         );
                                       }),
@@ -1740,14 +1926,15 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData["bungalow_basement"] !=
-                                              null
-                                          ? viewData["bungalow_basement"]
-                                                      ["home_theater_req"] ==
-                                                  INT_ZERO
-                                              ? true
-                                              : HomeTheaterNotRequired
-                                          : HomeTheaterNotRequired,
+                                      // value: viewData["bungalow_basement"] !=
+                                      //         null
+                                      //     ? viewData["bungalow_basement"]
+                                      //                 ["home_theater_req"] ==
+                                      //             F_ALSE
+                                      //         ? true
+                                      //         : HomeTheaterNotRequired
+                                      //     : HomeTheaterNotRequired,
+                                      value: HomeTheaterNotRequired,
                                       onChanged: (value) {
                                         setState(() {
                                           HomeTheaterNotRequired = value;
@@ -1756,8 +1943,7 @@ class _BasementState extends State<Basement> {
                                                   ["home_theater_req"] !=
                                               null) {
                                             viewData["bungalow_basement"]
-                                                    ["home_theater_req"] =
-                                                INT_THREE;
+                                                ["home_theater_req"] = null;
                                           }
                                         });
                                       }),
@@ -1777,9 +1963,12 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                if (HomeTheaterRequirement == true ||
-                    viewData["bungalow_basement"]["home_theater_req"] ==
-                        T_RUE) ...[
+                if (viewData['bungalow_basement'] != null
+                    ? viewData['bungalow_basement']['home_theater_req'] != null
+                        ? viewData['bungalow_basement']['home_theater_req'] ==
+                            T_RUE
+                        : HomeTheaterRequirement == true
+                    : HomeTheaterRequirement == true) ...[
                   Row(
                     children: [
                       Flexible(
@@ -1802,12 +1991,14 @@ class _BasementState extends State<Basement> {
                                   height: height * 0.04,
                                   width: width * 0.15,
                                   child: TextFormField(
-                                    initialValue: viewData["bungalow_basement"]
-                                                ["home_theater_length"] !=
-                                            null
-                                        ? viewData["bungalow_basement"]
-                                            ["home_theater_length"]
-                                        : '',
+                                    // initialValue: viewData["bungalow_basement"]
+                                    //             ["home_theater_length"] !=
+                                    //         null
+                                    //     ? viewData["bungalow_basement"]
+                                    //         ["home_theater_length"]
+                                    //     : '',
+                                    initialValue:
+                                        homeTheaterLengthController.toString(),
                                     style: const TextStyle(fontSize: 14),
                                     decoration: const InputDecoration(
                                         hintText: "length",
@@ -1846,12 +2037,14 @@ class _BasementState extends State<Basement> {
                                   height: height * 0.04,
                                   width: width * 0.15,
                                   child: TextFormField(
-                                    initialValue: viewData["bungalow_basement"]
-                                                ["home_theater_width"] !=
-                                            null
-                                        ? viewData["bungalow_basement"]
-                                            ["home_theater_width"]
-                                        : '',
+                                    // initialValue: viewData["bungalow_basement"]
+                                    //             ["home_theater_width"] !=
+                                    //         null
+                                    //     ? viewData["bungalow_basement"]
+                                    //         ["home_theater_width"]
+                                    //     : ''
+                                    initialValue:
+                                        homeTheaterWidthController.toString(),
                                     style: const TextStyle(fontSize: 14),
                                     decoration: const InputDecoration(
                                         hintText: "width",
@@ -1910,16 +2103,17 @@ class _BasementState extends State<Basement> {
                                 icon: const Visibility(
                                     visible: false,
                                     child: Icon(Icons.arrow_downward)),
-                                hint: viewData["bungalow_basement"] != null
-                                    ? viewData["bungalow_basement"]
-                                                ["home_theater_location"] !=
-                                            null
-                                        ? Text(viewData["bungalow_basement"]
-                                                ["home_theater_location"]
-                                            .toString())
-                                        : Text(homeTheaterFloor)
-                                    : Text(homeTheaterFloor),
-                                // value: homeTheaterFloor,
+                                // hint: viewData["bungalow_basement"] != null
+                                //     ? viewData["bungalow_basement"]
+                                //                 ["home_theater_location"] !=
+                                //             null
+                                //         ? Text(viewData["bungalow_basement"]
+                                //                 ["home_theater_location"]
+                                //             .toString())
+                                //         : Text(homeTheaterFloor)
+                                //     : Text(homeTheaterFloor),
+                                hint: Text(homeTheaterFloor),
+                                // value: homeTheaterFloor
                                 elevation: 16,
                                 items: homeTheaterFloorItems
                                     .map((it) => DropdownMenuItem<String>(
@@ -1967,16 +2161,17 @@ class _BasementState extends State<Basement> {
                                 visible: false,
                                 child: Icon(Icons.arrow_downward),
                               ),
-                              hint: viewData["bungalow_basement"] != null
-                                  ? viewData["bungalow_basement"]
-                                              ["home_theater_seats"] !=
-                                          null
-                                      ? Text(viewData["bungalow_basement"]
-                                              ["home_theater_seats"]
-                                          .toString())
-                                      : Text(homeTheaterFloor)
-                                  : Text(homeTheaterFloor),
+                              // hint: viewData["bungalow_basement"] != null
+                              //     ? viewData["bungalow_basement"]
+                              //                 ["home_theater_seats"] !=
+                              //             null
+                              //         ? Text(viewData["bungalow_basement"]
+                              //                 ["home_theater_seats"]
+                              //             .toString())
+                              //         : Text(selectedSeats)
+                              //     : Text(selectedSeats),
                               // value: selectedSeats,
+                              hint: Text(selectedSeats),
                               elevation: 16,
                               items: seatsItems
                                   .map((it) => DropdownMenuItem<String>(
@@ -2034,11 +2229,12 @@ class _BasementState extends State<Basement> {
                           height: height * 0.04,
                           width: width * 0.5,
                           child: TextFormField(
-                            initialValue: viewData["bungalow_basement"] != null
-                                ? viewData["bungalow_basement"]
-                                        ["home_theater_specific_req"] ??
-                                    ''
-                                : '',
+                            // initialValue: viewData["bungalow_basement"] != null
+                            //     ? viewData["bungalow_basement"]
+                            //             ["home_theater_specific_req"] ??
+                            //         ''
+                            //     : '',
+                            initialValue: homeTheaterSpecificController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Special Requirement",
@@ -2080,14 +2276,16 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData["bungalow_basement"] !=
-                                              null
-                                          ? viewData["bungalow_basement"]
-                                                      ["parking_garage_req"] ==
-                                                  T_RUE
-                                              ? true
-                                              : AdditionalRequirement
-                                          : AdditionalRequirement,
+                                      // value: viewData["bungalow_basement"] !=
+                                      //         null
+                                      //     ? viewData["bungalow_basement"]
+                                      //                 ["parking_garage_req"] ==
+                                      //             T_RUE
+                                      //         ? true
+                                      //         : AdditionalRequirement
+                                      //     : AdditionalRequirement,
+
+                                      value: AdditionalRequirement,
                                       onChanged: (value) {
                                         setState(
                                           () {
@@ -2131,18 +2329,19 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                     activeColor: checkColor,
                                     checkColor: Colors.white,
-                                    value: viewData["bungalow_basement"] != null
-                                        ? viewData["bungalow_basement"]
-                                                    ["parking_garage_req"] ==
-                                                F_ALSE
-                                            ? true
-                                            : AdditionalNotRequired
-                                        : AdditionalNotRequired,
+                                    // value: viewData["bungalow_basement"] != null
+                                    //     ? viewData["bungalow_basement"]
+                                    //                 ["parking_garage_req"] ==
+                                    //             F_ALSE
+                                    //         ? true
+                                    //         : AdditionalNotRequired
+                                    //     : AdditionalNotRequired,
+                                    value: AdditionalNotRequired,
                                     onChanged: (value) {
                                       setState(() {
                                         AdditionalNotRequired = value;
                                         AdditionalRequirement = false;
-                                        print(AdditionalRequirement);
+                                        // print(AdditionalRequirement);
                                         if (viewData["bungalow_basement"] !=
                                             null) {
                                           viewData["bungalow_basement"]
@@ -2198,12 +2397,14 @@ class _BasementState extends State<Basement> {
                                 height: height * 0.04,
                                 width: width * 0.15,
                                 child: TextFormField(
-                                  initialValue: viewData["bungalow_basement"]
-                                              ["parking_garage_length"] !=
-                                          null
-                                      ? viewData["bungalow_basement"]
-                                          ["parking_garage_length"]
-                                      : '',
+                                  // initialValue: viewData["bungalow_basement"]
+                                  //             ["parking_garage_length"] !=
+                                  //         null
+                                  //     ? viewData["bungalow_basement"]
+                                  //         ["parking_garage_length"]
+                                  //     : '',
+                                  initialValue:
+                                      additionalParkingLength.toString(),
                                   style: const TextStyle(fontSize: 14),
                                   decoration: const InputDecoration(
                                       hintText: "Length",
@@ -2244,12 +2445,14 @@ class _BasementState extends State<Basement> {
                                 height: height * 0.04,
                                 width: width * 0.15,
                                 child: TextFormField(
-                                  initialValue: viewData["bungalow_basement"]
-                                              ["parking_garage_width"] !=
-                                          null
-                                      ? viewData["bungalow_basement"]
-                                          ["parking_garage_width"]
-                                      : '',
+                                  // initialValue: viewData["bungalow_basement"]
+                                  //             ["parking_garage_width"] !=
+                                  //         null
+                                  //     ? viewData["bungalow_basement"]
+                                  //         ["parking_garage_width"]
+                                  //     : '',
+                                  initialValue:
+                                      additionalParkingWidth.toString(),
                                   style: const TextStyle(fontSize: 14),
                                   decoration: const InputDecoration(
                                       hintText: "Length",
@@ -2365,14 +2568,15 @@ class _BasementState extends State<Basement> {
                                     child: Icon(Icons.arrow_downward)),
                                 // value: selectedParkingLocation,
                                 elevation: 16,
-                                hint: viewData['bungalow_basement'] != null
-                                    ? viewData['bungalow_basement']
-                                                ['parking_garage_location'] !=
-                                            null
-                                        ? Text(viewData['bungalow_basement']
-                                            ['parking_garage_location'])
-                                        : Text(selectedParkingLocation)
-                                    : Text(selectedParkingLocation),
+                                // hint: viewData['bungalow_basement'] != null
+                                //     ? viewData['bungalow_basement']
+                                //                 ['parking_garage_location'] !=
+                                //             null
+                                //         ? Text(viewData['bungalow_basement']
+                                //             ['parking_garage_location'])
+                                //         : Text(selectedParkingLocation)
+                                //     : Text(selectedParkingLocation),
+                                hint: Text(selectedParkingLocation),
                                 items: parkingLocation
                                     .map((it) => DropdownMenuItem<String>(
                                         value: it,
@@ -2418,12 +2622,13 @@ class _BasementState extends State<Basement> {
                           height: height * 0.04,
                           width: width * 0.5,
                           child: TextFormField(
-                            initialValue: viewData["bungalow_basement"]
-                                        ["saperate_shade"] !=
-                                    null
-                                ? viewData["bungalow_basement"]
-                                    ["saperate_shade"]
-                                : '',
+                            // initialValue: viewData["bungalow_basement"]
+                            //             ["saperate_shade"] !=
+                            //         null
+                            //     ? viewData["bungalow_basement"]
+                            //         ["saperate_shade"]
+                            //     : '',
+                            initialValue: sepratedShadeController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Special Requirement",
@@ -2465,12 +2670,13 @@ class _BasementState extends State<Basement> {
                           height: height * 0.04,
                           width: width * 0.5,
                           child: TextFormField(
-                            initialValue: viewData["bungalow_basement"]
-                                        ["parking_garage_specific_req"] !=
-                                    null
-                                ? viewData["bungalow_basement"]
-                                    ["parking_garage_specific_req"]
-                                : '',
+                            // initialValue: viewData["bungalow_basement"]
+                            //             ["parking_garage_specific_req"] !=
+                            //         null
+                            //     ? viewData["bungalow_basement"]
+                            //         ["parking_garage_specific_req"]
+                            //     : '',
+                            initialValue: additionalParkingSpecificController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Special Requirement",
@@ -2831,14 +3037,15 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value:
-                                          viewData['bungalow_basement'] != null
-                                              ? viewData['bungalow_basement']
-                                                          ['bar_req'] ==
-                                                      T_RUE
-                                                  ? true
-                                                  : barRequirement
-                                              : barRequirement,
+                                      // value:
+                                      //     viewData['bungalow_basement'] != null
+                                      //         ? viewData['bungalow_basement']
+                                      //                     ['bar_req'] ==
+                                      //                 T_RUE
+                                      //             ? true
+                                      //             : barRequirement
+                                      //         : barRequirement,
+                                      value: barRequirement,
                                       onChanged: (value) {
                                         setState(
                                           () {
@@ -2847,7 +3054,7 @@ class _BasementState extends State<Basement> {
                                             if (viewData['bungalow_basement'] !=
                                                 null) {
                                               viewData['bungalow_basement']
-                                                  ['bar_req'] = INT_THREE;
+                                                  ['bar_req'] = null;
                                             }
                                           },
                                         );
@@ -2880,23 +3087,24 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value:
-                                          viewData['bungalow_basement'] != null
-                                              ? viewData['bungalow_basement']
-                                                          ['bar_req'] ==
-                                                      F_ALSE
-                                                  ? true
-                                                  : barNotRequired
-                                              : barNotRequired,
+                                      // value:
+                                      //     viewData['bungalow_basement'] != null
+                                      //         ? viewData['bungalow_basement']
+                                      //                     ['bar_req'] ==
+                                      //                 F_ALSE
+                                      //             ? true
+                                      //             : barNotRequired
+                                      //         : barNotRequired,
+                                      value: barNotRequired,
                                       onChanged: (value) {
                                         setState(() {
-                                          barNotRequired = value;
-                                          barRequirement = false;
                                           if (viewData['bungalow_basement'] !=
                                               null) {
                                             viewData['bungalow_basement']
-                                                ['bar_req'] = INT_THREE;
+                                                ['bar_req'] = null;
                                           }
+                                          barNotRequired = value;
+                                          barRequirement = false;
                                         });
                                       }),
                                 ),
@@ -2915,9 +3123,9 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                if (barRequirement == true || viewData != null
-                    ? viewData['bungalow_basement']['bar_req'] == T_RUE
-                        ? true
+                if (viewData['bungalow_basement'] != null
+                    ? viewData['bungalow_basement']['bar_req'] != null
+                        ? viewData['bungalow_basement']['bar_req'] == T_RUE
                         : barRequirement == true
                     : barRequirement == true) ...[
                   Row(
@@ -2941,12 +3149,14 @@ class _BasementState extends State<Basement> {
                                   height: height * 0.04,
                                   width: width * 0.15,
                                   child: TextFormField(
-                                    initialValue: viewData["bungalow_basement"]
-                                                ["bar_length"] !=
-                                            null
-                                        ? viewData["bungalow_basement"]
-                                            ["bar_length"]
-                                        : '',
+                                    // initialValue: viewData["bungalow_basement"]
+                                    //             ["bar_length"] !=
+                                    //         null
+                                    //     ? viewData["bungalow_basement"]
+                                    //         ["bar_length"]
+                                    //     : '',
+                                    initialValue:
+                                        barLengthController.toString(),
                                     style: const TextStyle(fontSize: 14),
                                     decoration: const InputDecoration(
                                         hintText: "Length",
@@ -2985,15 +3195,16 @@ class _BasementState extends State<Basement> {
                                   height: height * 0.04,
                                   width: width * 0.15,
                                   child: TextFormField(
-                                    initialValue:
-                                        viewData["bungalow_basement"] != null
-                                            ? viewData["bungalow_basement"]
-                                                        ["bar_width"] !=
-                                                    null
-                                                ? viewData["bungalow_basement"]
-                                                    ["bar_width"]
-                                                : ''
-                                            : '',
+                                    // initialValue:
+                                    //     viewData["bungalow_basement"] != null
+                                    //         ? viewData["bungalow_basement"]
+                                    //                     ["bar_width"] !=
+                                    //                 null
+                                    //             ? viewData["bungalow_basement"]
+                                    //                 ["bar_width"]
+                                    //             : ''
+                                    //         : '',
+                                    initialValue: barWidthController.toString(),
                                     style: const TextStyle(fontSize: 14),
                                     decoration: const InputDecoration(
                                         hintText: "width",
@@ -3055,15 +3266,15 @@ class _BasementState extends State<Basement> {
                                 icon: const Visibility(
                                     visible: false,
                                     child: Icon(Icons.arrow_downward)),
-                                hint: viewData["bungalow_basement"] != null
-                                    ? viewData["bungalow_basement"]
-                                                ["bar_location"] !=
-                                            null
-                                        ? Text(viewData["bungalow_basement"]
-                                            ["bar_location"])
-                                        : Text(selectedBarLocation)
-                                    : Text(selectedBarLocation),
-                                // value: selectedBarLocation,
+                                // hint: viewData["bungalow_basement"] != null
+                                //     ? viewData["bungalow_basement"]
+                                //                 ["bar_location"] !=
+                                //             null
+                                //         ? Text(viewData["bungalow_basement"]
+                                //             ["bar_location"])
+                                //         : Text(selectedBarLocation)
+                                //     : Text(selectedBarLocation),
+                                hint: Text(selectedBarLocation),
                                 elevation: 16,
                                 items: itemsBarLocation
                                     .map((it) => DropdownMenuItem<String>(
@@ -3107,17 +3318,20 @@ class _BasementState extends State<Basement> {
                                     child: Checkbox(
                                         activeColor: checkColor,
                                         checkColor: Colors.white,
-                                        value: barFaci != []
-                                            ? barFaci[0] == STR_ONE
-                                                ? true
-                                                : barFacility1
-                                            : barFacility1,
+                                        value:
+                                            barFaci != [] && barFaci.length > 0
+                                                ? barFaci[0] == STR_ONE
+                                                    ? true
+                                                    : barFacility1
+                                                : barFacility1,
+                                        // value: barFacility1,
                                         onChanged: (value) {
                                           setState(
                                             () {
                                               barFacility1 = value;
 
-                                              if (barFaci != []) {
+                                              if (barFaci != [] &&
+                                                  barFaci.length > 0) {
                                                 barFaci[0] = STR_THREE;
                                               }
                                             },
@@ -3152,15 +3366,17 @@ class _BasementState extends State<Basement> {
                                     child: Checkbox(
                                         activeColor: checkColor,
                                         checkColor: Colors.white,
-                                        value: barFaci != []
-                                            ? barFaci[1] == STR_TWO
-                                                ? true
-                                                : barFacility2
-                                            : barFacility2,
+                                        value:
+                                            barFaci != [] && barFaci.length > 0
+                                                ? barFaci[1] == STR_TWO
+                                                    ? true
+                                                    : barFacility2
+                                                : barFacility2,
                                         onChanged: (value) {
                                           setState(() {
                                             barFacility2 = value;
-                                            if (barFaci != null) {
+                                            if (barFaci != null &&
+                                                barFaci.length > 0) {
                                               barFaci[1] = STR_THREE;
                                             }
                                           });
@@ -3248,7 +3464,8 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
+                                      value: viewData['bungalow_basement'] !=
+                                              null
                                           ? viewData['bungalow_basement']
                                                       ["swimming_pool_req"] ==
                                                   T_RUE
@@ -3300,7 +3517,8 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
+                                      value: viewData['bungalow_basement'] !=
+                                              null
                                           ? viewData['bungalow_basement']
                                                       ["swimming_pool_req"] ==
                                                   F_ALSE
@@ -3338,7 +3556,8 @@ class _BasementState extends State<Basement> {
                   ],
                 ),
                 SizedBox(height: height * 0.01),
-                if (swimmingRequirement == true || viewData != null
+                if (swimmingRequirement == true ||
+                        viewData['bungalow_basement'] != null
                     ? viewData['bungalow_basement']["swimming_pool_req"] ==
                             T_RUE
                         ? true
@@ -3590,13 +3809,14 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
-                                          ? viewData['bungalow_basement']
-                                                      ["gym_req"] ==
-                                                  T_RUE
-                                              ? true
-                                              : gymRequirement
-                                          : gymRequirement,
+                                      value:
+                                          viewData['bungalow_basement'] != null
+                                              ? viewData['bungalow_basement']
+                                                          ["gym_req"] ==
+                                                      T_RUE
+                                                  ? true
+                                                  : gymRequirement
+                                              : gymRequirement,
                                       onChanged: (value) {
                                         setState(
                                           () {
@@ -3641,7 +3861,7 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                     activeColor: checkColor,
                                     checkColor: Colors.white,
-                                    value: viewData != null
+                                    value: viewData['bungalow_basement'] != null
                                         ? viewData['bungalow_basement']
                                                     ["gym_req"] ==
                                                 F_ALSE
@@ -3679,7 +3899,8 @@ class _BasementState extends State<Basement> {
                   ],
                 ),
                 SizedBox(height: height * 0.01),
-                if (gymRequirement == true || viewData != null
+                if (gymRequirement == true ||
+                        viewData['bungalow_basement'] != null
                     ? viewData["bungalow_basement"]['gym_req'] == T_RUE
                         ? true
                         : gymRequirement == true
@@ -3919,13 +4140,14 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
-                                          ? viewData['bungalow_basement']
-                                                      ["spa_req"] ==
-                                                  T_RUE
-                                              ? true
-                                              : spaRequirement
-                                          : spaRequirement,
+                                      value:
+                                          viewData['bungalow_basement'] != null
+                                              ? viewData['bungalow_basement']
+                                                          ["spa_req"] ==
+                                                      T_RUE
+                                                  ? true
+                                                  : spaRequirement
+                                              : spaRequirement,
                                       onChanged: (value) {
                                         setState(
                                           () {
@@ -3970,13 +4192,14 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
-                                          ? viewData['bungalow_basement']
-                                                      ["spa_req"] ==
-                                                  F_ALSE
-                                              ? true
-                                              : spaNotRequired
-                                          : spaNotRequired,
+                                      value:
+                                          viewData['bungalow_basement'] != null
+                                              ? viewData['bungalow_basement']
+                                                          ["spa_req"] ==
+                                                      F_ALSE
+                                                  ? true
+                                                  : spaNotRequired
+                                              : spaNotRequired,
                                       onChanged: (value) {
                                         setState(() {
                                           spaNotRequired = value;
@@ -4005,7 +4228,8 @@ class _BasementState extends State<Basement> {
                   ],
                 ),
                 SizedBox(height: height * 0.01),
-                if (spaRequirement == true || viewData != null
+                if (spaRequirement == true ||
+                        viewData['bungalow_basement'] != null
                     ? viewData["bungalow_basement"]["spa_req"] == T_RUE
                         ? true
                         : spaRequirement == true
@@ -4244,13 +4468,14 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
-                                          ? viewData['bungalow_basement']
-                                                      ["garden_req"] ==
-                                                  T_RUE
-                                              ? true
-                                              : gardenRequirement
-                                          : gardenRequirement,
+                                      value:
+                                          viewData['bungalow_basement'] != null
+                                              ? viewData['bungalow_basement']
+                                                          ["garden_req"] ==
+                                                      T_RUE
+                                                  ? true
+                                                  : gardenRequirement
+                                              : gardenRequirement,
                                       onChanged: (value) {
                                         setState(
                                           () {
@@ -4295,13 +4520,14 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData != null
-                                          ? viewData['bungalow_basement']
-                                                      ["garden_req"] ==
-                                                  F_ALSE
-                                              ? true
-                                              : gardenNotRequired
-                                          : gardenNotRequired,
+                                      value:
+                                          viewData['bungalow_basement'] != null
+                                              ? viewData['bungalow_basement']
+                                                          ["garden_req"] ==
+                                                      F_ALSE
+                                                  ? true
+                                                  : gardenNotRequired
+                                              : gardenNotRequired,
                                       onChanged: (value) {
                                         setState(() {
                                           gardenNotRequired = value;
@@ -4332,7 +4558,8 @@ class _BasementState extends State<Basement> {
                 SizedBox(
                   height: height * 0.01,
                 ),
-                if (gardenRequirement == true || viewData != null
+                if (gardenRequirement == true ||
+                        viewData['bungalow_basement'] != null
                     ? viewData['bungalow_basement']["garden_req"] == T_RUE
                         ? true
                         : gardenRequirement == true
@@ -4348,7 +4575,7 @@ class _BasementState extends State<Basement> {
                         borderRadius: BorderRadius.circular(5),
                         child: Container(
                           height: height * 0.03,
-                          width: width * 0.5,
+                          width: width * 0.55,
                           margin: const EdgeInsets.all(
                             3,
                           ),
@@ -4491,7 +4718,7 @@ class _BasementState extends State<Basement> {
                 Align(
                   alignment: Alignment.center,
                   child: InkWell(
-                    onTap: () {
+                    onTap: () async {
                       setState(() {
                         if (BasementRequirement == true) {
                           basementReqInt = INT_ONE;
@@ -4563,9 +4790,8 @@ class _BasementState extends State<Basement> {
                       });
 
                       if (pageId != null) {
-                        print("value is updating");
-                        BasementPut(
-                          179,
+                        var status = await BasementPut(
+                          project_id,
                           BasementRequirement!,
                           slectedBasement,
                           stilitReqInt,
@@ -4627,11 +4853,13 @@ class _BasementState extends State<Basement> {
                           gardenLocation,
                           gardenSpecificRequiremnt,
                         );
+                        if (status == SUCCESS) {
+                          showToast('Basement Requirement Updated !',
+                              Colors.lightGreen, ToastGravity.TOP);
+                        }
                       } else {
-                        print("value is posting");
-
-                        BasementPost(
-                          123,
+                        var status = await BasementPost(
+                          project_id,
                           basementReqInt,
                           slectedBasement,
                           stilitReqInt,
@@ -4693,6 +4921,10 @@ class _BasementState extends State<Basement> {
                           gardenLocation,
                           gardenSpecificRequiremnt,
                         );
+                        if (status == SUCCESS) {
+                          showToast('Basement Requirement Submitted !',
+                              Colors.lightGreen, ToastGravity.TOP);
+                        }
                       }
                     },
                     child: Container(

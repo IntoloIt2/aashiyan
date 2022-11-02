@@ -8,6 +8,7 @@ import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provid
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../../../const.dart';
@@ -34,7 +35,7 @@ class _FloorStoreState extends State<FloorStore> {
   String poojaWidthController = ' ';
   String poojaRoomLocationController = '';
   int? project_id;
-
+  var status;
   String liftArea = "";
 
   String selectedPoojaPlace = "select room type";
@@ -118,13 +119,14 @@ class _FloorStoreState extends State<FloorStore> {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
+          print('printData==');
           print(printData);
           if (printData != null) {
             storeFloor = printData['bungalow_floor_store']['store_floor'] !=
                     null
                 ? printData['bungalow_floor_store']['store_floor'].toString()
                 : storeFloor;
-            print(storeFloor);
+            // print(storeFloor);
             poojaRoomLocation =
                 printData['bungalow_floor_store']['pooja_room_floor'] != null
                     ? int.parse(printData['bungalow_floor_store']
@@ -137,19 +139,19 @@ class _FloorStoreState extends State<FloorStore> {
                             ['passanger_capacity']
                         .toString())
                     : passengerCapacity;
-            print(passengerCapacity);
+            // print(passengerCapacity);
             selectedLift =
                 printData['bungalow_floor_store']['passanger_capacity'] != null
                     ? printData['bungalow_floor_store']['passanger_capacity']
                         .toString()
                     : selectedLift;
-            print(selectedLift);
+            // print(selectedLift);
             FloorStoreDetail1 =
                 printData["bungalow_floor_store"]["floor_store_req"] == 1
                     ? true
                     : FloorStoreDetail1;
-            print("passengerCapacity ===");
-            print(FloorStoreDetail1);
+            // print("passengerCapacity ===");
+            // print(FloorStoreDetail1);
             pageId = printData['bungalow_floor_store']['id'];
 
             FloorStoreDetail2 =
@@ -244,6 +246,16 @@ class _FloorStoreState extends State<FloorStore> {
       decJson = jsonDecode(userData);
     }
     user_id = decJson['data']['id'];
+  }
+
+  void showToast(msg, toastColor, GRAVITY) {
+    Fluttertoast.showToast(
+        msg: msg,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 0,
+        backgroundColor: toastColor,
+        textColor: Colors.white);
   }
 
   late var timer;
@@ -1408,7 +1420,7 @@ class _FloorStoreState extends State<FloorStore> {
                   height: height * 0.01,
                 ),
                 GestureDetector(
-                  onTap: () => {
+                  onTap: () async => {
                     setState(
                       () {
                         if (FloorStoreDetail1 == true) {
@@ -1486,7 +1498,8 @@ class _FloorStoreState extends State<FloorStore> {
                     if (pageId != null)
                       {
                         // print("updating a data "),
-                        flooreStorePut(
+
+                        status = await flooreStorePut(
                           project_id!,
                           floorStoreInt,
                           floorStoreLengthController,
@@ -1503,26 +1516,35 @@ class _FloorStoreState extends State<FloorStore> {
                           selectedPoojaPlace,
                           openingToLiHa,
                         ),
+                        if (status == SUCCESS)
+                          {
+                            showToast('Floor store Requirement Updated !',
+                                Colors.lightGreen, ToastGravity.TOP)
+                          }
                       }
                     else
                       {
-                        flooreStorePost(
-                          project_id!,
-                          floorStoreInt,
-                          floorStoreLengthController,
-                          floorStoreWidthController,
-                          storeFloor,
-                          selectedStair,
-                          liftRequirement,
-                          liftSpecialRequirementController,
-                          passengerCapacity,
-                          poojaRoomReq,
-                          poojaLengthController,
-                          poojaWidthController,
-                          poojaRoomLocation,
-                          selectedPoojaPlace,
-                          openingToLiHa,
-                        ),
+                        status = flooreStorePost(
+                            project_id!,
+                            floorStoreInt,
+                            floorStoreLengthController,
+                            floorStoreWidthController,
+                            storeFloor,
+                            selectedStair,
+                            liftRequirement,
+                            liftSpecialRequirementController,
+                            passengerCapacity,
+                            poojaRoomReq,
+                            poojaLengthController,
+                            poojaWidthController,
+                            poojaRoomLocation,
+                            selectedPoojaPlace,
+                            openingToLiHa),
+                        if (status == SUCCESS)
+                          {
+                            showToast('Floor store Requirement Submitted !',
+                                Colors.lightGreen, ToastGravity.TOP)
+                          }
                       }
                   },
                   child: Align(
