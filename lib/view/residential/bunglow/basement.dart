@@ -137,6 +137,7 @@ class _BasementState extends State<Basement> {
   ];
 
   String homeTheaterFloor = "Select Floor";
+
   List<String> homeTheaterFloorItems = [
     "Select Floor",
     "Ground Floor",
@@ -447,6 +448,17 @@ class _BasementState extends State<Basement> {
                   ? viewData["bungalow_basement"]['home_theater_location']
                       .toString()
                   : '';
+          homeTheaterSpecificController =
+              viewData["bungalow_basement"]['home_theater_specific_req'] != null
+                  ? viewData["bungalow_basement"]['home_theater_specific_req']
+                      .toString()
+                  : '';
+
+          selectedSeats = viewData["bungalow_basement"]['home_theater_seats'] !=
+                  null
+              ? viewData["bungalow_basement"]['home_theater_seats'].toString()
+              : '';
+
           AdditionalRequirement =
               viewData["bungalow_basement"]['parking_garage_req'] == T_RUE
                   ? true
@@ -463,6 +475,12 @@ class _BasementState extends State<Basement> {
                           ['parking_garage_width']
                       .toString())
                   : INT_ZERO;
+          additionalCarsController =
+              viewData["bungalow_basement"]['no_of_cars'] != null
+                  ? int.parse(
+                      viewData["bungalow_basement"]['no_of_cars'].toString())
+                  : INT_ZERO;
+
           sepratedShadeController =
               viewData["bungalow_basement"]['saperate_shade'] != null
                   ? viewData["bungalow_basement"]['saperate_shade'].toString()
@@ -2085,15 +2103,16 @@ class _BasementState extends State<Basement> {
                                 icon: const Visibility(
                                     visible: false,
                                     child: Icon(Icons.arrow_downward)),
-                                hint: viewData["bungalow_basement"] != null
-                                    ? viewData["bungalow_basement"]
-                                                ["home_theater_location"] !=
-                                            null
-                                        ? Text(viewData["bungalow_basement"]
-                                                ["home_theater_location"]
-                                            .toString())
-                                        : Text(homeTheaterFloor)
-                                    : Text(homeTheaterFloor),
+                                // hint: viewData["bungalow_basement"] != null
+                                //     ? viewData["bungalow_basement"]
+                                //                 ["home_theater_location"] !=
+                                //             null
+                                //         ? Text(viewData["bungalow_basement"]
+                                //                 ["home_theater_location"]
+                                //             .toString())
+                                //         : Text(homeTheaterFloor)
+                                //     : Text(homeTheaterFloor),
+                                hint: Text(homeTheaterFloor),
                                 // value: homeTheaterFloor
                                 elevation: 16,
                                 items: homeTheaterFloorItems
@@ -2142,16 +2161,17 @@ class _BasementState extends State<Basement> {
                                 visible: false,
                                 child: Icon(Icons.arrow_downward),
                               ),
-                              hint: viewData["bungalow_basement"] != null
-                                  ? viewData["bungalow_basement"]
-                                              ["home_theater_seats"] !=
-                                          null
-                                      ? Text(viewData["bungalow_basement"]
-                                              ["home_theater_seats"]
-                                          .toString())
-                                      : Text(homeTheaterFloor)
-                                  : Text(homeTheaterFloor),
+                              // hint: viewData["bungalow_basement"] != null
+                              //     ? viewData["bungalow_basement"]
+                              //                 ["home_theater_seats"] !=
+                              //             null
+                              //         ? Text(viewData["bungalow_basement"]
+                              //                 ["home_theater_seats"]
+                              //             .toString())
+                              //         : Text(selectedSeats)
+                              //     : Text(selectedSeats),
                               // value: selectedSeats,
+                              hint: Text(selectedSeats),
                               elevation: 16,
                               items: seatsItems
                                   .map((it) => DropdownMenuItem<String>(
@@ -2209,11 +2229,12 @@ class _BasementState extends State<Basement> {
                           height: height * 0.04,
                           width: width * 0.5,
                           child: TextFormField(
-                            initialValue: viewData["bungalow_basement"] != null
-                                ? viewData["bungalow_basement"]
-                                        ["home_theater_specific_req"] ??
-                                    ''
-                                : '',
+                            // initialValue: viewData["bungalow_basement"] != null
+                            //     ? viewData["bungalow_basement"]
+                            //             ["home_theater_specific_req"] ??
+                            //         ''
+                            //     : '',
+                            initialValue: homeTheaterSpecificController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Special Requirement",
@@ -2255,14 +2276,16 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: viewData["bungalow_basement"] !=
-                                              null
-                                          ? viewData["bungalow_basement"]
-                                                      ["parking_garage_req"] ==
-                                                  T_RUE
-                                              ? true
-                                              : AdditionalRequirement
-                                          : AdditionalRequirement,
+                                      // value: viewData["bungalow_basement"] !=
+                                      //         null
+                                      //     ? viewData["bungalow_basement"]
+                                      //                 ["parking_garage_req"] ==
+                                      //             T_RUE
+                                      //         ? true
+                                      //         : AdditionalRequirement
+                                      //     : AdditionalRequirement,
+
+                                      value: AdditionalRequirement,
                                       onChanged: (value) {
                                         setState(
                                           () {
@@ -2306,18 +2329,19 @@ class _BasementState extends State<Basement> {
                                   child: Checkbox(
                                     activeColor: checkColor,
                                     checkColor: Colors.white,
-                                    value: viewData["bungalow_basement"] != null
-                                        ? viewData["bungalow_basement"]
-                                                    ["parking_garage_req"] ==
-                                                F_ALSE
-                                            ? true
-                                            : AdditionalNotRequired
-                                        : AdditionalNotRequired,
+                                    // value: viewData["bungalow_basement"] != null
+                                    //     ? viewData["bungalow_basement"]
+                                    //                 ["parking_garage_req"] ==
+                                    //             F_ALSE
+                                    //         ? true
+                                    //         : AdditionalNotRequired
+                                    //     : AdditionalNotRequired,
+                                    value: AdditionalNotRequired,
                                     onChanged: (value) {
                                       setState(() {
                                         AdditionalNotRequired = value;
                                         AdditionalRequirement = false;
-                                        print(AdditionalRequirement);
+                                        // print(AdditionalRequirement);
                                         if (viewData["bungalow_basement"] !=
                                             null) {
                                           viewData["bungalow_basement"]
@@ -2373,12 +2397,14 @@ class _BasementState extends State<Basement> {
                                 height: height * 0.04,
                                 width: width * 0.15,
                                 child: TextFormField(
-                                  initialValue: viewData["bungalow_basement"]
-                                              ["parking_garage_length"] !=
-                                          null
-                                      ? viewData["bungalow_basement"]
-                                          ["parking_garage_length"]
-                                      : '',
+                                  // initialValue: viewData["bungalow_basement"]
+                                  //             ["parking_garage_length"] !=
+                                  //         null
+                                  //     ? viewData["bungalow_basement"]
+                                  //         ["parking_garage_length"]
+                                  //     : '',
+                                  initialValue:
+                                      additionalParkingLength.toString(),
                                   style: const TextStyle(fontSize: 14),
                                   decoration: const InputDecoration(
                                       hintText: "Length",
@@ -2419,12 +2445,14 @@ class _BasementState extends State<Basement> {
                                 height: height * 0.04,
                                 width: width * 0.15,
                                 child: TextFormField(
-                                  initialValue: viewData["bungalow_basement"]
-                                              ["parking_garage_width"] !=
-                                          null
-                                      ? viewData["bungalow_basement"]
-                                          ["parking_garage_width"]
-                                      : '',
+                                  // initialValue: viewData["bungalow_basement"]
+                                  //             ["parking_garage_width"] !=
+                                  //         null
+                                  //     ? viewData["bungalow_basement"]
+                                  //         ["parking_garage_width"]
+                                  //     : '',
+                                  initialValue:
+                                      additionalParkingWidth.toString(),
                                   style: const TextStyle(fontSize: 14),
                                   decoration: const InputDecoration(
                                       hintText: "Length",
@@ -2540,14 +2568,15 @@ class _BasementState extends State<Basement> {
                                     child: Icon(Icons.arrow_downward)),
                                 // value: selectedParkingLocation,
                                 elevation: 16,
-                                hint: viewData['bungalow_basement'] != null
-                                    ? viewData['bungalow_basement']
-                                                ['parking_garage_location'] !=
-                                            null
-                                        ? Text(viewData['bungalow_basement']
-                                            ['parking_garage_location'])
-                                        : Text(selectedParkingLocation)
-                                    : Text(selectedParkingLocation),
+                                // hint: viewData['bungalow_basement'] != null
+                                //     ? viewData['bungalow_basement']
+                                //                 ['parking_garage_location'] !=
+                                //             null
+                                //         ? Text(viewData['bungalow_basement']
+                                //             ['parking_garage_location'])
+                                //         : Text(selectedParkingLocation)
+                                //     : Text(selectedParkingLocation),
+                                hint: Text(selectedParkingLocation),
                                 items: parkingLocation
                                     .map((it) => DropdownMenuItem<String>(
                                         value: it,
@@ -2593,12 +2622,13 @@ class _BasementState extends State<Basement> {
                           height: height * 0.04,
                           width: width * 0.5,
                           child: TextFormField(
-                            initialValue: viewData["bungalow_basement"]
-                                        ["saperate_shade"] !=
-                                    null
-                                ? viewData["bungalow_basement"]
-                                    ["saperate_shade"]
-                                : '',
+                            // initialValue: viewData["bungalow_basement"]
+                            //             ["saperate_shade"] !=
+                            //         null
+                            //     ? viewData["bungalow_basement"]
+                            //         ["saperate_shade"]
+                            //     : '',
+                            initialValue: sepratedShadeController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Special Requirement",
@@ -2640,12 +2670,13 @@ class _BasementState extends State<Basement> {
                           height: height * 0.04,
                           width: width * 0.5,
                           child: TextFormField(
-                            initialValue: viewData["bungalow_basement"]
-                                        ["parking_garage_specific_req"] !=
-                                    null
-                                ? viewData["bungalow_basement"]
-                                    ["parking_garage_specific_req"]
-                                : '',
+                            // initialValue: viewData["bungalow_basement"]
+                            //             ["parking_garage_specific_req"] !=
+                            //         null
+                            //     ? viewData["bungalow_basement"]
+                            //         ["parking_garage_specific_req"]
+                            //     : '',
+                            initialValue: additionalParkingSpecificController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Special Requirement",
