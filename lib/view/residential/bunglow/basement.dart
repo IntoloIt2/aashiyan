@@ -2024,7 +2024,7 @@ class _BasementState extends State<Basement> {
                                     //         null
                                     //     ? viewData["bungalow_basement"]
                                     //         ["home_theater_width"]
-                                    //     : '',
+                                    //     : ''
                                     initialValue:
                                         homeTheaterWidthController.toString(),
                                     style: const TextStyle(fontSize: 14),
