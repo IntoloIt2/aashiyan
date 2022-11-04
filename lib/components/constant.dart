@@ -92,17 +92,17 @@ const OPENING_TO_LIVING_HALL = "Opening toward hall/ Lobby";
 
 //BED ROOM
 
-const STR_ZERO = "0";
-const STR_ONE = "1";
-const STR_TWO = "2";
-const STR_THREE = "3";
-const STR_FOUR = "4";
-const STR_FIVE = "5";
-const STR_SIX = "6";
-const STR_SEVEN = "7";
-const STR_EIGHT = "8";
-const STR_NINE = "9";
-const STR_TEN = "10";
+const STR_ZERO  =  "0";
+const STR_ONE   =  "1";
+const STR_TWO   =  "2";
+const STR_THREE =  "3";
+const STR_FOUR  =  "4";
+const STR_FIVE  =  "5";
+const STR_SIX   =  "6";
+const STR_SEVEN =  "7";
+const STR_EIGHT =  "8";
+const STR_NINE  =  "9";
+const STR_TEN   = "10";
 
 const INT_ZERO = 0;
 const INT_ONE = 1;
@@ -329,3 +329,38 @@ var projectId;
 // const THREE_D = 5;
 // const REVISION = 6;
 // const FRONT_OFFICE = 7;
+
+
+// area_id
+
+const AREA_800_1200 = 1;
+const AREA_1200_2000 = 2;
+const AREA_2000_5000 = 3;
+const AREA_5000_10000 = 4;
+const AREA_10000_50000 = 5;
+
+// segment_id
+
+const SEGMENT_SECURITY_KIOSK = 1;
+const SEGMENT_PORCH = 2;
+const SEGMENT_WELCOME_LOBBY = 3;
+const SEGMENT_VARANDAH = 4;
+const SEGMENT_FAMILY_LOUGNE = 5;
+const SEGMENT_EXCLUSIVE_DRAWING = 6;
+const SEGMENT_KITCHEN = 7;
+const SEGMEN_PANTRY = 8;
+const SEGMEN_DINING = 9;
+const SEGMEN_FLOOR_STORE = 10;
+const SEGMEN_POOJA_ROOM = 11;
+const SEGMEN_BEDROOM = 12;
+const SEGMEN_TOILET_BEDROOM = 13;
+const SEGMEN_DRESSINGROOM = 14;
+const SEGMEN_OFFICE = 15;
+const SEGMEN_SERVENT_QUARTER = 16;
+const SEGMEN_HOME_THEATER = 17;
+const SEGMEN_ADDITIONAL_PARKING = 18;
+const SEGMEN_INDOOR_PLAY_AREA = 19;
+const SEGMEN_BAR = 20;
+const SEGMEN_SWIMMINGPOOL = 21;
+const SEGMEN_GYM = 22;
+const SEGMEN_SPA = 23;

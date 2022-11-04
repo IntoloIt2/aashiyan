@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:aashiyan/components/forms.dart';
+import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,97 @@ import '../../../components/constant.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
+
+import '../../../utils/helpers.dart';
+
+class HintDailog extends StatefulWidget {
+  int segment_id;
+  HintDailog({required this.segment_id});
+  @override
+  _HintDailogState createState() => _HintDailogState();
+}
+
+class _HintDailogState extends State<HintDailog> {
+  var data;
+  Future futureCall() async {
+    var plotArea = plotValue.text;
+    var area_id;
+    if ((int.parse(plotArea) >= 800) && (int.parse(plotArea) <= 1200)) {
+      area_id = AREA_800_1200;
+    } else if ((int.parse(plotArea) >= 1201) && (int.parse(plotArea) <= 2000)) {
+      area_id = AREA_1200_2000;
+    } else if ((int.parse(plotArea) >= 2001) && (int.parse(plotArea) <= 5000)) {
+      area_id = AREA_2000_5000;
+    } else if ((int.parse(plotArea) >= 5001) &&
+        (int.parse(plotArea) <= 10000)) {
+      area_id = AREA_5000_10000;
+    } else if ((int.parse(plotArea) >= 10001) &&
+        (int.parse(plotArea) <= 50000)) {
+      area_id = AREA_10000_50000;
+    }
+
+    var response = await http.get(Uri.parse(
+        'https://sdplweb.com/sdpl/api/area-suggest/$area_id/${widget.segment_id}'));
+    print("$area_id======");
+    final jsonResponse = jsonDecode(response.body);
+    final finalart = jsonResponse['areas'] as List;
+    print(finalart);
+    setState(() {
+      data = finalart;
+      print(data);
+      // if(data != null) {
+      //   hasData = true;
+      //   print("hasData");
+      //   print(hasData);
+      // }
+    });
+
+    // await Future.delayed(const Duration(seconds: 2));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: futureCall(),
+      builder: (_, dataSnapshot) {
+        if (dataSnapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else {
+          Future(() {
+            // Future Callback
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('Employee Data'),
+                content: Container(
+                  padding: EdgeInsets.only(top: 15),
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: requirementText(
+                              "${data[index]['suggest_length_ft']} X ${data[index]['suggest_width_ft']} ft",
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          });
+          return Container();
+        }
+      },
+    );
+  }
+}
 
 class Entrance extends StatefulWidget {
   const Entrance({Key? key}) : super(key: key);
@@ -463,19 +555,23 @@ class _EntranceState extends State<Entrance> {
                                     : Text(selectedFloor)
                                 : Text(selectedFloor),
                             elevation: 16,
-                            items: floors
-                                .map(
-                                  (it) => DropdownMenuItem<String>(
-                                    value: it,
-                                    child: Text(
-                                      it,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                    ),
+                            items: floors.asMap().entries.map((it) {
+                              int idx = it.key;
+                              String value = it.value;
+                              return DropdownMenuItem<String>(
+                                onTap: () {
+                                  setFloorId(it.key);
+                                  print(it.key);
+                                },
+                                value: it.value,
+                                child: Text(
+                                  it.value,
+                                  style: const TextStyle(
+                                    color: Colors.black,
                                   ),
-                                )
-                                .toList(),
+                                ),
+                              );
+                            }).toList(),
                             onChanged: (it) {
                               setState(
                                 () {
@@ -1212,8 +1308,7 @@ class _EntranceState extends State<Entrance> {
                           ),
                         ),
                       ),
-                      // requirementTextFieldCont(height, width, 0.04, 0.15,
-                      //     "length", securityKioskLengthController),
+                      // requirementTextFieldCont(height, width, 0.04, 0.15,"length", securityKioskLengthController),
                       valueContainer(height, width, size, 0.04, 0.05),
                       SizedBox(
                         width: width * 0.02,
@@ -1256,7 +1351,12 @@ class _EntranceState extends State<Entrance> {
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      requirementText("help ?")
+                      InkWell(
+                          onTap: () {
+                            HintDailog(segment_id: SEGMENT_PORCH);
+                            print("security kiosk==");
+                          },
+                          child: requirementText("help ?"))
                     ],
                   ),
                   SizedBox(

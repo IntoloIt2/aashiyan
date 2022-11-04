@@ -89,49 +89,49 @@ class _PreExistingState extends State<PreExisting> {
                                   height: 80,
                                   child: Center(
                                     child: ListTile(
-                                        leading: const Icon(
-                                          Icons.home,
-                                          size: 45,
-                                        ),
-                                        title: projects == []
-                                            ? const CircularProgressIndicator()
-                                            : headingFont(
-                                                projects[i]['project_type']),
-                                        subtitle: projects == []
-                                            ? const CircularProgressIndicator()
-                                            : Row(
-                                                children: [
-                                                  requirementText(
-                                                      projects[i]['prefix']),
-                                                  const SizedBox(
-                                                    width: 3,
-                                                  ),
-                                                  requirementText(projects[i]
-                                                      ['first_name']),
-                                                  const SizedBox(
-                                                    width: 3,
-                                                  ),
-                                                  requirementText(
-                                                      projects[i]['last_name']),
-                                                  Text(projects[i]['id']
-                                                      .toString())
-                                                ],
-                                              ),
-                                        trailing: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(projects[i]['create_date']),
-                                            Text(projects[i]['create_time']),
-                                          ],
-                                        )),
+                                      leading: const Icon(
+                                        Icons.home,
+                                        size: 45,
+                                      ),
+                                      title: projects == []
+                                          ? const CircularProgressIndicator()
+                                          : headingFont(
+                                              projects[i]['project_type']),
+                                      subtitle: projects == []
+                                          ? const CircularProgressIndicator()
+                                          : Row(
+                                              children: [
+                                                requirementText(
+                                                    projects[i]['prefix']),
+                                                const SizedBox(
+                                                  width: 3,
+                                                ),
+                                                requirementText(
+                                                    projects[i]['first_name']),
+                                                const SizedBox(
+                                                  width: 3,
+                                                ),
+                                                requirementText(
+                                                    projects[i]['last_name']),
+                                                Text(projects[i]['id']
+                                                    .toString())
+                                              ],
+                                            ),
+                                      trailing: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(projects[i]['create_date']),
+                                          Text(projects[i]['create_time']),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                         ],
-                      )
-                    : projects == null
+                      ) : projects == null
                         ? CircularProgressIndicator()
                         : Column(
                             children: const [

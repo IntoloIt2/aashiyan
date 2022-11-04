@@ -13,8 +13,8 @@ import '../const.dart';
 import '../view/homepage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-TextEditingController emailController = TextEditingController();
-TextEditingController passwordController = TextEditingController();
+TextEditingController emailController       = TextEditingController();
+TextEditingController passwordController    = TextEditingController();
 TextEditingController verify_codeController = TextEditingController();
 
 late bool isLogged = false;

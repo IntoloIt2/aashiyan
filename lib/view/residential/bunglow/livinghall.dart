@@ -37,6 +37,7 @@ class _LivingHallState extends State<LivingHall> {
     "other"
   ];
   var project_id;
+  var floor_id;
   String selectedFloor = "Select";
   int livingHallLocation = 1;
   String livingHallArea = "";
@@ -360,6 +361,22 @@ class _LivingHallState extends State<LivingHall> {
     }
   }
 
+  Future<dynamic> getFloorId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userData = prefs.getString('userData');
+    floor_id = prefs.getInt('floorId')!;
+
+    print("floor_id == ");
+    print(floor_id);
+
+    // getData(project_id);
+    // var decJson;
+    // if (userData != null) {
+    //   decJson = jsonDecode(userData);
+    // }
+    // user_id = decJson['data']['id'];
+  }
+
   Future<dynamic> getUserId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('userData');
@@ -393,24 +410,10 @@ class _LivingHallState extends State<LivingHall> {
   @override
   void initState() {
     super.initState();
-
+    getFloorId();
     final store = Provider.of<PageNavProvider>(context, listen: false);
 
     getUserId();
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   if (store.getId() == 0) {
-    //   } else {
-    //     getData(store.getId());
-    //   }
-    // });
-    // Future.delayed(Duration(seconds: 1), (() {
-    //   // if (printData == null) {
-    //   setState(() {
-
-    //   });
-    //   // }
-    // }));
 
     timer = Timer.periodic(
         Duration(seconds: 5),
