@@ -873,7 +873,7 @@ Future<dynamic> BasementPost(
   List barFacility,
   int barLength,
   int barWidth,
-  int barSpecificReq,
+  String barSpecificReq,
   int swimmingPoolReq,
   String swimmingPoolLocation,
   int swimmingPoollength,
@@ -980,7 +980,7 @@ Future<dynamic> getGalleryAPI(int category) async {
 
 Future<dynamic> BasementPut(
   int projectId,
-  bool basementReq,
+  int basementReq,
   String basementType,
   int StiltRequirement,
   String StiltType,
@@ -1021,7 +1021,7 @@ Future<dynamic> BasementPut(
   List barFacility,
   int barLength,
   int barWidth,
-  int barSpecificReq,
+  String barSpecificReq,
   int swimmingPoolReq,
   String swimmingPoolLocation,
   int swimmingPoollength,
@@ -1104,6 +1104,7 @@ Future<dynamic> BasementPut(
     "garden_type": gardenType,
     "garden_specific_req": gardenSpecificReq,
   };
+  // print("postdata===");
   print(jsonEncode(projectData));
   final response = await http.post(
     Uri.parse("${dotenv.env['APP_URL']}update-bungalow-basement/$projectId"),

@@ -365,7 +365,7 @@ class _EntranceState extends State<Entrance> {
       print(e.toString());
     }
   }
-  
+
   Future<dynamic> getUserId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('userData');
@@ -476,7 +476,12 @@ class _EntranceState extends State<Entrance> {
                                   ),
                                 )
                                 .toList(),
-                            onChanged: (it) {
+                            onChanged: (it) async {
+                              // print('it==');
+                              // print(it);
+                              // final SharedPreferences prefs =
+                              //     await SharedPreferences.getInstance();
+                              // String? userData = prefs.getString('userData');
                               setState(
                                 () {
                                   selectedFloor = it!;
@@ -510,6 +515,7 @@ class _EntranceState extends State<Entrance> {
                                       printData["bungalow_entrance"]["floor"] =
                                           THIRD_FLOOR;
                                   }
+
                                   // if (selectedFloor == ENT_MORE_FLOOR) {
                                   //   if (printData != null &&
                                   //       printData['bungalow_entrance'] != null)
