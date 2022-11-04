@@ -52,7 +52,6 @@ class _FloorStoreState extends State<FloorStore> {
     "1st Floor",
     "2nd Floor",
     "3rd Floor",
-    "other"
   ];
 
   String selectedStair = "select stair";
@@ -1171,12 +1170,6 @@ class _FloorStoreState extends State<FloorStore> {
                                 items: poojaRoomItems.asMap().entries.map((it) {
                                   int idx = it.key;
                                   return DropdownMenuItem<String>(
-                                    // "select floor",
-                                    // "Groung floor",
-                                    // "1st Floor",
-                                    // "2nd Floor",
-                                    // "3rd Floor",
-                                    // "other"
                                     value: it.value,
                                     onTap: () {
                                       poojaRoomLocation = idx;

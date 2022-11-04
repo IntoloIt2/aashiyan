@@ -207,7 +207,7 @@ Future<dynamic> requirementPost(
   int apmt,
 ) async {
   var projectData = {
-    "user_id": 123,
+    "user_id": userId,
     "project_group_id": 5,
     "prefix": prefix,
     "first_name": firstName,
@@ -706,14 +706,14 @@ Future<void> flooreStorePost(
     "pooja_room_width": poojaRoomWidth,
     "pooja_room_floor": poojaRoomFloor,
     "pooja_room_type": poojaRoomType,
-    "opening_to_li_ha": poojaRoomWidth,
+    "opening_to_li_ha": openingToLiHa,
     "lift_special_req": liftRequirement,
   };
 
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-floor-store'),
+    Uri.parse('${dotenv.env['APP_URL']}bungalow-floor-store'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -756,7 +756,7 @@ Future<void> flooreStorePut(
     "pooja_room_width": poojaRoomWidth,
     "pooja_room_floor": poojaRoomFloor,
     "pooja_room_type": poojaRoomType,
-    "opening_to_li_ha": poojaRoomWidth,
+    "opening_to_li_ha": openingToLiHa,
     "lift_special_req": liftSpecialRequirement,
   };
 
@@ -765,7 +765,7 @@ Future<void> flooreStorePut(
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
     Uri.parse(
-        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-floor-store/$projectId'),
+        '${dotenv.env['APP_URL']}update-bungalow-floor-store/$projectId}'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -821,7 +821,7 @@ Future<void> BedRoomPost(
 
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-bedroom'),
+    Uri.parse('${dotenv.env['APP_URL']}bungalow-bedroom'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -830,7 +830,7 @@ Future<void> BedRoomPost(
   print(response.body);
 }
 
-Future<void> BasementPost(
+Future<dynamic> BasementPost(
   int projectId,
   int basementReq,
   String basementType,
@@ -873,7 +873,7 @@ Future<void> BasementPost(
   List barFacility,
   int barLength,
   int barWidth,
-  int barSpecificReq,
+  String barSpecificReq,
   int swimmingPoolReq,
   String swimmingPoolLocation,
   int swimmingPoollength,
@@ -959,13 +959,14 @@ Future<void> BasementPost(
 
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-basement'),
+    Uri.parse('${dotenv.env['APP_URL']}bungalow-basement'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
-  print(response.body);
+  var temp = jsonDecode(response.body);
+  return temp['status'];
 }
 
 Future<dynamic> getGalleryAPI(int category) async {
@@ -977,9 +978,9 @@ Future<dynamic> getGalleryAPI(int category) async {
   return finalArt;
 }
 
-Future<void> BasementPut(
+Future<dynamic> BasementPut(
   int projectId,
-  bool basementReq,
+  int basementReq,
   String basementType,
   int StiltRequirement,
   String StiltType,
@@ -1020,7 +1021,7 @@ Future<void> BasementPut(
   List barFacility,
   int barLength,
   int barWidth,
-  int barSpecificReq,
+  String barSpecificReq,
   int swimmingPoolReq,
   String swimmingPoolLocation,
   int swimmingPoollength,
@@ -1107,13 +1108,15 @@ Future<void> BasementPut(
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
     Uri.parse(
-        'http://192.168.0.99:8080/sdplserver/api/update-bungalow-basement/$projectId'),
+        '${dotenv.env['APP_URL']}update-bungalow-basement/$projectId'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
   print(response.body);
+  var temp = jsonDecode(response.body);
+  return temp['status'];
 }
 
 Future<void> HouseDuplexFloorPost(
