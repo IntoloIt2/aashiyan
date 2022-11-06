@@ -3,14 +3,14 @@ import 'package:aashiyan/view/residential/bunglow/basement.dart';
 import 'package:aashiyan/view/residential/bunglow/floorstore.dart';
 import 'package:aashiyan/view/residential/bunglow/livinghall.dart';
 import 'package:aashiyan/view/residential/bunglow/pantrydetail.dart';
-import 'package:aashiyan/view/residential/bunglow/payment.dart';
+import 'package:aashiyan/utils/payment.dart';
 import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:flutter/material.dart';
 
 import '../view/residential/bunglow/entrance.dart';
 import '../view/residential/bunglow/staticbedroompage.dart';
-// import '../view/residential/bunglow/buildUp.dart';
-import '../view/residential/bunglow/test.dart';
+import '../view/residential/bunglow/builtup.dart';
+// import '../view/residential/bunglow/test.dart';
 import 'steps_container.dart';
 
 int? index = 0;

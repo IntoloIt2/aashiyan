@@ -5,13 +5,14 @@
 import 'dart:convert';
 
 import 'package:aashiyan/components/constant.dart';
-import 'package:aashiyan/view/residential/bunglow/payment.dart';
+import 'package:aashiyan/utils/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../components/forms.dart';
 import '../../../const.dart';
 
+import '../../../utils/helpers.dart';
 import 'entrance.dart';
 import 'package:http/http.dart' as http;
 
@@ -29,6 +30,8 @@ List str_design = [];
 List mep_design = [];
 
 List int_design = [];
+
+List int_design_count = [STR_ONE];
 
 // ignore: prefer_typing_uninitialized_variables
 var getData;
@@ -1174,7 +1177,7 @@ class _BuiltUpState extends State<BuiltUp> {
   bool? MaterialNotRequire = false;
   int MaterialInt = 0;
 
-  bool? AtGoodRequirment = false;
+  bool? AtGoodRequirment = true;
   bool? AtGoodNotRequire = false;
   int AtGoodInt = 0;
 
@@ -3469,6 +3472,10 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           D3FrontRequirment = value;
                                           D3FrontNotRequire = false;
+                                          if (!int_design_count
+                                              .contains(STR_TWO)) {
+                                            int_design_count.add(STR_TWO);
+                                          }
                                           calculation();
                                         },
                                       );
@@ -3494,6 +3501,10 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           DrawingRequirment = value;
                                           DrawingNotRequire = false;
+                                          if (!int_design_count
+                                              .contains(STR_THREE)) {
+                                            int_design_count.add(STR_THREE);
+                                          }
                                           calculation();
                                         },
                                       );
@@ -3516,6 +3527,10 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           SetofRequirment = value;
                                           SetofNotRequire = false;
+                                          if (!int_design_count
+                                              .contains(STR_FOUR)) {
+                                            int_design_count.add(STR_FOUR);
+                                          }
                                           calculation();
                                         },
                                       );
@@ -3537,6 +3552,10 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           HandingRequirment = value;
                                           HandingNotRequire = false;
+                                          if (!int_design_count
+                                              .contains(STR_FIVE)) {
+                                            int_design_count.add(STR_FIVE);
+                                          }
                                           calculation();
                                         },
                                       );
@@ -3558,6 +3577,10 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           WithSuperRequirment = value;
                                           WithSuperNotRequire = false;
+                                          if (!int_design_count
+                                              .contains(STR_SIX)) {
+                                            int_design_count.add(STR_SIX);
+                                          }
                                           calculation();
                                         },
                                       );
@@ -3597,6 +3620,10 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           FurnitureLayoutRequirment = value;
                                           FurnitureLayoutNotRequire = false;
+                                          if (!int_design_count
+                                              .contains(STR_SEVEN)) {
+                                            int_design_count.add(STR_SEVEN);
+                                          }
                                           calculation();
                                         },
                                       );
@@ -3619,6 +3646,10 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           CeilingRequirment = value;
                                           CeilingNotRequire = false;
+                                          if (!int_design_count
+                                              .contains(STR_EIGHT)) {
+                                            int_design_count.add(STR_EIGHT);
+                                          }
                                           calculation();
                                         },
                                       );
@@ -3642,6 +3673,10 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           ToiletDadoRequirment = value;
                                           ToiletDadoNotRequire = false;
+                                          if (!int_design_count
+                                              .contains(STR_NINE)) {
+                                            int_design_count.add(STR_NINE);
+                                          }
                                           calculation();
                                         },
                                       );
@@ -3666,6 +3701,10 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           EachRequirment = value;
                                           EachNotRequire = false;
+                                          if (!int_design_count
+                                              .contains(STR_TEN)) {
+                                            int_design_count.add(STR_TEN);
+                                          }
                                           calculation();
                                         },
                                       );
@@ -3687,6 +3726,10 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           MaterialSelectionRequirment = value;
                                           MaterialSelectionNotRequire = false;
+                                          if (!int_design_count
+                                              .contains(STR_ELEVEN)) {
+                                            int_design_count.add(STR_ELEVEN);
+                                          }
                                           calculation();
                                         },
                                       );
@@ -3772,6 +3815,8 @@ class _BuiltUpState extends State<BuiltUp> {
                                       onPressed: () {
                                         setState(() {
                                           payDesFees = payDesFees;
+                                          setInteriorDesignCount(
+                                              int_design_count);
                                         });
                                         Navigator.push(
                                             context,
