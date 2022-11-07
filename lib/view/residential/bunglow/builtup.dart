@@ -1,15 +1,22 @@
-// ignore_for_file: non_constant_identifier_names, unused_local_variable, avoid_print, sort_child_properties_last, prefer_const_constructors, duplicate_ignore, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_typing_uninitialized_variables
+// ignore_for_file: non_constant_identifier_names, unused_local_variable, avoid_print, sort_child_properties_last, prefer_const_constructors, duplicate_ignore, sized_box_for_whitespace, avoid_unnecessary_containers
 
 // import 'dart:ui';
+
+import 'dart:async';
 import 'dart:convert';
+
 import 'package:aashiyan/components/constant.dart';
-import 'package:aashiyan/view/residential/bunglow/payment.dart';
+import 'package:aashiyan/utils/payment.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../components/forms.dart';
 import '../../../const.dart';
 
+import '../../../utils/helpers.dart';
 import 'entrance.dart';
 import 'package:http/http.dart' as http;
 
@@ -27,15 +34,39 @@ List str_design = [];
 List mep_design = [];
 
 List int_design = [];
+var buildUpAreaResp;
 
+var totalBuild = 5000.0;
+
+List int_design_count = [
+  {"specification_id": PART_A_AT_GOOD_START, "specification_amount": ''}
+];
+
+// ignore: prefer_typing_uninitialized_variables
 var getData;
+late var timer;
 
 class _BuiltUpState extends State<BuiltUp> {
   @override
   void initState() {
+    timer = Timer.periodic(
+        Duration(seconds: 1),
+        (Timer t) => setState(() {
+              isloading = true;
+            }));
     super.initState();
 
     fetchData();
+    fetchBuiltUpArea();
+    int_design_count = [];
+    int_design_count.add(
+        {"specification_id": PART_A_AT_GOOD_START, "specification_amount": ''});
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
   bool isloading = false;
@@ -46,29 +77,62 @@ class _BuiltUpState extends State<BuiltUp> {
     final jsonResponse = jsonDecode(response.body);
 
     setState(() {
-      getData = jsonResponse;
+      getData = jsonResponse != null ? jsonResponse : '';
+    });
+  }
+
+  void AddRemovePaymentConst(value, PAY_CONST) {
+    if (value == true) {
+      bool check_val = int_design_count
+          .any((e) => mapEquals(e, {"specification_id": PAY_CONST}));
+      if (!check_val) {
+        int_design_count.add({"specification_id": PAY_CONST});
+      }
+      print('if int_design_count====');
+      print(int_design_count);
+    } else {
+      int_design_count
+          .removeWhere((item) => item['specification_id'] == PAY_CONST);
+      print('else int_design_count====');
+      print(int_design_count);
+    }
+  }
+
+  Future fetchBuiltUpArea() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    project_id = prefs.getInt('projectId')!;
+    var response = await http.get(Uri.parse(
+        // 'https://sdplweb.com/sdpl/api/project-builtup-area/project_id'));
+        "${dotenv.env['APP_URL']}bungalow-builtup-area/$project_id"));
+    final jsonResponse = jsonDecode(response.body);
+    buildUpAreaResp = jsonResponse;
+
+    setState(() {
+      totalBuild =
+          jsonResponse != null ? jsonResponse['total_builtup_area'] : '';
+      // price: double.tryParse(element.get('price').toString()) ?? 0,
     });
   }
 
   int calculation() {
     if (SuperRequirment == true) {
-      projectCost = totalBuild * superService;
+      projectCost = totalBuild *superService ;
       if (ArcDesStatus == true) {
         architecturalValue = projectCost * 2 ~/ 100 * 50 ~/ 100;
         print(architecturalValue);
         if (ConceptRequirment == true) {
           conCost = totalBuild * 1800 * 2 ~/ 100 * 15 ~/ 100;
         } else {
-          conCost = INT_ZERO;
-          d3Cost = INT_ZERO;
-          worCost = INT_ZERO;
-          opeCost = INT_ZERO;
-          griCost = INT_ZERO;
-          builCost = INT_ZERO;
-          d2Cost = INT_ZERO;
-          bouCost = INT_ZERO;
-          raiCost = INT_ZERO;
-          entCost = INT_ZERO;
+          conCost = 0;
+          d3Cost = 0;
+          worCost = 0;
+          opeCost = 0;
+          griCost = 0;
+          builCost = 0;
+          d2Cost = 0;
+          bouCost = 0;
+          raiCost = 0;
+          entCost = 0;
         }
         if (D3Requirment == true) {
           d3Cost = totalBuild * 1800 * 2 ~/ 100 * 15 ~/ 100;
@@ -1171,7 +1235,7 @@ class _BuiltUpState extends State<BuiltUp> {
   bool? MaterialNotRequire = false;
   int MaterialInt = 0;
 
-  bool AtGoodRequirment = false;
+  bool? AtGoodRequirment = true;
   bool? AtGoodNotRequire = false;
   int AtGoodInt = 0;
 
@@ -1222,8 +1286,7 @@ class _BuiltUpState extends State<BuiltUp> {
 
 //  - - - - -Heading variables- - - - - - - - - - - - - - - - - - - - -
 
-  var projectCost = 0;
-  var totalBuild = 5000;
+  double projectCost = 0;
   var arcitecturalCost = 0;
   var totalfeeCost = 0;
   var structuralCost = 0;
@@ -1311,7 +1374,7 @@ class _BuiltUpState extends State<BuiltUp> {
     }
 
     Object country;
-    return getData == null
+    return isloading == false
         ? const Center(
             child: CircularProgressIndicator(),
           )
@@ -1338,7 +1401,9 @@ class _BuiltUpState extends State<BuiltUp> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 requirementText("Plot Area"),
-                                requirementText("2400"),
+                                requirementText(buildUpAreaResp != null
+                                    ? buildUpAreaResp['plot_size']
+                                    : ''),
                               ],
                             ),
                           ),
@@ -1352,7 +1417,9 @@ class _BuiltUpState extends State<BuiltUp> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   requirementText("Number of Floors"),
-                                  requirementText("3"),
+                                  requirementText(buildUpAreaResp != null
+                                      ? buildUpAreaResp["floor"].toString()
+                                      : ''),
                                 ],
                               ),
                             )),
@@ -1371,7 +1438,10 @@ class _BuiltUpState extends State<BuiltUp> {
                                   child: requirementText("Ground Floor"),
                                 ),
                                 Container(
-                                  child: requirementText("00"),
+                                  child: requirementText(buildUpAreaResp != null
+                                      ? buildUpAreaResp["ground_floor_builtup"]
+                                          .toString()
+                                      : ''),
                                 ),
                               ],
                             ),
@@ -1388,7 +1458,10 @@ class _BuiltUpState extends State<BuiltUp> {
                                   child: requirementText("First Floor"),
                                 ),
                                 Container(
-                                  child: requirementText("00"),
+                                  child: requirementText(buildUpAreaResp != null
+                                      ? buildUpAreaResp["first_floor_builtup"]
+                                          .toString()
+                                      : ''),
                                 )
                               ],
                             ),
@@ -1407,7 +1480,8 @@ class _BuiltUpState extends State<BuiltUp> {
                                         requirementText("Total Build Up Area"),
                                   ),
                                   Container(
-                                    child: requirementText("$totalBuild"),
+                                    child:
+                                        requirementText(totalBuild.toString()),
                                   )
                                 ],
                               ),
@@ -3420,43 +3494,27 @@ class _BuiltUpState extends State<BuiltUp> {
                               Column(children: const [Text('7 Days')]),
                               Column(children: [
                                 Container(
-                                    child: Checkbox(
-                                        activeColor: checkColor,
-                                        value: AtGoodRequirment,
-                                        onChanged: (value) {
-                                          setState(
-                                            () {
-                                              print("AtGoodRequirment==");
-                                              print(AtGoodRequirment);
-                                              AtGoodRequirment = value!;
-                                              // D3FrontNotRequire = false;
-                                              calculation();
-                                            },
-                                          );
-                                        })
-                                    // Checkbox(
-                                    //   activeColor: checkColor,
-                                    //   value: AtGoodRequirment,
-                                    //   onChanged: (value) {
-                                    //     setState(
-                                    //       () {
-                                    //         AtGoodRequirment = value!;
-                                    //         print("AtGoodRequirment==");
-                                    //         print(AtGoodRequirment);
-                                    //         // AtGoodNotRequire = true;
-                                    //         // calculation();
-                                    //       },
-                                    //     );
-                                    //   }),
-                                    // decoration: BoxDecoration(
-                                    //     color: checkColor,
-                                    //     borderRadius: BorderRadius.circular(1)),
-                                    // child: Icon(
-                                    //   Icons.check,
-                                    //   color: Colors.white,
-                                    //   size: 18,
-                                    // ),
-                                    )
+                                  child: Checkbox(
+                                      activeColor: checkColor,
+                                      value: AtGoodRequirment,
+                                      onChanged: (value) {
+                                        setState(
+                                          () {
+                                            AtGoodRequirment = true;
+                                            // AtGoodNotRequire = true;
+                                            calculation();
+                                          },
+                                        );
+                                      }),
+                                  // decoration: BoxDecoration(
+                                  //     color: checkColor,
+                                  //     borderRadius: BorderRadius.circular(1)),
+                                  // child: Icon(
+                                  //   Icons.check,
+                                  //   color: Colors.white,
+                                  //   size: 18,
+                                  // ),
+                                )
                               ]),
                               Column(children: [
                                 InkWell(
@@ -3482,6 +3540,30 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           D3FrontRequirment = value;
                                           D3FrontNotRequire = false;
+                                          // if (value == true) {
+                                          //   bool check_val = int_design_count
+                                          //       .any((e) => mapEquals(e, {
+                                          //             "specification_id":
+                                          //                 PART_A_3D_FRONT_ELEVATION
+                                          //           }));
+                                          //   if (!check_val) {
+                                          //     int_design_count.add({
+                                          //       "specification_id":
+                                          //           PART_A_3D_FRONT_ELEVATION
+                                          //     });
+                                          //   }
+                                          // } else {
+                                          //   int_design_count.removeWhere(
+                                          //       (item) =>
+                                          //           item['specification_id'] ==
+                                          //           PART_A_3D_FRONT_ELEVATION);
+                                          // }
+
+                                          AddRemovePaymentConst(
+                                              value, PART_A_3D_FRONT_ELEVATION);
+                                          print('int_design_count====');
+                                          print(int_design_count);
+
                                           calculation();
                                         },
                                       );
@@ -3507,6 +3589,30 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           DrawingRequirment = value;
                                           DrawingNotRequire = false;
+                                          AddRemovePaymentConst(value,
+                                              PART_A_DRAWING_UPTO_PLINTH);
+                                          // if (value == true) {
+                                          //   bool check_val = int_design_count
+                                          //       .any((e) => mapEquals(e, {
+                                          //             "specification_id":
+                                          //                 PART_A_DRAWING_UPTO_PLINTH
+                                          //           }));
+                                          //   if (!check_val) {
+                                          //     int_design_count.add({
+                                          //       "specification_id":
+                                          //           PART_A_DRAWING_UPTO_PLINTH
+                                          //     });
+                                          //   }
+                                          //   print('if int_design_count====');
+                                          //   print(int_design_count);
+                                          // } else {
+                                          //   int_design_count.removeWhere(
+                                          //       (item) =>
+                                          //           item['specification_id'] ==
+                                          //           PART_A_DRAWING_UPTO_PLINTH);
+                                          //   print('int_design_count====');
+                                          //   print(int_design_count);
+                                          // }
                                           calculation();
                                         },
                                       );
@@ -3529,6 +3635,35 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           SetofRequirment = value;
                                           SetofNotRequire = false;
+                                          AddRemovePaymentConst(
+                                              value, PART_A_SETS_OF_DRAWINGS);
+                                          // if (value == true) {
+                                          //   bool check_val = int_design_count
+                                          //       .any((e) => mapEquals(e, {
+                                          //             "specification_id":
+                                          //                 PART_A_SETS_OF_DRAWINGS
+                                          //           }));
+                                          //   if (!check_val) {
+                                          //     int_design_count.add({
+                                          //       "specification_id":
+                                          //           PART_A_SETS_OF_DRAWINGS
+                                          //     });
+                                          //   }
+                                          //   print('if int_design_count====');
+                                          //   print(int_design_count);
+                                          // } else {
+                                          //   int_design_count.removeWhere(
+                                          //       (item) =>
+                                          //           item['specification_id'] ==
+                                          //           PART_A_SETS_OF_DRAWINGS);
+                                          //   print('int_design_count====');
+                                          //   print(int_design_count);
+                                          // }
+                                          // if (!int_design_count.contains(
+                                          //     PART_A_SETS_OF_DRAWINGS)) {
+                                          //   int_design_count
+                                          //       .add(PART_A_SETS_OF_DRAWINGS);
+                                          // }
                                           calculation();
                                         },
                                       );
@@ -3550,6 +3685,35 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           HandingRequirment = value;
                                           HandingNotRequire = false;
+                                          AddRemovePaymentConst(
+                                              value, PART_A_HANDING_OVER_SITE);
+                                          // if (value == true) {
+                                          //   bool check_val = int_design_count
+                                          //       .any((e) => mapEquals(e, {
+                                          //             "specification_id":
+                                          //                 PART_A_HANDING_OVER_SITE
+                                          //           }));
+                                          //   if (!check_val) {
+                                          //     int_design_count.add({
+                                          //       "specification_id":
+                                          //           PART_A_HANDING_OVER_SITE
+                                          //     });
+                                          //   }
+                                          //   print('if int_design_count====');
+                                          //   print(int_design_count);
+                                          // } else {
+                                          //   int_design_count.removeWhere(
+                                          //       (item) =>
+                                          //           item['specification_id'] ==
+                                          //           PART_A_HANDING_OVER_SITE);
+                                          //   print('int_design_count====');
+                                          //   print(int_design_count);
+                                          // }
+                                          // if (!int_design_count.contains(
+                                          //     PART_A_HANDING_OVER_SITE)) {
+                                          //   int_design_count
+                                          //       .add(PART_A_HANDING_OVER_SITE);
+                                          // }
                                           calculation();
                                         },
                                       );
@@ -3571,6 +3735,13 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           WithSuperRequirment = value;
                                           WithSuperNotRequire = false;
+                                          AddRemovePaymentConst(
+                                              value, PART_A_WITH_SUPER_VISION);
+                                          // if (!int_design_count.contains(
+                                          //     PART_A_WITH_SUPER_VISION)) {
+                                          //   int_design_count
+                                          //       .add(PART_A_WITH_SUPER_VISION);
+                                          // }
                                           calculation();
                                         },
                                       );
@@ -3610,6 +3781,13 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           FurnitureLayoutRequirment = value;
                                           FurnitureLayoutNotRequire = false;
+                                          AddRemovePaymentConst(
+                                              value, PART_B_FURNITURE_LAYOUT);
+                                          // if (!int_design_count.contains(
+                                          //     PART_B_FURNITURE_LAYOUT)) {
+                                          //   int_design_count
+                                          //       .add(PART_B_FURNITURE_LAYOUT);
+                                          // }
                                           calculation();
                                         },
                                       );
@@ -3632,6 +3810,14 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           CeilingRequirment = value;
                                           CeilingNotRequire = false;
+                                          AddRemovePaymentConst(value,
+                                              PART_B_CEILING_FLOORING_DETAILS);
+
+                                          // if (!int_design_count.contains(
+                                          //     PART_B_CEILING_FLOORING_DETAILS)) {
+                                          //   int_design_count.add(
+                                          //       PART_B_CEILING_FLOORING_DETAILS);
+                                          // }
                                           calculation();
                                         },
                                       );
@@ -3655,6 +3841,13 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           ToiletDadoRequirment = value;
                                           ToiletDadoNotRequire = false;
+                                          AddRemovePaymentConst(value,
+                                              PART_B_TOILET_DADO_DETAILS);
+                                          // if (!int_design_count.contains(
+                                          //     PART_B_TOILET_DADO_DETAILS)) {
+                                          //   int_design_count.add(
+                                          //       PART_B_TOILET_DADO_DETAILS);
+                                          // }
                                           calculation();
                                         },
                                       );
@@ -3679,6 +3872,13 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           EachRequirment = value;
                                           EachNotRequire = false;
+                                          AddRemovePaymentConst(value,
+                                              PART_B_EACH_SPACE_WALL_DETAILS);
+                                          // if (!int_design_count.contains(
+                                          //     PART_B_EACH_SPACE_WALL_DETAILS)) {
+                                          //   int_design_count.add(
+                                          //       PART_B_EACH_SPACE_WALL_DETAILS);
+                                          // }
                                           calculation();
                                         },
                                       );
@@ -3700,6 +3900,13 @@ class _BuiltUpState extends State<BuiltUp> {
                                         () {
                                           MaterialSelectionRequirment = value;
                                           MaterialSelectionNotRequire = false;
+                                          AddRemovePaymentConst(
+                                              value, PART_B_MATERIAL_SELECTION);
+                                          // if (!int_design_count.contains(
+                                          //     PART_B_MATERIAL_SELECTION)) {
+                                          //   int_design_count
+                                          //       .add(PART_B_MATERIAL_SELECTION);
+                                          // }
                                           calculation();
                                         },
                                       );
@@ -3785,6 +3992,8 @@ class _BuiltUpState extends State<BuiltUp> {
                                       onPressed: () {
                                         setState(() {
                                           payDesFees = payDesFees;
+                                          setInteriorDesignCount(
+                                              int_design_count);
                                         });
                                         Navigator.push(
                                             context,

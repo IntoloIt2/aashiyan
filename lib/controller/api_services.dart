@@ -668,12 +668,11 @@ Future<dynamic> pantryPut(
     body: jsonEncode(projectData),
   );
   var resp = jsonDecode(response.body);
-  print('resp===');
-  print(resp);
+
   return resp['status'];
 }
 
-Future<void> flooreStorePost(
+Future<dynamic> flooreStorePost(
   int projectId,
   int floorStoreRequirement,
   String floorStoreLength,
@@ -713,12 +712,16 @@ Future<void> flooreStorePost(
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('${dotenv.env['APP_URL']}bungalow-floor-store'),
+
+    Uri.parse("${dotenv.env['APP_URL']}bungalow-floor-store"),
+    // Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-floor-store'),
+
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
+
 
   print(response.body);
   var resp = jsonDecode(response.body);
@@ -768,15 +771,16 @@ Future<dynamic> flooreStorePut(
   // print(projectId);
   // print('${dotenv.env['APP_URL']}update-bungalow-floor-store/$projectId}');
   final response = await http.post(
+
     Uri.parse('${dotenv.env['APP_URL']}update-bungalow-floor-store/$projectId'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
+  var resp = jsonDecode(response.body);
+  return resp['status'];
 
-  print('response.body===');
-  print(response.body);
 }
 
 Future<dynamic> BedRoomPost(
@@ -964,6 +968,7 @@ Future<dynamic> BasementPost(
   };
 
   final response = await http.post(
+
     // Uri.parse(baseUrlLocal + "project"),
     Uri.parse('${dotenv.env['APP_URL']}bungalow-basement'),
     headers: <String, String>{
@@ -1110,8 +1115,10 @@ Future<dynamic> BasementPut(
     "garden_type": gardenType,
     "garden_specific_req": gardenSpecificReq,
   };
+  // print("postdata===");
   print(jsonEncode(projectData));
   final response = await http.post(
+
     // Uri.parse(baseUrlLocal + "project"),
     Uri.parse('${dotenv.env['APP_URL']}update-bungalow-basement/$projectId'),
     headers: <String, String>{
@@ -1119,7 +1126,7 @@ Future<dynamic> BasementPut(
     },
     body: jsonEncode(projectData),
   );
-  print(response.body);
+
   var temp = jsonDecode(response.body);
   return temp['status'];
 }
