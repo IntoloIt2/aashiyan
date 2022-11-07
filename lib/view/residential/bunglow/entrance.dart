@@ -543,17 +543,7 @@ class _EntranceState extends State<Entrance> {
                             //     ? Text(floors[printData["bungalow_entrance"]["floor"]]
                             //         .toString())
                             //     : Text(selectedFloor),
-                            hint: printData != null
-                                ? printData['project'] != null
-                                    ? printData['project']
-                                                ['bungalow_entrance'] !=
-                                            null
-                                        ? Text(floors[printData['project']
-                                                ['bungalow_entrance']]
-                                            .toString())
-                                        : Text(selectedFloor)
-                                    : Text(selectedFloor)
-                                : Text(selectedFloor),
+                            hint: Text(selectedFloor),
                             elevation: 16,
                             items: floors.asMap().entries.map((it) {
                               int idx = it.key;
@@ -1217,11 +1207,7 @@ class _EntranceState extends State<Entrance> {
                                       onChanged: (value) {
                                         setState(
                                           () {
-                                            if (printData != null &&
-                                                printData[
-                                                        'bungalow_entrance'] !=
-                                                    null)
-                                              securityRequired = value;
+                                            securityRequired = value;
                                             securityNotRequired = false;
                                           },
                                         );
@@ -1286,11 +1272,7 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData["bungalow_entrance"] != null
-                                ? printData["bungalow_entrance"]
-                                    ["security_kiosq_length"]
-                                : '',
+                            initialValue: securityKioskLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "lenght",
@@ -1325,11 +1307,7 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData["bungalow_entrance"] != null
-                                ? printData["bungalow_entrance"]
-                                    ["security_kiosq_width"]
-                                : '',
+                            initialValue: securityKioskWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "width",
@@ -1503,10 +1481,7 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData['bungalow_entrance'] != null
-                                ? printData['bungalow_entrance']['porch_length']
-                                : '',
+                            initialValue: porchLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                               hintText: "length",
@@ -1546,10 +1521,7 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData['bungalow_entrance'] != null
-                                ? printData['bungalow_entrance']['porch_width']
-                                : '',
+                            initialValue: porchWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                               hintText: "width",
@@ -1946,10 +1918,7 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData['bungalow_entrance'] != null
-                                ? printData['bungalow_entrance']['foyer_length']
-                                : '',
+                            initialValue: foyerLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",
@@ -1983,10 +1952,7 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData['bungalow_entrance'] != null
-                                ? printData['bungalow_entrance']['foyer_width']
-                                : '',
+                            initialValue: foyerWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Width",
@@ -2199,11 +2165,7 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData['bungalow_entrance'] != null
-                                ? printData['bungalow_entrance']
-                                    ['verandah_length']
-                                : '',
+                            initialValue: verandaLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Length",
@@ -2237,11 +2199,7 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData['bungalow_entrance'] != null
-                                ? printData['bungalow_entrance']
-                                    ['verandah_width']
-                                : '',
+                            initialValue: verandaWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "width",

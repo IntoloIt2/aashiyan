@@ -158,6 +158,7 @@ class _LivingHallState extends State<LivingHall> {
         setState(
           () {
             printData = jsonResponse;
+            print(printData);
             if (printData != null) {
               pageId = printData['bungalow_drawing_hall']['id'] != null
                   ? int.parse(
@@ -193,6 +194,13 @@ class _LivingHallState extends State<LivingHall> {
                           ["kitchen_floor"]]
                       : selectedKitchen;
 
+              KitchenFloor =
+                  printData["bungalow_drawing_hall"]["kitchen_floor"] != null
+                      ? int.parse(printData["bungalow_drawing_hall"]
+                              ["kitchen_floor"]
+                          .toString())
+                      : KitchenFloor;
+
               print("kitchen   ${selectedKitchen}");
 
               selectedKitchenFunction = printData['bungalow_drawing_hall']
@@ -201,6 +209,13 @@ class _LivingHallState extends State<LivingHall> {
                   ? kitchenFunctionItems[printData['bungalow_drawing_hall']
                       ['kitchen_dining_function']]
                   : selectedKitchenFunction;
+              kitchenDiningFunction = printData['bungalow_drawing_hall']
+                          ['kitchen_dining_function'] !=
+                      null
+                  ? printData['bungalow_drawing_hall']
+                          ['kitchen_dining_function']
+                      .toString()
+                  : kitchenDiningFunction;
               selectedRefrigerator = printData['bungalow_drawing_hall']
                           ['refrigerator_size'] !=
                       null
@@ -213,12 +228,28 @@ class _LivingHallState extends State<LivingHall> {
                   ? floorItems[printData["bungalow_drawing_hall"]
                       ["living_hall_location"]]
                   : selectedFloor;
+              livingHallLocation = printData["bungalow_drawing_hall"]
+                          ["living_hall_location"] !=
+                      null
+                  ? int.parse(printData["bungalow_drawing_hall"]
+                          ["living_hall_location"]
+                      .toString())
+                  : livingHallLocation;
+
               DrawingSelected = printData["bungalow_drawing_hall"]
                           ["drawing_hall_location"] !=
                       null
                   ? DrawingItems[printData["bungalow_drawing_hall"]
                       ["drawing_hall_location"]]
                   : DrawingSelected;
+
+              drawingHallLocation = printData["bungalow_drawing_hall"]
+                          ["drawing_hall_location"] !=
+                      null
+                  ? int.parse(printData["bungalow_drawing_hall"]
+                          ["drawing_hall_location"]
+                      .toString())
+                  : drawingHallLocation;
 
               LivingHallLengthController = printData['bungalow_drawing_hall']
                           ['living_hall_length'] !=
@@ -416,7 +447,7 @@ class _LivingHallState extends State<LivingHall> {
     getUserId();
 
     timer = Timer.periodic(
-        Duration(seconds: 5),
+        Duration(seconds: 2),
         (Timer t) => setState(() {
               isloading = true;
             }));
@@ -574,13 +605,8 @@ class _LivingHallState extends State<LivingHall> {
                                     onTap: () async {
                                       final SharedPreferences prefs =
                                           await SharedPreferences.getInstance();
-                                      var floorCount =
-                                          prefs.getInt('floorCount')!;
-                                      if (idx <= floorCount) {
-                                        drawingHallLocation = idx;
-                                      } else {
-                                        drawingHallLocation = INT_ZERO;
-                                      }
+
+                                      livingHallLocation = it.key;
                                     },
                                     child: Text(
                                       it.value,
@@ -635,16 +661,7 @@ class _LivingHallState extends State<LivingHall> {
                             //     ? printData['bungalow_drawing_hall']
                             //         ['living_hall_length']
                             //     : LivingHallLengthController,
-                            initialValue:
-                                printData['bungalow_drawing_hall'] != null
-                                    ? printData['bungalow_drawing_hall']
-                                                ['living_hall_length'] !=
-                                            null
-                                        ? printData['bungalow_drawing_hall']
-                                                ['living_hall_length']
-                                            .toString()
-                                        : LivingHallLengthController
-                                    : LivingHallLengthController,
+                            initialValue: LivingHallLengthController,
 
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
@@ -687,16 +704,7 @@ class _LivingHallState extends State<LivingHall> {
                             //         ['living_hall_width']
                             //     : "",
 
-                            initialValue:
-                                printData['bungalow_drawing_hall'] != null
-                                    ? printData['bungalow_drawing_hall']
-                                                ['living_hall_width'] !=
-                                            null
-                                        ? printData['bungalow_drawing_hall']
-                                                ['living_hall_width']
-                                            .toString()
-                                        : LivingHallWidthController
-                                    : LivingHallWidthController,
+                            initialValue: LivingHallWidthController,
 
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
@@ -772,14 +780,7 @@ class _LivingHallState extends State<LivingHall> {
                             height: height * 0.04,
                             width: width * 0.2,
                             child: TextFormField(
-                              initialValue: printData != null &&
-                                      printData['bungalow_drawing_hall']
-                                              ['drawing_hall_location'] !=
-                                          null
-                                  ? printData['bungalow_drawing_hall']
-                                          ['drawing_hall_location']
-                                      .toString()
-                                  : '',
+                              initialValue: ohterLivingHallController,
                               style: const TextStyle(fontSize: 14),
                               decoration: const InputDecoration(
                                   hintText: "other Location",
@@ -824,16 +825,7 @@ class _LivingHallState extends State<LivingHall> {
                             //     ? printData['bungalow_drawing_hall']
                             //         ['drawing_hall_text']
                             //     : "",
-                            initialValue:
-                                printData['bungalow_drawing_hall'] != null
-                                    ? printData['bungalow_drawing_hall']
-                                                ['drawing_hall_text'] !=
-                                            null
-                                        ? printData['bungalow_drawing_hall']
-                                                ['drawing_hall_text']
-                                            .toString()
-                                        : livingSpecialFeaturesController
-                                    : livingSpecialFeaturesController,
+                            initialValue: livingSpecialFeaturesController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "special features",
@@ -1016,7 +1008,7 @@ class _LivingHallState extends State<LivingHall> {
                                   return DropdownMenuItem<String>(
                                       value: it.value,
                                       onTap: () {
-                                        drawingHallLocation = idx;
+                                        drawingHallLocation = it.key;
                                         // print(drawingHallLocation);
                                       },
                                       child: Text(
@@ -1089,13 +1081,7 @@ class _LivingHallState extends State<LivingHall> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData['bungalow_drawing_hall']
-                                            ['drawing_hall_length'] !=
-                                        null
-                                ? printData['bungalow_drawing_hall']
-                                    ['drawing_hall_length']
-                                : '',
+                            initialValue: drawingHallLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",
@@ -1132,13 +1118,7 @@ class _LivingHallState extends State<LivingHall> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData['bungalow_drawing_hall']
-                                            ['drawing_hall_width'] !=
-                                        null
-                                ? printData['bungalow_drawing_hall']
-                                    ['drawing_hall_width']
-                                : '',
+                            initialValue: drawingHallWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "width",
@@ -1183,13 +1163,7 @@ class _LivingHallState extends State<LivingHall> {
                           height: height * 0.04,
                           width: width * 0.3,
                           child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData['bungalow_drawing_hall']
-                                            ['living_hall_text'] !=
-                                        null
-                                ? printData['bungalow_drawing_hall']
-                                    ['living_hall_text']
-                                : '',
+                            initialValue: drawingSpecialFeaturesController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "special feature",
@@ -1304,7 +1278,7 @@ class _LivingHallState extends State<LivingHall> {
                                       var floorCount =
                                           prefs.getInt('floorCount')!;
                                       if (idx <= floorCount) {
-                                        KitchenFloor = idx;
+                                        KitchenFloor = it.key;
                                       } else {
                                         KitchenFloor = INT_ZERO;
                                       }
@@ -1362,16 +1336,7 @@ class _LivingHallState extends State<LivingHall> {
                           //     ? printData['bungalow_drawing_hall']
                           //         ['kitchen_length']
                           //     : '',
-                          initialValue:
-                              printData['bungalow_drawing_hall'] != null
-                                  ? printData['bungalow_drawing_hall']
-                                              ['kitchen_length'] !=
-                                          null
-                                      ? printData['bungalow_drawing_hall']
-                                              ['kitchen_length']
-                                          .toString()
-                                      : KitchenLengthController
-                                  : KitchenLengthController,
+                          initialValue: KitchenLengthController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "length",
@@ -1415,16 +1380,7 @@ class _LivingHallState extends State<LivingHall> {
                           //             .toString()
                           //         : ''
                           //     : '',
-                          initialValue:
-                              printData['bungalow_drawing_hall'] != null
-                                  ? printData['bungalow_drawing_hall']
-                                              ['kitchen_width'] !=
-                                          null
-                                      ? printData['bungalow_drawing_hall']
-                                              ['kitchen_width']
-                                          .toString()
-                                      : kitchenWidthController
-                                  : kitchenWidthController,
+                          initialValue: kitchenWidthController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "Width",
@@ -1481,18 +1437,24 @@ class _LivingHallState extends State<LivingHall> {
                               // value: selectedKitchenFunction,
                               elevation: 16,
                               items: kitchenFunctionItems
-                                  .map(
-                                    (it) => DropdownMenuItem<String>(
-                                      value: it,
-                                      child: Text(
-                                        it,
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                      ),
+                                  .asMap()
+                                  .entries
+                                  .map((it) {
+                                int idx = it.key;
+                                String value = it.value;
+                                return DropdownMenuItem<String>(
+                                  value: it.value,
+                                  onTap: () {
+                                    kitchenDiningFunction = it.key.toString();
+                                  },
+                                  child: Text(
+                                    it.value,
+                                    style: TextStyle(
+                                      color: Colors.black,
                                     ),
-                                  )
-                                  .toList(),
+                                  ),
+                                );
+                              }).toList(),
                               onChanged: (it) {
                                 // "Selecting dining function",
                                 // "full open to dining ",
@@ -1705,13 +1667,7 @@ class _LivingHallState extends State<LivingHall> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData['bungalow_drawing_hall']
-                                            ['attach_store_length'] !=
-                                        null
-                                ? printData['bungalow_drawing_hall']
-                                    ['attach_store_length']
-                                : '',
+                            initialValue: attachedLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",
@@ -1747,13 +1703,7 @@ class _LivingHallState extends State<LivingHall> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData['bungalow_drawing_hall']
-                                            ['attach_store_width'] !=
-                                        null
-                                ? printData['bungalow_drawing_hall']
-                                    ['attach_store_width']
-                                : '',
+                            initialValue: attachedWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Width",
@@ -1823,13 +1773,7 @@ class _LivingHallState extends State<LivingHall> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData['bungalow_drawing_hall']
-                                            ['utility_wash_length'] !=
-                                        null
-                                ? printData['bungalow_drawing_hall']
-                                    ['utility_wash_length']
-                                : '',
+                            initialValue: utilityLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",
@@ -1867,13 +1811,7 @@ class _LivingHallState extends State<LivingHall> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData != null &&
-                                    printData['bungalow_drawing_hall']
-                                            ['utility_wash_width'] !=
-                                        null
-                                ? printData['bungalow_drawing_hall']
-                                    ['utility_wash_width']
-                                : '',
+                            initialValue: utilityWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "width",
@@ -2008,16 +1946,7 @@ class _LivingHallState extends State<LivingHall> {
                         height: height * 0.04,
                         width: width * 0.4,
                         child: TextFormField(
-                          initialValue:
-                              printData['bungalow_drawing_hall'] != null
-                                  ? printData['bungalow_drawing_hall']
-                                              ['specific_req'] !=
-                                          null
-                                      ? printData['bungalow_drawing_hall']
-                                              ['specific_req']
-                                          .toString()
-                                      : specificReq
-                                  : specificReq,
+                          initialValue: specificReq,
                           // initialValue: printData != null &&
                           //         printData['bungalow_drawing_hall']
                           //                 ['specific_req'] !=
@@ -2128,21 +2057,21 @@ class _LivingHallState extends State<LivingHall> {
                         if (livingRequired == true) {}
                         if (attachedStore == true) {}
 
-                        if (drawingHallRequired == true) {
+                        if(drawingHallRequired == true) {
                           drawingInt = INT_ONE;
                         }
 
-                        if (selectedKitchenFunction == KITCHEN_FULL_OPEN) {
-                          kitchenDiningFunction = CONST_FULL_OPEN;
-                        }
+                        // if (selectedKitchenFunction == KITCHEN_FULL_OPEN) {
+                        //   kitchenDiningFunction = CONST_FULL_OPEN;
+                        // }
 
-                        if (selectedKitchenFunction == KITCHEN_PARTIAL_OPEN) {
-                          kitchenDiningFunction = CONST_PARTIAL_OPEN;
-                        }
-                        if (selectedKitchenFunction ==
-                            KITCHEN_REASONABLE_OPEN) {
-                          kitchenDiningFunction = CONST_REASONABLE_OPEN;
-                        }
+                        // if (selectedKitchenFunction == KITCHEN_PARTIAL_OPEN) {
+                        //   kitchenDiningFunction = CONST_PARTIAL_OPEN;
+                        // }
+                        // if (selectedKitchenFunction ==
+                        //     KITCHEN_REASONABLE_OPEN) {
+                        //   kitchenDiningFunction = CONST_REASONABLE_OPEN;
+                        // }
 
                         // if (selectedKitchen == G_FLOOR_TEXT) {
                         //   KitchenFloor = G_FLOOR;
