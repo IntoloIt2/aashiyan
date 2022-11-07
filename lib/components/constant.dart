@@ -103,6 +103,19 @@ const STR_SEVEN = "7";
 const STR_EIGHT = "8";
 const STR_NINE = "9";
 const STR_TEN = "10";
+const STR_ELEVEN = "11";
+
+const PART_A_AT_GOOD_START = "1";
+const PART_A_3D_FRONT_ELEVATION = "2";
+const PART_A_DRAWING_UPTO_PLINTH = "3";
+const PART_A_SETS_OF_DRAWINGS = "4";
+const PART_A_HANDING_OVER_SITE = "5";
+const PART_A_WITH_SUPER_VISION = "6";
+const PART_B_FURNITURE_LAYOUT = "7";
+const PART_B_CEILING_FLOORING_DETAILS = "8";
+const PART_B_TOILET_DADO_DETAILS = "9";
+const PART_B_EACH_SPACE_WALL_DETAILS = "10";
+const PART_B_MATERIAL_SELECTION = "11";
 
 const INT_ZERO = 0;
 const INT_ONE = 1;
@@ -115,6 +128,7 @@ const INT_SEVEN = 7;
 const INT_EIGHT = 8;
 const INT_NINE = 9;
 const INT_TEN = 10;
+const INT_ELEVEN = 11;
 // ignore: non_constant_identifier_names
 
 int EAST_OTHER_PROPERTY = 2;
