@@ -5,9 +5,12 @@ import 'dart:convert';
 import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/controller/auth_controller.dart';
+import 'package:aashiyan/view/residential/bunglow/builtup.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gson/gson.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './razorCredentials.dart' as razorCredintials;
@@ -27,6 +30,8 @@ class _PaymentState extends State<Payment> {
   var orderId;
   int totalMoney = 0;
   var InteriorCount;
+  var specification;
+  var amount = 0;
 
   final Razorpay _razorpay = Razorpay();
 
@@ -52,14 +57,15 @@ class _PaymentState extends State<Payment> {
     );
   }
 
-  void launchRazorPay(String Id) {
+  void launchRazorPay(String Id, var totalMoney) {
     setState(() {
       orderId = Id;
+      amount = totalMoney;
     });
 
     var options = {
       'key': razorCredintials.keyId,
-      'amount': totalMoney, //in the smallest currency sub-unit.
+      // 'amount': totalMoney * 100, //in the smallest currency sub-unit.
       // 'amount': '${totalMoney}', //in the smallest currency sub-unit.
       'name': 'Aashiyan Pvt Ltd.',
       'order_id': orderId, // Generate order_id using Orders API
@@ -78,7 +84,7 @@ class _PaymentState extends State<Payment> {
     }
   }
 
-  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     final key = utf8.encode(razorCredintials.keySecret);
     final bytes = utf8.encode('$orderId|${response.paymentId}');
     final hmacSha256 = Hmac(sha256, key);
@@ -86,6 +92,21 @@ class _PaymentState extends State<Payment> {
 
     if (generatedSignature.toString() == response.signature.toString()) {
       print("Payment was successful!");
+
+      var body = {
+        "user_id": user_id,
+        "project_id": projectId,
+        "transaction_id": response.paymentId.toString(),
+        "specifications": specification,
+        "amount": amount
+      };
+
+      var res = await https.post(Uri.parse("${dotenv.env['APP_URL']}/payment"),
+          headers: <String, String>{
+            "Content-Type": "application/json; charset=UTF-8"
+          },
+          body: jsonEncode(body));
+
       var msg = "SUCCESS: " + response.paymentId.toString();
       showToast(msg, Colors.green);
     } else {
@@ -118,20 +139,22 @@ class _PaymentState extends State<Payment> {
   }
 
   void createOrder() async {
+    // RegExp regex = RegExp(r"([.]*)(?!.*\d)");
     RegExp regex = RegExp(r"([.]*0)(?!.*\d)");
-    double money = double.parse(total.toString());
-    double tMoney = money * 100;
+    int money = int.parse(total.toString());
+    int tMoney = money * 100;
     String stringMoney = tMoney.toString().replaceAll(regex, '');
 
     totalMoney = int.parse(stringMoney);
+
     String username = razorCredintials.keyId;
     String password = razorCredintials.keySecret;
 
     String basicAuth =
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';
     Map<String, dynamic> body = {
-      "amount": 1000,
-      // "amount": 100,
+      // "amount": totalMoney,
+      "amount": 100,
       "currency": "INR",
       "receipt": "rcptid_11"
     };
@@ -144,16 +167,22 @@ class _PaymentState extends State<Payment> {
       },
       body: jsonEncode(body),
     );
-    print('res===');
-    print(res.statusCode);
     if (res.statusCode == SUCCESS) {
-      // final SharedPreferences prefs = await SharedPreferences.getInstance();
-      // InteriorCount = prefs.getStringList('InteriorDesignCount');
-      // print('create order-----------');
-      // InteriorCount = prefs.getString("InteriorDesignCount");
-      // print('InteriorCount===');
-      // print(InteriorCount);
-      launchRazorPay(jsonDecode(res.body)['id']);
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      InteriorCount = prefs.getString("InteriorDesignCount");
+      projectId = prefs.getInt('projectId');
+      String? userData = prefs.getString('userData');
+
+      var decJson;
+      if (userData != null) {
+        decJson = jsonDecode(userData);
+      }
+      user_id = decJson['data']['id'];
+      Gson gson = new Gson();
+      specification = gson.decode(InteriorCount);
+
+      launchRazorPay(jsonDecode(res.body)['id'], totalMoney);
     }
   }
 

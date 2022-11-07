@@ -77,7 +77,7 @@ class _BuiltUpState extends State<BuiltUp> {
     final jsonResponse = jsonDecode(response.body);
 
     setState(() {
-      getData = jsonResponse;
+      getData = jsonResponse != null ? jsonResponse : '';
     });
   }
 
@@ -108,7 +108,8 @@ class _BuiltUpState extends State<BuiltUp> {
     buildUpAreaResp = jsonResponse;
 
     setState(() {
-      totalBuild = jsonResponse['total_builtup_area'];
+      totalBuild =
+          jsonResponse != null ? jsonResponse['total_builtup_area'] : '';
       // price: double.tryParse(element.get('price').toString()) ?? 0,
     });
   }

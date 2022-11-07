@@ -20,8 +20,6 @@ Future<dynamic> setInteriorDesignCount(List count) async {
   prefs.remove('InteriorDesignCount');
   Gson gson = new Gson();
   String json = gson.encode(count);
-  print('json============');
-  print(json);
   prefs.setString("InteriorDesignCount", json);
   // print('count---');
   // print(count);
