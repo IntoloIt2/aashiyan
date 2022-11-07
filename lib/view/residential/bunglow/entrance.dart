@@ -66,16 +66,16 @@ class _HintDailogState extends State<HintDailog> {
       future: futureCall(),
       builder: (_, dataSnapshot) {
         if (dataSnapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else {
           Future(() {
             // Future Callback
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('Employee Data'),
+                title: const Text('Employee Data'),
                 content: Container(
-                  padding: EdgeInsets.only(top: 15),
+                  padding: const EdgeInsets.only(top: 15),
                   height: MediaQuery.of(context).size.height * 0.3,
                   width: MediaQuery.of(context).size.width * 0.2,
                   child: Column(
@@ -130,13 +130,13 @@ class _EntranceState extends State<Entrance> {
   AlertDialog helpDialog(BuildContext context) {
     return AlertDialog(
       icon: IconButton(
-        icon: Icon(Icons.close),
+        icon: const Icon(Icons.close),
         onPressed: () {
           Navigator.of(context).pop();
         },
       ),
       content: Container(
-        padding: EdgeInsets.only(top: 15),
+        padding: const EdgeInsets.only(top: 15),
         height: MediaQuery.of(context).size.height * 0.3,
         width: MediaQuery.of(context).size.width * 0.2,
         child: Column(
@@ -668,7 +668,7 @@ class _EntranceState extends State<Entrance> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      margin: EdgeInsets.only(right: 10),
+                      margin: const EdgeInsets.only(right: 10),
                       height: height * 0.04,
                       child: Row(
                         children: [
@@ -704,7 +704,7 @@ class _EntranceState extends State<Entrance> {
                 elevation: 5,
                 child: Container(
                   height: height * 0.04,
-                  margin: EdgeInsets.only(right: 10),
+                  margin: const EdgeInsets.only(right: 10),
                   child: Row(
                     children: [
                       StatefulBuilder(builder:
@@ -732,7 +732,7 @@ class _EntranceState extends State<Entrance> {
                                         Navigator.of(context).pop();
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.all(10),
+                                        padding: const EdgeInsets.all(10),
                                         color: Colors.black,
                                         child: const Text(
                                           "okay",
@@ -774,7 +774,7 @@ class _EntranceState extends State<Entrance> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      margin: EdgeInsets.only(right: 10),
+                      margin: const EdgeInsets.only(right: 10),
                       height: height * 0.04,
                       child: Row(
                         children: [
@@ -865,7 +865,7 @@ class _EntranceState extends State<Entrance> {
                   elevation: 5,
                   borderRadius: BorderRadius.circular(5),
                   child: Container(
-                    margin: EdgeInsets.only(right: 10),
+                    margin: const EdgeInsets.only(right: 10),
                     height: height * 0.04,
                     padding: const EdgeInsets.all(3),
                     child: DropdownButtonHideUnderline(
@@ -950,7 +950,7 @@ class _EntranceState extends State<Entrance> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 Checkbox(
@@ -982,7 +982,7 @@ class _EntranceState extends State<Entrance> {
                           borderRadius: BorderRadius.circular(5),
                           elevation: 5,
                           child: Container(
-                            padding: EdgeInsets.only(right: 10),
+                            padding: const EdgeInsets.only(right: 10),
                             child: Row(
                               children: [
                                 Checkbox(
@@ -1016,7 +1016,7 @@ class _EntranceState extends State<Entrance> {
                   height: height * 0.1,
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 10),
+                  margin: const EdgeInsets.only(left: 10),
                   child: Column(children: [
                     requirementText("Main car gate"),
                     SizedBox(
@@ -1186,7 +1186,7 @@ class _EntranceState extends State<Entrance> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -1222,7 +1222,7 @@ class _EntranceState extends State<Entrance> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -1411,7 +1411,7 @@ class _EntranceState extends State<Entrance> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -1444,7 +1444,7 @@ class _EntranceState extends State<Entrance> {
                     borderRadius: BorderRadius.circular(5),
                     elevation: 5,
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       child: Row(
                         children: [
                           SizedBox(
@@ -1577,7 +1577,7 @@ class _EntranceState extends State<Entrance> {
                   borderRadius: BorderRadius.circular(5),
                   elevation: 5,
                   child: Container(
-                    padding: EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.only(right: 10),
                     child: Row(
                       children: [
                         SizedBox(
@@ -1647,7 +1647,7 @@ class _EntranceState extends State<Entrance> {
             Material(
               elevation: 10,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 color: Colors.white,
                 child: SizedBox(
                   width: width * 9,
@@ -1804,7 +1804,7 @@ class _EntranceState extends State<Entrance> {
             Material(
               elevation: 10,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 color: Colors.white,
                 child: SizedBox(
                   width: width * 9,
@@ -2012,7 +2012,7 @@ class _EntranceState extends State<Entrance> {
                   elevation: 5,
                   borderRadius: BorderRadius.circular(5),
                   child: Container(
-                    margin: EdgeInsets.only(left: 10),
+                    margin: const EdgeInsets.only(left: 10),
                     height: height * 0.035,
                     width: width * 0.45,
                     child: DropdownButtonHideUnderline(
@@ -2054,7 +2054,7 @@ class _EntranceState extends State<Entrance> {
             Material(
               elevation: 10,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 color: Colors.white,
                 child: SizedBox(
                   width: width * 9,
@@ -2313,7 +2313,7 @@ class _EntranceState extends State<Entrance> {
             Material(
               elevation: 10,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 color: Colors.white,
                 child: SizedBox(
                   width: width * 9,
@@ -2537,6 +2537,6 @@ class _EntranceState extends State<Entrance> {
 Text headingFont(String s) {
   return Text(
     s,
-    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
   );
 }
