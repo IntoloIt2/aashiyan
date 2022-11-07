@@ -8,12 +8,25 @@ import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provid
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../../../const.dart';
 import '../../../controller/api_services.dart';
 import '../../../components//constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../controller/auth_controller.dart';
+
+void showToast(msg, toastColor, GRAVITY) {
+  Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.TOP,
+      timeInSecForIosWeb: 0,
+      backgroundColor: toastColor,
+      textColor: Colors.white);
+}
 
 class FloorStore extends StatefulWidget {
   const FloorStore({Key? key}) : super(key: key);
@@ -23,15 +36,16 @@ class FloorStore extends StatefulWidget {
 }
 
 class _FloorStoreState extends State<FloorStore> {
-  String floorStoreArea = "";
+  var status;
 
-  String floorStoreLengthController = ' ';
-  String floorStoreWidthController = ' ';
+  String floorStoreArea = "";
+  String floorStoreLengthController = '';
+  String floorStoreWidthController = '';
   int floorStoreLocationController = 0;
-  String liftSpecialRequirementController = ' ';
-  String passengerCapacityControler = ' ';
-  String poojaLengthController = ' ';
-  String poojaWidthController = ' ';
+  String liftSpecialRequirementController = '';
+  String passengerCapacityControler = '';
+  String poojaLengthController = '';
+  String poojaWidthController = '';
   String poojaRoomLocationController = '';
   int? project_id;
 
@@ -153,7 +167,7 @@ class _FloorStoreState extends State<FloorStore> {
 
             FloorStoreDetail2 =
                 printData["bungalow_floor_store"]["floor_store_req"] == 0
-                    ? true
+                ? true
                     : FloorStoreDetail2;
             selectedFloor =
                 printData['bungalow_floor_store']['store_floor'] != null
@@ -512,12 +526,7 @@ class _FloorStoreState extends State<FloorStore> {
                             //     ? printData["bungalow_floor_store"]
                             //         ["floor_store_length"]
                             //     : '',
-                            initialValue: printData != null
-                                ? printData["project"] != null
-                                    ? printData["project"]['floor_store_length']
-                                        .toString()
-                                    : floorStoreLengthController
-                                : floorStoreLengthController,
+                            initialValue: floorStoreLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",
@@ -566,12 +575,7 @@ class _FloorStoreState extends State<FloorStore> {
                             //     ? printData["bungalow_floor_store"]
                             //         ["floor_store_width"]
                             //     : '',
-                            initialValue: printData != null
-                                ? printData["project"] != null
-                                    ? printData["project"]['floor_store_width']
-                                        .toString()
-                                    : floorStoreWidthController
-                                : floorStoreWidthController,
+                            initialValue: floorStoreWidthController,
                             // initialValue: printData != null
                             //     ? printData["bungalow_floor_store"]
                             //                 ['floor_store_width'] !=
@@ -641,7 +645,7 @@ class _FloorStoreState extends State<FloorStore> {
                               return DropdownMenuItem<String>(
                                   value: it.value,
                                   onTap: () {
-                                    selectedStair = idx.toString();
+                                    selectedStair = it.key.toString();
                                   },
                                   child: Text(
                                     it.value,
@@ -922,12 +926,7 @@ class _FloorStoreState extends State<FloorStore> {
                             //         ["lift_special_req"]
                             //     : '',
 
-                            initialValue: printData != null
-                                ? printData["project"] != null
-                                    ? printData["project"]['lift_special_req']
-                                        .toString()
-                                    : liftSpecialRequirementController
-                                : liftSpecialRequirementController,
+                            initialValue: liftSpecialRequirementController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "lift Requirement",
@@ -1056,12 +1055,7 @@ class _FloorStoreState extends State<FloorStore> {
                             //     ? printData["bungalow_floor_store"]
                             //         ["pooja_room_length"]
                             //     : '',
-                            initialValue: printData != null
-                                ? printData["project"] != null
-                                    ? printData["project"]['pooja_room_length']
-                                        .toString()
-                                    : poojaLengthController
-                                : poojaLengthController,
+                            initialValue: poojaLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",
@@ -1107,12 +1101,7 @@ class _FloorStoreState extends State<FloorStore> {
                             //     ? printData["bungalow_floor_store"]
                             //         ["pooja_room_width"]
                             //     : '',
-                            initialValue: printData != null
-                                ? printData["project"] != null
-                                    ? printData["project"]['pooja_room_width']
-                                        .toString()
-                                    : poojaWidthController
-                                : poojaWidthController,
+                            initialValue: poojaWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "width",
@@ -1476,10 +1465,12 @@ class _FloorStoreState extends State<FloorStore> {
                         }
                       },
                     ),
+                    print("project_id"),
+                    print(project_id),
                     if (pageId != null)
                       {
                         // print("updating a data "),
-                        flooreStorePut(
+                        status = flooreStorePut(
                           project_id!,
                           floorStoreInt,
                           floorStoreLengthController,
@@ -1496,10 +1487,15 @@ class _FloorStoreState extends State<FloorStore> {
                           selectedPoojaPlace,
                           openingToLiHa,
                         ),
+                        if (status == SUCCESS)
+                          {
+                            showToast('Pantry Requirement submitted !',
+                                Colors.lightGreen, ToastGravity.TOP)
+                          }
                       }
                     else
                       {
-                        flooreStorePost(
+                       status = flooreStorePost(
                           project_id!,
                           floorStoreInt,
                           floorStoreLengthController,
@@ -1516,6 +1512,11 @@ class _FloorStoreState extends State<FloorStore> {
                           selectedPoojaPlace,
                           openingToLiHa,
                         ),
+                        if (status == SUCCESS)
+                          {
+                            showToast('Pantry Requirement submitted !',
+                                Colors.lightGreen, ToastGravity.TOP)
+                          }
                       }
                   },
                   child: Align(
@@ -1537,5 +1538,5 @@ class _FloorStoreState extends State<FloorStore> {
               ],
             ),
           );
-  }
+    }
 }

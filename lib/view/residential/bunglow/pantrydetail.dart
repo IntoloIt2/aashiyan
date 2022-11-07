@@ -67,15 +67,15 @@ class _PantryDetailState extends State<PantryDetail> {
 
   String pantryArea = "";
   String diningArea = "";
-  String diningLocationController = " ";
-  String floorLocationController = " ";
-  String pantryLengthController = " ";
-  String pantrywidthController = " ";
-  String specificRequestController = " ";
-  String diningLengthController = " ";
-  String diningWidthController = " ";
-  String diningSeatsLocation = " ";
-  String diningRequirements = " ";
+  String diningLocationController = "";
+  String floorLocationController = "";
+  String pantryLengthController = "";
+  String pantrywidthController = "";
+  String specificRequestController = "";
+  String diningLengthController = "";
+  String diningWidthController = "";
+  String diningSeatsLocation = "";
+  String diningRequirements = "";
 
   String? selectedDiningSeats = "select dining seat";
   List<String> diningSeatsItems = [
@@ -140,8 +140,8 @@ class _PantryDetailState extends State<PantryDetail> {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
-          // print('printData==');
-          // print(printData);
+          print('printData==');
+          print(printData);
           pageId = printData['bungalow_pantry']['id'];
 
           if (printData != null) {
@@ -315,16 +315,7 @@ class _PantryDetailState extends State<PantryDetail> {
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
                                       // value: pantryDetails1,
-                                      value: printData != null
-                                          ? printData['bungalow_pantry']
-                                                      ['pantry_req'] !=
-                                                  null
-                                              ? printData['bungalow_pantry']
-                                                      ['pantry_req'] ==
-                                                  T_RUE
-                                              : printData['bungalow_pantry']
-                                                  ['pantry_req']
-                                          : pantryDetails1,
+                                      value: pantryDetails1,
                                       onChanged: (value) {
                                         setState(
                                           () {
@@ -360,16 +351,7 @@ class _PantryDetailState extends State<PantryDetail> {
                                   child: Checkbox(
                                       activeColor: checkColor,
                                       checkColor: Colors.white,
-                                      value: printData != null
-                                          ? printData['bungalow_pantry']
-                                                      ['pantry_req'] !=
-                                                  null
-                                              ? printData['bungalow_pantry']
-                                                      ['pantry_req'] ==
-                                                  F_ALSE
-                                              : printData['bungalow_pantry']
-                                                  ['pantry_req']
-                                          : pantryDetails2,
+                                      value: pantryDetails2,
                                       onChanged: (value) {
                                         setState(() {
                                           pantryDetails2 = value;
@@ -512,15 +494,7 @@ class _PantryDetailState extends State<PantryDetail> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData['bungalow_pantry'] != null
-                                ? printData['bungalow_pantry']
-                                            ['pantry_length'] !=
-                                        null
-                                    ? printData['bungalow_pantry']
-                                            ['pantry_length']
-                                        .toString()
-                                    : pantryLengthController
-                                : pantryLengthController,
+                            initialValue: pantryLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",
@@ -554,15 +528,7 @@ class _PantryDetailState extends State<PantryDetail> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: printData['bungalow_pantry'] != null
-                                ? printData['bungalow_pantry']
-                                            ['pantry_width'] !=
-                                        null
-                                    ? printData['bungalow_pantry']
-                                            ['pantry_width']
-                                        .toString()
-                                    : pantrywidthController
-                                : pantrywidthController,
+                            initialValue: pantrywidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "width",
@@ -602,15 +568,7 @@ class _PantryDetailState extends State<PantryDetail> {
                           height: height * 0.04,
                           width: width * 0.4,
                           child: TextFormField(
-                            initialValue: printData['bungalow_pantry'] != null
-                                ? printData['bungalow_pantry']
-                                            ['specific_req'] !=
-                                        null
-                                    ? printData['bungalow_pantry']
-                                            ['specific_req']
-                                        .toString()
-                                    : specificRequestController
-                                : specificRequestController,
+                            initialValue: specificRequestController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Specific Requirement",
@@ -737,19 +695,7 @@ class _PantryDetailState extends State<PantryDetail> {
                           height: height * 0.04,
                           width: width * 0.3,
                           child: TextFormField(
-                            initialValue: printData != null
-                                ? printData["bungalow_pantry"]
-                                            ["dining_floor"] !=
-                                        null
-                                    ? printData["bungalow_pantry"]
-                                                ["dining_floor"] ==
-                                            "5"
-                                        ? printData["bungalow_pantry"]
-                                                ["dining_floor"]
-                                            .toString()
-                                        : ''
-                                    : ''
-                                : '',
+                            initialValue: diningSeatsLocation,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Other Location",
@@ -787,12 +733,7 @@ class _PantryDetailState extends State<PantryDetail> {
                         height: height * 0.04,
                         width: width * 0.15,
                         child: TextFormField(
-                          initialValue: printData != null
-                              ? printData["bungalow_pantry"] != null
-                                  ? printData["bungalow_pantry"]
-                                      ["dining_length"]
-                                  : ''
-                              : '',
+                          initialValue: diningLengthController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "length",
@@ -825,13 +766,7 @@ class _PantryDetailState extends State<PantryDetail> {
                         height: height * 0.04,
                         width: width * 0.15,
                         child: TextFormField(
-                          initialValue: printData['bungalow_pantry'] != null
-                              ? printData['bungalow_pantry']['dining_width'] !=
-                                      null
-                                  ? printData['bungalow_pantry']['dining_width']
-                                      .toString()
-                                  : diningWidthController
-                              : diningWidthController,
+                          initialValue: diningWidthController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "Width",
@@ -1008,13 +943,7 @@ class _PantryDetailState extends State<PantryDetail> {
                         height: height * 0.04,
                         width: width * 0.5,
                         child: TextFormField(
-                          initialValue: printData['bungalow_pantry'] != null
-                              ? printData['bungalow_pantry']['dining_text'] !=
-                                      null
-                                  ? printData['bungalow_pantry']['dining_text']
-                                      .toString()
-                                  : diningRequirements
-                              : diningRequirements,
+                          initialValue: diningRequirements,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                             hintText: "special requirement",

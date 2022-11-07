@@ -1171,7 +1171,7 @@ class _BuiltUpState extends State<BuiltUp> {
   bool? MaterialNotRequire = false;
   int MaterialInt = 0;
 
-  bool? AtGoodRequirment = false;
+  bool AtGoodRequirment = false;
   bool? AtGoodNotRequire = false;
   int AtGoodInt = 0;
 
@@ -3420,27 +3420,43 @@ class _BuiltUpState extends State<BuiltUp> {
                               Column(children: const [Text('7 Days')]),
                               Column(children: [
                                 Container(
-                                  child: Checkbox(
-                                      activeColor: checkColor,
-                                      value: AtGoodRequirment,
-                                      onChanged: (value) {
-                                        setState(
-                                          () {
-                                            AtGoodRequirment = true;
-                                            // AtGoodNotRequire = true;
-                                            calculation();
-                                          },
-                                        );
-                                      }),
-                                  // decoration: BoxDecoration(
-                                  //     color: checkColor,
-                                  //     borderRadius: BorderRadius.circular(1)),
-                                  // child: Icon(
-                                  //   Icons.check,
-                                  //   color: Colors.white,
-                                  //   size: 18,
-                                  // ),
-                                )
+                                    child: Checkbox(
+                                        activeColor: checkColor,
+                                        value: AtGoodRequirment,
+                                        onChanged: (value) {
+                                          setState(
+                                            () {
+                                              print("AtGoodRequirment==");
+                                              print(AtGoodRequirment);
+                                              AtGoodRequirment = value!;
+                                              // D3FrontNotRequire = false;
+                                              calculation();
+                                            },
+                                          );
+                                        })
+                                    // Checkbox(
+                                    //   activeColor: checkColor,
+                                    //   value: AtGoodRequirment,
+                                    //   onChanged: (value) {
+                                    //     setState(
+                                    //       () {
+                                    //         AtGoodRequirment = value!;
+                                    //         print("AtGoodRequirment==");
+                                    //         print(AtGoodRequirment);
+                                    //         // AtGoodNotRequire = true;
+                                    //         // calculation();
+                                    //       },
+                                    //     );
+                                    //   }),
+                                    // decoration: BoxDecoration(
+                                    //     color: checkColor,
+                                    //     borderRadius: BorderRadius.circular(1)),
+                                    // child: Icon(
+                                    //   Icons.check,
+                                    //   color: Colors.white,
+                                    //   size: 18,
+                                    // ),
+                                    )
                               ]),
                               Column(children: [
                                 InkWell(

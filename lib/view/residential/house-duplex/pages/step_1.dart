@@ -234,7 +234,6 @@ class _Step_1State extends State<Step_1> {
         setState(() {
           printData = jsonResponse;
           if (printData != null && printData['project_id'] != null) {
-
             // print("plotype -----");
             // print(printData["project"]["plot_type"]);
             pageId = printData['project']['id'] != null
@@ -330,7 +329,7 @@ class _Step_1State extends State<Step_1> {
     project_id = prefs.getInt('projectId');
     projectTypeId = prefs.getInt('projectTypeId');
     projectGroupId = prefs.getInt('projectGroupId');
-    print('project_id==');
+    print(' step 1project_id==');
     print(project_id);
     getData(project_id);
     var decJson;
@@ -743,7 +742,6 @@ class _Step_1State extends State<Step_1> {
                             //     )
                             //     .toList(),
                           ),
-
                         ),
                       ),
                     ),
