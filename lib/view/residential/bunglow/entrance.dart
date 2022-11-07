@@ -559,6 +559,7 @@ class _EntranceState extends State<Entrance> {
                                   style: const TextStyle(
                                     color: Colors.black,
                                   ),
+
                                 ),
                               );
                             }).toList(),
@@ -596,6 +597,7 @@ class _EntranceState extends State<Entrance> {
                                       printData["bungalow_entrance"]["floor"] =
                                           THIRD_FLOOR;
                                   }
+
                                   // if (selectedFloor == ENT_MORE_FLOOR) {
                                   //   if (printData != null &&
                                   //       printData['bungalow_entrance'] != null)
