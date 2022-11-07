@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PageNavProvider with ChangeNotifier {
   var temp;
   int? pageId;
-
+  var project_id;
   Future<dynamic> requirementPost(
     int userId,
     int projectGroupId,
@@ -93,12 +93,11 @@ class PageNavProvider with ChangeNotifier {
       body: jsonEncode(projectData),
     );
     temp = jsonDecode(response.body);
-    // if (temp != null) {
-    //   project_id = temp['project_id'];
-    //   setProjectId(project_id);
-    // }
-
-    // return temp['status'];
+    if (temp != null) {
+      project_id = temp['project_id'];
+      setProjectId(project_id);
+    }
+    return temp['status'];
   }
 
   Future<dynamic> requirementUpadate(

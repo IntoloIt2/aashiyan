@@ -2,8 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:aashiyan/components/forms.dart';
-import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/view/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -15,10 +13,8 @@ import '../const.dart';
 import '../view/homepage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../view/residential/bunglow/requirement.dart';
-
-TextEditingController emailController = TextEditingController();
-TextEditingController passwordController = TextEditingController();
+TextEditingController emailController       = TextEditingController();
+TextEditingController passwordController    = TextEditingController();
 TextEditingController verify_codeController = TextEditingController();
 
 late bool isLogged = false;
@@ -40,7 +36,6 @@ var password;
 var res;
 var verification_res;
 var loginres;
-bool isOpen = false;
 
 Future<void> registeration(String Email, String Password, context) async {
   var map = new Map<String, dynamic>();
@@ -372,62 +367,6 @@ AlertDialog acknoledgmentDialog(BuildContext context, String str) {
           'okay',
           style: TextStyle(color: Colors.white, fontSize: 18),
         ),
-      ),
-    ),
-  );
-}
-
-var data;
-void getAreaData(area_id, segment_id) async {
-  var plotArea = plotValue.text;
-  var area_id;
-  if ((int.parse(plotArea) >= 800) && (int.parse(plotArea) <= 1200)) {
-    area_id = AREA_800_1200;
-  } else if ((int.parse(plotArea) >= 1201) && (int.parse(plotArea) <= 2000)) {
-    area_id = AREA_1200_2000;
-  } else if ((int.parse(plotArea) >= 2001) && (int.parse(plotArea) <= 5000)) {
-    area_id = AREA_2000_5000;
-  } else if ((int.parse(plotArea) >= 5001) && (int.parse(plotArea) <= 10000)) {
-    area_id = AREA_5000_10000;
-  } else if ((int.parse(plotArea) >= 10001) && (int.parse(plotArea) <= 50000)) {
-    area_id = AREA_10000_50000;
-  }
-  print("$area_id======");
-  print("$segment_id======");
-
-  // data = await getAreaSuggest(area_id, segment_id);
-  var response = await http.get(Uri.parse(
-      'https://sdplweb.com/sdpl/api/area-suggest/$area_id/$segment_id'));
-  final jsonResponse = jsonDecode(response.body);
-  final finalart = jsonResponse['areas'] as List;
-  print(finalart);
-  data = finalart;
-}
-
-AlertDialog helpDialog(BuildContext context) {
-  return AlertDialog(
-    icon: IconButton(
-      icon: Icon(Icons.close),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    ),
-    content: Container(
-      padding: EdgeInsets.only(top: 15),
-      height: MediaQuery.of(context).size.height * 0.3,
-      width: MediaQuery.of(context).size.width * 0.2,
-      child: Column(
-        children: [
-          if (data != null) ...[
-            for (var i = 0; i < data.length; i++)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: requirementText(
-                  "${data[i]['suggest_length_ft']} X ${data[i]['suggest_width_ft']} ft",
-                ),
-              ),
-          ]
-        ],
       ),
     ),
   );
