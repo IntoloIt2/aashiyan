@@ -1469,7 +1469,6 @@ class _FloorStoreState extends State<FloorStore> {
                     print(project_id),
                     if (pageId != null)
                       {
-                        // print("updating a data "),
                         status = flooreStorePut(
                           project_id!,
                           floorStoreInt,
@@ -1495,6 +1494,7 @@ class _FloorStoreState extends State<FloorStore> {
                       }
                     else
                       {
+                        
                        status = flooreStorePost(
                           project_id!,
                           floorStoreInt,

@@ -228,7 +228,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
     try {
       var response = await http.get(
         Uri.parse(
-          "${dotenv.env['APP_URL']}edit-bungalow-bedroom/$project_id",
+          "${dotenv.env['APP_URL']}flat-house-bedroom/$project_id",
           // "http://192.168.0.99:8080/sdplserver/api/edit-bungalow-bedroom/$project_id",
         ),
       );
@@ -1672,7 +1672,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               child: TextFormField(
                                 initialValue: mi != null
                                     ? printData[mi]['bedroom_toilet_req_text']
-                                    : " ",
+                                    : "",
                                 style: const TextStyle(fontSize: 14),
                                 decoration: const InputDecoration(
                                     hintText: "Other Toilet Facility",
@@ -1813,9 +1813,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          if (masterRequiredDress == true || mi != null
-                              ? printData[mi]["bedroom_dress_req"] == INT_ONE
-                              : masterRequiredDress == true) ...[
+                          if (masterRequiredDress == true) ...[
                             Row(
                               children: [
                                 requirementText("Length"),
@@ -1956,9 +1954,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           setState(
                                             () {
                                               masterDressFacility = ab;
-                                              print(ab);
-                                              masterDFac = masterDressFacility
-                                                  .cast<String>();
+                                              masterDFac = ab;
+                                              print(masterDFac);
                                             },
                                           );
                                         },
@@ -1970,7 +1967,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                           child: const Text("Office Facility"),
                                         ),
                                       ),
-                                      if (mi != null && masterDFac != null) ...[
+                                      if (mi != null || masterDFac != null) ...[
                                         for (int i = 0;
                                             i < masterDFac!.length;
                                             i++)
@@ -2180,23 +2177,19 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                       child: const Text("Room Facility"),
                                     ),
                                   ),
-                                  if (printData.asMap().containsKey(mi)) ...[
-                                    if (masterRFac != null || mi != null
-                                    // ? printData[mi]
-                                    //         ['bedroom_facility'] !=
-                                    //     null
-                                    // : masterRFac != null
-                                    ) ...[
-                                      for (int i = 0;
-                                          i < masterRFac!.length;
-                                          i++)
-                                        Wrap(children: [
-                                          Chip(
-                                            label:
-                                                Text(masterRFac![i].toString()),
-                                          )
-                                        ])
-                                    ],
+                                  if (masterRFac != null || mi != null
+                                  // ? printData[mi]
+                                  //         ['bedroom_facility'] !=
+                                  //     null
+                                  // : masterRFac != null
+                                  ) ...[
+                                    for (int i = 0; i < masterRFac!.length; i++)
+                                      Wrap(children: [
+                                        Chip(
+                                          label:
+                                              Text(masterRFac![i].toString()),
+                                        )
+                                      ])
                                   ],
                                   if (masterRFac == null) ...[
                                     Wrap(
@@ -9304,22 +9297,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
               }
 
               _value["bedrooms"] = jsonUser;
-
-              // _value.putIfAbsent("bedrooms", () => jsonUser);
-              // print(jsonEncode(_value));
-              // print(_values[0]["bedroom_length"]);
-              // print(masterLength);
-              // print({'dimension': 1, "project_id": 567, "bedrooms": jsonUser});
-
+              print("jsonUser ====");
+              print(_value);
               if (project_id == null) {
                 final update = await http.post(
                   Uri.parse("${dotenv.env['APP_URL']}bungalow-bedroom"),
-                  // 'http://192.168.0.99:8080/sdplserver/api/bungalow-bedroom'),
                   headers: <String, String>{
                     'Content-Type': 'application/json; charset=UTF-8',
                   },
                   body: jsonEncode(_value),
-                  // body: _valu
                 );
                 // print(update.body);
               } else {
