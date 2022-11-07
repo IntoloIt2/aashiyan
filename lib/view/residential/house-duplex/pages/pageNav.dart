@@ -18,7 +18,7 @@ class PageNav extends StatefulWidget {
 class _PageNavState extends State<PageNav> {
   List Pages = [
     Step_1(),
-    const Step_2(),
+    Step_2(),
     Step_3(),
     Step_4(),
     const Step_5(),
