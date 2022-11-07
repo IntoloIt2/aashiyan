@@ -116,7 +116,7 @@ class _BuiltUpState extends State<BuiltUp> {
 
   int calculation() {
     if (SuperRequirment == true) {
-      projectCost = totalBuild * superService;
+      projectCost = totalBuild *superService ;
       if (ArcDesStatus == true) {
         architecturalValue = projectCost * 2 ~/ 100 * 50 ~/ 100;
         print(architecturalValue);

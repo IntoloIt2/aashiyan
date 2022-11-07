@@ -207,7 +207,7 @@ Future<dynamic> requirementPost(
   int apmt,
 ) async {
   var projectData = {
-    "user_id": 123,
+    "user_id": userId,
     "project_group_id": 5,
     "prefix": prefix,
     "first_name": firstName,
@@ -705,22 +705,28 @@ Future<dynamic> flooreStorePost(
     "pooja_room_width": poojaRoomWidth,
     "pooja_room_floor": poojaRoomFloor,
     "pooja_room_type": poojaRoomType,
-    "opening_to_li_ha": poojaRoomWidth,
+    "opening_to_li_ha": openingToLiHa,
     "lift_special_req": liftRequirement,
   };
 
   print(projectData);
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
+
     Uri.parse("${dotenv.env['APP_URL']}bungalow-floor-store"),
     // Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-floor-store'),
+
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
+
+
+  print(response.body);
   var resp = jsonDecode(response.body);
-  return resp['status'];
+  var temp = resp["status"];
+  return temp;
 }
 
 Future<dynamic> flooreStorePut(
@@ -741,7 +747,6 @@ Future<dynamic> flooreStorePut(
   String openingToLiHa,
 ) async {
   var projectData = {
-    "project_id": projectId,
     "dimension": dimenInt,
     "floor_store_req": floorStoreRequirement,
     "floor_store_length": floorStoreLength,
@@ -756,16 +761,18 @@ Future<dynamic> flooreStorePut(
     "pooja_room_width": poojaRoomWidth,
     "pooja_room_floor": poojaRoomFloor,
     "pooja_room_type": poojaRoomType,
-    "opening_to_li_ha": poojaRoomWidth,
+    "opening_to_li_ha": openingToLiHa,
     "lift_special_req": liftSpecialRequirement,
   };
 
-  print("projectData===");
-  print(projectData);
+  // print("projectData===");
+  // print(projectData);
+  // print("projectId===");
+  // print(projectId);
+  // print('${dotenv.env['APP_URL']}update-bungalow-floor-store/$projectId}');
   final response = await http.post(
-    // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse("${dotenv.env['APP_URL']}update-bungalow-floor-store/$projectId"),
-    // Uri.parse('http://192.168.0.99:8080/sdplserver/api/update-bungalow-floor-store/$projectId'),
+
+    Uri.parse('${dotenv.env['APP_URL']}update-bungalow-floor-store/$projectId'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -773,9 +780,10 @@ Future<dynamic> flooreStorePut(
   );
   var resp = jsonDecode(response.body);
   return resp['status'];
+
 }
 
-Future<void> BedRoomPost(
+Future<dynamic> BedRoomPost(
   int bedRoom,
   int bedRoomFloor,
   String bedRoomLength,
@@ -821,13 +829,15 @@ Future<void> BedRoomPost(
 
   final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-bedroom'),
+    Uri.parse('${dotenv.env['APP_URL']}bungalow-bedroom'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
   print(response.body);
+  var temp = jsonDecode(response.body);
+  return temp['status'];
 }
 
 Future<dynamic> BasementPost(
@@ -958,8 +968,9 @@ Future<dynamic> BasementPost(
   };
 
   final response = await http.post(
-    Uri.parse("${dotenv.env['APP_URL']}bungalow-basement"),
-    // Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-basement'),
+
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse('${dotenv.env['APP_URL']}bungalow-basement'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -1107,12 +1118,15 @@ Future<dynamic> BasementPut(
   // print("postdata===");
   print(jsonEncode(projectData));
   final response = await http.post(
-    Uri.parse("${dotenv.env['APP_URL']}update-bungalow-basement/$projectId"),
+
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse('${dotenv.env['APP_URL']}update-bungalow-basement/$projectId'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(projectData),
   );
+
   var temp = jsonDecode(response.body);
   return temp['status'];
 }
@@ -1152,4 +1166,229 @@ Future<void> HouseDuplexFloorPost(
   );
   print('resp.body--');
   print(resp.body);
+}
+
+Future<dynamic> step2Put(
+  int projectid,
+  String vastu,
+  int floor,
+  int porchReq,
+  String porchLength,
+  String porchWidth,
+) async {
+  var projectData = {
+    "vastu": vastu,
+    "floor": floor,
+    "porch_req": porchReq,
+    "porch_length": porchLength,
+    "porch_width": porchWidth,
+    "dimension": dimenInt,
+  };
+
+  print('projectData==');
+  print(projectid);
+  print(projectData);
+
+  final response = await http.post(
+    Uri.parse("${dotenv.env['APP_URL']}update-flat-house-entrance/$projectid"),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+  var resp = jsonDecode(response.body);
+
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setInt('floorCount', resp['floor']);
+  return resp["status"];
+}
+
+Future<dynamic> step2Post(
+  int projectid,
+  String vastu,
+  int floor,
+  int porchReq,
+  String porchLength,
+  String porchWidth,
+) async {
+  var projectData = {
+    "project_id": projectid,
+    "vastu": vastu,
+    "floor": floor,
+    "porch_req": porchReq,
+    "porch_length": porchLength,
+    "porch_width": porchWidth,
+    "dimension": dimenInt,
+  };
+
+  print('entrance projectData===');
+  print(projectData);
+
+  final response = await http.post(
+    Uri.parse("${dotenv.env['APP_URL']}flat-house-entrance"),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+  var resp = jsonDecode(response.body);
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setInt('floorCount', resp['floor']);
+  return resp["status"];
+}
+
+Future<dynamic> livingHallDuplexPost(
+  int ProjectId,
+  int drawingInt,
+  int drawingHallLocation,
+  String drawingHallLengthController,
+  String drawingHallWidthController,
+  String drawingSpecialFeaturesController,
+  int livingHallInt,
+  int livingHallLocation,
+  String livingHallLengthController,
+  String livingHallWidthController,
+  List livingHall,
+  String livingSpecialFeaturesController,
+  List kitchenFeatures,
+  String kitchenFloor,
+  String kitchenLengthController,
+  String kitchenWidthController,
+  String kitchenDiningFunction,
+  String attachedLengthController,
+  String attachedWidthController,
+  String utilityWidthController,
+  String utilityLengthController,
+  String utilityWashArea,
+  String specificReq,
+  String diningHallLengthController,
+  String diningHallWidthController,
+  String diningSpecialFeaturesController,
+  int diningFloorInt,
+  int diningSeatsInt,
+) async {
+  print("drawingHallLocation");
+  print(drawingHallLocation);
+  print("drawingHallLengthController");
+  print(drawingHallLengthController);
+  var projectData = {
+    "project_id": ProjectId,
+    "dimension": dimenInt,
+    "drawing_hall_req": drawingInt,
+    "drawing_hall_location": drawingHallLocation,
+    "drawing_hall_length": drawingHallLengthController,
+    "drawing_hall_width": drawingHallWidthController,
+    "drawing_hall_text": drawingSpecialFeaturesController,
+    "living_hall_req": livingHallInt,
+    "living_hall_location": livingHallLocation,
+    "living_hall_width": livingHallWidthController,
+    "living_hall_length": livingHallLengthController,
+    "living_hall_text": livingSpecialFeaturesController,
+    "kitchen_floor": kitchenFloor,
+    "kitchen_length": kitchenLengthController,
+    "kitchen_width": kitchenWidthController,
+    "kitchen_dining_function": kitchenDiningFunction,
+    "attach_store_length": attachedLengthController,
+    "attach_store_width": attachedWidthController,
+    "utility_wash_width": utilityWidthController,
+    "utility_wash_length": utilityLengthController,
+    "specific_req": specificReq,
+    "dining_floor": diningFloorInt,
+    "dining_length": diningHallLengthController,
+    "dining_width": diningHallWidthController,
+    "dining_seat": diningSeatsInt,
+    "dining_text": diningSpecialFeaturesController,
+    "kitchen_features": kitchenFeatures
+  };
+
+  print(projectData);
+  final response = await http.post(
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse("${dotenv.env['APP_URL']}flat-house-drawing-hall"),
+
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+  print(response.body);
+  var temp = jsonDecode(response.body);
+
+  return temp['status'];
+}
+
+Future<dynamic> livingHallDuplexPut(
+  int ProjectId,
+  int drawingInt,
+  int drawingHallLocation,
+  String drawingHallLengthController,
+  String drawingHallWidthController,
+  String drawingSpecialFeaturesController,
+  int livingHallInt,
+  int livingHallLocation,
+  String livingHallLengthController,
+  String livingHallWidthController,
+  List livingHall,
+  String livingSpecialFeaturesController,
+  List kitchenFeatures,
+  String kitchenFloor,
+  String kitchenLengthController,
+  String kitchenWidthController,
+  String kitchenDiningFunction,
+  String attachedLengthController,
+  String attachedWidthController,
+  String utilityWidthController,
+  String utilityLengthController,
+  String utilityWashArea,
+  String specificReq,
+  String diningHallLengthController,
+  String diningHallWidthController,
+  String diningSpecialFeaturesController,
+  int diningFloorInt,
+  int diningSeatsInt,
+) async {
+  var projectData = {
+    "dimension": dimenInt,
+    "drawing_hall_req": drawingInt,
+    "drawing_hall_location": drawingHallLocation,
+    "drawing_hall_length": drawingHallLengthController,
+    "drawing_hall_width": drawingHallWidthController,
+    "drawing_hall_text": drawingSpecialFeaturesController,
+    "living_hall_req": livingHallInt,
+    "living_hall_location": livingHallLocation,
+    "living_hall_width": livingHallWidthController,
+    "living_hall_length": livingHallLengthController,
+    "living_hall_text": livingSpecialFeaturesController,
+    "kitchen_floor": kitchenFloor,
+    "kitchen_length": kitchenLengthController,
+    "kitchen_width": kitchenWidthController,
+    "kitchen_dining_function": kitchenDiningFunction,
+    "attach_store_length": attachedLengthController,
+    "attach_store_width": attachedWidthController,
+    "utility_wash_width": utilityWidthController,
+    "utility_wash_length": utilityLengthController,
+    "kitchen_text": specificReq,
+    "dining_floor": diningFloorInt,
+    "dining_length": diningHallLengthController,
+    "dining_width": diningHallWidthController,
+    "dining_seat": diningSeatsInt,
+    "dining_text": diningSpecialFeaturesController,
+    "kitchen_features": kitchenFeatures
+  };
+
+  print(projectData);
+  final response = await http.post(
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse(
+        "${dotenv.env['APP_URL']}update-flat-house-drawing-hall/$ProjectId"),
+
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+  print(response.body);
+  var temp = jsonDecode(response.body);
+
+  return temp['status'];
 }
