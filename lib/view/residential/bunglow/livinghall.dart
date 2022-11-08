@@ -1421,7 +1421,7 @@ class _LivingHallState extends State<LivingHall> {
                     ),
                     InkWell(
                         onTap: () {
-                          segment_id = SEGMENT_EXCLUSIVE_DRAWING;
+                          segment_id = SEGMENT_KITCHEN;
                           getAreaData(context, area_id, segment_id);
                         },
                         child: requirementText("help ?")),

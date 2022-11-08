@@ -16,6 +16,8 @@ import '../../../../const.dart';
 import 'package:http/http.dart' as http;
 import '../providers/residential_provider.dart';
 
+var duplexPlotValue = TextEditingController();
+
 class Step_1 extends StatefulWidget {
   static const namedRoute = "/intrestedNext";
 
@@ -39,7 +41,6 @@ class _Step_1State extends State<Step_1> {
   String? widthController = '';
   String? lengthController = '';
   var project_id;
-  var plotValue = TextEditingController();
   var projectGroupId;
   var projectTypeId;
 
@@ -107,17 +108,17 @@ class _Step_1State extends State<Step_1> {
   String totalCalculated() {
     lengthText = lengthController;
     widthText = widthController;
-    finalString = plotValue.text;
+    finalString = duplexPlotValue.text;
 
     if (lengthText != '' && widthText != '') {
       calculation = (plotLenght * plotWidth).toString();
-      plotValue.value = plotValue.value.copyWith(
+      duplexPlotValue.value = duplexPlotValue.value.copyWith(
         text: calculation.toString(),
       );
     }
 
-    plotValue.text = calculation;
-    print(plotValue.text);
+    duplexPlotValue.text = calculation;
+    print(duplexPlotValue.text);
     print(calculation);
     return calculation;
   }
@@ -130,16 +131,16 @@ class _Step_1State extends State<Step_1> {
       widthText = printData["project"]["plot_width"] != null
           ? printData["project"]["plot_width"].toString()
           : "";
-      finalString = plotValue.text;
+      finalString = duplexPlotValue.text;
 
       if (lengthText != '' && widthText != '') {
         calculation = (plotLenght * plotWidth).toString();
-        plotValue.value = plotValue.value.copyWith(
+        duplexPlotValue.value = duplexPlotValue.value.copyWith(
           text: calculation.toString(),
         );
       }
-      plotValue.text = calculation;
-      // print(plotValue.text);
+      duplexPlotValue.text = calculation;
+      // print(duplexPlotValue.text);
       // print(calculation);
     }
 
@@ -149,11 +150,11 @@ class _Step_1State extends State<Step_1> {
   String apiIregularCalcuation() {
     diagonal1Text = diagonal1Controller;
     diagonal2Text = diagonal2Controller;
-    finalDiagonal = plotValue.text;
+    finalDiagonal = duplexPlotValue.text;
 
     if (diagonal1Text != '' && diagonal2Text != '') {
       diagonalCalculation = (((diagonal1! * diagonal2!) / 2)).toString();
-      plotValue.value = plotValue.value.copyWith(
+      duplexPlotValue.value = duplexPlotValue.value.copyWith(
         text: diagonalCalculation.toString(),
       );
     }
@@ -169,11 +170,11 @@ class _Step_1State extends State<Step_1> {
   String diagonalCalculations() {
     diagonal1Text = diagonal1Controller;
     diagonal2Text = diagonal2Controller;
-    finalDiagonal = plotValue.text;
+    finalDiagonal = duplexPlotValue.text;
 
     if (diagonal1Text != '' && diagonal2Text != '') {
       diagonalCalculation = (((diagonal1! * diagonal2!) / 2)).toString();
-      plotValue.value = plotValue.value.copyWith(
+      duplexPlotValue.value = duplexPlotValue.value.copyWith(
         text: diagonalCalculation.toString(),
       );
     }
@@ -296,7 +297,7 @@ class _Step_1State extends State<Step_1> {
                 ? printData["project"]["level_value"].toString()
                 : "";
 
-            plotValue.text = printData["project"]["plot_size"] != null
+            duplexPlotValue.text = printData["project"]["plot_size"] != null
                 ? printData["project"]["plot_size"].toString()
                 : "";
 
@@ -373,18 +374,19 @@ class _Step_1State extends State<Step_1> {
     getState();
     apiRegularCalcuation();
 
-    plotValue.addListener(
+    duplexPlotValue.addListener(
       () => setState(
         () {
           if (printData != null) {
             plotType = printData["project"]["plot_type"].toString();
             if (plotType == '1') {
-              plotValue.text = (int.parse(printData["project"]["plot_length"]) *
+              duplexPlotValue
+                  .text = (int.parse(printData["project"]["plot_length"]) *
                       int.parse(printData["project"]["plot_width"].toString()))
                   .toString();
             }
             if (plotType == '2') {
-              plotValue
+              duplexPlotValue
                   .text = ((int.parse(printData["project"]["plot_length"]) *
                           int.parse(
                               printData["project"]["plot_width"].toString())) /
@@ -877,12 +879,12 @@ class _Step_1State extends State<Step_1> {
                           Key(totalCalculated());
 
                           // if (lengthController != null && widthController != null) {
-                          //   plotValue.text = (int.parse(lengthController!) *
+                          //   duplexPlotValue.text = (int.parse(lengthController!) *
                           //           int.parse(widthController!))
                           //       .toString();
 
                           //   print(" ======");
-                          //   print(plotValue.text);
+                          //   print(duplexPlotValue.text);
                           // }
 
                           if (printData != null &&
@@ -968,7 +970,7 @@ class _Step_1State extends State<Step_1> {
                                 }
                               } else {
                                 plotLenght = 0;
-                                plotValue.text = '0';
+                                duplexPlotValue.text = '0';
                                 lengthController = '0';
                               }
                             });
@@ -1036,7 +1038,7 @@ class _Step_1State extends State<Step_1> {
                                   diagonalCalculations();
                                 } else {
                                   diagonal1 = 0;
-                                  plotValue.text = '0';
+                                  duplexPlotValue.text = '0';
                                   diagonal1Controller = '0';
                                 }
                               });
@@ -1097,7 +1099,7 @@ class _Step_1State extends State<Step_1> {
                                 totalCalculated();
                               } else {
                                 plotWidth = 0;
-                                plotValue.text = '0';
+                                duplexPlotValue.text = '0';
                                 widthController = '0';
                               }
                             });
@@ -1169,7 +1171,7 @@ class _Step_1State extends State<Step_1> {
                                 } else {
                                   diagonal2 = 0;
                                   diagonal2Controller = '0';
-                                  plotValue.text = '0';
+                                  duplexPlotValue.text = '0';
                                 }
                               });
                             },
@@ -1222,17 +1224,17 @@ class _Step_1State extends State<Step_1> {
                             //     ? printData['project'] != null
                             //         // ? printData['project']['plot_size'] != null
                             //         ? printData['project']['plot_size']
-                            //         // : plotValue
-                            //         : plotValue.value.text
-                            //     : plotValue.value.text,
+                            //         // : duplexPlotValue
+                            //         : duplexPlotValue.value.text
+                            //     : duplexPlotValue.value.text,
                             // initialValue: printData != null
                             //     ? printData['project'] != null
                             //         ? printData['project']['plot_size'] != null
                             //             ? printData['project']['plot_size'].toString()
-                            //             : plotValue.text
-                            //         : plotValue.text
-                            //     : plotValue.text,
-                            controller: plotValue,
+                            //             : duplexPlotValue.text
+                            //         : duplexPlotValue.text
+                            //     : duplexPlotValue.text,
+                            controller: duplexPlotValue,
                             onChanged: (value) {
                               setState(() {
                                 if (plotLenght == 0 || plotWidth == 0) {
@@ -1241,18 +1243,20 @@ class _Step_1State extends State<Step_1> {
                                     widthController == '') {
                                   value = "0";
                                 } else {
-                                  plotValue.value = plotValue.value.copyWith(
+                                  duplexPlotValue.value =
+                                      duplexPlotValue.value.copyWith(
                                     text: value.toString(),
                                   );
                                   // printData['project']['plot_size'] =
-                                  // plotValue.text;
+                                  // duplexPlotValue.text;
                                 }
                               });
                             },
                             onTap: () {
                               setState(() {
-                                plotValue.clear();
-                                plotValue.value = plotValue.value.copyWith(
+                                duplexPlotValue.clear();
+                                duplexPlotValue.value =
+                                    duplexPlotValue.value.copyWith(
                                   text: '',
                                 );
                               });
@@ -1282,20 +1286,22 @@ class _Step_1State extends State<Step_1> {
                             // initialValue: printData != null
                             //     ? printData['project'] != null
                             //         ? printData['project']['plot_size'].toString()
-                            //         : plotValue.value.text
-                            //     : plotValue.value.text,
-                            controller: plotValue,
+                            //         : duplexPlotValue.value.text
+                            //     : duplexPlotValue.value.text,
+                            controller: duplexPlotValue,
                             onChanged: (value) {
                               setState(() {
-                                plotValue.value = plotValue.value.copyWith(
+                                duplexPlotValue.value =
+                                    duplexPlotValue.value.copyWith(
                                   text: value.toString(),
                                 );
                               });
                             },
                             onTap: () {
                               setState(() {
-                                plotValue.clear();
-                                plotValue.value = plotValue.value.copyWith(
+                                duplexPlotValue.clear();
+                                duplexPlotValue.value =
+                                    duplexPlotValue.value.copyWith(
                                   text: '',
                                 );
                               });
@@ -2096,7 +2102,7 @@ class _Step_1State extends State<Step_1> {
                         widthController!,
                         diagonal1Controller!,
                         diagonal2Controller!,
-                        plotValue.text,
+                        duplexPlotValue.text,
                         " ",
                         plot_orientaion,
                         " ",
@@ -2131,7 +2137,7 @@ class _Step_1State extends State<Step_1> {
                         widthController!,
                         diagonal1Controller!,
                         diagonal2Controller!,
-                        plotValue.text,
+                        duplexPlotValue.text,
                         " ",
                         plot_orientaion,
                         " ",
