@@ -92,7 +92,6 @@ const OPENING_TO_LIVING_HALL = "Opening toward hall/ Lobby";
 
 //BED ROOM
 
-
 const STR_ZERO = "0";
 const STR_ONE = "1";
 const STR_TWO = "2";
@@ -118,6 +117,8 @@ const PART_B_TOILET_DADO_DETAILS = "9";
 const PART_B_EACH_SPACE_WALL_DETAILS = "10";
 const PART_B_MATERIAL_SELECTION = "11";
 
+const FT = 1;
+const MTR = 2;
 
 const INT_ZERO = 0;
 const INT_ONE = 1;
@@ -202,9 +203,6 @@ const COMMERCIAL_SHOWROOM_OFFICE = 7;
 const HOTEL = 4;
 const BUNGALOW = 8;
 const FLAT_HOUSE = 13;
-
-const FT = 1;
-const MTR = 2;
 
 const M_TO_F = 3.28084;
 const F_TO_M = 0.3048;
@@ -322,7 +320,6 @@ var user_id;
 // var emailController;
 var projectId;
 
-
 //bungalow bedroom
 // const MASTER_BEDROOM = 1;
 // const SON_BEDROOM = 2;
@@ -345,7 +342,6 @@ var projectId;
 // const THREE_D = 5;
 // const REVISION = 6;
 // const FRONT_OFFICE = 7;
-
 
 // area_id
 
