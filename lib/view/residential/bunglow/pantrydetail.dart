@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
+import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -13,6 +14,7 @@ import '../../../const.dart';
 import '../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../controller/auth_controller.dart';
 import '../house-duplex/providers/page_nav_provider.dart';
 
 class PantryDetail extends StatefulWidget {
@@ -452,44 +454,6 @@ class _PantryDetailState extends State<PantryDetail> {
                       SizedBox(
                         width: width * 0.02,
                       ),
-                      // if (selectedFloor == OTHER_FLOOR) ...[
-                      //   Material(
-                      //     elevation: 5,
-                      //     borderRadius:
-                      //         const BorderRadius.all(Radius.circular(5)),
-                      //     child: SizedBox(
-                      //       height: height * 0.04,
-                      //       width: width * 0.5,
-                      //       child: TextFormField(
-                      //         initialValue: printData['bungalow_pantry'] != null
-                      //             ? printData['bungalow_pantry']
-                      //                         ['pantry_floor'] !=
-                      //                     null
-                      //                 ? printData['bungalow_pantry']
-                      //                         ['pantry_floor']
-                      //                     .toString()
-                      //                 : floorLocationController
-                      //             : floorLocationController,
-                      //         style: const TextStyle(fontSize: 14),
-                      //         decoration: const InputDecoration(
-                      //             hintText: "other location",
-                      //             hintStyle: TextStyle(fontSize: 14),
-                      //             border: OutlineInputBorder(
-                      //               borderSide: BorderSide.none,
-                      //             ),
-                      //             isDense: true,
-                      //             contentPadding: EdgeInsets.all(8)
-                      //             //fillColor: Colors.green
-                      //             ),
-                      //         onChanged: ((value) {
-                      //           floorLocationController = value;
-                      //           print('value==');
-                      //           print(value);
-                      //         }),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ]
                     ],
                   ),
                   SizedBox(
@@ -563,7 +527,14 @@ class _PantryDetailState extends State<PantryDetail> {
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      requirementText("help ?"),
+                      InkWell(
+                          onTap: () {
+                            if (pantryDetails1 == true) {
+                              segment_id = SEGMENT_PANTRY;
+                              getAreaData(context, area_id, segment_id);
+                            }
+                          },
+                          child: requirementText("help ?")),
                     ],
                   ),
                   SizedBox(
@@ -601,8 +572,6 @@ class _PantryDetailState extends State<PantryDetail> {
                           ),
                         ),
                       ),
-                      // requirementTextFieldCont(height, width, 0.04, 0.4,
-                      //     "Specific Requirement", specificRequestController)
                     ],
                   )
                 ],
@@ -666,30 +635,6 @@ class _PantryDetailState extends State<PantryDetail> {
                                 setState(
                                   () {
                                     selectedDiningFloor = it;
-                                    // if (selectedDiningFloor == "select floor") {
-                                    //   printData["bungalow_pantry"]["dining_floor"] =
-                                    //       0;
-                                    // }
-                                    // if (selectedDiningFloor == "Ground floor") {
-                                    //   printData["bungalow_pantry"]["dining_floor"] =
-                                    //       1;
-                                    // }
-                                    // if (selectedDiningFloor == "1st floor") {
-                                    //   printData["bungalow_pantry"]["dining_floor"] =
-                                    //       2;
-                                    // }
-                                    // if (selectedDiningFloor == "2nd floor") {
-                                    //   printData["bungalow_pantry"]["dining_floor"] =
-                                    //       3;
-                                    // }
-                                    // if (selectedDiningFloor == "3rd floor") {
-                                    //   printData["bungalow_pantry"]["dining_floor"] =
-                                    //       4;
-                                    // }
-                                    // if (selectedDiningFloor == "other") {
-                                    //   printData["bungalow_pantry"]["dining_floor"] =
-                                    //       5;
-                                    // }
                                   },
                                 );
                               },
@@ -805,7 +750,12 @@ class _PantryDetailState extends State<PantryDetail> {
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    requirementText("help ?"),
+                    InkWell(
+                        onTap: () {
+                          segment_id = SEGMENT_DINING;
+                          getAreaData(context, area_id, segment_id);
+                        },
+                        child: requirementText("help ?")),
                   ],
                 ),
                 SizedBox(
@@ -851,8 +801,6 @@ class _PantryDetailState extends State<PantryDetail> {
                               setState(
                                 () {
                                   selectedDiningSeats = it;
-                                  // print('selectedDiningSeats==');
-                                  // print(selectedDiningSeats);
                                 },
                               );
                             },
@@ -860,41 +808,6 @@ class _PantryDetailState extends State<PantryDetail> {
                         ),
                       ),
                     ),
-                    // if (selectedDiningFloor == MORE) ...[
-                    //   Material(
-                    //     elevation: 5,
-                    //     borderRadius:
-                    //         const BorderRadius.all(Radius.circular(5)),
-                    //     child: SizedBox(
-                    //       height: height * 0.04,
-                    //       width: width * 0.15,
-                    //       child: TextFormField(
-                    //         initialValue: printData != null &&
-                    //                 printData["bungalow_pantry"]
-                    //                         ["dining_seat"] !=
-                    //                     null
-                    //             ? printData["bungalow_pantry"]["dining_seat"]
-                    //             : '',
-                    //         style: const TextStyle(fontSize: 14),
-                    //         decoration: const InputDecoration(
-                    //             hintText: "dining seat",
-                    //             hintStyle: TextStyle(fontSize: 14),
-                    //             border: OutlineInputBorder(
-                    //               borderSide: BorderSide.none,
-                    //             ),
-                    //             isDense: true,
-                    //             contentPadding: EdgeInsets.all(8)
-                    //             //fillColor: Colors.green
-                    //             ),
-                    //         onChanged: ((value) {
-                    //           diningLocationController = value;
-                    //         }),
-                    //       ),
-                    //     ),
-                    //   ),
-                    //   // requirementTextFieldCont(height, width, 0.04, 0.3,
-                    //   //     "dining seat", diningLocationController),
-                    // ],
                   ],
                 ),
                 SizedBox(

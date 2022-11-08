@@ -2,6 +2,8 @@
 
 import 'dart:convert';
 
+import 'package:aashiyan/components/forms.dart';
+import 'package:aashiyan/controller/api_services.dart';
 import 'package:aashiyan/view/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -13,8 +15,11 @@ import '../const.dart';
 import '../view/homepage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-TextEditingController emailController       = TextEditingController();
-TextEditingController passwordController    = TextEditingController();
+import '../view/residential/bunglow/entrance.dart';
+import '../view/residential/bunglow/requirement.dart';
+
+TextEditingController emailController = TextEditingController();
+TextEditingController passwordController = TextEditingController();
 TextEditingController verify_codeController = TextEditingController();
 
 late bool isLogged = false;
@@ -371,3 +376,81 @@ AlertDialog acknoledgmentDialog(BuildContext context, String str) {
     ),
   );
 }
+
+var data;
+void getAreaData(BuildContext context, area_id, segment_id) async {
+  var plotArea = plotValue.text;
+  area_id;
+  if ((int.parse(plotArea) >= 800) && (int.parse(plotArea) <= 1200)) {
+    area_id = AREA_800_1200;
+  } else if ((int.parse(plotArea) >= 1201) && (int.parse(plotArea) <= 2000)) {
+    area_id = AREA_1200_2000;
+  } else if ((int.parse(plotArea) >= 2001) && (int.parse(plotArea) <= 5000)) {
+    area_id = AREA_2000_5000;
+  } else if ((int.parse(plotArea) >= 5001) && (int.parse(plotArea) <= 10000)) {
+    area_id = AREA_5000_10000;
+  } else if ((int.parse(plotArea) >= 10001) && (int.parse(plotArea) <= 50000)) {
+    area_id = AREA_10000_50000;
+  }
+  print("$area_id==++++");
+  print("$segment_id======");
+
+  data = await getAreaSuggest(area_id, segment_id);
+  showDialog(
+      context: (context),
+      builder: (builder) => AlertDialog(
+            icon: IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            content: Container(
+              padding: EdgeInsets.only(top: 15),
+              height: MediaQuery.of(context).size.height * 0.3,
+              width: MediaQuery.of(context).size.width * 0.2,
+              child: Column(
+                children: [
+                  if (data != null) ...[
+                    for (var i = 0; i < data.length; i++)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: requirementText(
+                          "${data[i]['suggest_length_ft']} X ${data[i]['suggest_width_ft']} ft",
+                        ),
+                      ),
+                  ]
+                ],
+              ),
+            ),
+          ));
+}
+
+// AlertDialog helpDialog(BuildContext context) {
+  // return AlertDialog(
+  //   icon: IconButton(
+  //     icon: Icon(Icons.close),
+  //     onPressed: () {
+  //       Navigator.of(context).pop();
+  //     },
+  //   ),
+  //   content: Container(
+  //     padding: EdgeInsets.only(top: 15),
+  //     height: MediaQuery.of(context).size.height * 0.3,
+  //     width: MediaQuery.of(context).size.width * 0.2,
+  //     child: Column(
+  //       children: [
+  //         if (data != null) ...[
+  //           for (var i = 0; i < data.length; i++)
+  //             Padding(
+  //               padding: const EdgeInsets.all(8.0),
+  //               child: requirementText(
+  //                 "${data[i]['suggest_length_ft']} X ${data[i]['suggest_width_ft']} ft",
+  //               ),
+  //             ),
+  //         ]
+  //       ],
+  //     ),
+  //   ),
+  // );
+// }
