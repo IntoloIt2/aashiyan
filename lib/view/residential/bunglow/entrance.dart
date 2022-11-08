@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:aashiyan/components/forms.dart';
+import 'package:aashiyan/controller/auth_controller.dart';
 import 'package:aashiyan/view/residential/bunglow/requirement.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -15,6 +16,9 @@ import 'package:http/http.dart' as http;
 
 import '../../../utils/helpers.dart';
 
+get area_id => null;
+var segment_id = 0;
+
 class HintDailog extends StatefulWidget {
   int segment_id;
   HintDailog({required this.segment_id});
@@ -22,8 +26,9 @@ class HintDailog extends StatefulWidget {
   _HintDailogState createState() => _HintDailogState();
 }
 
+var data;
+
 class _HintDailogState extends State<HintDailog> {
-  var data;
   Future futureCall() async {
     var plotArea = plotValue.text;
     var area_id;
@@ -43,7 +48,7 @@ class _HintDailogState extends State<HintDailog> {
 
     var response = await http.get(Uri.parse(
         'https://sdplweb.com/sdpl/api/area-suggest/$area_id/${widget.segment_id}'));
-    print("$area_id======");
+
     final jsonResponse = jsonDecode(response.body);
     final finalart = jsonResponse['areas'] as List;
     print(finalart);
@@ -66,16 +71,16 @@ class _HintDailogState extends State<HintDailog> {
       future: futureCall(),
       builder: (_, dataSnapshot) {
         if (dataSnapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else {
           Future(() {
             // Future Callback
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('Employee Data'),
+                title: const Text('Employee Data'),
                 content: Container(
-                  padding: EdgeInsets.only(top: 15),
+                  padding: const EdgeInsets.only(top: 15),
                   height: MediaQuery.of(context).size.height * 0.3,
                   width: MediaQuery.of(context).size.width * 0.2,
                   child: Column(
@@ -484,6 +489,7 @@ class _EntranceState extends State<Entrance> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     getUserId();
 
     final store = Provider.of<PageNavProvider>(context, listen: false);
@@ -935,7 +941,6 @@ class _EntranceState extends State<Entrance> {
                                 ),
                                 isDense: true,
                                 contentPadding: EdgeInsets.all(8),
-                                //fillColor: Colors.green
                               ),
                               onChanged: ((value) {
                                 gateWidthController = value;
@@ -943,8 +948,6 @@ class _EntranceState extends State<Entrance> {
                             ),
                           ),
                         ),
-                        // requirementTextFieldCont(height, width, 0.04, 0.2,
-                        //     "gatewidth", gateWidthController)
                       ]
                     ],
                     if (twoGate == true) ...[
@@ -1333,8 +1336,10 @@ class _EntranceState extends State<Entrance> {
                       ),
                       InkWell(
                           onTap: () {
-                            HintDailog(segment_id: SEGMENT_PORCH);
-                            print("security kiosk==");
+                            if (securityRequired == true) {
+                              segment_id = SEGMENT_SECURITY_KIOSK;
+                              getAreaData(context, area_id, segment_id);
+                            }
                           },
                           child: requirementText("help ?"))
                     ],
@@ -1545,7 +1550,14 @@ class _EntranceState extends State<Entrance> {
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      requirementText("help ?")
+                      InkWell(
+                          onTap: () {
+                            if (porchRequired == true) {
+                              segment_id = SEGMENT_PORCH;
+                              getAreaData(context, area_id, segment_id);
+                            }
+                          },
+                          child: requirementText("help ?"))
                     ],
                   ),
                   SizedBox(
@@ -1976,7 +1988,14 @@ class _EntranceState extends State<Entrance> {
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      requirementText("help ?")
+                      InkWell(
+                          onTap: () {
+                            if (requiredWelcomeLobyy == true) {
+                              segment_id = SEGMENT_WELCOME_LOBBY;
+                              getAreaData(context, area_id, segment_id);
+                            }
+                          },
+                          child: requirementText("help ?"))
                     ],
                   ),
                   SizedBox(
@@ -2223,7 +2242,14 @@ class _EntranceState extends State<Entrance> {
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      requirementText("help ?")
+                      InkWell(
+                          onTap: () {
+                            if (requiredVeranda == true) {
+                              segment_id = SEGMENT_VERANDA;
+                              getAreaData(context, area_id, segment_id);
+                            }
+                          },
+                          child: requirementText("help ?"))
                     ],
                   ),
                   SizedBox(
@@ -2524,6 +2550,6 @@ class _EntranceState extends State<Entrance> {
 Text headingFont(String s) {
   return Text(
     s,
-    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
   );
 }

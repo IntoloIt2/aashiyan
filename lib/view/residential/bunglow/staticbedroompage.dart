@@ -3,7 +3,9 @@
 import 'dart:convert';
 import 'dart:core';
 import 'package:aashiyan/components/constant.dart';
+import 'package:aashiyan/controller/auth_controller.dart';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
+import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -1510,7 +1512,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -1677,7 +1685,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -1933,7 +1947,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText("help"),
+                                    InkWell(
+                                        onTap: () {
+                                          segment_id = SEGMENT_DRESSINGROOM;
+                                          getAreaData(
+                                              context, area_id, segment_id);
+                                        },
+                                        child: requirementText("help")),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -2200,8 +2220,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
 
                                       setState(() {
                                         masterRoomFacility = result;
-                                        masterRFac =
-                                            masterRoomFacility.cast<String>();
+                                        masterRFac = result;
                                         // }
                                       });
                                     },
@@ -2449,7 +2468,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -2616,7 +2641,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -2875,7 +2906,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText("help"),
+                                    InkWell(
+                                        onTap: () {
+                                          segment_id = SEGMENT_DRESSINGROOM;
+                                          getAreaData(
+                                              context, area_id, segment_id);
+                                        },
+                                        child: requirementText("help")),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -3403,7 +3440,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -3571,7 +3614,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -3832,7 +3881,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText("help"),
+                                    InkWell(
+                                        onTap: () {
+                                          segment_id = SEGMENT_DRESSINGROOM;
+                                          getAreaData(
+                                              context, area_id, segment_id);
+                                        },
+                                        child: requirementText("help")),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -4366,7 +4421,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -4533,7 +4594,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -4803,8 +4870,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText(
-                                      "help",
+                                    InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_DRESSINGROOM;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText(
+                                        "help",
+                                      ),
                                     ),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
@@ -5338,7 +5412,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -5510,7 +5590,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -5777,8 +5863,15 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText(
-                                      "help",
+                                    InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_DRESSINGROOM;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText(
+                                        "help",
+                                      ),
                                     ),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
@@ -6313,7 +6406,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -6490,7 +6589,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -6761,7 +6866,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText("help"),
+                                    InkWell(
+                                        onTap: () {
+                                          segment_id = SEGMENT_DRESSINGROOM;
+                                          getAreaData(
+                                              context, area_id, segment_id);
+                                        },
+                                        child: requirementText("help")),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -7294,7 +7405,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -7464,7 +7581,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -7734,7 +7857,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText("help"),
+                                    InkWell(
+                                        onTap: () {
+                                          segment_id = SEGMENT_DRESSINGROOM;
+                                          getAreaData(
+                                              context, area_id, segment_id);
+                                        },
+                                        child: requirementText("help")),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -8281,7 +8410,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -8451,7 +8586,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -8721,7 +8862,13 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText("help"),
+                                    InkWell(
+                                        onTap: () {
+                                          segment_id = SEGMENT_DRESSINGROOM;
+                                          getAreaData(
+                                              context, area_id, segment_id);
+                                        },
+                                        child: requirementText("help")),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),

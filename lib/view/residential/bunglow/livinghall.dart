@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/controller/auth_controller.dart';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
+import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -727,7 +728,14 @@ class _LivingHallState extends State<LivingHall> {
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      requirementText("help ?"),
+                      InkWell(
+                          onTap: () {
+                            if (livingRequired == true) {
+                              segment_id = SEGMENT_FAMILY_LOUGNE;
+                              getAreaData(context, area_id, segment_id);
+                            }
+                          },
+                          child: requirementText("help ?")),
                     ],
                   ),
                   SizedBox(
@@ -1143,7 +1151,14 @@ class _LivingHallState extends State<LivingHall> {
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      requirementText("help ?"),
+                      InkWell(
+                          onTap: () {
+                            if (drawingHallRequired == true) {
+                              segment_id = SEGMENT_EXCLUSIVE_DRAWING;
+                              getAreaData(context, area_id, segment_id);
+                            }
+                          },
+                          child: requirementText("help ?")),
                     ],
                   ),
                   SizedBox(
@@ -1404,7 +1419,12 @@ class _LivingHallState extends State<LivingHall> {
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    requirementText("help ?"),
+                    InkWell(
+                        onTap: () {
+                          segment_id = SEGMENT_EXCLUSIVE_DRAWING;
+                          getAreaData(context, area_id, segment_id);
+                        },
+                        child: requirementText("help ?")),
                   ],
                 ),
                 SizedBox(
@@ -2057,7 +2077,7 @@ class _LivingHallState extends State<LivingHall> {
                         if (livingRequired == true) {}
                         if (attachedStore == true) {}
 
-                        if(drawingHallRequired == true) {
+                        if (drawingHallRequired == true) {
                           drawingInt = INT_ONE;
                         }
 
