@@ -20,6 +20,10 @@ Future<dynamic> setProjectTypeId(id) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   var temp = await prefs.setInt('projectTypeId', id);
 }
+Future<dynamic> setProjectTypeIdHouse(id) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  var temp = await prefs.setInt('projectHouseTypeId', id);
+}
 
 Future<dynamic> setInteriorDesignCount(List count) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();

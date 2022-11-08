@@ -201,6 +201,15 @@ class _Step_6State extends State<Step_6> {
   List<String>? other3RFac;
   List<String>? other3DFac;
 
+  bool masterBedroom = false;
+  bool sonBedRoom = false;
+  bool daughterBedRoom = false;
+  bool parentBedRoom = false;
+  bool guestBedRoom = false;
+  bool other1BedRoom = false;
+  bool other2BedRoom = false;
+  bool other3BedRoom = false;
+
   var bdfields = {
     "project_id": '',
     "bedroom": "",
@@ -231,52 +240,60 @@ class _Step_6State extends State<Step_6> {
           "${dotenv.env['APP_URL']}edit-flat-house-bedroom/$project_id",
         ),
       );
-      print("printData ======");
-      print(jsonDecode(response.body));
+
       if (response.statusCode == SUCCESS) {
         final jsonResponse = jsonDecode(response.body);
 
         setState(
           () {
-            printData = jsonResponse["bungalow_bedroom"];
+            printData = jsonResponse["flat_house_bedroom"];
+            print("printData ======");
+            print(printData);
 
             for (int i = 0; i < printData.length; i++) {
-              if (printData[i]["bedroom"] == STR_ONE) {
+              if (printData[i]["bedroom"] == INT_ONE) {
                 mi = i;
+                print(mi);
               }
-              if (printData[i]["bedroom"] == STR_TWO) {
+              if (printData[i]["bedroom"] == INT_TWO) {
                 si = i;
               }
-              if (printData[i]["bedroom"] == STR_THREE) {
+              if (printData[i]["bedroom"] == INT_THREE) {
                 di = i;
               }
-              if (printData[i]["bedroom"] == STR_FOUR) {
+              if (printData[i]["bedroom"] == INT_FOUR) {
                 pi = i;
               }
-              if (printData[i]["bedroom"] == STR_FIVE) {
+              if (printData[i]["bedroom"] == INT_FIVE) {
                 gi = i;
               }
-              if (printData[i]["bedroom"] == STR_SIX) {
+              if (printData[i]["bedroom"] == INT_SIX) {
                 o1i = i;
               }
-              if (printData[i]["bedroom"] == STR_SEVEN) {
+              if (printData[i]["bedroom"] == INT_SEVEN) {
                 o2i = i;
               }
-              if (printData[i]["bedroom"] == STR_EIGHT) {
+              if (printData[i]["bedroom"] == INT_EIGHT) {
                 o3i = i;
               }
             }
 
             if (printData.asMap().containsKey(mi)) {
+              masterBedroom = true;
               masterLocation = printData[mi]['bedroom_floor'] != null
                   ? int.parse(printData[mi]['bedroom_floor'].toString())
                   : masterLocation;
+              masterRequiredDress = printData[mi]['bedroom_dress_req'] != null
+                  ? int.parse(printData[mi]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : masterRequiredDress;
               masterLength = printData[mi]['bedroom_length'] != null
                   ? int.parse(printData[mi]['bedroom_length'].toString())
                   : F_ALSE;
               masterWidth = printData[mi]['bedroom_width'] != null
                   ? int.parse(printData[mi]['bedroom_width'].toString())
                   : F_ALSE;
+
               masterToiletLength = printData[mi]['bedroom_toilet_length'] !=
                       null
                   ? int.parse(printData[mi]['bedroom_toilet_length'].toString())
@@ -322,6 +339,11 @@ class _Step_6State extends State<Step_6> {
                   : [];
             }
             if (printData.asMap().containsKey(si)) {
+              sonBedRoom = true;
+              sonRequiredDress = printData[si]['bedroom_dress_req'] != null
+                  ? int.parse(printData[si]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : sonRequiredDress;
               sonLocation = printData[si]['bedroom_floor'] != null
                   ? int.parse(printData[si]['bedroom_floor'].toString())
                   : sonLocation;
@@ -374,14 +396,15 @@ class _Step_6State extends State<Step_6> {
                   : [];
             }
             if (printData.asMap().containsKey(di)) {
+              daughterBedRoom = true;
+              daughterRequiredDress = printData[di]['bedroom_dress_req'] != null
+                  ? int.parse(printData[di]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : daughterRequiredDress;
               daughterLocation = printData[di]['bedroom_floor'] != null
                   ? int.parse(printData[di]['bedroom_floor'].toString())
                   : daughterLocation;
-              daughterBedRoom = printData[di]['bedroom'] != null
-                  ? printData[di]['bedroom'] == STR_THREE
-                  : daughterBedRoom;
-              print("daughterBedRoom === ");
-              print(daughterBedRoom);
+
               selectedFloorDaughter = printData[di]['bedroom_floor'] != null
                   ? floorItemsDaughter[
                       int.parse(printData[di]['bedroom_floor'].toString())]
@@ -436,10 +459,15 @@ class _Step_6State extends State<Step_6> {
                   : [];
             }
             if (printData.asMap().containsKey(pi)) {
+              parentBedRoom = true;
               selectedFloorParent = printData[pi]['bedroom_floor'] != null
                   ? floorItemsParent[
                       int.parse(printData[pi]['bedroom_floor'].toString())]
                   : selectedFloorParent;
+              parentsRequiredDress = printData[pi]['bedroom_dress_req'] != null
+                  ? int.parse(printData[pi]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : parentsRequiredDress;
               parentLocation = printData[pi]['bedroom_floor'] != null
                   ? int.parse(printData[pi]['bedroom_floor'].toString())
                   : parentLocation;
@@ -491,6 +519,11 @@ class _Step_6State extends State<Step_6> {
                   : [];
             }
             if (printData.asMap().containsKey(gi)) {
+              guestRequiredDress = printData[gi]['bedroom_dress_req'] != null
+                  ? int.parse(printData[gi]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : guestRequiredDress;
+              guestBedRoom = true;
               selectedFloorGuest = printData[gi]['bedroom_floor'] != null
                   ? floorItemsGuest[
                       int.parse(printData[gi]['bedroom_floor'].toString())]
@@ -545,11 +578,15 @@ class _Step_6State extends State<Step_6> {
             }
 
             if (printData.asMap().containsKey(o1i)) {
+              other1BedRoom = true;
               selectedFloorOther1 = printData[o1i]['bedroom_floor'] != null
                   ? floorItemsOther1[
                       int.parse(printData[o1i]['bedroom_floor'].toString())]
                   : selectedFloorOther1;
-
+              other1RequiredDress = printData[o1i]['bedroom_dress_req'] != null
+                  ? int.parse(printData[o1i]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : other1RequiredDress;
               other1Location = printData[o1i]['bedroom_floor'] != null
                   ? int.parse(printData[o1i]['bedroom_floor'].toString())
                   : other1Location;
@@ -603,6 +640,10 @@ class _Step_6State extends State<Step_6> {
             }
             if (printData.asMap().containsKey(o2i)) {
               other2BedRoom = true;
+              other2RequiredDress = printData[o2i]['bedroom_dress_req'] != null
+                  ? int.parse(printData[o2i]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : other2RequiredDress;
               selectedFloorOther2 = printData[o2i]['bedroom_floor'] != null
                   ? floorItemsOther2[
                       int.parse(printData[o2i]['bedroom_floor'].toString())]
@@ -634,7 +675,7 @@ class _Step_6State extends State<Step_6> {
                   : F_ALSE;
               other2DressWidth = printData[o2i]['bedroom_dress_width'] != null
                   ? int.parse(printData[o2i]['bedroom_dress_width'].toString())
-                  : F_ALSE;
+                  : other2DressWidth;
               other2DressInt = printData[o2i]['bedroom_dress_req'] != null
                   ? int.parse(printData[o2i]['bedroom_dress_req'].toString())
                   : F_ALSE;
@@ -660,6 +701,11 @@ class _Step_6State extends State<Step_6> {
                   : [];
             }
             if (printData.asMap().containsKey(o3i)) {
+              other3RequiredDress = printData[o3i]['bedroom_dress_req'] != null
+                  ? int.parse(printData[o3i]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : other3RequiredDress;
+              other3BedRoom = true;
               selectedFloorOther3 = printData[o3i]['bedroom_floor'] != null
                   ? floorItemsOther3[
                       int.parse(printData[o3i]['bedroom_floor'].toString())]
@@ -743,7 +789,7 @@ class _Step_6State extends State<Step_6> {
                       : [];
                 }
                 if (printData[si]['bedroom_dress_facility'] != null) {
-                  sonDFac = printData[si]['bedroom_facility'] != null
+                  sonDFac = printData[si]['bedroom_dress_facility'] != null
                       ? printData[si]['bedroom_dress_facility']
                           .toString()
                           .split(',')
@@ -938,15 +984,6 @@ class _Step_6State extends State<Step_6> {
   String other3OtherRequirement = '';
   String other3Dresstext = '';
 
-  bool masterBedroom = false;
-  bool sonBedRoom = false;
-  bool daughterBedRoom = false;
-  bool parentBedRoom = false;
-  bool guestBedRoom = false;
-  bool other1BedRoom = false;
-  bool other2BedRoom = false;
-  bool other3BedRoom = false;
-
   bool sonState = true;
   bool masterState = true;
 
@@ -954,10 +991,6 @@ class _Step_6State extends State<Step_6> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-
-    // print(printData[0]['bedroom_toilet_req_text']);
-
-    // print(printData[1]['bedroom_facility']);
 
     return Column(
       children: [
@@ -981,28 +1014,11 @@ class _Step_6State extends State<Step_6> {
                                 child: Checkbox(
                                     activeColor: checkColor,
                                     checkColor: Colors.white,
-                                    value: mi != null
-                                        ? printData[mi]['bedroom'] == STR_ONE
-                                            ? true
-                                            : masterBedroom
-                                        : masterBedroom,
+                                    value: masterBedroom,
                                     onChanged: (value) {
                                       setState(
                                         () {
                                           masterBedroom = value!;
-                                          if (mi != null) {
-                                            if (masterBedroom == true) {
-                                              printData[mi]['bedroom'] =
-                                                  STR_ONE;
-                                            } else if (masterBedroom == false) {
-                                              printData[mi]['bedroom'] =
-                                                  STR_TEN;
-                                            }
-                                          }
-
-                                          // if (masterBedroom == true) {
-                                          //   masterState = false;
-                                          // }
                                         },
                                       );
                                     }),
@@ -1031,22 +1047,11 @@ class _Step_6State extends State<Step_6> {
                                 child: Checkbox(
                                   activeColor: checkColor,
                                   checkColor: Colors.white,
-                                  value: si != null
-                                      ? printData[si]['bedroom'] == STR_TWO
-                                          ? true
-                                          : sonBedRoom
-                                      : sonBedRoom,
+                                  value: sonBedRoom,
                                   onChanged: (value) {
                                     setState(
                                       () {
                                         sonBedRoom = value!;
-                                        if (si != null) {
-                                          if (sonBedRoom == true) {
-                                            printData[si]['bedroom'] = STR_TWO;
-                                          } else if (sonBedRoom == false) {
-                                            printData[si]['bedroom'] = STR_TEN;
-                                          }
-                                        }
                                       },
                                     );
                                   },
@@ -1083,25 +1088,11 @@ class _Step_6State extends State<Step_6> {
                                 child: Checkbox(
                                     activeColor: checkColor,
                                     checkColor: Colors.white,
-                                    value: di != null
-                                        ? printData[di]['bedroom'] == STR_THREE
-                                            ? true
-                                            : daughterBedRoom
-                                        : daughterBedRoom,
+                                    value: daughterBedRoom,
                                     onChanged: (value) {
                                       setState(
                                         () {
                                           daughterBedRoom = value!;
-                                          if (di != null) {
-                                            if (daughterBedRoom == true) {
-                                              printData[di]['bedroom'] =
-                                                  STR_THREE;
-                                            } else if (daughterBedRoom ==
-                                                false) {
-                                              printData[di]['bedroom'] =
-                                                  STR_TEN;
-                                            }
-                                          }
                                         },
                                       );
                                     }),
@@ -1130,21 +1121,10 @@ class _Step_6State extends State<Step_6> {
                                 child: Checkbox(
                                     activeColor: checkColor,
                                     checkColor: Colors.white,
-                                    value: pi != null
-                                        ? printData[pi]['bedroom'] == STR_FOUR
-                                            ? true
-                                            : parentBedRoom
-                                        : parentBedRoom,
+                                    value: parentBedRoom,
                                     onChanged: (value) {
                                       setState(() {
                                         parentBedRoom = value!;
-                                        if (pi != null) {
-                                          if (parentBedRoom == true) {
-                                            printData[pi]['bedroom'] = STR_FOUR;
-                                          } else if (parentBedRoom == false) {
-                                            printData[pi]['bedroom'] = STR_TEN;
-                                          }
-                                        }
                                       });
                                     }),
                               ),
@@ -1179,25 +1159,13 @@ class _Step_6State extends State<Step_6> {
                                 child: Checkbox(
                                     activeColor: checkColor,
                                     checkColor: Colors.white,
-                                    value: gi != null
-                                        ? printData[gi]['bedroom'] == STR_FIVE
-                                            ? true
-                                            : guestBedRoom
-                                        : guestBedRoom,
+                                    value: guestBedRoom,
                                     onChanged: (value) {
                                       setState(
                                         () {
                                           guestBedRoom = value!;
                                           if (gi != null) {
                                             guestBedRoom = value;
-
-                                            if (guestBedRoom == true) {
-                                              printData[gi]['bedroom'] =
-                                                  STR_FIVE;
-                                            } else if (guestBedRoom == false) {
-                                              printData[gi]['bedroom'] =
-                                                  STR_TEN;
-                                            }
                                           }
                                         },
                                       );
@@ -1227,25 +1195,11 @@ class _Step_6State extends State<Step_6> {
                                 child: Checkbox(
                                     activeColor: checkColor,
                                     checkColor: Colors.white,
-                                    value: o1i != null
-                                        ? printData[o1i]['bedroom'] == STR_SIX
-                                            ? true
-                                            : other1BedRoom
-                                        : other1BedRoom,
+                                    value: other1BedRoom,
                                     onChanged: (value) {
                                       setState(
                                         () {
                                           other1BedRoom = value!;
-                                          print(other1BedRoom);
-                                          if (o1i != null) {
-                                            if (other1BedRoom == true) {
-                                              printData[o1i]['bedroom'] =
-                                                  STR_SIX;
-                                            } else if (other1BedRoom == false) {
-                                              printData[o1i]['bedroom'] =
-                                                  STR_TEN;
-                                            }
-                                          }
                                         },
                                       );
                                     }),
@@ -1314,22 +1268,10 @@ class _Step_6State extends State<Step_6> {
                                 child: Checkbox(
                                     activeColor: checkColor,
                                     checkColor: Colors.white,
-                                    value: o3i != null
-                                        ? printData[o3i]['bedroom'] == STR_EIGHT
-                                            ? true
-                                            : other3BedRoom
-                                        : other3BedRoom,
+                                    value: other3BedRoom,
                                     onChanged: (value) {
                                       setState(() {
                                         other3BedRoom = value!;
-                                        if (o3i != null) {
-                                          if (other3BedRoom == true) {
-                                            printData[o3i]['bedroom'] =
-                                                STR_EIGHT;
-                                          } else if (other3BedRoom == false) {
-                                            printData[o3i]['bedroom'] = STR_TEN;
-                                          }
-                                        }
                                       });
                                     }),
                               ),
@@ -1350,9 +1292,7 @@ class _Step_6State extends State<Step_6> {
 
         Column(
           children: [
-            if (mi != null
-                ? printData[mi]['bedroom'] == STR_ONE
-                : masterBedroom) ...[
+            if (masterBedroom) ...[
               SizedBox(
                 height: height * 0.01,
               ),
@@ -2128,86 +2068,6 @@ class _Step_6State extends State<Step_6> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: requirementText("Room Facility"),
-                          ),
-                          Material(
-                            borderRadius: BorderRadius.circular(5),
-                            elevation: 5,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      final List<String> otherItems = [
-                                        "None",
-                                        "Chair Arrangement",
-                                        "Sofa Arrangement",
-                                        "Writing and Laptop table",
-                                        "TV",
-                                        "Mini Bar",
-                                      ];
-
-                                      final List<String> result =
-                                          await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return MultiSelect(items: otherItems);
-                                        },
-                                      );
-
-                                      setState(() {
-                                        masterRoomFacility = result;
-                                        masterRFac =
-                                            masterRoomFacility.cast<String>();
-                                        // }
-                                      });
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Text("Room Facility"),
-                                    ),
-                                  ),
-                                  if (masterRFac != null || mi != null
-                                  // ? printData[mi]
-                                  //         ['bedroom_facility'] !=
-                                  //     null
-                                  // : masterRFac != null
-                                  ) ...[
-                                    for (int i = 0; i < masterRFac!.length; i++)
-                                      Wrap(children: [
-                                        Chip(
-                                          label:
-                                              Text(masterRFac![i].toString()),
-                                        )
-                                      ])
-                                  ],
-                                  if (masterRFac == null) ...[
-                                    Wrap(
-                                      children: masterRoomFacility
-                                          .map((e) => Chip(
-                                                label: Text(e),
-                                              ))
-                                          .toList(),
-                                    )
-                                  ]
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
                           Material(
                             elevation: 5,
                             borderRadius:
@@ -2304,9 +2164,7 @@ class _Step_6State extends State<Step_6> {
 
         Column(
           children: [
-            if (si == null
-                ? sonBedRoom == true
-                : printData[si]['bedroom'] == STR_TWO) ...[
+            if (sonBedRoom == true) ...[
               SizedBox(
                 height: height * 0.01,
               ),
@@ -2748,9 +2606,7 @@ class _Step_6State extends State<Step_6> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          if (si == null
-                              ? sonRequiredDress == true
-                              : printData[si]['bedroom'] == STR_TWO) ...[
+                          if (sonRequiredDress == true) ...[
                             Row(
                               children: [
                                 requirementText("Length"),
@@ -2897,8 +2753,7 @@ class _Step_6State extends State<Step_6> {
                                           setState(() {
                                             sonDressFacility = ab;
 
-                                            sonDFac =
-                                                sonDressFacility.cast<String>();
+                                            sonDFac = ab;
                                             print(sonDFac);
                                           });
                                         },
@@ -2910,7 +2765,7 @@ class _Step_6State extends State<Step_6> {
                                           child: const Text("Office Facility"),
                                         ),
                                       ),
-                                      if (si != null && sonDFac != null) ...[
+                                      if (sonDFac != null) ...[
                                         for (int i = 0;
                                             i < sonDFac!.length;
                                             i++)
@@ -2922,7 +2777,7 @@ class _Step_6State extends State<Step_6> {
                                             )
                                           ])
                                       ],
-                                      if (si == null) ...[
+                                      if (sonDFac == null) ...[
                                         Wrap(
                                           children: sonDressFacility
                                               .map(
@@ -3070,84 +2925,6 @@ class _Step_6State extends State<Step_6> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: requirementText("Room Facility"),
-                          ),
-                          Material(
-                            borderRadius: BorderRadius.circular(5),
-                            elevation: 5,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      final List<String> otherItems = [
-                                        "None",
-                                        "Chair Arrangement",
-                                        "Sofa Arrangement",
-                                        "Writing and Laptop table",
-                                        "TV",
-                                        "Mini Bar",
-                                      ];
-
-                                      final List<String> result =
-                                          await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return MultiSelect(items: otherItems);
-                                        },
-                                      );
-                                      setState(() {
-                                        sonRoomFacility = result;
-                                        sonRFac =
-                                            sonRoomFacility.cast<String>();
-                                      });
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Text("Room Facility"),
-                                    ),
-                                  ),
-                                  if (si != null
-                                      ? printData[si]['bedroom_facility'] !=
-                                          null
-                                      : sonRFac != null) ...[
-                                    for (int i = 0; i < sonRFac!.length; i++)
-                                      Wrap(children: [
-                                        Chip(
-                                          label: Text(sonRFac![i].toString()),
-                                        )
-                                      ])
-                                  ],
-                                  if (si != null
-                                      ? printData[si]['bedroom_facility'] ==
-                                          null
-                                      : sonRFac == null) ...[
-                                    Wrap(
-                                      children: sonRoomFacility
-                                          .map((e) => Chip(
-                                                label: Text(e),
-                                              ))
-                                          .toList(),
-                                    )
-                                  ]
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
                           Material(
                             elevation: 5,
                             borderRadius:
@@ -3156,9 +2933,7 @@ class _Step_6State extends State<Step_6> {
                               height: height * 0.04,
                               width: width,
                               child: TextFormField(
-                                initialValue: si != null
-                                    ? printData[1]['bedroom_facility_req_text']
-                                    : '',
+                                initialValue: sonOtherRequirement,
                                 style: const TextStyle(fontSize: 14),
                                 decoration: const InputDecoration(
                                   hintText: "other requirement",
@@ -3244,9 +3019,7 @@ class _Step_6State extends State<Step_6> {
 
         Column(
           children: [
-            if (di != null
-                ? printData[di]['bedroom'] == STR_THREE
-                : daughterBedRoom == true) ...[
+            if (daughterBedRoom == true) ...[
               SizedBox(
                 height: height * 0.01,
               ),
@@ -3501,7 +3274,7 @@ class _Step_6State extends State<Step_6> {
                                   width: width * 0.15,
                                   child: TextFormField(
                                     initialValue: di != null
-                                        ? printData[2]['bedroom_toilet_width']
+                                        ? printData[di]['bedroom_toilet_width']
                                         : '',
                                     style: const TextStyle(fontSize: 14),
                                     decoration: const InputDecoration(
@@ -3616,7 +3389,7 @@ class _Step_6State extends State<Step_6> {
                                                 onChanged: (value) {
                                                   setState(() {
                                                     if (di != null) {
-                                                      printData[2][
+                                                      printData[di][
                                                               'bedroom_dress_req'] =
                                                           INT_FOUR;
                                                     }
@@ -3710,11 +3483,7 @@ class _Step_6State extends State<Step_6> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          if (
-                          // daughterRequiredDress == true ||
-                          di != null
-                              ? printData[di]['bedroom_dress_req'] == INT_ONE
-                              : daughterRequiredDress == true) ...[
+                          if (daughterRequiredDress == true) ...[
                             Row(
                               children: [
                                 requirementText("Length"),
@@ -3870,11 +3639,7 @@ class _Step_6State extends State<Step_6> {
                                           child: const Text("Office Facility"),
                                         ),
                                       ),
-                                      if (di != null
-                                          ? printData[di]
-                                                  ['bedroom_dress_facility'] !=
-                                              null
-                                          : daughterDFac != null) ...[
+                                      if (daughterDFac != null) ...[
                                         for (int i = 0;
                                             i < daughterDFac!.length;
                                             i++)
@@ -3885,11 +3650,7 @@ class _Step_6State extends State<Step_6> {
                                             )
                                           ])
                                       ],
-                                      if (di != null
-                                          ? printData[di]
-                                                  ['bedroom_dress_facility'] ==
-                                              null
-                                          : daughterDFac == null) ...[
+                                      if (daughterDFac == null) ...[
                                         Wrap(
                                           children: daughterDressFacility
                                               .map(
@@ -4037,89 +3798,6 @@ class _Step_6State extends State<Step_6> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: requirementText("Room Facility"),
-                          ),
-                          Material(
-                            borderRadius: BorderRadius.circular(5),
-                            elevation: 5,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      final List<String> otherItems = [
-                                        "None",
-                                        "Chair Arrangement",
-                                        "Sofa Arrangement",
-                                        "Writing and Laptop table",
-                                        "TV",
-                                        "Mini Bar",
-                                      ];
-
-                                      final List<String> result =
-                                          await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return MultiSelect(items: otherItems);
-                                        },
-                                      );
-
-                                      setState(() {
-                                        daughterRoomFacility = result;
-                                        daughterRFac = result;
-
-                                        print("daughterRFac == ");
-                                        print(daughterRFac);
-                                        print("daughterRoomFacility == ");
-                                        print(daughterRoomFacility);
-                                      });
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Text("Room Facility"),
-                                    ),
-                                  ),
-                                  if (di != null
-                                      ? printData[di]['bedroom_facility'] !=
-                                          null
-                                      : daughterRFac != null) ...[
-                                    for (int i = 0;
-                                        i < daughterRFac!.length;
-                                        i++)
-                                      Wrap(children: [
-                                        Chip(
-                                          label:
-                                              Text(daughterRFac![i].toString()),
-                                        )
-                                      ])
-                                  ],
-                                  if (di == null && daughterRFac == null) ...[
-                                    Wrap(
-                                      children: daughterRoomFacility
-                                          .map((e) => Chip(
-                                                label: Text(e),
-                                              ))
-                                          .toList(),
-                                    )
-                                  ]
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
                           Material(
                             elevation: 5,
                             borderRadius:
@@ -4216,9 +3894,7 @@ class _Step_6State extends State<Step_6> {
 
         Column(
           children: [
-            if (pi != null
-                ? printData[pi]['bedroom'] == STR_FOUR
-                : parentBedRoom == true) ...[
+            if (parentBedRoom == true) ...[
               SizedBox(
                 height: height * 0.01,
               ),
@@ -4273,7 +3949,7 @@ class _Step_6State extends State<Step_6> {
                                   child: TextFormField(
                                     style: const TextStyle(fontSize: 14),
                                     initialValue: pi != null
-                                        ? printData[3]['bedroom_length']
+                                        ? printData[pi]['bedroom_length']
                                         : '',
                                     decoration: const InputDecoration(
                                         hintText: "Length",
@@ -4313,7 +3989,7 @@ class _Step_6State extends State<Step_6> {
                                   width: width * 0.15,
                                   child: TextFormField(
                                     initialValue: pi != null
-                                        ? printData[3]['bedroom_width']
+                                        ? printData[pi]['bedroom_width']
                                         : '',
                                     style: const TextStyle(fontSize: 14),
                                     decoration: const InputDecoration(
@@ -4679,9 +4355,7 @@ class _Step_6State extends State<Step_6> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          if (pi != null
-                              ? printData[pi]['bedroom_dress_req'] == INT_ONE
-                              : parentsRequiredDress == true) ...[
+                          if (parentsRequiredDress == true) ...[
                             Row(
                               children: [
                                 requirementText("Length"),
@@ -4744,7 +4418,7 @@ class _Step_6State extends State<Step_6> {
                                     child: TextFormField(
                                       style: const TextStyle(fontSize: 14),
                                       initialValue: pi != null
-                                          ? printData[3]['bedroom_dress_width']
+                                          ? printData[pi]['bedroom_dress_width']
                                           : '',
                                       decoration: const InputDecoration(
                                         hintText: "width",
@@ -4852,11 +4526,7 @@ class _Step_6State extends State<Step_6> {
                                                 const Text("Office Facility"),
                                           ),
                                         ),
-                                        if (pi != null
-                                            ? printData[pi][
-                                                    'bedroom_dress_facility'] !=
-                                                null
-                                            : parentDFac != null) ...[
+                                        if (parentDFac != null) ...[
                                           for (int i = 0;
                                               i < parentDFac!.length;
                                               i++)
@@ -4868,11 +4538,7 @@ class _Step_6State extends State<Step_6> {
                                               )
                                             ])
                                         ],
-                                        if (pi != null
-                                            ? printData[pi][
-                                                    'bedroom_dress_facility'] ==
-                                                null
-                                            : parentDFac == null) ...[
+                                        if (parentDFac == null) ...[
                                           Wrap(
                                             children: parentDressFacility
                                                 .map(
@@ -5021,90 +4687,6 @@ class _Step_6State extends State<Step_6> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: requirementText("Room Facility"),
-                          ),
-                          Material(
-                            borderRadius: BorderRadius.circular(5),
-                            elevation: 5,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      final List<String> otherItems = [
-                                        "None",
-                                        "Chair Arrangement",
-                                        "Sofa Arrangement",
-                                        "Writing and Laptop table",
-                                        "TV",
-                                        "Mini Bar",
-                                      ];
-
-                                      final List<String> result =
-                                          await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return MultiSelect(items: otherItems);
-                                        },
-                                      );
-
-                                      setState(
-                                        () {
-                                          parentRoomFacility = result;
-                                          if (pi != null) {
-                                            printData[pi]['bedroom_facility'] =
-                                                null;
-                                          }
-                                        },
-                                      );
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Text("Room Facility"),
-                                    ),
-                                  ),
-                                  if (pi != null
-                                      ? printData[pi]['bedroom_facility'] !=
-                                          null
-                                      : parentRFac != null) ...[
-                                    for (int i = 0; i < parentRFac!.length; i++)
-                                      Wrap(children: [
-                                        Chip(
-                                          label:
-                                              Text(parentRFac![i].toString()),
-                                        )
-                                      ])
-                                  ],
-                                  if (pi != null
-                                      ? printData[pi]['bedroom_facility'] ==
-                                          null
-                                      : parentRFac == null) ...[
-                                    Wrap(
-                                      children: parentRoomFacility
-                                          .map((e) => Chip(
-                                                label: Text(e),
-                                              ))
-                                          .toList(),
-                                    )
-                                  ]
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
                           Material(
                             elevation: 5,
                             borderRadius:
@@ -5201,9 +4783,7 @@ class _Step_6State extends State<Step_6> {
 
         Column(
           children: [
-            if (gi != null
-                ? printData[gi]['bedroom'] == STR_FIVE
-                : guestBedRoom == true) ...[
+            if (guestBedRoom == true) ...[
               SizedBox(
                 height: height * 0.01,
               ),
@@ -5652,9 +5232,7 @@ class _Step_6State extends State<Step_6> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          if (gi != null
-                              ? printData[gi]['bedroom_dress_req'] == INT_ONE
-                              : guestRequiredDress == true) ...[
+                          if (guestRequiredDress == true) ...[
                             Row(
                               children: [
                                 requirementText("Length"),
@@ -5825,11 +5403,7 @@ class _Step_6State extends State<Step_6> {
                                                 const Text("Office Facility"),
                                           ),
                                         ),
-                                        if (gi != null
-                                            ? printData[gi][
-                                                    'bedroom_dress_facility'] !=
-                                                null
-                                            : guestDFac != null) ...[
+                                        if (guestDFac != null) ...[
                                           for (int i = 0;
                                               i < guestDFac!.length;
                                               i++)
@@ -5840,8 +5414,7 @@ class _Step_6State extends State<Step_6> {
                                               )
                                             ])
                                         ],
-                                        if (gi == null &&
-                                            guestDFac == null) ...[
+                                        if (guestDFac == null) ...[
                                           Wrap(
                                             children: guestDressFacility
                                                 .map(
@@ -5990,83 +5563,6 @@ class _Step_6State extends State<Step_6> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: requirementText("Room Facility"),
-                          ),
-                          Material(
-                            borderRadius: BorderRadius.circular(5),
-                            elevation: 5,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      final List<String> otherItems = [
-                                        "None",
-                                        "Chair Arrangement",
-                                        "Sofa Arrangement",
-                                        "Writing and Laptop table",
-                                        "TV",
-                                        "Mini Bar",
-                                      ];
-
-                                      final List<String> result =
-                                          await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return MultiSelect(items: otherItems);
-                                        },
-                                      );
-
-                                      setState(() {
-                                        guestRoomFacility = result;
-                                        guestRFac = result;
-                                      });
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Text("Room Facility"),
-                                    ),
-                                  ),
-                                  if (guestRFac != null) ...[
-                                    for (int i = 0; i < guestRFac!.length; i++)
-                                      Wrap(
-                                        children: [
-                                          Chip(
-                                            label:
-                                                Text(guestRFac![i].toString()),
-                                          )
-                                        ],
-                                      )
-                                  ],
-                                  if (gi == null && guestRFac == null) ...[
-                                    Wrap(
-                                      children: guestRoomFacility
-                                          .map(
-                                            (e) => Chip(
-                                              label: Text(e),
-                                            ),
-                                          )
-                                          .toList(),
-                                    )
-                                  ]
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
                           Material(
                             elevation: 5,
                             borderRadius:
@@ -6162,9 +5658,7 @@ class _Step_6State extends State<Step_6> {
         // ------------------------------other1bedroom------------------------------//
         Column(
           children: [
-            if (o1i != null
-                ? printData[o1i]['bedroom'] == STR_SIX
-                : other1BedRoom == true) ...[
+            if (other1BedRoom == true) ...[
               SizedBox(
                 height: height * 0.01,
               ),
@@ -6632,10 +6126,7 @@ class _Step_6State extends State<Step_6> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          if (o1i == null
-                              ? other1RequiredDress == true
-                              : printData[o1i]['bedroom_dress_req'] ==
-                                  INT_ONE) ...[
+                          if (other1RequiredDress == true) ...[
                             Row(
                               children: [
                                 requirementText("Length"),
@@ -6808,11 +6299,7 @@ class _Step_6State extends State<Step_6> {
                                                 const Text("Office Facility"),
                                           ),
                                         ),
-                                        if (o1i != null
-                                            ? printData[o1i][
-                                                    'bedroom_dress_facility'] !=
-                                                null
-                                            : other1DFac != null) ...[
+                                        if (other1DFac != null) ...[
                                           for (int i = 0;
                                               i < other1DFac!.length;
                                               i++)
@@ -6823,11 +6310,7 @@ class _Step_6State extends State<Step_6> {
                                               )
                                             ])
                                         ],
-                                        if (o1i != null
-                                            ? printData[o1i][
-                                                    'bedroom_dress_facility'] ==
-                                                null
-                                            : other1DFac == null) ...[
+                                        if (other1DFac == null) ...[
                                           Wrap(
                                             children: other1DressFacility
                                                 .map(
@@ -6976,90 +6459,6 @@ class _Step_6State extends State<Step_6> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: requirementText("Room Facility"),
-                          ),
-                          Material(
-                            borderRadius: BorderRadius.circular(5),
-                            elevation: 5,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      final List<String> otherItems = [
-                                        "None",
-                                        "Chair Arrangement",
-                                        "Sofa Arrangement",
-                                        "Writing and Laptop table",
-                                        "TV",
-                                        "Mini Bar",
-                                      ];
-
-                                      final List<String> result =
-                                          await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return MultiSelect(items: otherItems);
-                                        },
-                                      );
-
-                                      setState(() {
-                                        other1RoomFacility = result;
-                                        if (o1i != null) {
-                                          printData[o1i]['bedroom_facility'] =
-                                              null;
-                                        }
-                                      });
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Text("Room Facility"),
-                                    ),
-                                  ),
-                                  if (o1i != null
-                                      ? printData[o1i]['bedroom_facility'] !=
-                                          null
-                                      : other1RFac != null) ...[
-                                    for (int i = 0; i < other1RFac!.length; i++)
-                                      Wrap(
-                                        children: [
-                                          Chip(
-                                            label:
-                                                Text(other1RFac![i].toString()),
-                                          )
-                                        ],
-                                      )
-                                  ],
-                                  if (o1i != null
-                                      ? printData[o1i]['bedroom_facility'] ==
-                                          null
-                                      : other1RFac == null) ...[
-                                    Wrap(
-                                      children: other1RoomFacility
-                                          .map((e) => Chip(
-                                                label: Text(e),
-                                              ))
-                                          .toList(),
-                                    )
-                                  ]
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
                           Material(
                             elevation: 5,
                             borderRadius:
@@ -7157,9 +6556,7 @@ class _Step_6State extends State<Step_6> {
 
         Column(
           children: [
-            if (o2i != null
-                ? printData[o2i]['bedroom'] == STR_SEVEN
-                : other2BedRoom == true) ...{
+            if (other2BedRoom == true) ...{
               SizedBox(
                 height: height * 0.01,
               ),
@@ -7606,9 +7003,7 @@ class _Step_6State extends State<Step_6> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          if (o2i != null
-                              ? printData[o2i]['bedroom_dress_req'] == INT_ONE
-                              : other2RequiredDress == true) ...[
+                          if (other2RequiredDress == true) ...[
                             Row(
                               children: [
                                 requirementText("Length"),
@@ -7673,7 +7068,8 @@ class _Step_6State extends State<Step_6> {
                                     child: TextFormField(
                                       style: const TextStyle(fontSize: 14),
                                       initialValue: o2i != null
-                                          ? printData[6]['bedroom_dress_width']
+                                          ? printData[o2i]
+                                              ['bedroom_dress_width']
                                           : '',
 
                                       decoration: const InputDecoration(
@@ -7780,11 +7176,7 @@ class _Step_6State extends State<Step_6> {
                                                 const Text("Office Facility"),
                                           ),
                                         ),
-                                        if (o2i != null
-                                            ? printData[o2i][
-                                                    'bedroom_dress_facility'] !=
-                                                null
-                                            : other2DFac != null) ...[
+                                        if (other2DFac != null) ...[
                                           for (int i = 0;
                                               i < other2DFac!.length;
                                               i++)
@@ -7795,11 +7187,7 @@ class _Step_6State extends State<Step_6> {
                                               )
                                             ])
                                         ],
-                                        if (o2i != null
-                                            ? printData[o2i][
-                                                    'bedroom_dress_facility'] ==
-                                                null
-                                            : other2DFac == null) ...[
+                                        if (other2DFac == null) ...[
                                           Wrap(
                                             children: other2DressFacility
                                                 .map(
@@ -7948,90 +7336,6 @@ class _Step_6State extends State<Step_6> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: requirementText("Room Facility"),
-                          ),
-                          Material(
-                            borderRadius: BorderRadius.circular(5),
-                            elevation: 5,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      final List<String> otherItems = [
-                                        "None",
-                                        "Chair Arrangement",
-                                        "Sofa Arrangement",
-                                        "Writing and Laptop table",
-                                        "TV",
-                                        "Mini Bar",
-                                      ];
-
-                                      final List<String> result =
-                                          await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return MultiSelect(items: otherItems);
-                                        },
-                                      );
-
-                                      setState(() {
-                                        other2RoomFacility = result;
-                                        if (o2i != null) {
-                                          printData[o2i]['bedroom_facility'] =
-                                              null;
-                                        }
-                                      });
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Text("Room Facility"),
-                                    ),
-                                  ),
-                                  if (o2i != null
-                                      ? printData[o2i]['bedroom_facility'] !=
-                                          null
-                                      : other2RFac != null) ...[
-                                    for (int i = 0; i < other2RFac!.length; i++)
-                                      Wrap(
-                                        children: [
-                                          Chip(
-                                            label:
-                                                Text(other2RFac![i].toString()),
-                                          )
-                                        ],
-                                      )
-                                  ],
-                                  if (o2i != null
-                                      ? printData[o2i]['bedroom_facility'] ==
-                                          null
-                                      : other2RFac == null) ...[
-                                    Wrap(
-                                      children: other2RoomFacility
-                                          .map((e) => Chip(
-                                                label: Text(e),
-                                              ))
-                                          .toList(),
-                                    )
-                                  ]
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
                           Material(
                             elevation: 5,
                             borderRadius:
@@ -8129,9 +7433,7 @@ class _Step_6State extends State<Step_6> {
 
         Column(
           children: [
-            if (o3i != null
-                ? printData[o3i]['bedroom'] == STR_EIGHT
-                : other3BedRoom == true) ...{
+            if (other3BedRoom == true) ...{
               SizedBox(
                 height: height * 0.01,
               ),
@@ -8453,8 +7755,8 @@ class _Step_6State extends State<Step_6> {
                               height: height * 0.04,
                               width: width,
                               child: TextFormField(
-                                initialValue: o1i != null
-                                    ? printData[5]['bedroom_toilet_req_text']
+                                initialValue: o3i != null
+                                    ? printData[o3i]['bedroom_toilet_req_text']
                                     : '',
                                 style: const TextStyle(fontSize: 14),
                                 decoration: const InputDecoration(
@@ -8592,9 +7894,7 @@ class _Step_6State extends State<Step_6> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          if (o3i != null
-                              ? printData[o3i]['bedroom_dress_req'] == INT_ONE
-                              : other3RequiredDress == true) ...[
+                          if (other3RequiredDress == true) ...[
                             Row(
                               children: [
                                 requirementText("Length"),
@@ -8767,11 +8067,7 @@ class _Step_6State extends State<Step_6> {
                                                 const Text("Office Facility"),
                                           ),
                                         ),
-                                        if (o3i != null
-                                            ? printData[o3i][
-                                                    'bedroom_dress_facility'] !=
-                                                null
-                                            : other3DFac != null) ...[
+                                        if (other3DFac != null) ...[
                                           for (int i = 0;
                                               i < other3DFac!.length;
                                               i++)
@@ -8782,11 +8078,7 @@ class _Step_6State extends State<Step_6> {
                                               )
                                             ])
                                         ],
-                                        if (o3i != null
-                                            ? printData[o3i][
-                                                    'bedroom_dress_facility'] ==
-                                                null
-                                            : other3DressFacility != null) ...[
+                                        if (other3DressFacility != null) ...[
                                           Wrap(
                                             children: other3DressFacility
                                                 .map(
@@ -8935,90 +8227,6 @@ class _Step_6State extends State<Step_6> {
                           SizedBox(
                             height: height * 0.01,
                           ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: requirementText("Room Facility"),
-                          ),
-                          Material(
-                            borderRadius: BorderRadius.circular(5),
-                            elevation: 5,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () async {
-                                      final List<String> otherItems = [
-                                        "None",
-                                        "Chair Arrangement",
-                                        "Sofa Arrangement",
-                                        "Writing and Laptop table",
-                                        "TV",
-                                        "Mini Bar",
-                                      ];
-
-                                      final List<String> result =
-                                          await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return MultiSelect(items: otherItems);
-                                        },
-                                      );
-
-                                      setState(() {
-                                        other3RoomFacility = result;
-                                        if (o3i != null) {
-                                          printData[o3i]['bedroom_facility'] =
-                                              null;
-                                        }
-                                      });
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: const Text("Room Facility"),
-                                    ),
-                                  ),
-                                  if (o3i != null
-                                      ? printData[o3i]['bedroom_facility'] !=
-                                          null
-                                      : other3RFac != null) ...[
-                                    for (int i = 0; i < other3RFac!.length; i++)
-                                      Wrap(
-                                        children: [
-                                          Chip(
-                                            label:
-                                                Text(other3RFac![i].toString()),
-                                          )
-                                        ],
-                                      )
-                                  ],
-                                  if (o3i != null
-                                      ? printData[o3i]['bedroom_facility'] ==
-                                          null
-                                      : other3RFac == null) ...[
-                                    Wrap(
-                                      children: other3RoomFacility
-                                          .map((e) => Chip(
-                                                label: Text(e),
-                                              ))
-                                          .toList(),
-                                    )
-                                  ]
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: height * 0.01,
-                          ),
                           Material(
                             elevation: 5,
                             borderRadius:
@@ -9127,9 +8335,7 @@ class _Step_6State extends State<Step_6> {
               _value["project_id"] = project_id;
 
               List<Bedtypes> bedData = [
-                if (mi != null
-                    ? printData[mi]['bedroom'] == STR_ONE
-                    : masterBedroom == true)
+                if (masterBedroom == true)
                   Bedtypes(
                     bedroomLength: masterLength,
                     bedRoomFloor: masterLocation,
@@ -9147,9 +8353,7 @@ class _Step_6State extends State<Step_6> {
                     bedroomDressText: masterDresstext,
                     bedroomText: masterOtherRequirement,
                   ),
-                if (si != null
-                    ? printData[si]['bedroom'] == STR_TWO
-                    : sonBedRoom == true)
+                if (sonBedRoom == true)
                   Bedtypes(
                     bedroomLength: sonLength,
                     bedRoomFloor: sonLocation,
@@ -9159,7 +8363,7 @@ class _Step_6State extends State<Step_6> {
                     bedRoomToiletFacility: sonToiletFacility,
                     bedroomDressLength: sonDressLength,
                     bedroomDressWidth: sonDressWidth,
-                    bedroomDressFacility: sonDressFacility,
+                    bedroomDressFacility: sonDFac,
                     bedroomImg: "",
                     bedroomFacility: sonRoomFacility,
                     bedroomName: STR_TWO,
@@ -9167,9 +8371,7 @@ class _Step_6State extends State<Step_6> {
                     bedroomDressText: sonDresstext,
                     bedroomText: sonOtherRequirement,
                   ),
-                if (di != null
-                    ? printData[di]['bedroom'] == STR_THREE
-                    : daughterBedRoom == true)
+                if (daughterBedRoom == true)
                   Bedtypes(
                     bedroomLength: daughterLength,
                     bedRoomFloor: daughterLocation,
@@ -9187,9 +8389,7 @@ class _Step_6State extends State<Step_6> {
                     bedroomDressText: daughterDresstext,
                     bedroomText: daughterOtherRequirement,
                   ),
-                if (pi != null
-                    ? printData[pi]['bedroom'] == STR_FOUR
-                    : parentBedRoom == true)
+                if (parentBedRoom == true)
                   Bedtypes(
                     bedroomLength: parentLength,
                     bedRoomFloor: parentLocation,
@@ -9207,9 +8407,7 @@ class _Step_6State extends State<Step_6> {
                     bedroomDressText: parentDresstext,
                     bedroomText: parentOtherRequirement,
                   ),
-                if (gi != null
-                    ? printData[gi]['bedroom'] == STR_FIVE
-                    : guestBedRoom == true)
+                if (guestBedRoom == true)
                   Bedtypes(
                     bedroomLength: guestLength,
                     bedRoomFloor: guestLocation,
@@ -9227,9 +8425,7 @@ class _Step_6State extends State<Step_6> {
                     bedroomDressText: guestDresstext,
                     bedroomText: guestOtherRequirement,
                   ),
-                if (o1i != null
-                    ? printData[o1i]['bedroom'] == STR_SIX
-                    : other1BedRoom == true)
+                if (other1BedRoom == true)
                   Bedtypes(
                     bedroomLength: other1Length,
                     bedRoomFloor: other1Location,
@@ -9247,9 +8443,7 @@ class _Step_6State extends State<Step_6> {
                     bedroomDressText: other1Dresstext,
                     bedroomText: other1OtherRequirement,
                   ),
-                if (o2i != null
-                    ? printData[o2i]['bedroom'] == STR_SEVEN
-                    : other2BedRoom == true)
+                if (other2BedRoom == true)
                   Bedtypes(
                     bedroomLength: other2Length,
                     bedRoomFloor: other2Location,
@@ -9267,9 +8461,7 @@ class _Step_6State extends State<Step_6> {
                     bedroomDressText: other2Dresstext,
                     bedroomText: other2OtherRequirement,
                   ),
-                if (o3i != null
-                    ? printData[o3i]['bedroom'] == STR_EIGHT
-                    : other3BedRoom == true)
+                if (other3BedRoom == true)
                   Bedtypes(
                     bedroomLength: other3Length,
                     bedRoomFloor: other3Location,
@@ -9309,7 +8501,7 @@ class _Step_6State extends State<Step_6> {
               if (project_id == null) {
                 final update = await http.post(
                   Uri.parse("${dotenv.env['APP_URL']}flat-house-bedroom"),
-                  // 'http://192.168.0.99:8080/sdplserver/api/bungalow-bedroom'),
+
                   headers: <String, String>{
                     'Content-Type': 'application/json; charset=UTF-8',
                   },
@@ -9321,7 +8513,6 @@ class _Step_6State extends State<Step_6> {
                 final submit = await http.post(
                   Uri.parse(
                       "${dotenv.env['APP_URL']}update-flat-house-bedroom/$project_id"),
-                  // 'http://192.168.0.99:8080/sdplserver/api/update-bungalow-bedroom/$project_id'),
                   headers: <String, String>{
                     'Content-Type': 'application/json; charset=UTF-8',
                   },

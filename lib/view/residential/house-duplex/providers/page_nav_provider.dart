@@ -100,7 +100,7 @@ class PageNavProvider with ChangeNotifier {
     return temp['status'];
   }
 
-  Future<dynamic> requirementUpadate(
+    Future<dynamic> requirementUpdate(
     int projectId,
     int userId,
     int projectGroupId,
@@ -172,8 +172,8 @@ class PageNavProvider with ChangeNotifier {
       "south_road_width": southRoadWidth,
     };
 
-    // print('projectData==');
-    // print(projectData);
+    print('projectData==');
+    print(projectData);
 
     final response = await http.post(
       Uri.parse('${dotenv.env['APP_URL']}update-project/$projectId'),
@@ -190,6 +190,8 @@ class PageNavProvider with ChangeNotifier {
 
     return temp['status'];
   }
+
+
 
   // int getId() {
   //   // if (temp != null) {

@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../const.dart';
 import 'package:http/http.dart' as http;
+import '../../../../utils/helpers.dart';
 import '../providers/residential_provider.dart';
 
 class Step_1 extends StatefulWidget {
@@ -327,8 +328,9 @@ class _Step_1State extends State<Step_1> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('userData');
     project_id = prefs.getInt('projectId');
-    projectTypeId = prefs.getInt('projectTypeId');
+    projectTypeId = prefs.getInt('projectHouseTypeId');
     projectGroupId = prefs.getInt('projectGroupId');
+    print(projectTypeId);
     print(' step 1project_id==');
     print(project_id);
     getData(project_id);
@@ -2015,6 +2017,7 @@ class _Step_1State extends State<Step_1> {
                           isRegular = 2;
                           plot_orientaion = 1;
                         }
+                        setProjectTypeIdHouse(FLAT_HOUSE);
 
                         if (size == "m") {
                           dimenInt = 2;
@@ -2077,7 +2080,7 @@ class _Step_1State extends State<Step_1> {
                     if (pageId != null) {
                       print("upadte is running");
                       print(project_id);
-                      provider.requirementUpadate(
+                      provider.requirementUpdate(
                         project_id,
                         user_id,
                         projectGroupId,

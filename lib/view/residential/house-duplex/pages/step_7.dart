@@ -5,13 +5,12 @@
 import 'dart:convert';
 
 import 'package:aashiyan/components/constant.dart';
-import 'package:aashiyan/view/residential/bunglow/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-
 import '../../../../components/forms.dart';
 import '../../../../const.dart';
+import '../../../../utils/payment.dart';
 import '../../bunglow/entrance.dart';
 
 class Step_7 extends StatefulWidget {
@@ -22,9 +21,7 @@ class Step_7 extends StatefulWidget {
 }
 
 List ar_design = [];
-
 List str_design = [];
-
 List mep_design = [];
 
 List int_design = [];
