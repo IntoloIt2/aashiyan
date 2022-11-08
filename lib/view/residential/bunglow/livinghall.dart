@@ -2117,11 +2117,6 @@ class _LivingHallState extends State<LivingHall> {
                     );
 
                     if (pageId != null) {
-                      // print(pageId);
-                      // print(drawingHallLengthController);
-                      // print(LivingHallWidthController);
-                      // print("update===");
-
                       var status = await livingHallput(
                         user_id,
                         project_id,
@@ -2155,7 +2150,6 @@ class _LivingHallState extends State<LivingHall> {
                             Colors.lightGreen, ToastGravity.TOP);
                       }
                     } else {
-                      print("post==");
                       var status = await livingHallPost(
                         user_id,
                         project_id,

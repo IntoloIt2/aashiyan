@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/forms.dart';
@@ -270,16 +271,30 @@ class _PantryDetailState extends State<PantryDetail> {
         textColor: Colors.white);
   }
 
+  late var timer;
+
   @override
   void initState() {
     super.initState();
     // getData();
     getUserId();
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        isloading = true;
-      });
-    });
+    timer = Timer.periodic(
+        Duration(seconds: 5),
+        (Timer t) => setState(() {
+              isloading = true;
+            }));
+
+    // Future.delayed(Duration(seconds: 1), () {
+    //   setState(() {
+    //     isloading = true;
+    //   });
+    // });
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
   @override
