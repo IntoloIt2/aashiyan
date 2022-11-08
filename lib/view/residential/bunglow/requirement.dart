@@ -2138,7 +2138,7 @@ class _RequirementState extends State<Requirement> {
                         }
                         // if (otherSouth == true) {
                         //   isSouth = "1";
-                        // }
+                        //  }
                         if (notReqired == true) {
                           notReqiredInt = INT_ONE;
                         }
@@ -2149,7 +2149,7 @@ class _RequirementState extends State<Requirement> {
                     var status;
                     print(selectedLevelInt);
                     if (pageId != null) {
-                      var status = await provider.requirementUpadate(
+                      var status = await provider.requirementUpdate(
                         project_id,
                         user_id,
                         projectGroupId,
@@ -2184,7 +2184,7 @@ class _RequirementState extends State<Requirement> {
                         levelController,
                         notReqiredInt,
                       );
-                      if (status == SUCCESS) {
+                      if(status == SUCCESS) {
                         showToast('Project Requirement Updated !',
                             Colors.lightGreen, ToastGravity.TOP);
                       }

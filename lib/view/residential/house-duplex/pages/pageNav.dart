@@ -21,9 +21,10 @@ class _PageNavState extends State<PageNav> {
     Step_2(),
     Step_3(),
     Step_4(),
-    const Step_5(),
-    const Step_6(),
-    const Step_7()
+    Step_5(),
+    Step_6(),
+    Step_7()
+    
   ];
   @override
   Widget build(BuildContext context) {
