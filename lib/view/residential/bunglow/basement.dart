@@ -4,6 +4,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/components/forms.dart';
+import 'package:aashiyan/controller/auth_controller.dart';
+import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -1150,21 +1152,6 @@ class _BasementState extends State<Basement> {
                                       officeWidthController = value != ''
                                           ? int.parse(value)
                                           : officeWidthController;
-                                      // officeWidthController =
-                                      //     int.tryParse(value) ??
-                                      //         officeWidthController;
-                                      // officeWidthController =
-                                      //     int.tryParse(value)!;
-
-                                      // if (viewData['bungalow_basement'] != null
-                                      //     ? viewData['bungalow_basement']
-                                      //             ['office_width'] !=
-                                      //         null
-                                      //     : false) {
-                                      //   viewData['bungalow_basement']
-                                      //           ['office_width'] =
-                                      //       officeWidthController.toString();
-                                      // }
                                     },
                                   ),
                                 ),
@@ -1177,7 +1164,12 @@ class _BasementState extends State<Basement> {
                         flex: 20,
                         child: Row(
                           children: [
-                            requirementText("help"),
+                            InkWell(
+                                onTap: () {
+                                  segment_id = SEGMENT_OFFICE;
+                                  getAreaData(context, area_id, segment_id);
+                                },
+                                child: requirementText("help")),
                             IconButton(
                                 padding: const EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
@@ -1565,7 +1557,12 @@ class _BasementState extends State<Basement> {
                         flex: 20,
                         child: Row(
                           children: [
-                            requirementText("help"),
+                            InkWell(
+                                onTap: () {
+                                  segment_id = SEGMENT_SERVENT_QUARTER;
+                                  getAreaData(context, area_id, segment_id);
+                                },
+                                child: requirementText("help")),
                             IconButton(
                                 padding: const EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
@@ -1995,7 +1992,12 @@ class _BasementState extends State<Basement> {
                         flex: 20,
                         child: Row(
                           children: [
-                            requirementText("help"),
+                            InkWell(
+                                onTap: () {
+                                  segment_id = SEGMENT_HOME_THEATER;
+                                  getAreaData(context, area_id, segment_id);
+                                },
+                                child: requirementText("help")),
                             IconButton(
                                 padding: const EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
@@ -2399,7 +2401,12 @@ class _BasementState extends State<Basement> {
                         flex: 20,
                         child: Row(
                           children: [
-                            requirementText("help"),
+                            InkWell(
+                                onTap: () {
+                                  segment_id = SEGMENT_ADDITIONAL_PARKING;
+                                  getAreaData(context, area_id, segment_id);
+                                },
+                                child: requirementText("help")),
                             IconButton(
                                 padding: const EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
@@ -2802,7 +2809,12 @@ class _BasementState extends State<Basement> {
                         flex: 20,
                         child: Row(
                           children: [
-                            requirementText("help"),
+                            InkWell(
+                                onTap: () {
+                                  segment_id = SEGMENT_INDOOR_PLAY_AREA;
+                                  getAreaData(context, area_id, segment_id);
+                                },
+                                child: requirementText("help")),
                             IconButton(
                                 padding: const EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
@@ -3112,7 +3124,12 @@ class _BasementState extends State<Basement> {
                         flex: 20,
                         child: Row(
                           children: [
-                            requirementText("help"),
+                            InkWell(
+                                onTap: () {
+                                  segment_id = SEGMENT_BAR;
+                                  getAreaData(context, area_id, segment_id);
+                                },
+                                child: requirementText("help")),
                             IconButton(
                                 padding: const EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
@@ -3516,7 +3533,12 @@ class _BasementState extends State<Basement> {
                         flex: 20,
                         child: Row(
                           children: [
-                            requirementText("help"),
+                            InkWell(
+                                onTap: () {
+                                  segment_id = SEGMENT_SWIMMINGPOOL;
+                                  getAreaData(context, area_id, segment_id);
+                                },
+                                child: requirementText("help")),
                             IconButton(
                                 padding: const EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
@@ -3833,7 +3855,12 @@ class _BasementState extends State<Basement> {
                         flex: 20,
                         child: Row(
                           children: [
-                            requirementText("help"),
+                            InkWell(
+                                onTap: () {
+                                  segment_id = SEGMENT_GYM;
+                                  getAreaData(context, area_id, segment_id);
+                                },
+                                child: requirementText("help")),
                             IconButton(
                                 padding: const EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
@@ -4149,7 +4176,12 @@ class _BasementState extends State<Basement> {
                         flex: 20,
                         child: Row(
                           children: [
-                            requirementText("help"),
+                            InkWell(
+                                onTap: () {
+                                  segment_id = SEGMENT_SPA;
+                                  getAreaData(context, area_id, segment_id);
+                                },
+                                child: requirementText("help")),
                             IconButton(
                               padding: const EdgeInsets.all(5),
                               constraints: const BoxConstraints(),

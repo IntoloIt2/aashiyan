@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:aashiyan/components/forms.dart';
+import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -167,7 +168,7 @@ class _FloorStoreState extends State<FloorStore> {
 
             FloorStoreDetail2 =
                 printData["bungalow_floor_store"]["floor_store_req"] == 0
-                ? true
+                    ? true
                     : FloorStoreDetail2;
             selectedFloor =
                 printData['bungalow_floor_store']['store_floor'] != null
@@ -610,7 +611,14 @@ class _FloorStoreState extends State<FloorStore> {
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      requirementText("help ?"),
+                      InkWell(
+                          onTap: () {
+                            if (FloorStoreDetail1 == true) {
+                              segment_id = SEGMENT_FLOOR_STORE;
+                              getAreaData(context, area_id, segment_id);
+                            }
+                          },
+                          child: requirementText("help ?")),
                     ],
                   ),
                 ],
@@ -1127,7 +1135,14 @@ class _FloorStoreState extends State<FloorStore> {
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      requirementText("help ?"),
+                      InkWell(
+                          onTap: () {
+                            if (poojaRoomRequired == true) {
+                              segment_id = SEGMENT_POOJA_ROOM;
+                              getAreaData(context, area_id, segment_id);
+                            }
+                          },
+                          child: requirementText("help ?")),
                     ],
                   ),
                   SizedBox(
@@ -1495,7 +1510,7 @@ class _FloorStoreState extends State<FloorStore> {
                       }
                     else
                       {
-                       status = flooreStorePost(
+                        status = flooreStorePost(
                           project_id!,
                           floorStoreInt,
                           floorStoreLengthController,
@@ -1538,5 +1553,5 @@ class _FloorStoreState extends State<FloorStore> {
               ],
             ),
           );
-    }
+  }
 }
