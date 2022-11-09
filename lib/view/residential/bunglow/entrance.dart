@@ -559,6 +559,7 @@ class _EntranceState extends State<Entrance> {
                                   style: const TextStyle(
                                     color: Colors.black,
                                   ),
+
                                 ),
                               );
                             }).toList(),
