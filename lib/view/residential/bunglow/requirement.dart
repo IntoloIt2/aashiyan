@@ -504,8 +504,9 @@ class _RequirementState extends State<Requirement> {
     // var type_temp = residentProvider.getProjectType();
     // type_temp.then(
     //   (value) {
-    //     projectTypeId = value ; },);
-
+    //     projectTypeId = value;
+    //   },
+    // );
     getCities();
     getState();
     apiRegularCalcuation();
