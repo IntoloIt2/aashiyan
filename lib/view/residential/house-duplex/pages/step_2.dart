@@ -41,17 +41,19 @@ class _Step_2State extends State<Step_2> {
   var project_id;
 
   void floor() {
-    setState(() {
-      if (selectedFloor == ENT_FIRST_FLOOR) {
-        floorInt = FIRST_FLOOR;
-      }
-      if (selectedFloor == ENT_SECOND_FLOOR) {
-        floorInt = SECOND_FLOOR;
-      }
-      if (selectedFloor == ENT_THIRD_FLOOR) {
-        floorInt = THIRD_FLOOR;
-      }
-    });
+    setState(
+      () {
+        if (selectedFloor == ENT_FIRST_FLOOR) {
+          floorInt = FIRST_FLOOR;
+        }
+        if (selectedFloor == ENT_SECOND_FLOOR) {
+          floorInt = SECOND_FLOOR;
+        }
+        if (selectedFloor == ENT_THIRD_FLOOR) {
+          floorInt = THIRD_FLOOR;
+        }
+      },
+    );
   }
 
   bool? adjascent = false;
@@ -170,14 +172,6 @@ class _Step_2State extends State<Step_2> {
     getUserId();
 
     final store = Provider.of<PageNavProvider>(context, listen: false);
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   if (store.getId() == 0) {
-    //     printData = {"project": null};
-    //   } else {
-    //     getData(store.getId());
-    //   }
-    // });
 
     Future.delayed(Duration(seconds: 1), () {
       setState(() {

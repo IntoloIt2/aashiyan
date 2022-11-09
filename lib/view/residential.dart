@@ -15,6 +15,7 @@ import '../components/app_bar.dart';
 import '../components/project_category.dart';
 import '../controller/api_services.dart';
 import '../controller/auth_controller.dart';
+import '../utils/helpers.dart';
 
 class Residential extends StatefulWidget {
   const Residential({Key? key}) : super(key: key);
@@ -49,10 +50,11 @@ class _ResidentialState extends State<Residential> {
                   InkWell(
                     onTap: () async {
                       Navigator.of(context).pushNamed(Bunglow.namedRoute);
-                      final SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      var bunglow_const =
-                          prefs.setInt('projectTypeId', BUNGALOW);
+                      // final SharedPreferences prefs =
+                      //     await SharedPreferences.getInstance();
+                      // var bunglow_const =
+                      //     prefs.setInt('projectTypeId', BUNGALOW);
+                      setProjectTypeId(BUNGALOW);
                       // var getProjectTypeId = await provider.getProjectType(bunglow_const);
                     },
                     child: Stack(
@@ -89,10 +91,11 @@ class _ResidentialState extends State<Residential> {
                       Navigator.of(context).pushNamed(HouseDuplex.namedRoute);
                       // var getProjectGroupId =
                       //     await provider.getProjectGroupData();
-                      final SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      var flat_house_const =
-                          prefs.setInt('projectTypeId', FLAT_HOUSE);
+                      // final SharedPreferences prefs =
+                      //     await SharedPreferences.getInstance();
+                      // var flat_house_const =
+                      //     prefs.setInt('projectHouseTypeId', FLAT_HOUSE);
+                          setProjectTypeIdHouse(FLAT_HOUSE);
                       // var getProjectTypeId = await provider.getProjectType();
                     },
                     child: Stack(

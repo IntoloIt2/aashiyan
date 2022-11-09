@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:aashiyan/components/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import '../../../../components/forms.dart';
@@ -23,7 +24,6 @@ class Step_7 extends StatefulWidget {
 List ar_design = [];
 List str_design = [];
 List mep_design = [];
-
 List int_design = [];
 
 // ignore: prefer_typing_uninitialized_variables
@@ -38,18 +38,16 @@ class _Step_7State extends State<Step_7> {
   }
 
   bool isloading = false;
-
   Future fetchData() async {
-    var response =
-        await http.get(Uri.parse('https://sdplweb.com/sdpl/api/get-design'));
+    var response = await http.get(Uri.parse('${dotenv.env['APP_URL']}get-design'));
     final jsonResponse = jsonDecode(response.body);
 
     setState(() {
       getData = jsonResponse;
     });
   }
-
-  int calculation() {
+  int calculation()
+  {
     if (SuperRequirment == true) {
       projectCost = totalBuild * superService;
       if (ArcDesStatus == true) {

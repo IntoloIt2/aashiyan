@@ -74,6 +74,7 @@ class _FloorStoreState extends State<FloorStore> {
     "U shaped",
     "L saped",
     "Semi circular"
+    
   ];
 
   String storeFloor = "";

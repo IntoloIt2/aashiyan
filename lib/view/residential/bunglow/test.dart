@@ -3807,29 +3807,29 @@ class _BuiltUpState extends State<BuiltUp> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
-                                  height: 35,
-                                  decoration: BoxDecoration(
-                                      color: buttonColor,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: TextButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          payDesFees = payDesFees;
-                                          setInteriorDesignCount(
-                                              int_design_count);
-                                        });
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    Payment()));
-                                      },
-                                      child: const Text(
-                                        'CONTINUE TO PAY',
-                                        style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 255, 255, 255)),
-                                      ))),
+                                height: 35,
+                                decoration: BoxDecoration(
+                                    color: buttonColor,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      payDesFees = payDesFees;
+                                      setInteriorDesignCount(int_design_count);
+                                    });
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Payment()));
+                                  },
+                                  child: const Text(
+                                    'CONTINUE TO PAY',
+                                    style: TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 255, 255, 255)),
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),
