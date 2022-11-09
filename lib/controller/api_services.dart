@@ -722,7 +722,6 @@ Future<dynamic> flooreStorePost(
     body: jsonEncode(projectData),
   );
 
-
   print(response.body);
   var resp = jsonDecode(response.body);
   var temp = resp["status"];
@@ -771,7 +770,6 @@ Future<dynamic> flooreStorePut(
   // print(projectId);
   // print('${dotenv.env['APP_URL']}update-bungalow-floor-store/$projectId}');
   final response = await http.post(
-
     Uri.parse('${dotenv.env['APP_URL']}update-bungalow-floor-store/$projectId'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
@@ -780,7 +778,6 @@ Future<dynamic> flooreStorePut(
   );
   var resp = jsonDecode(response.body);
   return resp['status'];
-
 }
 
 Future<dynamic> BedRoomPost(
@@ -968,7 +965,6 @@ Future<dynamic> BasementPost(
   };
 
   final response = await http.post(
-
     // Uri.parse(baseUrlLocal + "project"),
     Uri.parse('${dotenv.env['APP_URL']}bungalow-basement'),
     headers: <String, String>{
@@ -1118,7 +1114,6 @@ Future<dynamic> BasementPut(
   // print("postdata===");
   print(jsonEncode(projectData));
   final response = await http.post(
-
     // Uri.parse(baseUrlLocal + "project"),
     Uri.parse('${dotenv.env['APP_URL']}update-bungalow-basement/$projectId'),
     headers: <String, String>{
@@ -1574,4 +1569,14 @@ Future<dynamic> BasementHousePut(
   print(response.body);
   var temp = jsonDecode(response.body);
   return temp['status'];
+}
+
+Future<dynamic> getAreaSuggest(area_id, segment_id) async {
+  var response = await http.get(Uri.parse(
+      'https://sdplweb.com/sdpl/api/area-suggest/$area_id/$segment_id'));
+  final jsonResponse = jsonDecode(response.body);
+  final finalart = jsonResponse['areas'] as List;
+  print(finalart);
+
+  return finalart;
 }

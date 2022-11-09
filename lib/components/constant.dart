@@ -92,7 +92,6 @@ const OPENING_TO_LIVING_HALL = "Opening toward hall/ Lobby";
 
 //BED ROOM
 
-
 const STR_ZERO = "0";
 const STR_ONE = "1";
 const STR_TWO = "2";
@@ -119,6 +118,8 @@ const PART_B_TOILET_DADO_DETAILS = "9";
 const PART_B_EACH_SPACE_WALL_DETAILS = "10";
 const PART_B_MATERIAL_SELECTION = "11";
 
+const FT = 1;
+const MTR = 2;
 
 
 const INT_ZERO = 0;
@@ -204,9 +205,6 @@ const COMMERCIAL_SHOWROOM_OFFICE = 7;
 const HOTEL = 4;
 const BUNGALOW = 8;
 const FLAT_HOUSE = 13;
-
-const FT = 1;
-const MTR = 2;
 
 const M_TO_F = 3.28084;
 const F_TO_M = 0.3048;
