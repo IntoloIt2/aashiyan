@@ -45,9 +45,10 @@ var loginres;
 
 Future<void> registeration(String Email, String Password, context) async {
   var map = new Map<String, dynamic>();
+  print("object");
   map['email'] = Email;
   map['password'] = Password;
-  // print(map);
+  print(map);
 
   final response = await http.post(
     Uri.parse("${dotenv.env['APP_URL']}registration"),
@@ -60,6 +61,8 @@ Future<void> registeration(String Email, String Password, context) async {
   );
 
   res = jsonDecode(response.body);
+  print('res===');
+  print(res);
 
   if (res['status'] == 200) {
     user_id = res['user_id'];
@@ -407,7 +410,7 @@ void getAreaData(BuildContext context, area_id, segment_id) async {
               },
             ),
             content: Container(
-              // padding: EdgeInsets.only(top: 5),
+              // padding: EdgeInsets.only( top: 5),
               height: MediaQuery.of(context).size.height * 0.2,
               width: MediaQuery.of(context).size.width * 0.1,
               child: Column(
