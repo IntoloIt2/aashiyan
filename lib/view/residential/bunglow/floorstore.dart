@@ -167,7 +167,7 @@ class _FloorStoreState extends State<FloorStore> {
 
             FloorStoreDetail2 =
                 printData["bungalow_floor_store"]["floor_store_req"] == 0
-                ? true
+                    ? true
                     : FloorStoreDetail2;
             selectedFloor =
                 printData['bungalow_floor_store']['store_floor'] != null
@@ -1390,7 +1390,7 @@ class _FloorStoreState extends State<FloorStore> {
                   height: height * 0.01,
                 ),
                 GestureDetector(
-                  onTap: () => {
+                  onTap: () async {
                     setState(
                       () {
                         if (FloorStoreDetail1 == true) {
@@ -1464,60 +1464,53 @@ class _FloorStoreState extends State<FloorStore> {
                           openingToLiHa = '';
                         }
                       },
-                    ),
-                    print("project_id"),
-                    print(project_id),
-                    if (pageId != null)
-                      {
-                        // print("updating a data "),
-                        status = flooreStorePut(
-                          project_id!,
-                          floorStoreInt,
-                          floorStoreLengthController,
-                          floorStoreWidthController,
-                          storeFloor,
-                          selectedStair,
-                          liftRequirement,
-                          liftSpecialRequirementController,
-                          passengerCapacity,
-                          poojaRoomReq,
-                          poojaLengthController,
-                          poojaWidthController,
-                          poojaRoomLocation,
-                          selectedPoojaPlace,
-                          openingToLiHa,
-                        ),
-                        if (status == SUCCESS)
-                          {
-                            showToast('Pantry Requirement submitted !',
-                                Colors.lightGreen, ToastGravity.TOP)
-                          }
+                    );
+                    if (pageId != null) {
+                      // print("updating a data "),
+                      status = await flooreStorePut(
+                        project_id!,
+                        floorStoreInt,
+                        floorStoreLengthController,
+                        floorStoreWidthController,
+                        storeFloor,
+                        selectedStair,
+                        liftRequirement,
+                        liftSpecialRequirementController,
+                        passengerCapacity,
+                        poojaRoomReq,
+                        poojaLengthController,
+                        poojaWidthController,
+                        poojaRoomLocation,
+                        selectedPoojaPlace,
+                        openingToLiHa,
+                      );
+                      if (status == SUCCESS) {
+                        showToast('FloorStore Requirement updated !',
+                            Colors.lightGreen, ToastGravity.TOP);
                       }
-                    else
-                      {
-                       status = flooreStorePost(
-                          project_id!,
-                          floorStoreInt,
-                          floorStoreLengthController,
-                          floorStoreWidthController,
-                          storeFloor,
-                          selectedStair,
-                          liftRequirement,
-                          liftSpecialRequirementController,
-                          passengerCapacity,
-                          poojaRoomReq,
-                          poojaLengthController,
-                          poojaWidthController,
-                          poojaRoomLocation,
-                          selectedPoojaPlace,
-                          openingToLiHa,
-                        ),
-                        if (status == SUCCESS)
-                          {
-                            showToast('Pantry Requirement submitted !',
-                                Colors.lightGreen, ToastGravity.TOP)
-                          }
+                    } else {
+                      status = await flooreStorePost(
+                        project_id!,
+                        floorStoreInt,
+                        floorStoreLengthController,
+                        floorStoreWidthController,
+                        storeFloor,
+                        selectedStair,
+                        liftRequirement,
+                        liftSpecialRequirementController,
+                        passengerCapacity,
+                        poojaRoomReq,
+                        poojaLengthController,
+                        poojaWidthController,
+                        poojaRoomLocation,
+                        selectedPoojaPlace,
+                        openingToLiHa,
+                      );
+                      if (status == SUCCESS) {
+                        showToast('FloorStore Requirement submitted !',
+                            Colors.lightGreen, ToastGravity.TOP);
                       }
+                    }
                   },
                   child: Align(
                     alignment: Alignment.center,
@@ -1538,5 +1531,5 @@ class _FloorStoreState extends State<FloorStore> {
               ],
             ),
           );
-    }
+  }
 }
