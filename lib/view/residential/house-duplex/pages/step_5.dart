@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/view/residential/bunglow/basement.dart';
+import 'package:aashiyan/view/residential/bunglow/entrance.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -14,6 +15,7 @@ import 'package:http/http.dart' as http;
 import '../../../../components/forms.dart';
 import '../../../../const.dart';
 import '../../../../controller/api_services.dart';
+import '../../../../controller/auth_controller.dart';
 import '../../../../model/bedtype.dart';
 
 class Step_6 extends StatefulWidget {
@@ -1416,7 +1418,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -1583,7 +1591,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -1839,7 +1853,13 @@ class _Step_6State extends State<Step_6> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText("help"),
+                                    InkWell(
+                                        onTap: () {
+                                          segment_id = SEGMENT_DRESSINGROOM;
+                                          getDuplexAreaData(
+                                              context, area_id, segment_id);
+                                        },
+                                        child: requirementText("help")),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -2273,7 +2293,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -2440,7 +2466,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -2697,7 +2729,13 @@ class _Step_6State extends State<Step_6> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText("help"),
+                                    InkWell(
+                                        onTap: () {
+                                          segment_id = SEGMENT_DRESSINGROOM;
+                                          getDuplexAreaData(
+                                              context, area_id, segment_id);
+                                        },
+                                        child: requirementText("help")),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -3142,7 +3180,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -3310,7 +3354,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -3573,7 +3623,13 @@ class _Step_6State extends State<Step_6> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText("help"),
+                                    InkWell(
+                                        onTap: () {
+                                          segment_id = SEGMENT_DRESSINGROOM;
+                                          getDuplexAreaData(
+                                              context, area_id, segment_id);
+                                        },
+                                        child: requirementText("help")),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -4017,7 +4073,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -4184,7 +4246,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -4452,8 +4520,15 @@ class _Step_6State extends State<Step_6> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText(
-                                      "help",
+                                    InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_DRESSINGROOM;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText(
+                                        "help",
+                                      ),
                                     ),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
@@ -4893,7 +4968,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -5065,7 +5146,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -5330,8 +5417,15 @@ class _Step_6State extends State<Step_6> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText(
-                                      "help",
+                                    InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_DRESSINGROOM;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText(
+                                        "help",
+                                      ),
                                     ),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
@@ -5782,7 +5876,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -5959,7 +6059,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -6227,7 +6333,13 @@ class _Step_6State extends State<Step_6> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText("help"),
+                                    InkWell(
+                                        onTap: () {
+                                          segment_id = SEGMENT_DRESSINGROOM;
+                                          getDuplexAreaData(
+                                              context, area_id, segment_id);
+                                        },
+                                        child: requirementText("help")),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -6666,7 +6778,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -6836,7 +6954,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -7104,7 +7228,13 @@ class _Step_6State extends State<Step_6> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText("help"),
+                                    InkWell(
+                                        onTap: () {
+                                          segment_id = SEGMENT_DRESSINGROOM;
+                                          getDuplexAreaData(
+                                              context, area_id, segment_id);
+                                        },
+                                        child: requirementText("help")),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -7557,7 +7687,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                     padding: const EdgeInsets.all(5),
                                     constraints: const BoxConstraints(),
@@ -7727,7 +7863,13 @@ class _Step_6State extends State<Step_6> {
                               ),
                               Row(
                                 children: [
-                                  requirementText("help"),
+                                  InkWell(
+                                      onTap: () {
+                                        segment_id = SEGMENT_BEDROOM_TOILET;
+                                        getDuplexAreaData(
+                                            context, area_id, segment_id);
+                                      },
+                                      child: requirementText("help")),
                                   IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),
@@ -7995,7 +8137,13 @@ class _Step_6State extends State<Step_6> {
                                 ),
                                 Row(
                                   children: [
-                                    requirementText("help"),
+                                    InkWell(
+                                        onTap: () {
+                                          segment_id = SEGMENT_DRESSINGROOM;
+                                          getDuplexAreaData(
+                                              context, area_id, segment_id);
+                                        },
+                                        child: requirementText("help")),
                                     IconButton(
                                       padding: const EdgeInsets.all(5),
                                       constraints: const BoxConstraints(),

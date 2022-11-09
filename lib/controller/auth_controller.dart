@@ -458,7 +458,7 @@ void getDuplexAreaData(BuildContext context, area_id, segment_id) async {
   print("$area_id++++");
   print("$segment_id****");
 
-  // data = await getAreaSuggest(area_id, segment_id);
+  data = await getAreaSuggest(area_id, segment_id);
   showDialog(
       context: (context),
       builder: (builder) => AlertDialog(
