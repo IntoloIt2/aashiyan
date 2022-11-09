@@ -123,17 +123,17 @@ class _RequirementState extends State<Requirement> {
     lengthText = lengthController.text;
     widthText = widthController.text;
     finalString = plotValue.text;
-    print('plotLenght======');
-    print(plotLenght);
+    // print('plotLenght======');
+    // print(plotLenght);
 
-    print('lengthText-----');
-    print(lengthText);
+    // print('lengthText-----');
+    // print(lengthText);
     if (lengthText != '' && widthText != '') {
       calculation =
           (num.parse(lengthText.toString()) * num.parse(widthText.toString()))
               .toStringAsFixed(2);
-      print('calculation--');
-      print(calculation);
+      // print('calculation--');
+      // print(calculation);
       // (num.parse(plotLenght.toString()) * num.parse(plotWidth.toString()))
       //     .toString();
       // .toString();
@@ -141,8 +141,8 @@ class _RequirementState extends State<Requirement> {
     }
 
     plotValue.text = calculation;
-    print('plotValue.text------');
-    print(calculation);
+    // print('plotValue.text------');
+    // print(calculation);
     return calculation;
   }
 
@@ -284,7 +284,7 @@ class _RequirementState extends State<Requirement> {
                 ? printData["project"]["state_name"].toString()
                 : "";
             lengthController.text = printData["project"]["plot_length"] != null
-                ? printData["project"]["plot_length"]
+                ? printData["project"]["plot_length"].toString()
                 : "";
             widthController.text = printData["project"]["plot_width"] != null
                 ? printData["project"]["plot_width"].toString()
@@ -413,16 +413,6 @@ class _RequirementState extends State<Requirement> {
   String? plotType;
 
   @override
-  void dispose() {
-    // print("dispose");
-    isMount = false;
-    if (lengthController != null) lengthController.dispose();
-    if (widthController != null) widthController.dispose();
-
-    super.dispose();
-  }
-
-  @override
   void initState() {
     super.initState();
 
@@ -434,9 +424,9 @@ class _RequirementState extends State<Requirement> {
     getCities();
     getState();
     apiRegularCalcuation();
-    // if (!mounted) {
-    //   return;
-    // }
+    if (!isMount) {
+      return;
+    }
     if (isMount) {
       plotValue.addListener(
         () => setState(
@@ -452,15 +442,29 @@ class _RequirementState extends State<Requirement> {
                         .toStringAsFixed(2);
               }
               if (plotType == STR_TWO) {
-                plotValue.text = (printData["project"]["plot_length"] *
-                    printData["project"]["plot_width"] ~/
-                    2);
+                // plotValue.text = (printData["project"]["plot_length"] *
+                //     printData["project"]["plot_width"] ~/
+                //     2);
+                plotValue.text =
+                    (num.parse(printData["project"]["plot_length"]) ~/
+                            num.parse(printData["project"]["plot_width"]))
+                        .toStringAsFixed(2);
               }
             }
           },
         ),
       );
     }
+  }
+
+  @override
+  void dispose() {
+    // print("dispose");
+    isMount = false;
+    if (lengthController != null) lengthController.dispose();
+    if (widthController != null) widthController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -899,7 +903,8 @@ class _RequirementState extends State<Requirement> {
                               if (size == FEET) {
                                 double one =
                                     double.parse(lengthController.text);
-
+                                print('one---');
+                                print(one);
                                 if (lengthFeetbool ||
                                     printData["project"]["plot_length"] !=
                                         null) {
@@ -925,11 +930,11 @@ class _RequirementState extends State<Requirement> {
                                   totalCalculated();
                                 }
 
-                                print('if widthController---');
+                                // print('if widthController---');
                                 // print(widthController.text);
                               } else {
-                                double two = double.parse(
-                                    lengthController.text.toString());
+                                double two =
+                                    double.parse(lengthController.text);
                                 print('two--');
                                 print(two);
                                 if (lengthMeterbool ||
@@ -937,7 +942,7 @@ class _RequirementState extends State<Requirement> {
                                         null) {
                                   lengthController.text =
                                       (two ~/ M_TO_F).toStringAsFixed(2);
-                                  print('lengthController.text===');
+                                  // print('lengthController.text===');
                                   // print(lengthController.text);
                                   // (two ~/ M_TO_F).toString();
                                   printData["project"]["plot_length"] = null;
@@ -1077,13 +1082,13 @@ class _RequirementState extends State<Requirement> {
                           // key: Key(lengthController.text),
                           // keyboardType: TextInputType.number,
                           onChanged: (val) {
-                            // print('lengthController---');
-                            // print(lengthController.text);
+                            print('lengthController---');
+                            print(lengthController.text);
                             setState(() {
                               if (lengthController.text != '') {
                                 plotType = '';
-                                plotLenght = double.parse(
-                                    lengthController.text.toString());
+                                plotLenght =
+                                    double.parse(lengthController.text);
                                 // plotLenght = double.parse(val.toString());
                                 lengthFeetbool = true;
                                 lengthMeterbool = true;
@@ -1096,7 +1101,7 @@ class _RequirementState extends State<Requirement> {
                                       lengthController.text;
                                 }
                               } else {
-                                plotLenght = INT_ZERO.toDouble();
+                                plotLenght = double.parse(INT_ZERO.toString());
                                 plotValue.text = STR_ZERO;
                                 lengthController.text = '';
                                 // lengthController.text = STR_ZERO;
@@ -2266,7 +2271,7 @@ class _RequirementState extends State<Requirement> {
                         }
                         // if (otherSouth == true) {
                         //   isSouth = "1";
-                        // }
+                        //  }
                         if (notReqired == true) {
                           notReqiredInt = INT_ONE;
                         }
@@ -2275,9 +2280,9 @@ class _RequirementState extends State<Requirement> {
                     // print("upadte is running");
                     // print(project_id);
                     var status;
-                    print(selectedLevelInt);
+                    // print(selectedLevelInt);
                     if (pageId != null) {
-                      var status = await provider.requirementUpadate(
+                      var status = await provider.requirementUpdate(
                         project_id,
                         user_id,
                         projectGroupId,
@@ -2312,7 +2317,7 @@ class _RequirementState extends State<Requirement> {
                         levelController,
                         notReqiredInt,
                       );
-                      if (status == SUCCESS) {
+                      if(status == SUCCESS) {
                         showToast('Project Requirement Updated !',
                             Colors.lightGreen, ToastGravity.TOP);
                       }

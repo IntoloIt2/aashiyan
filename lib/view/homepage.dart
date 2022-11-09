@@ -215,12 +215,11 @@ class _HomePageState extends State<HomePage> {
                                                 width: width * 0.45,
                                                 child: Image.network(
                                                   imageUrl +
-                                                      homeRecentList[i]
-                                                          ["img_path"],
+                                                      homeRecentList[i]["img_path"],
                                                   fit: BoxFit.fill,
                                                 ),
-                                              );
-                                            },
+                                              ); 
+                                          },
                                             options: CarouselOptions(
                                               autoPlay: true,
                                               enableInfiniteScroll: true,

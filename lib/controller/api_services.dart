@@ -1392,3 +1392,186 @@ Future<dynamic> livingHallDuplexPut(
 
   return temp['status'];
 }
+
+Future<dynamic> flooreStoreHousePost(
+    int i,
+    String selectedStair,
+    int poojaRoomReq,
+    String poojaLengthController,
+    String poojaWidthController,
+    int poojaRoomLocation,
+    String selectedPoojaPlace,
+    String openingToLiHa) async {
+  var projectData = {
+    "project_id": i,
+    "dimension": dimenInt,
+    "stair_case": selectedStair,
+    "stair_case_image": "",
+    "pooja_room_req": poojaRoomReq,
+    "pooja_room_length": poojaLengthController,
+    "pooja_room_width": poojaWidthController,
+    "pooja_room_floor": poojaRoomLocation,
+    "pooja_room_type": selectedPoojaPlace,
+    "opening_to_li_ha": openingToLiHa,
+  };
+  print(projectData);
+  final response = await http.post(
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse('${dotenv.env['APP_URL']}flat-house-floor-store'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+
+  print(response.body);
+  var resp = jsonDecode(response.body);
+  var temp = resp["status"];
+  return temp;
+}
+
+Future<dynamic> flooreStoreHousePut(
+    int i,
+    String selectedStair,
+    int poojaRoomReq,
+    String poojaLengthController,
+    String poojaWidthController,
+    int poojaRoomLocation,
+    String selectedPoojaPlace,
+    String openingToLiHa) async {
+  var projectData = {
+    "dimension": dimenInt,
+    "stair_case": selectedStair,
+    "stair_case_image": "",
+    "pooja_room_req": poojaRoomReq,
+    "pooja_room_length": poojaLengthController,
+    "pooja_room_width": poojaWidthController,
+    "pooja_room_floor": poojaRoomLocation,
+    "pooja_room_type": selectedPoojaPlace,
+    "opening_to_li_ha": openingToLiHa,
+  };
+
+  print(projectData);
+  final response = await http.post(
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse('${dotenv.env['APP_URL']}update-flat-house-floor-store/$i'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+
+  print(response.body);
+  var resp = jsonDecode(response.body);
+  var temp = resp["status"];
+  return temp;
+}
+
+Future<dynamic> BasementHousePost(
+  int project_id,
+  int basementReqInt,
+  String slectedBasement,
+  int stilitReqInt,
+  String slectedstilt,
+  int officeReqInt,
+  int officeLengthController,
+  int officeWidthController,
+  String selectedOfficeLocation,
+  List<String> otherFacilities,
+  String officeSpecificReqController,
+  int additionalReqInt,
+  int additionalParkingLength,
+  int additionalParkingWidth,
+  int additionalCarsController,
+  String selectedParkingLocation,
+  String sepratedShadeController,
+  String additionalParkingSpecificController,
+) async {
+  var projectData = {
+    "project_id": project_id,
+    "dimension": dimenInt,
+    "basement_req": basementReqInt,
+    "basement_type": slectedBasement,
+    "stilt_req": stilitReqInt,
+    "stilt_type": slectedstilt,
+    "office_req": officeReqInt,
+    "office_length": officeLengthController,
+    "office_width": officeWidthController,
+    "office_location": selectedOfficeLocation,
+    "office_facility": otherFacilities,
+    "office_specific_req": officeSpecificReqController,
+    "parking_garage_req": additionalReqInt,
+    "parking_garage_length": additionalParkingLength,
+    "parking_garage_width": additionalParkingWidth,
+    "no_of_cars": additionalCarsController,
+    "parking_garage_location": selectedParkingLocation,
+    "saperate_shade": sepratedShadeController,
+    "parking_garage_specific_req": additionalParkingSpecificController,
+  };
+  print(jsonEncode(projectData));
+  final response = await http.post(
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse('${dotenv.env['APP_URL']}flat-house-basement'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+  print(response.body);
+  var temp = jsonDecode(response.body);
+  return temp['status'];
+}
+
+Future<dynamic> BasementHousePut(
+  int project_id,
+  int basementReqInt,
+  String slectedBasement,
+  int stilitReqInt,
+  String slectedstilt,
+  int officeReqInt,
+  int officeLengthController,
+  int officeWidthController,
+  String selectedOfficeLocation,
+  List<String> otherFacilities,
+  String officeSpecificReqController,
+  int additionalReqInt,
+  int additionalParkingLength,
+  int additionalParkingWidth,
+  int additionalCarsController,
+  String selectedParkingLocation,
+  String sepratedShadeController,
+  String additionalParkingSpecificController,
+) async {
+  var projectData = {
+    "dimension": dimenInt,
+    "basement_req": basementReqInt,
+    "basement_type": slectedBasement,
+    "stilt_req": stilitReqInt,
+    "stilt_type": slectedstilt,
+    "office_req": officeReqInt,
+    "office_length": officeLengthController,
+    "office_width": officeWidthController,
+    "office_location": selectedOfficeLocation,
+    "office_facility": otherFacilities,
+    "office_specific_req": officeSpecificReqController,
+    "parking_garage_req": additionalReqInt,
+    "parking_garage_length": additionalParkingLength,
+    "parking_garage_width": additionalParkingWidth,
+    "no_of_cars": additionalCarsController,
+    "parking_garage_location": selectedParkingLocation,
+    "saperate_shade": sepratedShadeController,
+    "parking_garage_specific_req": additionalParkingSpecificController,
+  };
+  print(jsonEncode(projectData));
+  final response = await http.post(
+    // Uri.parse(baseUrlLocal + "project"),
+    Uri.parse('${dotenv.env['APP_URL']}update-flat-house-basement/$project_id'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(projectData),
+  );
+  print(response.body);
+  var temp = jsonDecode(response.body);
+  return temp['status'];
+}
