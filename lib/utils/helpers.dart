@@ -9,6 +9,11 @@ Future<dynamic> setProjectId(id) async {
   prefs.remove('projectId');
   var temp = await prefs.setInt('projectId', id);
 }
+Future<dynamic> setProjectHouseId(id) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.remove('projectHouseId');
+  var temp = await prefs.setInt('projectHouseId', id);
+}
 
 Future<dynamic> setFloorId(id) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();

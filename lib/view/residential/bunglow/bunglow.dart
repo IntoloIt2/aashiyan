@@ -11,7 +11,6 @@ import 'package:aashiyan/controller/auth_controller.dart';
 
 import 'package:aashiyan/view/residential/bunglow/bungalow_gallery.dart';
 import 'package:aashiyan/view/residential/bunglow/preExisting.dart';
-import 'package:aashiyan/view/residential/house-duplex/pages/pageNav.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +19,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../components/app_bar.dart';
 import '../../../controller/api_services.dart';
 import '../../../utils/helpers.dart';

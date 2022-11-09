@@ -50,6 +50,8 @@ class _PreExistingState extends State<PreExisting> {
     final jsonResponse = jsonDecode(response.body);
     print('jsonResponse==');
     print(jsonResponse);
+    print('userId---');
+    print(userId);
     setState(() {
       projects = jsonResponse['projects'];
     });
@@ -75,10 +77,14 @@ class _PreExistingState extends State<PreExisting> {
                           for (var i = 0; i < projects.length; i++)
                             InkWell(
                               onTap: () {
-                                setProjectId(projects[i]['id']);
-                                projects[i]['project_type_id'] == BUNGALOW
-                                    ? Get.to(() => const StepPages())
-                                    : Get.to(() => const PageNav());
+                                if (projects[i]['project_type_id'] ==
+                                    BUNGALOW) {
+                                  setProjectId(projects[i]["id"]);
+                                  Get.to(() => const StepPages());
+                                } else {
+                                  setProjectHouseId(projects[i]["id"]);
+                                  Get.to(() => const PageNav());
+                                }
                               },
                               child: Card(
                                 color: lightColor,
@@ -131,7 +137,8 @@ class _PreExistingState extends State<PreExisting> {
                               ),
                             ),
                         ],
-                      ) : projects == null
+                      )
+                    : projects == null
                         ? CircularProgressIndicator()
                         : Column(
                             children: const [

@@ -8483,7 +8483,7 @@ class _Step_6State extends State<Step_6> {
               _value["project_id"] = project_id;
 
               List<Bedtypes> bedData = [
-                if (masterBedroom == true)
+                if(masterBedroom == true)
                   Bedtypes(
                     bedroomLength: masterLength,
                     bedRoomFloor: masterLocation,
