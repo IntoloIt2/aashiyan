@@ -1,6 +1,12 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:aashiyan/components/forms.dart';
+import 'package:aashiyan/view/profile.dart';
+import './controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 
-BottomNavigationBar customBottomNav() {
+BottomNavigationBar customBottomNav(BuildContext context) {
+  // final store = Provider.of<Auth_Provider>(context, listen: true);
   return BottomNavigationBar(
     items: <BottomNavigationBarItem>[
       BottomNavigationBarItem(
@@ -28,9 +34,29 @@ BottomNavigationBar customBottomNav() {
           ),
           label: ""),
       BottomNavigationBarItem(
-          icon: Icon(
-            Icons.person,
-            color: iconColor,
+          icon: IconButton(
+            icon: Icon(
+              Icons.person,
+              color: iconColor,
+            ),
+            onPressed: () {
+              isLogged
+                  // ? const Profile()
+                  ? Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Profile(),
+                      ))
+                  : showDialog(
+                      builder: (context) => loginDialog(context),
+                      context: (context));
+              // showDialog(
+              //     builder: (context) =>
+              //         isLogged ? Profile() : loginDialog(context),
+              //     context: (context));
+              // :
+              //
+            },
           ),
           label: ""),
     ],
@@ -62,6 +88,8 @@ class HexColor extends Color {
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
 
+Color buttonColor = HexColor("#0369a1");
+Color checkColor = HexColor("#48494b");
 Color textColor2 = HexColor("#735a10");
 Color textColor = HexColor("#7e7e7e");
 Color primaryColor = HexColor("#58A7CA");
@@ -69,6 +97,7 @@ Color lightColor = HexColor("#c4edf4");
 Color requirementColor = HexColor("#dfeaea");
 Color color3 = HexColor("#d5e7ea");
 Color iconColor = HexColor("#757574");
+Color expansionColor = HexColor("#E8F6F3");
 
 // SingleChildScrollView buildRow() {
 //   return SingleChildScrollView(
@@ -191,3 +220,29 @@ BottomNavigationBar buildBottomNav() {
 //     ),
 //   );
 // }
+
+Row living(var height, var width) {
+  return Row(
+    children: [
+      requirementText("Length"),
+      SizedBox(
+        width: width * 0.015,
+      ),
+      requirementTextField(height, width, 0.04, 0.15, "length"),
+      valueContainer(height, width, size, 0.04, 0.05),
+      SizedBox(
+        width: width * 0.02,
+      ),
+      requirementText("Width"),
+      SizedBox(
+        width: width * 0.015,
+      ),
+      requirementTextField(height, width, 0.04, 0.15, "Width"),
+      valueContainer(height, width, size, 0.04, 0.05),
+      SizedBox(
+        width: width * 0.01,
+      ),
+      requirementText("help ?")
+    ],
+  );
+}

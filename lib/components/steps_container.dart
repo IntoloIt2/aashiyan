@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 Container stepsContainer(String text) {
@@ -18,4 +20,18 @@ Container stepsContainer(String text) {
     ),
   );
   return container;
+}
+
+Material houseStepsContainer(String text) {
+  var houseContainer = Material(
+    elevation: 2.0,
+    child: Container(
+      decoration:
+          BoxDecoration(border: Border.all(width: 1, color: Colors.grey)),
+      padding: EdgeInsets.all(5),
+      margin: EdgeInsets.all(1),
+      child: Text(text),
+    ),
+  );
+  return houseContainer;
 }

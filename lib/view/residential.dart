@@ -1,20 +1,40 @@
+// ignore_for_file: sized_box_for_whitespace, unused_local_variable, avoid_unnecessary_containers, prefer_const_constructors
+
+import 'package:aashiyan/components/constant.dart';
 import 'package:aashiyan/const.dart';
+import 'package:aashiyan/view/profile.dart';
 import 'package:aashiyan/view/residential/bunglow/bunglow.dart';
+import 'package:aashiyan/view/residential/house-duplex/houseduplex.dart';
+import 'package:aashiyan/view/residential/house-duplex/providers/residential_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/app_bar.dart';
 import '../components/project_category.dart';
 import '../controller/api_services.dart';
+import '../controller/auth_controller.dart';
+import '../utils/helpers.dart';
 
-class Residential extends StatelessWidget {
+class Residential extends StatefulWidget {
   const Residential({Key? key}) : super(key: key);
   static const namedRoute = '/residential';
 
   @override
+  State<Residential> createState() => _ResidentialState();
+}
+
+class _ResidentialState extends State<Residential> {
+  @override
   Widget build(BuildContext context) {
+    // List dialog = [
+
+    // ]
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    var provider = Provider.of<ResidentialProvider>(context, listen: true);
+    // final store = Provider.of<Auth_Provider>(context, listen: true);
     return Scaffold(
       appBar: appBar("Residential"),
       body: SingleChildScrollView(
@@ -28,8 +48,14 @@ class Residential extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
-                    onTap: () {
+                    onTap: () async {
                       Navigator.of(context).pushNamed(Bunglow.namedRoute);
+                      // final SharedPreferences prefs =
+                      //     await SharedPreferences.getInstance();
+                      // var bunglow_const =
+                      //     prefs.setInt('projectTypeId', BUNGALOW);
+                      setProjectTypeId(BUNGALOW);
+                      // var getProjectTypeId = await provider.getProjectType(bunglow_const);
                     },
                     child: Stack(
                       alignment: Alignment.center,
@@ -60,32 +86,46 @@ class Residential extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        height: height * 1,
-                        width: width * 0.5,
-                        child: Image.asset("assets/images/Screen.png"),
-                      ),
-                      Positioned(
-                        height: height * 0.32,
-                        width: width * 0.32,
-                        child: Center(
-                            child: Image.asset("assets/images/ragrawalji.jpg")),
-                      ),
-                      Positioned(
-                        bottom: height * 0.22,
-                        child: Text(
-                          "Houses/Duplex",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: height * 0.018,
-                          ),
+                  InkWell(
+                    onTap: () async {
+                      Navigator.of(context).pushNamed(HouseDuplex.namedRoute);
+                      // var getProjectGroupId =
+                      //     await provider.getProjectGroupData();
+                      // final SharedPreferences prefs =
+                      //     await SharedPreferences.getInstance();
+                      // var flat_house_const =
+                      //     prefs.setInt('projectHouseTypeId', FLAT_HOUSE);
+                          setProjectTypeIdHouse(FLAT_HOUSE);
+                      // var getProjectTypeId = await provider.getProjectType();
+                    },
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          height: height * 1,
+                          width: width * 0.5,
+                          child: Image.asset("assets/images/Screen.png"),
                         ),
-                      )
-                    ],
+                        Positioned(
+                          height: height * 0.32,
+                          width: width * 0.32,
+                          child: Center(
+                              child:
+                                  Image.asset("assets/images/ragrawalji.jpg")),
+                        ),
+                        Positioned(
+                          bottom: height * 0.22,
+                          child: Text(
+                            "Houses/Duplex",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: height * 0.018,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -212,9 +252,28 @@ class Residential extends StatelessWidget {
               ),
               label: ""),
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
-                color: iconColor,
+              icon: IconButton(
+                icon: Icon(
+                  Icons.person,
+                  color: iconColor,
+                ),
+                onPressed: () {
+                  isLogged
+                      // ? const Profile()
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Profile(),
+                          ))
+                      : showDialog(
+                          builder: (context) => loginDialog(context),
+                          context: (context));
+
+                  // showDialog(
+                  //   builder: (context) => loginDialog(context),
+                  //   context: context,
+                  // );
+                },
               ),
               label: ""),
         ],
