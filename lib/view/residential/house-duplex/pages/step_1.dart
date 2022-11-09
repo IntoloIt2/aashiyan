@@ -251,19 +251,19 @@ class _Step_1State extends State<Step_1> {
             print(pageId);
             nameController = printData["project"]['first_name'] != null
                 ? printData["project"]['first_name'].toString()
-                : '';
+                : nameController;
             lastNameController = printData["project"]["last_name"] != null
                 ? printData["project"]["last_name"].toString()
-                : "";
+                : lastNameController;
             emailController = printData["project"]["email"] != null
                 ? printData["project"]["email"].toString()
                 : emailController;
             addressController = printData["project"]["address"] != null
                 ? printData["project"]["address"].toString()
-                : "";
-            selectedState = printData["project"]["state_name"] != null
-                ? printData["project"]["state_name"].toString()
-                : selectedState;
+                : addressController;
+            // selectedState = printData["project"]["state_name"] != null
+            //     ? printData["project"]["state_name"].toString()
+            //     : selectedState;
             lengthController = printData["project"]["plot_length"] != null
                 ? printData["project"]["plot_length"].toString()
                 : "";
@@ -459,6 +459,7 @@ class _Step_1State extends State<Step_1> {
         },
       ),
     );
+
     timer = Timer.periodic(
         Duration(seconds: 1),
         (Timer t) => setState(() {

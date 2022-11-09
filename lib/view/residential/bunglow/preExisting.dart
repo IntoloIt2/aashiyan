@@ -82,7 +82,6 @@ class _PreExistingState extends State<PreExisting> {
                                   setProjectId(projects[i]["id"]);
                                   Get.to(() => const StepPages());
                                 } else {
-                                  
                                   setProjectHouseId(projects[i]["id"]);
                                   Get.to(() => const PageNav());
                                 }

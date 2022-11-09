@@ -1,5 +1,3 @@
-// ignore_for_file: library_prefixes, camel_case_types, use_key_in_widget_constructors, non_constant_identifier_names, prefer_typing_uninitialized_variables, unused_local_variable, empty_catches, body_might_complete_normally_nullable, sized_box_for_whitespace, prefer_if_null_operators, unrelated_type_equality_checks, avoid_unnecessary_containers, unnecessary_string_interpolations
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
@@ -10,10 +8,8 @@ import 'package:aashiyan/utils/helpers.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/page_nav_provider.dart';
 import 'package:aashiyan/view/residential/house-duplex/providers/residential_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gson/gson.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../const.dart';
@@ -41,11 +37,10 @@ class _RequirementState extends State<Requirement> {
   String northController = "";
   String southController = "";
   String levelController = "";
-  // String? widthController = '';
-  TextEditingController widthController = TextEditingController();
-  // String? lengthController = '';
-  TextEditingController lengthController = TextEditingController();
+  String? widthController = '';
+  String? lengthController = '';
   var project_id;
+
   var projectGroupId;
   var projectTypeId;
 
@@ -64,15 +59,7 @@ class _RequirementState extends State<Requirement> {
   bool? irregularPlotValue = false;
   bool? surveyor = false;
   bool? notReqired = true;
-
-  bool lengthFeetbool = false;
-  bool lengthMeterbool = false;
-
-  bool widthFeetbool = false;
-  bool widthMeterbool = false;
   int notReqiredInt = 0;
-
-  bool isMount = true;
 
   bool eastRoad = false;
   bool westRoad = false;
@@ -112,36 +99,27 @@ class _RequirementState extends State<Requirement> {
   // Map<String, dynamic> stateData = [];
   // List requirementDataByUserId = [];
 
-  double plotWidth = 1.0;
-  double plotLenght = 1.0;
+  int plotWidth = 0;
+  int plotLenght = 0;
   int value = 0;
   String? lengthText, widthText, finalString;
   String calculation = "";
 
   String totalCalculated() {
-    lengthText = lengthController.text;
-    widthText = widthController.text;
+    lengthText = lengthController;
+    widthText = widthController;
     finalString = plotValue.text;
-    print('plotLenght======');
-    print(plotLenght);
 
-    print('lengthText-----');
-    print(lengthText);
     if (lengthText != '' && widthText != '') {
-      calculation =
-          (num.parse(lengthText.toString()) * num.parse(widthText.toString()))
-              .toStringAsFixed(2);
-      print('calculation--');
-      print(calculation);
-      // (num.parse(plotLenght.toString()) * num.parse(plotWidth.toString()))
-      //     .toString();
-      // .toString();
-      plotValue.value = plotValue.value.copyWith(text: calculation.toString());
+      calculation = (plotLenght * plotWidth).toString();
+      plotValue.value = plotValue.value.copyWith(
+        text: calculation.toString(),
+      );
     }
 
     plotValue.text = calculation;
-    print('plotValue.text------');
-    print(calculation);
+    // print(plotValue.text);
+    // print(calculation);
     return calculation;
   }
 
@@ -156,9 +134,7 @@ class _RequirementState extends State<Requirement> {
       finalString = plotValue.text;
 
       if (lengthText != '' && widthText != '') {
-        calculation = (double.parse(plotLenght.toString()) *
-                double.parse(plotWidth.toString()))
-            .toString();
+        calculation = (plotLenght * plotWidth).toString();
         plotValue.value = plotValue.value.copyWith(
           text: calculation.toString(),
         );
@@ -167,7 +143,6 @@ class _RequirementState extends State<Requirement> {
       // print(plotValue.text);
       // print(calculation);
     }
-
     return calculation;
   }
 
@@ -250,6 +225,7 @@ class _RequirementState extends State<Requirement> {
 
   var printData;
   int? pageId;
+
   Future<void> getData(id) async {
     try {
       var response = await http.get(
@@ -259,20 +235,25 @@ class _RequirementState extends State<Requirement> {
         final jsonResponse = jsonDecode(response.body);
         setState(() {
           printData = jsonResponse;
-          if (printData != null && printData['project_id'] != null) {
-            selectedItems = printData['project']['prefix'] != null
-                ? items[int.parse(printData['project']['prefix'].toString())]
-                : selectedItems;
-            selectedItemInt = printData['project']['prefix'] != null
-                ? int.parse(printData['project']['prefix'].toString())
-                : selectedItemInt;
-            pageId = printData['project']['id'] != null
-                ? int.parse(printData['project']['id'].toString())
-                : pageId;
+          print("print printData ==");
+          print(printData);
+
+          if (printData != null) {
+            // selectedItems = printData['project']['prefix'] != null
+            //     ? items[int.parse(printData['project']['prefix'].toString())]
+            //     : selectedItems;
+            // selectedItemInt = printData['project']['prefix'] != null
+            //     ? int.parse(printData['project']['prefix'].toString())
+            //     : selectedItemInt;
+            // pageId = printData['project']['id'] != null
+            //     ? int.parse(printData['project']['id'].toString())
+            //     : pageId;
 
             nameController = printData["project"]['first_name'] != null
                 ? printData["project"]['first_name'].toString()
-                : '';
+                : nameController;
+            print("nameController");
+            print(nameController);
             lastNameController = printData["project"]["last_name"] != null
                 ? printData["project"]["last_name"].toString()
                 : "";
@@ -282,23 +263,21 @@ class _RequirementState extends State<Requirement> {
             addressController = printData["project"]["address"] != null
                 ? printData["project"]["address"].toString()
                 : "";
-            selectedState = printData["project"]["state_name"] != null
-                ? printData["project"]["state_name"].toString()
+            // selectedState = printData["project"]["state_name"] != null
+            //     ? printData["project"]["state_name"].toString()
+            //     : "";
+            lengthController = printData["project"]["plot_length"] != null
+                ? printData["project"]["plot_length"].toString()
                 : "";
-            lengthController.text = printData["project"]["plot_length"] != null
-                ? printData["project"]["plot_length"]
-                : "";
-            widthController.text = printData["project"]["plot_width"] != null
+            widthController = printData["project"]["plot_width"] != null
                 ? printData["project"]["plot_width"].toString()
                 : "";
             plotLenght = printData["project"]["plot_length"] != null
-                ? printData["project"]["plot_length"]
-                : '';
-            // : INT_ZERO;
+                ? int.parse(printData["project"]["plot_length"])
+                : INT_ZERO;
             plotWidth = printData["project"]["plot_width"] != null
-                ? printData["project"]["plot_width"]
-                : '';
-            // : INT_ZERO;
+                ? int.parse(printData["project"]["plot_width"])
+                : INT_ZERO;
             diagonal1Controller = printData["project"]["diagonal_1"] != null
                 ? printData["project"]["diagonal_1"].toString()
                 : '';
@@ -458,6 +437,8 @@ class _RequirementState extends State<Requirement> {
     project_id = prefs.getInt('projectId');
     projectTypeId = prefs.getInt('projectTypeId');
     projectGroupId = prefs.getInt('projectGroupId');
+    print("project_id == ");
+    print(project_id);
     getData(project_id);
     var decJson;
     if (userData != null) {
@@ -473,16 +454,6 @@ class _RequirementState extends State<Requirement> {
 
   String? plotType;
   late var timer;
-
-  @override
-  void dispose() {
-    // print("dispose");
-    isMount = false;
-    if (lengthController != null) lengthController.dispose();
-    if (widthController != null) widthController.dispose();
-
-    super.dispose();
-  }
 
   @override
   void initState() {
@@ -504,9 +475,8 @@ class _RequirementState extends State<Requirement> {
     // var type_temp = residentProvider.getProjectType();
     // type_temp.then(
     //   (value) {
-    //     projectTypeId = value;
-    //   },
-    // );
+    //     projectTypeId = value ; },);
+
     getCities();
     getState();
     apiRegularCalcuation();
@@ -534,10 +504,16 @@ class _RequirementState extends State<Requirement> {
       ),
     );
     timer = Timer.periodic(
-        Duration(seconds: 1),
+        const Duration(seconds: 3),
         (Timer t) => setState(() {
               isloading = true;
             }));
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -621,6 +597,11 @@ class _RequirementState extends State<Requirement> {
                         width: width * 0.25,
                         child: TextFormField(
                           // controller: nameController,
+                          // initialValue: printData != null
+                          //     ? printData['project'] != null
+                          //         ? printData["project"]["first_name"].toString()
+                          //         : nameController
+                          //     : nameController,
                           initialValue: nameController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
@@ -683,7 +664,7 @@ class _RequirementState extends State<Requirement> {
                         width: width * 0.6,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue: emailController,
+                          initialValue: emailController.toString(),
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "Email",
@@ -956,7 +937,6 @@ class _RequirementState extends State<Requirement> {
                           child: DropdownButton<String>(
                             value: size,
                             elevation: 16,
-                            onTap: () {},
                             items: sizeitems
                                 .map((it) => DropdownMenuItem<String>(
                                       value: it,
@@ -967,74 +947,7 @@ class _RequirementState extends State<Requirement> {
                                       ),
                                     ))
                                 .toList(),
-                            onChanged: (it) => setState(() {
-                              size = it!;
-                              if (size == FEET) {
-                                double one =
-                                    double.parse(lengthController.text);
-
-                                if (lengthFeetbool ||
-                                    printData["project"]["plot_length"] !=
-                                        null) {
-                                  lengthController.text =
-                                      (one * M_TO_F).toStringAsFixed(2);
-                                  // (one * M_TO_F).toString();
-                                  printData["project"]["plot_length"] = null;
-                                  lengthFeetbool = false;
-                                  lengthMeterbool = true;
-                                  totalCalculated();
-                                }
-
-                                double width_one =
-                                    double.parse(widthController.text);
-                                if (widthFeetbool ||
-                                    printData["project"]["plot_width"] !=
-                                        null) {
-                                  widthController.text =
-                                      (width_one * M_TO_F).toStringAsFixed(2);
-                                  printData["project"]["plot_width"] = null;
-                                  widthFeetbool = false;
-                                  widthMeterbool = true;
-                                  totalCalculated();
-                                }
-
-                                print('if widthController---');
-                                // print(widthController.text);
-                              } else {
-                                double two = double.parse(
-                                    lengthController.text.toString());
-                                print('two--');
-                                print(two);
-                                if (lengthMeterbool ||
-                                    printData["project"]["plot_length"] !=
-                                        null) {
-                                  lengthController.text =
-                                      (two ~/ M_TO_F).toStringAsFixed(2);
-                                  print('lengthController.text===');
-                                  // print(lengthController.text);
-                                  // (two ~/ M_TO_F).toString();
-                                  printData["project"]["plot_length"] = null;
-                                  lengthMeterbool = false;
-                                  lengthFeetbool = true;
-                                  totalCalculated();
-                                }
-
-                                double width_two =
-                                    double.parse(widthController.text);
-                                if (widthMeterbool ||
-                                    printData["project"]["plot_width"] !=
-                                        null) {
-                                  widthController.text =
-                                      (width_two ~/ M_TO_F).toStringAsFixed(2);
-                                  printData["project"]["plot_width"] = null;
-                                  widthMeterbool = false;
-                                  widthFeetbool = true;
-                                }
-                                print('else widthController---');
-                                // print(widthController.text);
-                                totalCalculated();
-                              }
-                            }),
+                            onChanged: (it) => setState(() => size = it!),
                           ),
                         ),
                       ),
@@ -1060,7 +973,8 @@ class _RequirementState extends State<Requirement> {
                         setState(() {
                           regularPlotValue = val;
                           irregularPlotValue = false;
-                          // key: Key(totalCalculated());
+                          key:
+                          Key(totalCalculated());
 
                           // if (lengthController != null && widthController != null) {
                           //   plotValue.text = (int.parse(lengthController!) *
@@ -1121,7 +1035,7 @@ class _RequirementState extends State<Requirement> {
                         width: width * 0.15,
                         child: TextFormField(
                           decoration: const InputDecoration(
-                              hintText: "length",
+                              hintText: "Lenght",
                               hintStyle: TextStyle(fontSize: 14),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
@@ -1130,23 +1044,16 @@ class _RequirementState extends State<Requirement> {
                               contentPadding: EdgeInsets.all(8)),
                           initialValue: lengthController,
                           onChanged: (val) {
-                            // print('lengthController---');
-                            // print(lengthController.text);
                             setState(() {
-                              if (lengthController.text != '') {
+                              if (val != '') {
                                 plotType = '';
-                                plotLenght = double.parse(
-                                    lengthController.text.toString());
-                                // plotLenght = double.parse(val.toString());
-                                lengthFeetbool = true;
-                                lengthMeterbool = true;
-                                // plotLenght = double.tryParse(val)!;
+                                plotLenght = int.parse(val.toString());
+                                lengthController = val;
                                 totalCalculated();
                                 if (printData != null &&
                                     printData['project']['plot_length'] !=
                                         null) {
-                                  printData['project']['plot_length'] =
-                                      lengthController.text;
+                                  printData['project']['plot_length'] = val;
                                 }
                               } else {
                                 plotLenght = 0;
@@ -1160,7 +1067,7 @@ class _RequirementState extends State<Requirement> {
                               // plotLenght = 0;
                             });
                           },
-                          // keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.number,
                         ),
                       ),
                     ),
@@ -1253,26 +1160,22 @@ class _RequirementState extends State<Requirement> {
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
                               ),
-                              contentPadding: EdgeInsets.all(2)
+                              contentPadding: EdgeInsets.all(8)
                               //fillColor: Colors.green
                               ),
                           initialValue: widthController,
                           onChanged: (val) {
                             setState(() {
-                              if (widthController.text != '') {
+                              if (val != '') {
                                 plotType = '';
-                                plotWidth = double.parse(val.toString());
-                                // plotWidth = int.parse(val.toString());
-                                // widthController.text = val;
-                                widthFeetbool = true;
-                                widthMeterbool = true;
-                                totalCalculated();
+                                plotWidth = int.parse(val.toString());
+                                widthController = val;
                                 if (printData != null &&
                                     printData['project']['plot_width'] !=
                                         null) {
-                                  printData['project']['plot_width'] =
-                                      widthController.text;
+                                  printData['project']['plot_width'] = val;
                                 }
+                                totalCalculated();
                               } else {
                                 plotWidth = 0;
                                 plotValue.text = '0';
@@ -1288,7 +1191,7 @@ class _RequirementState extends State<Requirement> {
                               }
                             });
                           },
-                          // keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.number,
                         ),
                       ),
                     ),
@@ -1313,6 +1216,7 @@ class _RequirementState extends State<Requirement> {
                           height: height * 0.04,
                           width: width * 0.2,
                           child: TextFormField(
+                            initialValue: diagonal2Controller.toString(),
                             decoration: const InputDecoration(
                                 hintText: "Diagonal 2",
                                 hintStyle: TextStyle(fontSize: 14),
@@ -1322,7 +1226,7 @@ class _RequirementState extends State<Requirement> {
                                 contentPadding: EdgeInsets.all(8)
                                 // fillColor: Colors.green
                                 ),
-                            initialValue: diagonal2Controller.toString(),
+
                             onChanged: (value) {
                               setState(() {
                                 if (value != '') {
@@ -1381,8 +1285,8 @@ class _RequirementState extends State<Requirement> {
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide.none,
                                 ),
-                                // isDense: true,
-                                contentPadding: EdgeInsets.all(2)
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(8)
                                 //fillColor: Colors.green
                                 ),
                             key: Key(diagonalCalculations()),
@@ -1443,7 +1347,7 @@ class _RequirementState extends State<Requirement> {
                                   borderSide: BorderSide.none,
                                 ),
                                 isDense: true,
-                                contentPadding: EdgeInsets.all(2)
+                                contentPadding: EdgeInsets.all(8)
                                 //fillColor: Colors.green
                                 ),
                             key: Key(totalCalculated()),
@@ -2166,8 +2070,8 @@ class _RequirementState extends State<Requirement> {
                         addressController,
                         isRegular,
                         dimenInt,
-                        lengthController.text,
-                        widthController.text,
+                        lengthController!,
+                        widthController!,
                         diagonal1Controller!,
                         diagonal2Controller!,
                         plotValue.text,
@@ -2201,8 +2105,8 @@ class _RequirementState extends State<Requirement> {
                         addressController,
                         isRegular,
                         dimenInt,
-                        lengthController.text,
-                        widthController.text,
+                        lengthController!,
+                        widthController!,
                         diagonal1Controller!,
                         diagonal2Controller!,
                         plotValue.text,
