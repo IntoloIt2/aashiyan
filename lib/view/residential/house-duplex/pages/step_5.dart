@@ -1,142 +1,8542 @@
-// ignore_for_file: camel_case_types, duplicate_ignore, unused_field, prefer_final_fields, non_constant_identifier_names, prefer_typing_uninitialized_variables, sized_box_for_whitespace, avoid_unnecessary_containers
+// ignore_for_file: unnecessary_null_comparison, prefer_typing_uninitialized_variables, non_constant_identifier_names, empty_catches, prefer_final_fields, avoid_unnecessary_containers, sized_box_for_whitespace, unused_local_variable, no_leading_underscores_for_local_identifiers
 
+import 'dart:convert';
+import 'dart:core';
+import 'package:aashiyan/components/constant.dart';
+import 'package:aashiyan/view/residential/bunglow/basement.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// ignore: camel_case_types
-class Step_5 extends StatefulWidget {
-  const Step_5({super.key});
+import 'package:http/http.dart' as http;
 
+import '../../../../components/forms.dart';
+import '../../../../const.dart';
+import '../../../../controller/api_services.dart';
+import '../../../../model/bedtype.dart';
+
+class Step_6 extends StatefulWidget {
   @override
-  State<Step_5> createState() => _Step_5State();
+  State<Step_6> createState() => _Step_6State();
 }
 
-class _Step_5State extends State<Step_5> {
-  TextEditingController personBedRoom = TextEditingController();
-  TextEditingController length = TextEditingController();
-  TextEditingController widths = TextEditingController();
-  TextEditingController dressLength = TextEditingController();
-  TextEditingController dressWidth = TextEditingController();
-  TextEditingController dressReqText = TextEditingController();
-  TextEditingController dressReq = TextEditingController();
-  TextEditingController selectedFloor = TextEditingController();
-  TextEditingController toiletLength = TextEditingController();
-  TextEditingController toiletWidth = TextEditingController();
-  TextEditingController dressFacility = TextEditingController();
-  TextEditingController toiletFacility = TextEditingController();
-  TextEditingController roomRequirement = TextEditingController();
-  TextEditingController roomOtherRequirement = TextEditingController();
+class _Step_6State extends State<Step_6> {
+  int? mi;
+  int? si;
+  int? di;
+  int? pi;
+  int? gi;
+  int? o1i;
+  int? o2i;
+  int? o3i;
 
-  final _formKey = GlobalKey<FormState>();
-  bool _customTileExpanded = false;
-  List flat_house_bedroom = [];
-  var height;
-  var width;
+  int? project_id;
+
+  Future<dynamic> getUserId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userData = prefs.getString('userData');
+    project_id = prefs.getInt('projectId');
+
+    getData(project_id);
+    var decJson;
+    if (userData != null) {
+      decJson = jsonDecode(userData);
+    }
+    user_id = decJson['data']['id'];
+    print("project_id===");
+    print(project_id);
+  }
+
+  void multiSelected(result, l1, l2) async {
+    if (result != null) {
+      setState(
+        () {
+          l1 = result;
+          l2 = result;
+        },
+      );
+    }
+  }
+
+  void multi() async {
+    final List<String> otherIt = [
+      "Walk in Cupboard",
+      "Vanity",
+      "Cupboard",
+    ];
+
+    final List<String> result = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MultiSelect(items: otherIt);
+      },
+    );
+
+    if (result != null) {
+      setState(() {
+        dressF = result;
+        masterDressFacility = result;
+      });
+    }
+  }
+
+  final lengthController = TextEditingController();
+
+  bool? requiredDres = false;
+  bool? notRequiredDres = false;
+
+  bool? masterRequiredDress = false;
+  bool? masterNotRequiredDress = false;
+
+  bool? sonRequiredDress = false;
+  bool? sonNotRequiredDress = false;
+
+  bool? daughterRequiredDress = false;
+  bool? daughterNotRequiredDress = false;
+
+  bool? parentsRequiredDress = false;
+  bool? parentsNotRequiredDress = false;
+
+  bool? guestRequiredDress = false;
+  bool? guestNotRequiredDress = false;
+
+  bool? other1RequiredDress = false;
+  bool? other1NotRequiredDress = false;
+
+  bool? other2RequiredDress = false;
+  bool? other2NotRequiredDress = false;
+
+  bool? other3RequiredDress = false;
+  bool? other3NotRequiredDress = false;
+
+  var result;
+
   @override
   void initState() {
-    // ignore: todo
-    // TODO: implement initState
+    //Initialize with 1 item
     super.initState();
-    flat_house_bedroom = [
-      {
-        "bedroom_length": '',
-        "bedroom_width": '',
-        "bedroom_area": '',
-        "bedroom_toilet_length": '',
-        "bedroom_toilet_width": '',
-        "bedroom_toilet_area = T": '',
-        "bedroom_toilet_req_text": '',
-        "bedroom_dress_req": '',
-        "bedroom_dress_length": '',
-        "bedroom_dress_width": '',
-        "bedroom_dress_area": '',
-        "bedroom_dress_facility": '',
-        "bedroom_img": '',
-        "bedroom_facility_req_text": '',
-        "bedroom_length_feet": '',
-        "bedroom_width_feet": '',
-        "bedroom_area_feet": '',
-        "bedroom_toilet_length_feet": '',
-        "bedroom_toilet_width_feet": '',
-        "bedroom_toilet_area_feet": '',
-        "bedroom_dress_length_feet": '',
-        "bedroom_dress_width_feet": '',
-        "bedroom_dress_area_feet": ''
-      }
-    ];
+    _values;
+    getUserId();
   }
 
-  Widget flatHouseBedroomInput(BuildContext context) {
-    return Column(
-      children: [
-        ExpansionTile(
-          title: const Text("bedroom counter"),
-          subtitle: const Text("data 1"),
-          children: [
-            const ListTile(
-              title: Text("tile no. 1"),
-            ),
-            Column(
-              children: [
-                const Text("Person Bedroom"),
-                Row(
-                  children: [
-                    Container(
-                      height: height * 0.05,
-                      width: width * 0.5,
-                      child: TextFormField(
-                        // controller: length,
-                        decoration:
-                            const InputDecoration(label: Text("Length")),
-                        // validator: ((value) {
-                        //       if (value == null || value.isEmpty) {
-                        //       return 'Required length';
-                        //     }
-                        //     return null;
-                        //   }),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            )
-          ],
+  List<String> otherFacilities = [];
+  List<String> dressF = [];
+
+  String? selectedFloorMaster = "select Floor";
+  List<String> floorItemsMater = [
+    "select Floor",
+    "Ground Floor",
+  ];
+
+  String? selectedFloorParent = "select Floor";
+  List<String> floorItemsParent = [
+    "select Floor",
+    "Ground Floor",
+  ];
+
+  String? selectedFloorSon = "select Floor";
+  List<String> floorItemsSon = [
+    "select Floor",
+    "Ground Floor",
+  ];
+
+  String? selectedFloorDaughter = "select Floor";
+  List<String> floorItemsDaughter = [
+    "select Floor",
+    "Ground Floor",
+  ];
+
+  String? selectedFloorGuest = "select Floor";
+  List<String> floorItemsGuest = [
+    "select Floor",
+    "Ground Floor",
+  ];
+
+  String? selectedFloorOther1 = "select Floor";
+  List<String> floorItemsOther1 = [
+    "select Floor",
+    "Ground Floor",
+  ];
+
+  String? selectedFloorOther2 = "select Floor";
+  List<String> floorItemsOther2 = [
+    "select Floor",
+    "Ground Floor",
+  ];
+
+  String? selectedFloorOther3 = "select Floor";
+  List<String> floorItemsOther3 = [
+    "select Floor",
+    "Ground Floor",
+  ];
+
+  String? selectedFloor = "select Floor";
+  List<String> floorItems = [
+    "select Floor",
+    "Ground Floor",
+  ];
+
+  List<String>? masterRFac;
+  List<String>? masterDFac;
+
+  List<String>? sonRFac;
+  List<String>? sonDFac;
+
+  List<String>? daughterRFac;
+  List<String>? daughterDFac;
+
+  List<String>? guestRFac;
+  List<String>? guestDFac;
+
+  List<String>? parentRFac;
+  List<String>? parentDFac;
+
+  List<String>? other1RFac;
+  List<String>? other1DFac;
+
+  List<String>? other2DFac;
+  List<String>? other2RFac;
+
+  List<String>? other3RFac;
+  List<String>? other3DFac;
+
+  bool masterBedroom = false;
+  bool sonBedRoom = false;
+  bool daughterBedRoom = false;
+  bool parentBedRoom = false;
+  bool guestBedRoom = false;
+  bool other1BedRoom = false;
+  bool other2BedRoom = false;
+  bool other3BedRoom = false;
+
+  var bdfields = {
+    "project_id": '',
+    "bedroom": "",
+    "bedroom_floor": '',
+    "bedroom_length": "",
+    "bedroom_width": "",
+    "bedroom_toilet_length": "",
+    "bedroom_toilet_width": "",
+    "bedroom_toilet_req_text": "",
+    "bedroom_dress_req": '',
+    "bedroom_dress_length": "",
+    "bedroom_dress_width": "",
+    "bedroom_dress_facility": "",
+    "bedroom_dress_req_text": "",
+    "bedroom_img": '',
+    "bedroom_facility": "",
+    "bedroom_facility_req_text": "",
+    "bedroom_length_feet": "",
+  };
+
+  var get = [];
+  var printData;
+
+  Future<void> getData(int? project_id) async {
+    try {
+      var response = await http.get(
+        Uri.parse(
+          "${dotenv.env['APP_URL']}edit-flat-house-bedroom/$project_id",
         ),
-      ],
-    );
+      );
+
+      if (response.statusCode == SUCCESS) {
+        final jsonResponse = jsonDecode(response.body);
+
+        setState(
+          () {
+            printData = jsonResponse["flat_house_bedroom"];
+            print("printData ======");
+            print(printData);
+
+            for (int i = 0; i < printData.length; i++) {
+              if (printData[i]["bedroom"] == INT_ONE) {
+                mi = i;
+                print(mi);
+              }
+              if (printData[i]["bedroom"] == INT_TWO) {
+                si = i;
+              }
+              if (printData[i]["bedroom"] == INT_THREE) {
+                di = i;
+              }
+              if (printData[i]["bedroom"] == INT_FOUR) {
+                pi = i;
+              }
+              if (printData[i]["bedroom"] == INT_FIVE) {
+                gi = i;
+              }
+              if (printData[i]["bedroom"] == INT_SIX) {
+                o1i = i;
+              }
+              if (printData[i]["bedroom"] == INT_SEVEN) {
+                o2i = i;
+              }
+              if (printData[i]["bedroom"] == INT_EIGHT) {
+                o3i = i;
+              }
+            }
+
+            if (printData.asMap().containsKey(mi)) {
+              masterBedroom = true;
+              masterLocation = printData[mi]['bedroom_floor'] != null
+                  ? int.parse(printData[mi]['bedroom_floor'].toString())
+                  : masterLocation;
+              masterRequiredDress = printData[mi]['bedroom_dress_req'] != null
+                  ? int.parse(printData[mi]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : masterRequiredDress;
+              masterLength = printData[mi]['bedroom_length'] != null
+                  ? int.parse(printData[mi]['bedroom_length'].toString())
+                  : F_ALSE;
+              masterWidth = printData[mi]['bedroom_width'] != null
+                  ? int.parse(printData[mi]['bedroom_width'].toString())
+                  : F_ALSE;
+
+              masterToiletLength = printData[mi]['bedroom_toilet_length'] !=
+                      null
+                  ? int.parse(printData[mi]['bedroom_toilet_length'].toString())
+                  : F_ALSE;
+              masterToiletWidth = printData[mi]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[mi]['bedroom_toilet_width'].toString())
+                  : F_ALSE;
+              masterDressLength = printData[mi]['bedroom_dress_length'] != null
+                  ? int.parse(printData[mi]['bedroom_dress_length'].toString())
+                  : F_ALSE;
+              selectedFloorMaster = printData[mi]['bedroom_floor'] != null
+                  ? floorItemsMater[
+                      int.parse(printData[mi]['bedroom_floor'].toString())]
+                  : selectedFloorMaster;
+              masterLocation = printData[mi]['bedroom_floor'] != null
+                  ? int.parse(printData[mi]['bedroom_floor'].toString())
+                  : masterLocation;
+              masterDressWidth = printData[mi]['bedroom_dress_width'] != null
+                  ? int.parse(printData[mi]['bedroom_dress_width'].toString())
+                  : F_ALSE;
+              masterDressInt = printData[mi]['bedroom_dress_req'] != null
+                  ? int.parse(printData[mi]['bedroom_dress_req'].toString())
+                  : F_ALSE;
+              masterToiletFacility =
+                  printData[mi]['bedroom_toilet_req_text'] != null
+                      ? printData[mi]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              masterDresstext = printData[mi]['bedroom_dress_req_text'] != null
+                  ? printData[mi]['bedroom_dress_req_text'].toString()
+                  : " ";
+              masterOtherRequirement =
+                  printData[mi]['bedroom_facility_req_text'] != null
+                      ? printData[mi]['bedroom_facility_req_text'].toString()
+                      : " ";
+              masterDressFacility =
+                  printData[mi]['bedroom_dress_facility'] != null
+                      ? printData[mi]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+              masterRoomFacility = printData[mi]['bedroom_facility'] != null
+                  ? printData[mi]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+            if (printData.asMap().containsKey(si)) {
+              sonBedRoom = true;
+              sonRequiredDress = printData[si]['bedroom_dress_req'] != null
+                  ? int.parse(printData[si]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : sonRequiredDress;
+              sonLocation = printData[si]['bedroom_floor'] != null
+                  ? int.parse(printData[si]['bedroom_floor'].toString())
+                  : sonLocation;
+              selectedFloorSon = printData[si]['bedroom_floor'] != null
+                  ? floorItemsSon[
+                      int.parse(printData[si]['bedroom_floor'].toString())]
+                  : selectedFloorSon;
+              sonLength = printData[si]['bedroom_length'] != null
+                  ? int.parse(printData[si]['bedroom_length'].toString())
+                  : F_ALSE;
+              sonWidth = printData[si]['bedroom_width'] != null
+                  ? int.parse(printData[si]['bedroom_width'].toString())
+                  : F_ALSE;
+              sonToiletLength = printData[si]['bedroom_toilet_length'] != null
+                  ? int.parse(printData[si]['bedroom_toilet_length'].toString())
+                  : F_ALSE;
+              sonToiletWidth = printData[si]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[si]['bedroom_toilet_width'].toString())
+                  : F_ALSE;
+              sonDressLength = printData[si]['bedroom_dress_length'] != null
+                  ? int.parse(printData[si]['bedroom_dress_length'].toString())
+                  : F_ALSE;
+              sonLocation = printData[si]['bedroom_floor'] != null
+                  ? int.parse(printData[si]['bedroom_floor'].toString())
+                  : F_ALSE;
+              sonDressWidth = printData[si]['bedroom_dress_width'] != null
+                  ? int.parse(printData[si]['bedroom_dress_width'].toString())
+                  : F_ALSE;
+              sonDressInt = printData[si]['bedroom_dress_req'] != null
+                  ? int.parse(printData[si]['bedroom_dress_req'].toString())
+                  : F_ALSE;
+              sonToiletFacility =
+                  printData[si]['bedroom_toilet_req_text'] != null
+                      ? printData[si]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              sonDresstext = printData[si]['bedroom_dress_req_text'] != null
+                  ? printData[si]['bedroom_dress_req_text'].toString()
+                  : " ";
+              sonOtherRequirement =
+                  printData[si]['bedroom_facility_req_text'] != null
+                      ? printData[si]['bedroom_facility_req_text'].toString()
+                      : " ";
+              sonDressFacility = printData[si]['bedroom_dress_facility'] != null
+                  ? printData[si]['bedroom_dress_facility']
+                      .toString()
+                      .split(',')
+                  : [];
+              sonRoomFacility = printData[si]['bedroom_facility'] != null
+                  ? printData[si]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+            if (printData.asMap().containsKey(di)) {
+              daughterBedRoom = true;
+              daughterRequiredDress = printData[di]['bedroom_dress_req'] != null
+                  ? int.parse(printData[di]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : daughterRequiredDress;
+              daughterLocation = printData[di]['bedroom_floor'] != null
+                  ? int.parse(printData[di]['bedroom_floor'].toString())
+                  : daughterLocation;
+
+              selectedFloorDaughter = printData[di]['bedroom_floor'] != null
+                  ? floorItemsDaughter[
+                      int.parse(printData[di]['bedroom_floor'].toString())]
+                  : selectedFloorDaughter;
+              daughterLength = printData[di]['bedroom_length'] != null
+                  ? int.parse(printData[di]['bedroom_length'].toString())
+                  : F_ALSE;
+              daughterWidth = printData[di]['bedroom_width'] != null
+                  ? int.parse(printData[di]['bedroom_width'].toString())
+                  : F_ALSE;
+              daughterToiletLength = printData[di]['bedroom_toilet_length'] !=
+                      null
+                  ? int.parse(printData[di]['bedroom_toilet_length'].toString())
+                  : F_ALSE;
+              daughterToiletWidth = printData[di]['bedroom_toilet_width'] !=
+                      null
+                  ? int.parse(printData[di]['bedroom_toilet_width'].toString())
+                  : F_ALSE;
+              daughterDressLength = printData[di]['bedroom_dress_length'] !=
+                      null
+                  ? int.parse(printData[di]['bedroom_dress_length'].toString())
+                  : F_ALSE;
+              daughterLocation = printData[di]['bedroom_floor'] != null
+                  ? int.parse(printData[di]['bedroom_floor'].toString())
+                  : F_ALSE;
+              daughterDressWidth = printData[di]['bedroom_dress_width'] != null
+                  ? int.parse(printData[di]['bedroom_dress_width'].toString())
+                  : F_ALSE;
+              daughterDressInt = printData[di]['bedroom_dress_req'] != null
+                  ? int.parse(printData[di]['bedroom_dress_req'].toString())
+                  : F_ALSE;
+              daughterToiletFacility =
+                  printData[di]['bedroom_toilet_req_text'] != null
+                      ? printData[di]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              daughterDresstext =
+                  printData[di]['bedroom_dress_req_text'] != null
+                      ? printData[di]['bedroom_dress_req_text'].toString()
+                      : " ";
+              daughterOtherRequirement =
+                  printData[di]['bedroom_facility_req_text'] != null
+                      ? printData[di]['bedroom_facility_req_text'].toString()
+                      : " ";
+              daughterDressFacility =
+                  printData[di]['bedroom_dress_facility'] != null
+                      ? printData[di]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+              daughterRoomFacility = printData[di]['bedroom_facility'] != null
+                  ? printData[di]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+            if (printData.asMap().containsKey(pi)) {
+              parentBedRoom = true;
+              selectedFloorParent = printData[pi]['bedroom_floor'] != null
+                  ? floorItemsParent[
+                      int.parse(printData[pi]['bedroom_floor'].toString())]
+                  : selectedFloorParent;
+              parentsRequiredDress = printData[pi]['bedroom_dress_req'] != null
+                  ? int.parse(printData[pi]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : parentsRequiredDress;
+              parentLocation = printData[pi]['bedroom_floor'] != null
+                  ? int.parse(printData[pi]['bedroom_floor'].toString())
+                  : parentLocation;
+
+              parentLength = printData[pi]['bedroom_length'] != null
+                  ? int.parse(printData[pi]['bedroom_length'].toString())
+                  : F_ALSE;
+              parentWidth = printData[pi]['bedroom_width'] != null
+                  ? int.parse(printData[pi]['bedroom_width'].toString())
+                  : F_ALSE;
+              parentToiletLength = printData[pi]['bedroom_toilet_length'] !=
+                      null
+                  ? int.parse(printData[pi]['bedroom_toilet_length'].toString())
+                  : F_ALSE;
+              parentToiletWidth = printData[pi]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[pi]['bedroom_toilet_width'].toString())
+                  : F_ALSE;
+              parentDressLength = printData[pi]['bedroom_dress_length'] != null
+                  ? int.parse(printData[pi]['bedroom_dress_length'].toString())
+                  : F_ALSE;
+              parentLocation = printData[pi]['bedroom_floor'] != null
+                  ? int.parse(printData[pi]['bedroom_floor'].toString())
+                  : F_ALSE;
+              parentDressWidth = printData[pi]['bedroom_dress_width'] != null
+                  ? int.parse(printData[pi]['bedroom_dress_width'].toString())
+                  : F_ALSE;
+              parentDressInt = printData[pi]['bedroom_dress_req'] != null
+                  ? int.parse(printData[pi]['bedroom_dress_req'].toString())
+                  : F_ALSE;
+              parentToiletFacility =
+                  printData[pi]['bedroom_toilet_req_text'] != null
+                      ? printData[pi]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              parentDresstext = printData[pi]['bedroom_dress_req_text'] != null
+                  ? printData[pi]['bedroom_dress_req_text'].toString()
+                  : " ";
+              parentOtherRequirement =
+                  printData[pi]['bedroom_facility_req_text'] != null
+                      ? printData[pi]['bedroom_facility_req_text'].toString()
+                      : " ";
+              parentDressFacility =
+                  printData[pi]['bedroom_dress_facility'] != null
+                      ? printData[pi]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+              parentRoomFacility = printData[pi]['bedroom_facility'] != null
+                  ? printData[pi]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+            if (printData.asMap().containsKey(gi)) {
+              guestRequiredDress = printData[gi]['bedroom_dress_req'] != null
+                  ? int.parse(printData[gi]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : guestRequiredDress;
+              guestBedRoom = true;
+              selectedFloorGuest = printData[gi]['bedroom_floor'] != null
+                  ? floorItemsGuest[
+                      int.parse(printData[gi]['bedroom_floor'].toString())]
+                  : selectedFloorGuest;
+              guestLocation = printData[gi]['bedroom_floor'] != null
+                  ? int.parse(printData[gi]['bedroom_floor'].toString())
+                  : guestLocation;
+              guestLength = printData[gi]['bedroom_length'] != null
+                  ? int.parse(printData[gi]['bedroom_length'].toString())
+                  : F_ALSE;
+              guestWidth = printData[gi]['bedroom_width'] != null
+                  ? int.parse(printData[gi]['bedroom_width'].toString())
+                  : F_ALSE;
+              guestToiletLength = printData[gi]['bedroom_toilet_length'] != null
+                  ? int.parse(printData[gi]['bedroom_toilet_length'].toString())
+                  : F_ALSE;
+              guestToiletWidth = printData[gi]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[gi]['bedroom_toilet_width'].toString())
+                  : F_ALSE;
+              guestDressLength = printData[gi]['bedroom_dress_length'] != null
+                  ? int.parse(printData[gi]['bedroom_dress_length'].toString())
+                  : F_ALSE;
+              guestLocation = printData[gi]['bedroom_floor'] != null
+                  ? int.parse(printData[gi]['bedroom_floor'].toString())
+                  : F_ALSE;
+              guestDressWidth = printData[gi]['bedroom_dress_width'] != null
+                  ? int.parse(printData[gi]['bedroom_dress_width'].toString())
+                  : F_ALSE;
+              guestDressInt = printData[gi]['bedroom_dress_req'] != null
+                  ? int.parse(printData[gi]['bedroom_dress_req'].toString())
+                  : F_ALSE;
+              guestToiletFacility =
+                  printData[gi]['bedroom_toilet_req_text'] != null
+                      ? printData[gi]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              guestDresstext = printData[gi]['bedroom_dress_req_text'] != null
+                  ? printData[gi]['bedroom_dress_req_text'].toString()
+                  : " ";
+              guestOtherRequirement =
+                  printData[gi]['bedroom_facility_req_text'] != null
+                      ? printData[gi]['bedroom_facility_req_text'].toString()
+                      : " ";
+              guestDressFacility =
+                  printData[gi]['bedroom_dress_facility'] != null
+                      ? printData[gi]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+              guestRoomFacility = printData[gi]['bedroom_facility'] != null
+                  ? printData[gi]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+
+            if (printData.asMap().containsKey(o1i)) {
+              other1BedRoom = true;
+              selectedFloorOther1 = printData[o1i]['bedroom_floor'] != null
+                  ? floorItemsOther1[
+                      int.parse(printData[o1i]['bedroom_floor'].toString())]
+                  : selectedFloorOther1;
+              other1RequiredDress = printData[o1i]['bedroom_dress_req'] != null
+                  ? int.parse(printData[o1i]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : other1RequiredDress;
+              other1Location = printData[o1i]['bedroom_floor'] != null
+                  ? int.parse(printData[o1i]['bedroom_floor'].toString())
+                  : other1Location;
+
+              other1Length = printData[o1i]['bedroom_length'] != null
+                  ? int.parse(printData[o1i]['bedroom_length'].toString())
+                  : F_ALSE;
+              other1Width = printData[o1i]['bedroom_width'] != null
+                  ? int.parse(printData[o1i]['bedroom_width'].toString())
+                  : F_ALSE;
+              other1ToiletLength =
+                  printData[o1i]['bedroom_toilet_length'] != null
+                      ? int.parse(
+                          printData[o1i]['bedroom_toilet_length'].toString())
+                      : F_ALSE;
+              other1ToiletWidth = printData[o1i]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[o1i]['bedroom_toilet_width'].toString())
+                  : F_ALSE;
+              other1DressLength = printData[o1i]['bedroom_dress_length'] != null
+                  ? int.parse(printData[o1i]['bedroom_dress_length'].toString())
+                  : F_ALSE;
+              // other1Location = printData[o1i]['bedroom_floor'] != null
+              //     ? int.parse(printData[o1i]['bedroom_floor'].toString())
+              //     : other1Location;
+              other1DressWidth = printData[o1i]['bedroom_dress_width'] != null
+                  ? int.parse(printData[o1i]['bedroom_dress_width'].toString())
+                  : F_ALSE;
+              other1DressInt = printData[o1i]['bedroom_dress_req'] != null
+                  ? int.parse(printData[o1i]['bedroom_dress_req'].toString())
+                  : F_ALSE;
+              other1ToiletFacility =
+                  printData[o1i]['bedroom_toilet_req_text'] != null
+                      ? printData[o1i]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              other1Dresstext = printData[o1i]['bedroom_dress_req_text'] != null
+                  ? printData[o1i]['bedroom_dress_req_text'].toString()
+                  : " ";
+              other1OtherRequirement =
+                  printData[o1i]['bedroom_facility_req_text'] != null
+                      ? printData[o1i]['bedroom_facility_req_text'].toString()
+                      : " ";
+              other1DressFacility =
+                  printData[o1i]['bedroom_dress_facility'] != null
+                      ? printData[o1i]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+              other1RoomFacility = printData[o1i]['bedroom_facility'] != null
+                  ? printData[o1i]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+            if (printData.asMap().containsKey(o2i)) {
+              other2BedRoom = true;
+              other2RequiredDress = printData[o2i]['bedroom_dress_req'] != null
+                  ? int.parse(printData[o2i]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : other2RequiredDress;
+              selectedFloorOther2 = printData[o2i]['bedroom_floor'] != null
+                  ? floorItemsOther2[
+                      int.parse(printData[o2i]['bedroom_floor'].toString())]
+                  : selectedFloorOther2;
+
+              other2Location = printData[o2i]['bedroom_floor'] != null
+                  ? int.parse(printData[o2i]['bedroom_floor'].toString())
+                  : other2Location;
+
+              other2Length = printData[o2i]['bedroom_length'] != null
+                  ? int.parse(printData[o2i]['bedroom_length'].toString())
+                  : F_ALSE;
+              other2Width = printData[o2i]['bedroom_width'] != null
+                  ? int.parse(printData[o2i]['bedroom_width'].toString())
+                  : F_ALSE;
+              other2ToiletLength =
+                  printData[o2i]['bedroom_toilet_length'] != null
+                      ? int.parse(
+                          printData[o2i]['bedroom_toilet_length'].toString())
+                      : F_ALSE;
+              other2ToiletWidth = printData[o2i]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[o2i]['bedroom_toilet_width'].toString())
+                  : F_ALSE;
+              other2DressLength = printData[o2i]['bedroom_dress_length'] != null
+                  ? int.parse(printData[o2i]['bedroom_dress_length'].toString())
+                  : F_ALSE;
+              other2Location = printData[o2i]['bedroom_floor'] != null
+                  ? int.parse(printData[o2i]['bedroom_floor'].toString())
+                  : F_ALSE;
+              other2DressWidth = printData[o2i]['bedroom_dress_width'] != null
+                  ? int.parse(printData[o2i]['bedroom_dress_width'].toString())
+                  : other2DressWidth;
+              other2DressInt = printData[o2i]['bedroom_dress_req'] != null
+                  ? int.parse(printData[o2i]['bedroom_dress_req'].toString())
+                  : F_ALSE;
+              other2ToiletFacility =
+                  printData[o2i]['bedroom_toilet_req_text'] != null
+                      ? printData[o2i]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              other2Dresstext = printData[o2i]['bedroom_dress_req_text'] != null
+                  ? printData[o2i]['bedroom_dress_req_text'].toString()
+                  : " ";
+              other2OtherRequirement =
+                  printData[o2i]['bedroom_facility_req_text'] != null
+                      ? printData[o2i]['bedroom_facility_req_text'].toString()
+                      : " ";
+              other2DressFacility =
+                  printData[o2i]['bedroom_dress_facility'] != null
+                      ? printData[o2i]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+              other2RoomFacility = printData[o2i]['bedroom_facility'] != null
+                  ? printData[o2i]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+            if (printData.asMap().containsKey(o3i)) {
+              other3RequiredDress = printData[o3i]['bedroom_dress_req'] != null
+                  ? int.parse(printData[o3i]['bedroom_dress_req'].toString()) ==
+                      INT_ONE
+                  : other3RequiredDress;
+              other3BedRoom = true;
+              selectedFloorOther3 = printData[o3i]['bedroom_floor'] != null
+                  ? floorItemsOther3[
+                      int.parse(printData[o3i]['bedroom_floor'].toString())]
+                  : selectedFloorOther3;
+
+              other3Location = printData[o3i]['bedroom_floor'] != null
+                  ? int.parse(printData[o3i]['bedroom_floor'].toString())
+                  : other3Location;
+
+              other3Length = printData[o3i]['bedroom_length'] != null
+                  ? int.parse(printData[o3i]['bedroom_length'].toString())
+                  : F_ALSE;
+              other3Width = printData[o3i]['bedroom_width'] != null
+                  ? int.parse(printData[o3i]['bedroom_width'].toString())
+                  : F_ALSE;
+              other3ToiletLength =
+                  printData[o3i]['bedroom_toilet_length'] != null
+                      ? int.parse(
+                          printData[o3i]['bedroom_toilet_length'].toString())
+                      : F_ALSE;
+              other3ToiletWidth = printData[o3i]['bedroom_toilet_width'] != null
+                  ? int.parse(printData[o3i]['bedroom_toilet_width'].toString())
+                  : F_ALSE;
+              other3DressLength = printData[o3i]['bedroom_dress_length'] != null
+                  ? int.parse(printData[o3i]['bedroom_dress_length'].toString())
+                  : F_ALSE;
+              other3Location = printData[o3i]['bedroom_floor'] != null
+                  ? int.parse(printData[o3i]['bedroom_floor'].toString())
+                  : F_ALSE;
+              other3DressWidth = printData[o3i]['bedroom_dress_width'] != null
+                  ? int.parse(printData[o3i]['bedroom_dress_width'].toString())
+                  : F_ALSE;
+              other3DressInt = printData[o3i]['bedroom_dress_req'] != null
+                  ? int.parse(printData[o3i]['bedroom_dress_req'].toString())
+                  : F_ALSE;
+              other3ToiletFacility =
+                  printData[o3i]['bedroom_toilet_req_text'] != null
+                      ? printData[o3i]['bedroom_toilet_req_text'].toString()
+                      : " ";
+              other3Dresstext = printData[o3i]['bedroom_dress_req_text'] != null
+                  ? printData[o3i]['bedroom_dress_req_text'].toString()
+                  : " ";
+              other3OtherRequirement =
+                  printData[o3i]['bedroom_facility_req_text'] != null
+                      ? printData[o3i]['bedroom_facility_req_text'].toString()
+                      : " ";
+              other3DressFacility =
+                  printData[o3i]['bedroom_dress_facility'] != null
+                      ? printData[o3i]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+              other3RoomFacility = printData[o3i]['bedroom_facility'] != null
+                  ? printData[o3i]['bedroom_facility'].toString().split(',')
+                  : [];
+            }
+
+            if (printData != null) {
+              if (mi != null) {
+                if (printData[mi]['bedroom_facility'] != null) {
+                  masterRFac = printData[mi]['bedroom_facility'] != null
+                      ? printData[mi]['bedroom_facility'].toString().split(',')
+                      : [];
+                  print(masterRFac);
+                }
+
+                if (printData[mi]['bedroom_dress_facility'] != null) {
+                  masterDFac = printData[mi]['bedroom_dress_facility'] != null
+                      ? printData[mi]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+                  print(masterDFac);
+                }
+              }
+
+              if (si != null) {
+                if (printData[si]['bedroom_facility'] != null) {
+                  sonRFac = printData[si]['bedroom_facility'] != null
+                      ? printData[si]['bedroom_facility'].toString().split(',')
+                      : [];
+                }
+                if (printData[si]['bedroom_dress_facility'] != null) {
+                  sonDFac = printData[si]['bedroom_dress_facility'] != null
+                      ? printData[si]['bedroom_dress_facility']
+                          .toString()
+                          .split(',')
+                      : [];
+                }
+              }
+
+              if (di != null) {
+                if (printData[di]['bedroom_facility'] != null) {
+                  daughterRFac = printData[di]['bedroom_facility'].split(',');
+                }
+                if (printData[di]['bedroom_dress_facility'] != null) {
+                  daughterDFac =
+                      printData[di]['bedroom_dress_facility'].split(',');
+                }
+              }
+
+              if (pi != null) {
+                if (printData[pi]['bedroom_facility'] != null) {
+                  parentRFac = printData[pi]['bedroom_facility'].split(',');
+                }
+                if (printData[pi]['bedroom_dress_facility'] != null) {
+                  parentDFac =
+                      printData[pi]['bedroom_dress_facility'].split(',');
+                }
+              }
+
+              if (gi != null) {
+                if (printData[gi]['bedroom_facility'] != null) {
+                  guestRFac = printData[gi]['bedroom_facility'].split(',');
+                }
+                if (printData[gi]['bedroom_dress_facility'] != null) {
+                  guestDFac =
+                      printData[gi]['bedroom_dress_facility'].split(',');
+                }
+              }
+
+              if (o1i != null) {
+                if (printData[o1i]['bedroom_facility'] != null) {
+                  other1RFac = printData[o1i]['bedroom_facility'].split(',');
+                }
+                if (printData[o1i]['bedroom_dress_facility'] != null) {
+                  other1DFac =
+                      printData[o1i]['bedroom_dress_facility'].split(',');
+                }
+              }
+
+              if (o2i != null) {
+                if (printData[o2i]['bedroom_facility'] != null) {
+                  other2RFac = printData[o2i]['bedroom_facility'].split(',');
+                }
+                if (printData[o2i]['bedroom_dress_facility'] != null) {
+                  other2DFac =
+                      printData[o2i]['bedroom_dress_facility'].split(',');
+                }
+              }
+
+              if (o3i != null) {
+                if (printData[o3i]['bedroom_facility'] != null) {
+                  other3RFac = printData[o3i]['bedroom_facility'].split(',');
+                }
+                if (printData[o3i]['bedroom_dress_facility'] != null) {
+                  other3DFac =
+                      printData[o3i]['bedroom_dress_facility'].split(',');
+                }
+              }
+            }
+          },
+        );
+      }
+    } catch (e) {}
   }
+
+  List<Map<String, dynamic>> _values = [];
+
+  int? masterLength;
+  int? masterWidth;
+  int? masterLocation = 0;
+  int? masterToiletLength;
+  int? masterToiletWidth;
+  String? masterToiletFacility = ' ';
+  int? masterDressInt = 0;
+  int? masterDressLength;
+  int? masterDressWidth;
+  var masterDressFacility = [];
+  var masterRoomFacility = [];
+  String? masterOtherRequirement;
+  String? masterDresstext = '';
+
+  String sonDressReq = '0';
+  int? sonLength;
+  int? sonWidth;
+  int? sonLocation = 0;
+  int? sonToiletLength;
+  int? sonToiletWidth;
+  String sonToiletFacility = '';
+  int sonDressInt = 0;
+  int? sonDressLength;
+  int? sonDressWidth;
+  var sonDressFacility = [];
+  var sonRoomFacility = [];
+  String sonOtherRequirement = '';
+  String sonDresstext = '';
+
+  String daughterDressReq = '0';
+  int? daughterLength;
+  int? daughterWidth;
+  int? daughterLocation = 0;
+  int? daughterToiletLength;
+  int? daughterToiletWidth;
+  String daughterToiletFacility = '';
+  int daughterDressInt = 0;
+  int? daughterDressLength;
+  int? daughterDressWidth;
+  var daughterDressFacility = [];
+  var daughterRoomFacility = [];
+  String daughterOtherRequirement = '';
+  String daughterDresstext = '';
+
+  String parentDressReq = '0';
+  int? parentLength;
+  int? parentWidth;
+  int? parentLocation = 0;
+  int? parentToiletLength;
+  int? parentToiletWidth;
+  String parentToiletFacility = '';
+  int parentDressInt = 0;
+  int? parentDressLength;
+  int? parentDressWidth;
+  var parentDressFacility = [];
+  var parentRoomFacility = [];
+  String parentOtherRequirement = '';
+  String parentDresstext = '';
+
+  String guestDressReq = '0';
+  int? guestLength;
+  int? guestWidth;
+  int? guestLocation = 0;
+  int? guestToiletLength;
+  int? guestToiletWidth;
+  String guestToiletFacility = '';
+  int guestDressInt = 0;
+  int? guestDressLength;
+  int? guestDressWidth;
+  var guestDressFacility = [];
+  var guestRoomFacility = [];
+  String guestOtherRequirement = '';
+  String guestDresstext = '';
+
+  String other1DressReq = '0';
+  int? other1Length;
+  int? other1Width;
+  int? other1Location = 0;
+  int? other1ToiletLength;
+  int? other1ToiletWidth;
+  String other1ToiletFacility = '';
+  int other1DressInt = 0;
+  int? other1DressLength;
+  int? other1DressWidth;
+  var other1DressFacility = [];
+  var other1RoomFacility = [];
+  String other1OtherRequirement = '';
+  String other1Dresstext = '';
+
+  String other2DressReq = '0';
+  int? other2Length;
+  int? other2Width;
+  int? other2Location = 0;
+  int? other2ToiletLength;
+  int? other2ToiletWidth;
+  String other2ToiletFacility = '';
+  int other2DressInt = 0;
+  int? other2DressLength;
+  int? other2DressWidth;
+  var other2DressFacility = [];
+  var other2RoomFacility = [];
+  String other2OtherRequirement = '';
+  String other2Dresstext = '';
+
+  String other3DressReq = '0';
+  int? other3Length;
+  int? other3Width;
+  int? other3Location = 0;
+  int? other3ToiletLength;
+  int? other3ToiletWidth;
+  String other3ToiletFacility = '';
+  int other3DressInt = 0;
+  int? other3DressLength;
+  int? other3DressWidth;
+  var other3DressFacility = [];
+  var other3RoomFacility = [];
+  String other3OtherRequirement = '';
+  String other3Dresstext = '';
+
+  bool sonState = true;
+  bool masterState = true;
 
   @override
   Widget build(BuildContext context) {
-    height = MediaQuery.of(context).size.height;
-    width = MediaQuery.of(context).size.width;
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
+    return Column(
+      children: [
+        Column(
           children: [
-            Center(
-              child: Container(
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(4)),
-                    border: Border.all(width: 1, color: Colors.black)),
-                child: InkWell(
+            Row(
+              children: [
+                Expanded(
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text("Add BedRoom"),
-                      Container(
-                        child: const Icon(Icons.add),
-                      )
+                      Material(
+                        borderRadius: BorderRadius.circular(5),
+                        elevation: 5,
+                        child: Container(
+                          width: width * 0.45,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                height: height * 0.03,
+                                width: width * 0.07,
+                                child: Checkbox(
+                                    activeColor: checkColor,
+                                    checkColor: Colors.white,
+                                    value: masterBedroom,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          masterBedroom = value!;
+                                        },
+                                      );
+                                    }),
+                              ),
+                              requirementText("Master Bed Room")
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Material(
+                        borderRadius: BorderRadius.circular(5),
+                        elevation: 5,
+                        child: Container(
+                          width: width * 0.45,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                height: height * 0.03,
+                                width: width * 0.07,
+                                child: Checkbox(
+                                  activeColor: checkColor,
+                                  checkColor: Colors.white,
+                                  value: sonBedRoom,
+                                  onChanged: (value) {
+                                    setState(
+                                      () {
+                                        sonBedRoom = value!;
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                              requirementText("Son's Bed Room "),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            flatHouseBedroomInput(context)
+            SizedBox(
+              height: height * 0.01,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Material(
+                        borderRadius: BorderRadius.circular(5),
+                        elevation: 5,
+                        child: Container(
+                          width: width * 0.45,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                height: height * 0.03,
+                                width: width * 0.07,
+                                child: Checkbox(
+                                    activeColor: checkColor,
+                                    checkColor: Colors.white,
+                                    value: daughterBedRoom,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          daughterBedRoom = value!;
+                                        },
+                                      );
+                                    }),
+                              ),
+                              requirementText("Daughter's Bed Room")
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Material(
+                        borderRadius: BorderRadius.circular(5),
+                        elevation: 5,
+                        child: Container(
+                          width: width * 0.45,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                height: height * 0.03,
+                                width: width * 0.07,
+                                child: Checkbox(
+                                    activeColor: checkColor,
+                                    checkColor: Colors.white,
+                                    value: parentBedRoom,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        parentBedRoom = value!;
+                                      });
+                                    }),
+                              ),
+                              requirementText("Parent's Bed Room"),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: height * 0.01,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Material(
+                        borderRadius: BorderRadius.circular(5),
+                        elevation: 5,
+                        child: Container(
+                          width: width * 0.45,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                height: height * 0.03,
+                                width: width * 0.07,
+                                child: Checkbox(
+                                    activeColor: checkColor,
+                                    checkColor: Colors.white,
+                                    value: guestBedRoom,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          guestBedRoom = value!;
+                                          if (gi != null) {
+                                            guestBedRoom = value;
+                                          }
+                                        },
+                                      );
+                                    }),
+                              ),
+                              requirementText("Guest's Bed Room")
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Material(
+                        borderRadius: BorderRadius.circular(5),
+                        elevation: 5,
+                        child: Container(
+                          width: width * 0.45,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                height: height * 0.03,
+                                width: width * 0.07,
+                                child: Checkbox(
+                                    activeColor: checkColor,
+                                    checkColor: Colors.white,
+                                    value: other1BedRoom,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          other1BedRoom = value!;
+                                        },
+                                      );
+                                    }),
+                              ),
+                              requirementText("Other's 1 Bed Room"),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: height * 0.01,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Material(
+                        borderRadius: BorderRadius.circular(5),
+                        elevation: 5,
+                        child: Container(
+                          width: width * 0.45,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                height: height * 0.03,
+                                width: width * 0.07,
+                                child: Checkbox(
+                                    activeColor: checkColor,
+                                    checkColor: Colors.white,
+                                    value: other2BedRoom,
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          other2BedRoom = value!;
+                                        },
+                                      );
+                                    }),
+                              ),
+                              requirementText("Other's 2 Bed Room")
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Material(
+                        borderRadius: BorderRadius.circular(5),
+                        elevation: 5,
+                        child: Container(
+                          width: width * 0.45,
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                height: height * 0.03,
+                                width: width * 0.07,
+                                child: Checkbox(
+                                    activeColor: checkColor,
+                                    checkColor: Colors.white,
+                                    value: other3BedRoom,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        other3BedRoom = value!;
+                                      });
+                                    }),
+                              ),
+                              requirementText("Other's 3 Bed Room"),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
-      ),
+
+        // ------------------------------masterbedroom--------------------------------//
+
+        Column(
+          children: [
+            if (masterBedroom) ...[
+              SizedBox(
+                height: height * 0.01,
+              ),
+
+              // String masterDressReq = '0';
+              // List<String> masterLength = <String>[];
+              // List<String> masterWidth = <String>[];
+              // String masterLocation = '';
+              // String masterToiletLength = '';
+              // String masterToiletWidth = '';
+              // String masterToiletFacility = '';
+              // String masterDressLength = '';
+              // String masterDressWidth = '';
+              // String masterDressFacility = '';
+              // String masterRoomFacility = '';
+              // String masterOtherRequirement = '';
+
+              Container(
+                color: Colors.grey,
+                child: ExpansionTile(
+                  maintainState: true,
+                  title: const Text(
+                    'Master\'s BedRoom Details',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      width: width * 1,
+                      color: color3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.018,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: mi != null
+                                        ? printData[mi]['bedroom_length']
+                                        : '',
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (text) {
+                                      setState(
+                                        () {
+                                          masterLength =
+                                              int.parse(text.toString());
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.04),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: mi != null
+                                        ? printData[mi]['bedroom_width']
+                                        : '',
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        masterWidth =
+                                            int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                    padding: const EdgeInsets.all(5),
+                                    constraints: const BoxConstraints(),
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.help,
+                                      size: height * 0.03,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * .01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Floor"),
+                              Material(
+                                elevation: 5,
+                                borderRadius: BorderRadius.circular(5),
+                                child: Container(
+                                  height: height * 0.03,
+                                  width: width * 0.5,
+                                  margin: const EdgeInsets.all(
+                                    3,
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      icon: const Visibility(
+                                          visible: false,
+                                          child: Icon(Icons.arrow_downward)),
+                                      hint: Text(selectedFloorMaster!),
+                                      elevation: 16,
+                                      items: floorItemsMater
+                                          .asMap()
+                                          .entries
+                                          .map((it) {
+                                        int idx = it.key;
+                                        String val = it.value;
+                                        return DropdownMenuItem<String>(
+                                            value: it.value,
+                                            onTap: () {
+                                              masterLocation = it.key;
+                                            },
+                                            child: Text(
+                                              it.value,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ));
+                                      }).toList(),
+                                      onChanged: (it) {
+                                        setState(
+                                          () {
+                                            selectedFloorMaster = it;
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: width * 0.01,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.018,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: mi != null
+                                        ? printData[mi]['bedroom_toilet_length']
+                                        : "",
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        masterToiletLength =
+                                            int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.04),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: mi != null
+                                        ? printData[mi]['bedroom_toilet_width']
+                                        : "",
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                      hintText: "width",
+                                      hintStyle: TextStyle(fontSize: 14),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(8),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          masterToiletWidth =
+                                              int.parse(value.toString());
+                                        },
+                                      );
+                                    },
+                                    onFieldSubmitted: (value) {},
+                                  ),
+                                ),
+                              ),
+                              valueContainer(
+                                height,
+                                width,
+                                size,
+                                0.04,
+                                0.05,
+                              ),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ))
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet Facility"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: mi != null
+                                    ? printData[mi]['bedroom_toilet_req_text']
+                                    : " ",
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                    hintText: "Other Toilet Facility",
+                                    hintStyle: TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(8)),
+                                onChanged: (value) {
+                                  masterToiletFacility = value;
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Dress Details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                              activeColor: checkColor,
+                                              checkColor: Colors.white,
+                                              value: mi != null
+                                                  ? printData[mi][
+                                                              'bedroom_dress_req'] ==
+                                                          T_RUE
+                                                      ? true
+                                                      : masterRequiredDress
+                                                  : masterRequiredDress,
+                                              onChanged: (value) {
+                                                setState(
+                                                  () {
+                                                    if (mi != null) {
+                                                      printData[mi][
+                                                              'bedroom_dress_req'] =
+                                                          T_RUE;
+                                                    }
+                                                    masterRequiredDress = value;
+                                                    masterNotRequiredDress =
+                                                        false;
+
+                                                    if (masterRequiredDress ==
+                                                        true) {
+                                                      masterDressInt = T_RUE;
+                                                    } else {
+                                                      masterDressInt = F_ALSE;
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          requirementText("Required")
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height * 0.01,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.05,
+                                  ),
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                              activeColor: checkColor,
+                                              checkColor: Colors.white,
+                                              value: mi != null
+                                                  ? printData[mi][
+                                                              'bedroom_dress_req'] ==
+                                                          F_ALSE
+                                                      ? true
+                                                      : masterNotRequiredDress
+                                                  : masterNotRequiredDress,
+                                              onChanged: (value) {
+                                                setState(
+                                                  () {
+                                                    if (mi != null) {
+                                                      printData[mi][
+                                                              'bedroom_dress_req'] =
+                                                          INT_TWO;
+                                                    }
+                                                    masterNotRequiredDress =
+                                                        value;
+                                                    masterRequiredDress = false;
+
+                                                    if (masterRequiredDress ==
+                                                        true) {
+                                                      masterDressInt = INT_ONE;
+                                                    } else {
+                                                      masterDressInt = INT_ZERO;
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          requirementText("Not Required"),
+                                          SizedBox(
+                                            height: height * 0.01,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          if (masterRequiredDress == true) ...[
+                            Row(
+                              children: [
+                                requirementText("Length"),
+                                SizedBox(
+                                  width: width * 0.008,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      initialValue: mi != null
+                                          ? printData[mi]
+                                              ['bedroom_dress_length']
+                                          : '',
+                                      style: const TextStyle(fontSize: 14),
+                                      decoration: const InputDecoration(
+                                        hintText: "length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          masterDressLength =
+                                              int.parse(value.toString());
+                                        });
+                                      },
+                                      onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(height, width, size, 0.04, 0.05),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                requirementText("Width"),
+                                SizedBox(
+                                  width: width * 0.015,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      style: const TextStyle(fontSize: 14),
+                                      initialValue: mi != null
+                                          ? printData[mi]['bedroom_dress_width']
+                                          : '',
+                                      decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(
+                                          () {
+                                            masterDressWidth = int.parse(value);
+                                          },
+                                        );
+                                      },
+                                      // onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(height, width, size, 0.04, 0.05),
+                                SizedBox(
+                                  width: width * 0.08,
+                                ),
+                                Row(
+                                  children: [
+                                    requirementText("help"),
+                                    IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: requirementText("Dress Facility"),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Material(
+                                  borderRadius: BorderRadius.circular(5),
+                                  elevation: 5,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Column(children: [
+                                      InkWell(
+                                        onTap: () async {
+                                          final List<String> otherIt = [
+                                            "Walk in Cupboard",
+                                            "Vanity",
+                                            "Cupboard",
+                                          ];
+                                          final List<String> ab =
+                                              await showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return MultiSelect(
+                                                  items: otherIt);
+                                            },
+                                          );
+
+                                          setState(
+                                            () {
+                                              masterDressFacility = ab;
+                                              masterDFac = ab;
+                                              print(masterDFac);
+                                            },
+                                          );
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: const Text("Office Facility"),
+                                        ),
+                                      ),
+                                      if (mi != null || masterDFac != null) ...[
+                                        for (int i = 0;
+                                            i < masterDFac!.length;
+                                            i++)
+                                          Wrap(children: [
+                                            Chip(
+                                              label: Text(
+                                                  masterDFac![i].toString()),
+                                            )
+                                          ])
+                                      ],
+                                      if (masterDFac == null) ...[
+                                        Wrap(
+                                          children: masterDressFacility
+                                              .map((e) => Chip(
+                                                    label: Text(e),
+                                                  ))
+                                              .toList(),
+                                        )
+                                      ]
+                                    ]),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Material(
+                                    elevation: 5,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5)),
+                                    child: SizedBox(
+                                      height: height * 0.04,
+                                      width: width,
+                                      child: TextFormField(
+                                        initialValue: mi != null
+                                            ? printData[mi]
+                                                ['bedroom_dress_req_text']
+                                            : '',
+                                        style: const TextStyle(fontSize: 14),
+                                        decoration: const InputDecoration(
+                                            hintText: "dress facility",
+                                            hintStyle: TextStyle(fontSize: 14),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                            ),
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.all(8)
+                                            //fillColor: Colors.green
+                                            ),
+                                        onChanged: (value) {
+                                          masterDresstext = value;
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                    future: getRecent(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Container(
+                                          child: const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                      } else {
+                                        return CarouselSlider.builder(
+                                          itemCount:
+                                              bunglowPageRecentList.length,
+                                          itemBuilder: (context, i, id) {
+                                            return Container(
+                                              height: height * 0.4,
+                                              width: width * 0.9,
+                                              child: Image.network(
+                                                imageUrl +
+                                                    bunglowPageRecentList[i]
+                                                        ["img_path"],
+                                                fit: BoxFit.fill,
+                                              ),
+                                            );
+                                          },
+                                          options: CarouselOptions(
+                                            autoPlay: true,
+                                            enableInfiniteScroll: true,
+                                            autoPlayAnimationDuration:
+                                                const Duration(
+                                                    milliseconds: 800),
+                                            viewportFraction: 1,
+                                          ),
+                                        );
+                                      }
+                                    }),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Material(
+                                    elevation: 3,
+                                    child: Container(
+                                      margin: const EdgeInsets.all(5),
+                                      child: Row(
+                                        children: const [
+                                          Icon(Icons.cloud_upload),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text("Upload a stair image"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.2,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    color: buttonColor,
+                                    child: const Text(
+                                      "Preview",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: mi != null
+                                    ? printData[0]['bedroom_facility_req_text']
+                                    : '',
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                  hintText: "other requirement",
+                                  hintStyle: TextStyle(fontSize: 14),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(8),
+                                ),
+                                onChanged: (value) {
+                                  setState(
+                                    () {
+                                      masterOtherRequirement = value;
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                    future: getRecent(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Container(
+                                          child: const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                      } else {
+                                        return CarouselSlider.builder(
+                                          itemCount:
+                                              bunglowPageRecentList.length,
+                                          itemBuilder: (context, i, id) {
+                                            return Container(
+                                              height: height * 0.4,
+                                              width: width * 0.9,
+                                              child: Image.network(
+                                                imageUrl +
+                                                    bunglowPageRecentList[i]
+                                                        ["img_path"],
+                                                fit: BoxFit.fill,
+                                              ),
+                                            );
+                                          },
+                                          options: CarouselOptions(
+                                            autoPlay: true,
+                                            enableInfiniteScroll: true,
+                                            autoPlayAnimationDuration:
+                                                const Duration(
+                                                    milliseconds: 800),
+                                            viewportFraction: 1,
+                                          ),
+                                        );
+                                      }
+                                    }),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+
+        // ------------------------------sonbedroom--------------------------------//
+
+        Column(
+          children: [
+            if (sonBedRoom == true) ...[
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Container(
+                color: Colors.grey,
+                child: ExpansionTile(
+                  maintainState: true,
+                  title: const Text(
+                    'Son\'s BedRoom Details',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      width: width * 1,
+                      color: color3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.008,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: si != null
+                                        ? printData[si]['bedroom_length']
+                                        : '',
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          sonLength =
+                                              int.parse(value.toString());
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: si != null
+                                        ? printData[si]['bedroom_width']
+                                        : '',
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        sonWidth = int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                    padding: const EdgeInsets.all(5),
+                                    constraints: const BoxConstraints(),
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.help,
+                                      size: height * 0.03,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * .01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Floor"),
+                              Material(
+                                elevation: 5,
+                                borderRadius: BorderRadius.circular(5),
+                                child: Container(
+                                  height: height * 0.03,
+                                  width: width * 0.5,
+                                  margin: const EdgeInsets.all(
+                                    3,
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      icon: const Visibility(
+                                          visible: false,
+                                          child: Icon(Icons.arrow_downward)),
+                                      hint: Text(selectedFloorSon!),
+                                      elevation: 16,
+                                      items: floorItemsSon
+                                          .asMap()
+                                          .entries
+                                          .map((it) {
+                                        int idx = it.key;
+                                        String val = it.value;
+                                        return DropdownMenuItem<String>(
+                                            value: it.value,
+                                            onTap: () {
+                                              sonLocation = it.key;
+                                            },
+                                            child: Text(
+                                              it.value,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ));
+                                      }).toList(),
+                                      onChanged: (it) {
+                                        setState(
+                                          () {
+                                            selectedFloorSon = it;
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: width * 0.01,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.008,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: si != null
+                                        ? printData[si]['bedroom_toilet_length']
+                                        : '',
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        sonToiletLength =
+                                            int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: si != null
+                                        ? printData[si]['bedroom_toilet_width']
+                                        : "",
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                      hintText: "width",
+                                      hintStyle: TextStyle(fontSize: 14),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(8),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          sonToiletWidth =
+                                              int.parse(value.toString());
+                                        },
+                                      );
+                                    },
+                                    onFieldSubmitted: (value) {},
+                                  ),
+                                ),
+                              ),
+                              valueContainer(
+                                height,
+                                width,
+                                size,
+                                0.04,
+                                0.05,
+                              ),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ))
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet Facility"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: si != null
+                                    ? printData[si]['bedroom_toilet_req_text']
+                                    : "",
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                    hintText: "Other Toilet Facility",
+                                    hintStyle: TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(8)),
+                                onChanged: (value) {
+                                  sonToiletFacility = value;
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Dress Details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                                activeColor: checkColor,
+                                                checkColor: Colors.white,
+                                                value: si != null
+                                                    ? printData[si][
+                                                                'bedroom_dress_req'] ==
+                                                            INT_ONE
+                                                        ? true
+                                                        : sonRequiredDress
+                                                    : sonRequiredDress,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    if (si != null) {
+                                                      printData[si][
+                                                              'bedroom_dress_req'] =
+                                                          INT_FOUR;
+                                                    }
+                                                    sonRequiredDress = value;
+                                                    masterNotRequiredDress =
+                                                        false;
+
+                                                    if (sonRequiredDress ==
+                                                        true) {
+                                                      sonDressInt = INT_ONE;
+                                                    } else {
+                                                      sonDressInt = INT_ZERO;
+                                                    }
+                                                  });
+                                                }),
+                                          ),
+                                          requirementText("Required")
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height * 0.01,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.05,
+                                  ),
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                              activeColor: checkColor,
+                                              checkColor: Colors.white,
+                                              value: si != null
+                                                  ? printData[si][
+                                                              'bedroom_dress_req'] ==
+                                                          INT_ZERO
+                                                      ? true
+                                                      : sonNotRequiredDress
+                                                  : sonNotRequiredDress,
+                                              onChanged: (value) {
+                                                setState(
+                                                  () {
+                                                    sonNotRequiredDress = value;
+                                                    sonRequiredDress = false;
+                                                    if (si != null) {
+                                                      printData[si][
+                                                              'bedroom_dress_req'] =
+                                                          INT_FOUR;
+                                                    }
+                                                    if (sonRequiredDress ==
+                                                        true) {
+                                                      sonDressInt = INT_ONE;
+                                                    } else {
+                                                      sonDressInt = INT_ZERO;
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          requirementText("Not Required"),
+                                          SizedBox(
+                                            height: height * 0.01,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          if (sonRequiredDress == true) ...[
+                            Row(
+                              children: [
+                                requirementText("Length"),
+                                SizedBox(
+                                  width: width * 0.008,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      initialValue: si != null
+                                          ? printData[si]
+                                              ['bedroom_dress_length']
+                                          : '',
+                                      style: const TextStyle(fontSize: 14),
+                                      decoration: const InputDecoration(
+                                        hintText: "length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          sonDressLength =
+                                              int.parse(value.toString());
+                                        });
+                                      },
+                                      onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(
+                                  height,
+                                  width,
+                                  size,
+                                  0.04,
+                                  0.05,
+                                ),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                requirementText("Width"),
+                                SizedBox(
+                                  width: width * 0.015,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      style: const TextStyle(fontSize: 14),
+                                      initialValue: si != null
+                                          ? printData[si]['bedroom_dress_width']
+                                          : '',
+                                      decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(
+                                          () {
+                                            sonDressWidth = int.parse(value);
+                                          },
+                                        );
+                                      },
+                                      // onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(height, width, size, 0.04, 0.05),
+                                SizedBox(
+                                  width: width * 0.08,
+                                ),
+                                Row(
+                                  children: [
+                                    requirementText("help"),
+                                    IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: requirementText("Dress Facility"),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Material(
+                                  borderRadius: BorderRadius.circular(5),
+                                  elevation: 5,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Column(children: [
+                                      InkWell(
+                                        onTap: () async {
+                                          final List<String> otherIt = [
+                                            "Walk in Cupboard",
+                                            "Vanity",
+                                            "Cupboard",
+                                          ];
+                                          final List<String> ab =
+                                              await showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return MultiSelect(
+                                                  items: otherIt);
+                                            },
+                                          );
+
+                                          setState(() {
+                                            sonDressFacility = ab;
+
+                                            sonDFac = ab;
+                                            print(sonDFac);
+                                          });
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: const Text("Office Facility"),
+                                        ),
+                                      ),
+                                      if (sonDFac != null) ...[
+                                        for (int i = 0;
+                                            i < sonDFac!.length;
+                                            i++)
+                                          Wrap(children: [
+                                            Chip(
+                                              label: Text(
+                                                sonDFac![i].toString(),
+                                              ),
+                                            )
+                                          ])
+                                      ],
+                                      if (sonDFac == null) ...[
+                                        Wrap(
+                                          children: sonDressFacility
+                                              .map(
+                                                (e) => Chip(
+                                                  label: Text(e),
+                                                ),
+                                              )
+                                              .toList(),
+                                        )
+                                      ]
+                                    ]),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Material(
+                                    elevation: 5,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5)),
+                                    child: SizedBox(
+                                      height: height * 0.04,
+                                      width: width,
+                                      child: TextFormField(
+                                        initialValue: si != null
+                                            ? printData[si]
+                                                ['bedroom_dress_req_text']
+                                            : '',
+                                        style: const TextStyle(fontSize: 14),
+                                        decoration: const InputDecoration(
+                                            hintText: "dress facility",
+                                            hintStyle: TextStyle(fontSize: 14),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                            ),
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.all(8)
+                                            //fillColor: Colors.green
+                                            ),
+                                        onChanged: (value) {
+                                          sonDresstext = value;
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                    future: getRecent(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Container(
+                                          child: const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                      } else {
+                                        return CarouselSlider.builder(
+                                          itemCount:
+                                              bunglowPageRecentList.length,
+                                          itemBuilder: (context, i, id) {
+                                            return Container(
+                                              height: height * 0.4,
+                                              width: width * 0.9,
+                                              child: Image.network(
+                                                imageUrl +
+                                                    bunglowPageRecentList[i]
+                                                        ["img_path"],
+                                                fit: BoxFit.fill,
+                                              ),
+                                            );
+                                          },
+                                          options: CarouselOptions(
+                                            autoPlay: true,
+                                            enableInfiniteScroll: true,
+                                            autoPlayAnimationDuration:
+                                                const Duration(
+                                                    milliseconds: 800),
+                                            viewportFraction: 1,
+                                          ),
+                                        );
+                                      }
+                                    }),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Material(
+                                    elevation: 3,
+                                    child: Container(
+                                      margin: const EdgeInsets.all(5),
+                                      child: Row(
+                                        children: const [
+                                          Icon(Icons.cloud_upload),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text("Upload a stair image"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.2,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    color: buttonColor,
+                                    child: const Text(
+                                      "Preview",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: sonOtherRequirement,
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                  hintText: "other requirement",
+                                  hintStyle: TextStyle(fontSize: 14),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(8),
+                                ),
+                                onChanged: (value) {
+                                  setState(
+                                    () {
+                                      sonOtherRequirement = value;
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                    future: getRecent(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Container(
+                                          child: const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                      } else {
+                                        return CarouselSlider.builder(
+                                          itemCount:
+                                              bunglowPageRecentList.length,
+                                          itemBuilder: (context, i, id) {
+                                            return Container(
+                                              height: height * 0.4,
+                                              width: width * 0.9,
+                                              child: Image.network(
+                                                imageUrl +
+                                                    bunglowPageRecentList[i]
+                                                        ["img_path"],
+                                                fit: BoxFit.fill,
+                                              ),
+                                            );
+                                          },
+                                          options: CarouselOptions(
+                                            autoPlay: true,
+                                            enableInfiniteScroll: true,
+                                            autoPlayAnimationDuration:
+                                                const Duration(
+                                                    milliseconds: 800),
+                                            viewportFraction: 1,
+                                          ),
+                                        );
+                                      }
+                                    }),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+
+        // ------------------------------daughterbedroom--------------------------------//
+
+        Column(
+          children: [
+            if (daughterBedRoom == true) ...[
+              SizedBox(
+                height: height * 0.01,
+              ),
+
+              // String masterDressReq = '0';
+              // List<String> masterLength = <String>[];
+              // List<String> masterWidth = <String>[];
+              // String masterLocation = '';
+              // String masterToiletLength = '';
+              // String masterToiletWidth = '';
+              // String masterToiletFacility = '';
+              // String masterDressLength = '';
+              // String masterDressWidth = '';
+              // String masterDressFacility = '';
+              // String masterRoomFacility = '';
+              // String masterOtherRequirement = '';
+
+              Container(
+                color: Colors.grey,
+                child: ExpansionTile(
+                  title: const Text(
+                    'Daughter \'s BedRoom Details',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      width: width * 1,
+                      color: color3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.008,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: di != null
+                                        ? printData[di]['bedroom_length']
+                                        : '',
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          daughterLength =
+                                              int.parse(value.toString());
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: di != null
+                                        ? printData[di]['bedroom_width']
+                                        : '',
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        daughterWidth =
+                                            int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                    padding: const EdgeInsets.all(5),
+                                    constraints: const BoxConstraints(),
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.help,
+                                      size: height * 0.03,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * .01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Floor"),
+                              Material(
+                                elevation: 5,
+                                borderRadius: BorderRadius.circular(5),
+                                child: Container(
+                                  height: height * 0.03,
+                                  width: width * 0.5,
+                                  margin: const EdgeInsets.all(
+                                    3,
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      icon: const Visibility(
+                                          visible: false,
+                                          child: Icon(Icons.arrow_downward)),
+                                      hint: Text(selectedFloorDaughter!),
+                                      elevation: 16,
+                                      items: floorItemsDaughter
+                                          .asMap()
+                                          .entries
+                                          .map((it) {
+                                        int idx = it.key;
+                                        String val = it.value;
+                                        return DropdownMenuItem<String>(
+                                            value: it.value,
+                                            onTap: () {
+                                              daughterLocation = it.key;
+                                              print(idx);
+                                            },
+                                            child: Text(
+                                              it.value,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ));
+                                      }).toList(),
+                                      onChanged: (it) {
+                                        setState(
+                                          () {
+                                            selectedFloorDaughter = it;
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: width * 0.01,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.008,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: di != null
+                                        ? printData[di]['bedroom_toilet_length']
+                                        : '',
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        daughterToiletLength =
+                                            int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: di != null
+                                        ? printData[di]['bedroom_toilet_width']
+                                        : '',
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                      hintText: "width",
+                                      hintStyle: TextStyle(fontSize: 14),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(8),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          daughterToiletWidth =
+                                              int.parse(value.toString());
+                                        },
+                                      );
+                                    },
+                                    onFieldSubmitted: (value) {},
+                                  ),
+                                ),
+                              ),
+                              valueContainer(
+                                height,
+                                width,
+                                size,
+                                0.04,
+                                0.05,
+                              ),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ))
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet Facility"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: di != null
+                                    ? printData[di]['bedroom_toilet_req_text']
+                                    : '',
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                    hintText: "Other Toilet Facility",
+                                    hintStyle: TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(8)),
+                                onChanged: (value) {
+                                  daughterToiletFacility = value;
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Dress Details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                                activeColor: checkColor,
+                                                checkColor: Colors.white,
+                                                value: di != null
+                                                    ? printData[di][
+                                                                'bedroom_dress_req'] ==
+                                                            INT_ONE
+                                                        ? true
+                                                        : daughterRequiredDress
+                                                    : daughterRequiredDress,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    if (di != null) {
+                                                      printData[di][
+                                                              'bedroom_dress_req'] =
+                                                          INT_FOUR;
+                                                    }
+                                                    daughterRequiredDress =
+                                                        value;
+                                                    daughterNotRequiredDress =
+                                                        false;
+
+                                                    if (daughterRequiredDress ==
+                                                        true) {
+                                                      daughterDressInt =
+                                                          INT_ONE;
+                                                    } else {
+                                                      daughterDressInt =
+                                                          INT_ZERO;
+                                                    }
+                                                  });
+                                                }),
+                                          ),
+                                          requirementText("Required")
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height * 0.01,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.05,
+                                  ),
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                              activeColor: checkColor,
+                                              checkColor: Colors.white,
+                                              value: di != null
+                                                  ? printData[di][
+                                                              'bedroom_dress_req'] ==
+                                                          INT_ZERO
+                                                      ? true
+                                                      : daughterNotRequiredDress
+                                                  : daughterNotRequiredDress,
+                                              onChanged: (value) {
+                                                setState(
+                                                  () {
+                                                    daughterNotRequiredDress =
+                                                        value;
+                                                    daughterRequiredDress =
+                                                        false;
+                                                    if (di != null) {
+                                                      printData[di][
+                                                              'bedroom_dress_req'] =
+                                                          INT_FOUR;
+                                                    }
+                                                    if (daughterRequiredDress ==
+                                                        true) {
+                                                      daughterDressInt =
+                                                          INT_ONE;
+                                                    } else {
+                                                      daughterDressInt =
+                                                          INT_ZERO;
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          requirementText("Not Required"),
+                                          SizedBox(
+                                            height: height * 0.01,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          if (daughterRequiredDress == true) ...[
+                            Row(
+                              children: [
+                                requirementText("Length"),
+                                SizedBox(
+                                  width: width * 0.015,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      initialValue: di != null
+                                          ? printData[di]
+                                              ['bedroom_dress_length']
+                                          : '',
+                                      style: const TextStyle(fontSize: 14),
+                                      decoration: const InputDecoration(
+                                        hintText: "length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        // daughterDressLength =
+                                        //     int.parse(value.toString());
+                                      },
+                                      onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(
+                                  height,
+                                  width,
+                                  size,
+                                  0.04,
+                                  0.05,
+                                ),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                requirementText("Width"),
+                                SizedBox(
+                                  width: width * 0.015,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      style: const TextStyle(fontSize: 14),
+                                      initialValue: di != null
+                                          ? printData[di]['bedroom_dress_width']
+                                          : '',
+                                      decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(
+                                          () {
+                                            daughterDressWidth =
+                                                int.parse(value);
+                                          },
+                                        );
+                                      },
+                                      // onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(height, width, size, 0.04, 0.05),
+                                SizedBox(
+                                  width: width * 0.08,
+                                ),
+                                Row(
+                                  children: [
+                                    requirementText("help"),
+                                    IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: requirementText("Dress Facility"),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Material(
+                                  borderRadius: BorderRadius.circular(5),
+                                  elevation: 5,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Column(children: [
+                                      InkWell(
+                                        onTap: () async {
+                                          final List<String> otherIt = [
+                                            "Walk in Cupboard",
+                                            "Vanity",
+                                            "Cupboard",
+                                          ];
+                                          final List<String> ab =
+                                              await showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return MultiSelect(
+                                                  items: otherIt);
+                                            },
+                                          );
+
+                                          setState(() {
+                                            daughterDressFacility = ab;
+                                            daughterDFac = ab;
+                                          });
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: const Text("Office Facility"),
+                                        ),
+                                      ),
+                                      if (daughterDFac != null) ...[
+                                        for (int i = 0;
+                                            i < daughterDFac!.length;
+                                            i++)
+                                          Wrap(children: [
+                                            Chip(
+                                              label: Text(
+                                                  daughterDFac![i].toString()),
+                                            )
+                                          ])
+                                      ],
+                                      if (daughterDFac == null) ...[
+                                        Wrap(
+                                          children: daughterDressFacility
+                                              .map(
+                                                (e) => Chip(
+                                                  label: Text(e),
+                                                ),
+                                              )
+                                              .toList(),
+                                        )
+                                      ]
+                                    ]),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Material(
+                                    elevation: 5,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5)),
+                                    child: SizedBox(
+                                      height: height * 0.04,
+                                      width: width,
+                                      child: TextFormField(
+                                        initialValue: di != null
+                                            ? printData[di]
+                                                ['bedroom_dress_req_text']
+                                            : '',
+                                        style: const TextStyle(fontSize: 14),
+                                        decoration: const InputDecoration(
+                                            hintText: "dress facility",
+                                            hintStyle: TextStyle(fontSize: 14),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                            ),
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.all(8)
+                                            //fillColor: Colors.green
+                                            ),
+                                        onChanged: (value) {
+                                          daughterDresstext = value;
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          SizedBox(height: height * 0.01),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                  future: getRecent(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Container(
+                                        child: const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      );
+                                    } else {
+                                      return CarouselSlider.builder(
+                                        itemCount: bunglowPageRecentList.length,
+                                        itemBuilder: (context, i, id) {
+                                          return Container(
+                                            height: height * 0.4,
+                                            width: width * 0.9,
+                                            child: Image.network(
+                                              imageUrl +
+                                                  bunglowPageRecentList[i]
+                                                      ["img_path"],
+                                              fit: BoxFit.fill,
+                                            ),
+                                          );
+                                        },
+                                        options: CarouselOptions(
+                                          autoPlay: true,
+                                          enableInfiniteScroll: true,
+                                          autoPlayAnimationDuration:
+                                              const Duration(milliseconds: 800),
+                                          viewportFraction: 1,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Material(
+                                    elevation: 3,
+                                    child: Container(
+                                      margin: const EdgeInsets.all(5),
+                                      child: Row(
+                                        children: const [
+                                          Icon(Icons.cloud_upload),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text("Upload a stair image"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.2,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    color: buttonColor,
+                                    child: const Text(
+                                      "Preview",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: di != null
+                                    ? printData[di]['bedroom_facility_req_text']
+                                    : '',
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                  hintText: "other requirement",
+                                  hintStyle: TextStyle(fontSize: 14),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(8),
+                                ),
+                                onChanged: (value) {
+                                  setState(
+                                    () {
+                                      daughterOtherRequirement = value;
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                    future: getRecent(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Container(
+                                          child: const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                      } else {
+                                        return CarouselSlider.builder(
+                                          itemCount:
+                                              bunglowPageRecentList.length,
+                                          itemBuilder: (context, i, id) {
+                                            return Container(
+                                              height: height * 0.4,
+                                              width: width * 0.9,
+                                              child: Image.network(
+                                                imageUrl +
+                                                    bunglowPageRecentList[i]
+                                                        ["img_path"],
+                                                fit: BoxFit.fill,
+                                              ),
+                                            );
+                                          },
+                                          options: CarouselOptions(
+                                            autoPlay: true,
+                                            enableInfiniteScroll: true,
+                                            autoPlayAnimationDuration:
+                                                const Duration(
+                                                    milliseconds: 800),
+                                            viewportFraction: 1,
+                                          ),
+                                        );
+                                      }
+                                    }),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+
+        // ------------------------------parentbedroom-----------------------------------------//
+
+        Column(
+          children: [
+            if (parentBedRoom == true) ...[
+              SizedBox(
+                height: height * 0.01,
+              ),
+
+              // String masterDressReq = '0';
+              // List<String> masterLength = <String>[];
+              // List<String> masterWidth = <String>[];
+              // String masterLocation = '';
+              // String masterToiletLength = '';
+              // String masterToiletWidth = '';
+              // String masterToiletFacility = '';
+              // String masterDressLength = '';
+              // String masterDressWidth = '';
+              // String masterDressFacility = '';
+              // String masterRoomFacility = '';
+              // String masterOtherRequirement = '';
+
+              Container(
+                color: Colors.grey,
+                child: ExpansionTile(
+                  title: const Text(
+                    'Parents\'s BedRoom Details',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      width: width * 1,
+                      color: color3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.008,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: pi != null
+                                        ? printData[pi]['bedroom_length']
+                                        : '',
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          parentLength =
+                                              int.parse(value.toString());
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: pi != null
+                                        ? printData[pi]['bedroom_width']
+                                        : '',
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        parentWidth =
+                                            int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                    padding: const EdgeInsets.all(5),
+                                    constraints: const BoxConstraints(),
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.help,
+                                      size: height * 0.03,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * .01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Floor"),
+                              Material(
+                                elevation: 5,
+                                borderRadius: BorderRadius.circular(5),
+                                child: Container(
+                                  height: height * 0.03,
+                                  width: width * 0.5,
+                                  margin: const EdgeInsets.all(
+                                    3,
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      icon: const Visibility(
+                                          visible: false,
+                                          child: Icon(Icons.arrow_downward)),
+                                      hint: Text(selectedFloorParent!),
+                                      elevation: 16,
+                                      items: floorItemsParent
+                                          .asMap()
+                                          .entries
+                                          .map((it) {
+                                        String value = it.value;
+                                        int idx = it.key;
+                                        return DropdownMenuItem<String>(
+                                            value: it.value,
+                                            onTap: () {
+                                              parentLocation = it.key;
+                                            },
+                                            child: Text(
+                                              it.value,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ));
+                                      }).toList(),
+                                      onChanged: (it) {
+                                        setState(
+                                          () {
+                                            selectedFloorParent = it;
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: width * 0.01,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.008,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: pi != null
+                                        ? printData[pi]['bedroom_toilet_length']
+                                        : '',
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        parentToiletLength =
+                                            int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: pi != null
+                                        ? printData[pi]['bedroom_toilet_width']
+                                        : '',
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                      hintText: "width",
+                                      hintStyle: TextStyle(fontSize: 14),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(8),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          parentToiletWidth =
+                                              int.parse(value.toString());
+                                        },
+                                      );
+                                    },
+                                    onFieldSubmitted: (value) {},
+                                  ),
+                                ),
+                              ),
+                              valueContainer(
+                                height,
+                                width,
+                                size,
+                                0.04,
+                                0.05,
+                              ),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ))
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet Facility"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: pi != null
+                                    ? printData[pi]['bedroom_toilet_req_text']
+                                    : "",
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                    hintText: "Other Toilet Facility",
+                                    hintStyle: TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(8)),
+                                onChanged: (value) {
+                                  parentToiletFacility = value;
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Dress Details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                                activeColor: checkColor,
+                                                checkColor: Colors.white,
+                                                value: pi != null
+                                                    ? printData[pi][
+                                                                'bedroom_dress_req'] ==
+                                                            INT_ONE
+                                                        ? true
+                                                        : parentsRequiredDress
+                                                    : parentsRequiredDress,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    if (pi != null) {
+                                                      printData[pi][
+                                                              'bedroom_dress_req'] =
+                                                          INT_FOUR;
+                                                    }
+
+                                                    parentsRequiredDress =
+                                                        value;
+                                                    parentsNotRequiredDress =
+                                                        false;
+
+                                                    if (parentsRequiredDress ==
+                                                        true) {
+                                                      parentDressInt = INT_ONE;
+                                                    } else {
+                                                      parentDressInt = INT_ZERO;
+                                                    }
+                                                  });
+                                                }),
+                                          ),
+                                          requirementText("Required")
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height * 0.01,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.05,
+                                  ),
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                              activeColor: checkColor,
+                                              checkColor: const Color.fromRGBO(
+                                                  255, 255, 255, 1),
+                                              value: pi != null
+                                                  ? printData[pi][
+                                                              'bedroom_dress_req'] ==
+                                                          F_ALSE
+                                                      ? true
+                                                      : parentsNotRequiredDress
+                                                  : parentsNotRequiredDress,
+                                              onChanged: (value) {
+                                                setState(
+                                                  () {
+                                                    parentsNotRequiredDress =
+                                                        value;
+                                                    parentsRequiredDress =
+                                                        false;
+                                                    if (pi != null) {
+                                                      printData[pi][
+                                                              'bedroom_dress_req'] =
+                                                          INT_FOUR;
+                                                    }
+                                                    if (parentsRequiredDress ==
+                                                        true) {
+                                                      parentDressInt = INT_ONE;
+                                                    } else {
+                                                      parentDressInt = INT_ZERO;
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          requirementText("Not Required"),
+                                          SizedBox(
+                                            height: height * 0.01,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          if (parentsRequiredDress == true) ...[
+                            Row(
+                              children: [
+                                requirementText("Length"),
+                                SizedBox(
+                                  width: width * 0.015,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      initialValue: pi != null
+                                          ? printData[pi]
+                                              ['bedroom_dress_length']
+                                          : '',
+                                      style: const TextStyle(fontSize: 14),
+                                      decoration: const InputDecoration(
+                                        hintText: "length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          parentDressLength =
+                                              int.parse(value.toString());
+                                        });
+                                      },
+                                      onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(
+                                  height,
+                                  width,
+                                  size,
+                                  0.04,
+                                  0.05,
+                                ),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                requirementText("Width"),
+                                SizedBox(
+                                  width: width * 0.015,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      style: const TextStyle(fontSize: 14),
+                                      initialValue: pi != null
+                                          ? printData[pi]['bedroom_dress_width']
+                                          : '',
+                                      decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(
+                                          () {
+                                            parentDressWidth = int.parse(value);
+                                          },
+                                        );
+                                      },
+                                      // onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(
+                                  height,
+                                  width,
+                                  size,
+                                  0.04,
+                                  0.05,
+                                ),
+                                SizedBox(
+                                  width: width * 0.08,
+                                ),
+                                Row(
+                                  children: [
+                                    requirementText(
+                                      "help",
+                                    ),
+                                    IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: requirementText("Dress Facility"),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Material(
+                                  borderRadius: BorderRadius.circular(5),
+                                  elevation: 5,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () async {
+                                            final List<String> otherIt = [
+                                              "Walk in Cupboard",
+                                              "Vanity",
+                                              "Cupboard",
+                                            ];
+                                            final List<String> ab =
+                                                await showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return MultiSelect(
+                                                    items: otherIt);
+                                              },
+                                            );
+
+                                            setState(() {
+                                              parentDressFacility = ab;
+                                              if (pi != null) {
+                                                printData[pi][
+                                                        'bedroom_dress_facility'] =
+                                                    null;
+                                              }
+                                            });
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                            child:
+                                                const Text("Office Facility"),
+                                          ),
+                                        ),
+                                        if (parentDFac != null) ...[
+                                          for (int i = 0;
+                                              i < parentDFac!.length;
+                                              i++)
+                                            Wrap(children: [
+                                              Chip(
+                                                label: Text(
+                                                  parentDFac![i].toString(),
+                                                ),
+                                              )
+                                            ])
+                                        ],
+                                        if (parentDFac == null) ...[
+                                          Wrap(
+                                            children: parentDressFacility
+                                                .map(
+                                                  (e) => Chip(
+                                                    label: Text(e),
+                                                  ),
+                                                )
+                                                .toList(),
+                                          )
+                                        ]
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Material(
+                                    elevation: 5,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5)),
+                                    child: SizedBox(
+                                      height: height * 0.04,
+                                      width: width,
+                                      child: TextFormField(
+                                        initialValue: pi != null
+                                            ? printData[pi]
+                                                ['bedroom_dress_req_text']
+                                            : '',
+                                        style: const TextStyle(fontSize: 14),
+                                        decoration: const InputDecoration(
+                                            hintText: "dress facility",
+                                            hintStyle: TextStyle(fontSize: 14),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                            ),
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.all(8)
+                                            //fillColor: Colors.green
+                                            ),
+                                        onChanged: (value) {
+                                          parentDresstext = value;
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          SizedBox(height: height * 0.01),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                  future: getRecent(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Container(
+                                        child: const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      );
+                                    } else {
+                                      return CarouselSlider.builder(
+                                        itemCount: bunglowPageRecentList.length,
+                                        itemBuilder: (context, i, id) {
+                                          return Container(
+                                            height: height * 0.4,
+                                            width: width * 0.9,
+                                            child: Image.network(
+                                              imageUrl +
+                                                  bunglowPageRecentList[i]
+                                                      ["img_path"],
+                                              fit: BoxFit.fill,
+                                            ),
+                                          );
+                                        },
+                                        options: CarouselOptions(
+                                          autoPlay: true,
+                                          enableInfiniteScroll: true,
+                                          autoPlayAnimationDuration:
+                                              const Duration(milliseconds: 800),
+                                          viewportFraction: 1,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Material(
+                                    elevation: 3,
+                                    child: Container(
+                                      margin: const EdgeInsets.all(5),
+                                      child: Row(
+                                        children: const [
+                                          Icon(Icons.cloud_upload),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text("Upload a stair image"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.2,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    color: buttonColor,
+                                    child: const Text(
+                                      "Preview",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: pi != null
+                                    ? printData[pi]['bedroom_facility_req_text']
+                                    : '',
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                  hintText: "other requirement",
+                                  hintStyle: TextStyle(fontSize: 14),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(8),
+                                ),
+                                onChanged: (value) {
+                                  setState(
+                                    () {
+                                      parentOtherRequirement = value;
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                    future: getRecent(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Container(
+                                          child: const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                      } else {
+                                        return CarouselSlider.builder(
+                                          itemCount:
+                                              bunglowPageRecentList.length,
+                                          itemBuilder: (context, i, id) {
+                                            return Container(
+                                              height: height * 0.4,
+                                              width: width * 0.9,
+                                              child: Image.network(
+                                                imageUrl +
+                                                    bunglowPageRecentList[i]
+                                                        ["img_path"],
+                                                fit: BoxFit.fill,
+                                              ),
+                                            );
+                                          },
+                                          options: CarouselOptions(
+                                            autoPlay: true,
+                                            enableInfiniteScroll: true,
+                                            autoPlayAnimationDuration:
+                                                const Duration(
+                                                    milliseconds: 800),
+                                            viewportFraction: 1,
+                                          ),
+                                        );
+                                      }
+                                    }),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+
+        // ------------------------------guestbedroom-------------------------//
+
+        Column(
+          children: [
+            if (guestBedRoom == true) ...[
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Container(
+                color: Colors.grey,
+                child: ExpansionTile(
+                  maintainState: true,
+                  title: const Text(
+                    'Guest\'s BedRoom Details',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      width: width * 1,
+                      color: color3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.008,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: gi != null
+                                        ? printData[gi]['bedroom_length']
+                                        : '',
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          guestLength =
+                                              int.parse(value.toString());
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: gi != null
+                                        ? printData[gi]['bedroom_width']
+                                        : '',
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        guestWidth =
+                                            int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                    padding: const EdgeInsets.all(5),
+                                    constraints: const BoxConstraints(),
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.help,
+                                      size: height * 0.03,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * .01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Floor"),
+                              Material(
+                                elevation: 5,
+                                borderRadius: BorderRadius.circular(5),
+                                child: Container(
+                                  height: height * 0.03,
+                                  width: width * 0.5,
+                                  margin: const EdgeInsets.all(
+                                    3,
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      icon: const Visibility(
+                                          visible: false,
+                                          child: Icon(Icons.arrow_downward)),
+                                      hint: Text(selectedFloorGuest!),
+                                      elevation: 16,
+                                      items: floorItemsGuest
+                                          .asMap()
+                                          .entries
+                                          .map((it) {
+                                        String value = it.value;
+                                        int idx = it.key;
+                                        return DropdownMenuItem<String>(
+                                            value: it.value,
+                                            onTap: () {
+                                              guestLocation = it.key;
+                                            },
+                                            child: Text(
+                                              it.value,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ));
+                                      }).toList(),
+                                      onChanged: (it) {
+                                        setState(
+                                          () {
+                                            if (gi != null) {
+                                              printData[gi]['bedroom_floor'] =
+                                                  null;
+                                            }
+
+                                            selectedFloorGuest = it;
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: width * 0.01,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.008,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: gi != null
+                                        ? printData[gi]['bedroom_toilet_length']
+                                        : '',
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        guestToiletLength =
+                                            int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: gi != null
+                                        ? printData[gi]['bedroom_toilet_width']
+                                        : '',
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                      hintText: "width",
+                                      hintStyle: TextStyle(fontSize: 14),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(8),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          guestToiletWidth =
+                                              int.parse(value.toString());
+                                        },
+                                      );
+                                    },
+                                    onFieldSubmitted: (value) {},
+                                  ),
+                                ),
+                              ),
+                              valueContainer(
+                                height,
+                                width,
+                                size,
+                                0.04,
+                                0.05,
+                              ),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ))
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet Facility"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: gi != null
+                                    ? printData[gi]['bedroom_toilet_req_text']
+                                    : '',
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                    hintText: "Other Toilet Facility",
+                                    hintStyle: TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(8)),
+                                onChanged: (value) {
+                                  guestToiletFacility = value;
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Dress Details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                                activeColor: checkColor,
+                                                checkColor: Colors.white,
+                                                value: gi != null
+                                                    ? printData[gi][
+                                                                'bedroom_dress_req'] ==
+                                                            1
+                                                        ? true
+                                                        : guestRequiredDress
+                                                    : guestRequiredDress,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    if (gi != null) {
+                                                      printData[gi][
+                                                              'bedroom_dress_req'] =
+                                                          INT_FOUR;
+                                                    }
+                                                    guestRequiredDress = value;
+                                                    guestNotRequiredDress =
+                                                        false;
+
+                                                    if (guestRequiredDress ==
+                                                        true) {
+                                                      guestDressInt = INT_ONE;
+                                                    } else {
+                                                      guestDressInt = INT_ZERO;
+                                                    }
+                                                  });
+                                                }),
+                                          ),
+                                          requirementText("Required")
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height * 0.01,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.05,
+                                  ),
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                              activeColor: checkColor,
+                                              checkColor: Colors.white,
+                                              value: gi != null
+                                                  ? printData[gi][
+                                                              'bedroom_dress_req'] ==
+                                                          INT_ZERO
+                                                      ? true
+                                                      : guestNotRequiredDress
+                                                  : guestNotRequiredDress,
+                                              onChanged: (value) {
+                                                setState(
+                                                  () {
+                                                    guestNotRequiredDress =
+                                                        value;
+                                                    guestRequiredDress = false;
+                                                    if (gi != null) {
+                                                      printData[gi][
+                                                              'bedroom_dress_req'] =
+                                                          INT_FOUR;
+                                                    }
+                                                    if (guestRequiredDress ==
+                                                        true) {
+                                                      guestDressInt = INT_ONE;
+                                                    } else {
+                                                      guestDressInt = INT_ZERO;
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          requirementText("Not Required"),
+                                          SizedBox(
+                                            height: height * 0.01,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          if (guestRequiredDress == true) ...[
+                            Row(
+                              children: [
+                                requirementText("Length"),
+                                SizedBox(
+                                  width: width * 0.015,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      initialValue: gi != null
+                                          ? printData[gi]
+                                              ['bedroom_dress_length']
+                                          : '',
+                                      style: const TextStyle(fontSize: 14),
+                                      decoration: const InputDecoration(
+                                        hintText: "length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          guestDressLength =
+                                              int.parse(value.toString());
+                                        });
+                                      },
+                                      onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(
+                                  height,
+                                  width,
+                                  size,
+                                  0.04,
+                                  0.05,
+                                ),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                requirementText("Width"),
+                                SizedBox(
+                                  width: width * 0.015,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      style: const TextStyle(fontSize: 14),
+                                      initialValue: gi != null
+                                          ? printData[gi]['bedroom_dress_width']
+                                          : '',
+
+                                      decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(
+                                          () {
+                                            guestDressWidth = int.parse(value);
+                                          },
+                                        );
+                                      },
+                                      // onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(
+                                  height,
+                                  width,
+                                  size,
+                                  0.04,
+                                  0.05,
+                                ),
+                                SizedBox(
+                                  width: width * 0.08,
+                                ),
+                                Row(
+                                  children: [
+                                    requirementText(
+                                      "help",
+                                    ),
+                                    IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: requirementText("Dress Facility"),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Material(
+                                  borderRadius: BorderRadius.circular(5),
+                                  elevation: 5,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () async {
+                                            final List<String> otherIt = [
+                                              "Walk in Cupboard",
+                                              "Vanity",
+                                              "Cupboard",
+                                            ];
+                                            final List<String> ab =
+                                                await showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return MultiSelect(
+                                                    items: otherIt);
+                                              },
+                                            );
+
+                                            setState(() {
+                                              guestDressFacility = ab;
+                                              guestDFac = ab;
+
+                                              print("guestDFac");
+                                              print(ab);
+                                            });
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                            child:
+                                                const Text("Office Facility"),
+                                          ),
+                                        ),
+                                        if (guestDFac != null) ...[
+                                          for (int i = 0;
+                                              i < guestDFac!.length;
+                                              i++)
+                                            Wrap(children: [
+                                              Chip(
+                                                label: Text(
+                                                    guestDFac![i].toString()),
+                                              )
+                                            ])
+                                        ],
+                                        if (guestDFac == null) ...[
+                                          Wrap(
+                                            children: guestDressFacility
+                                                .map(
+                                                  (e) => Chip(
+                                                    label: Text(e),
+                                                  ),
+                                                )
+                                                .toList(),
+                                          ),
+                                        ]
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Material(
+                                    elevation: 5,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5)),
+                                    child: SizedBox(
+                                      height: height * 0.04,
+                                      width: width,
+                                      child: TextFormField(
+                                        initialValue: gi != null
+                                            ? printData[gi]
+                                                ['bedroom_dress_req_text']
+                                            : '',
+                                        style: const TextStyle(fontSize: 14),
+                                        decoration: const InputDecoration(
+                                            hintText: "dress facility",
+                                            hintStyle: TextStyle(fontSize: 14),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                            ),
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.all(8)
+                                            //fillColor: Colors.green
+                                            ),
+                                        onChanged: (value) {
+                                          guestDresstext = value;
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          SizedBox(height: height * 0.01),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                  future: getRecent(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Container(
+                                        child: const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      );
+                                    } else {
+                                      return CarouselSlider.builder(
+                                        itemCount: bunglowPageRecentList.length,
+                                        itemBuilder: (context, i, id) {
+                                          return Container(
+                                            height: height * 0.4,
+                                            width: width * 0.9,
+                                            child: Image.network(
+                                              imageUrl +
+                                                  bunglowPageRecentList[i]
+                                                      ["img_path"],
+                                              fit: BoxFit.fill,
+                                            ),
+                                          );
+                                        },
+                                        options: CarouselOptions(
+                                          autoPlay: true,
+                                          enableInfiniteScroll: true,
+                                          autoPlayAnimationDuration:
+                                              const Duration(milliseconds: 800),
+                                          viewportFraction: 1,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Material(
+                                    elevation: 3,
+                                    child: Container(
+                                      margin: const EdgeInsets.all(5),
+                                      child: Row(
+                                        children: const [
+                                          Icon(Icons.cloud_upload),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text("Upload a stair image"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.2,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    color: buttonColor,
+                                    child: const Text(
+                                      "Preview",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: gi != null
+                                    ? printData[gi]['bedroom_facility_req_text']
+                                    : '',
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                  hintText: "other requirement",
+                                  hintStyle: TextStyle(fontSize: 14),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(8),
+                                ),
+                                onChanged: (value) {
+                                  setState(
+                                    () {
+                                      guestOtherRequirement = value;
+                                      print(guestOtherRequirement);
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                    future: getRecent(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Container(
+                                          child: const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                      } else {
+                                        return CarouselSlider.builder(
+                                          itemCount:
+                                              bunglowPageRecentList.length,
+                                          itemBuilder: (context, i, id) {
+                                            return Container(
+                                              height: height * 0.4,
+                                              width: width * 0.9,
+                                              child: Image.network(
+                                                imageUrl +
+                                                    bunglowPageRecentList[i]
+                                                        ["img_path"],
+                                                fit: BoxFit.fill,
+                                              ),
+                                            );
+                                          },
+                                          options: CarouselOptions(
+                                            autoPlay: true,
+                                            enableInfiniteScroll: true,
+                                            autoPlayAnimationDuration:
+                                                const Duration(
+                                                    milliseconds: 800),
+                                            viewportFraction: 1,
+                                          ),
+                                        );
+                                      }
+                                    }),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+        // ------------------------------other1bedroom------------------------------//
+        Column(
+          children: [
+            if (other1BedRoom == true) ...[
+              SizedBox(
+                height: height * 0.01,
+              ),
+
+              // String masterDressReq = '0';
+              // List<String> masterLength = <String>[];
+              // List<String> masterWidth = <String>[];
+              // String masterLocation = '';
+              // String masterToiletLength = '';
+              // String masterToiletWidth = '';
+              // String masterToiletFacility = '';
+              // String masterDressLength = '';
+              // String masterDressWidth = '';
+              // String masterDressFacility = '';
+              // String masterRoomFacility = '';
+              // String masterOtherRequirement = '';
+
+              Container(
+                color: Colors.grey,
+                child: ExpansionTile(
+                  maintainState: true,
+                  title: const Text(
+                    'Other\'s 1 BedRoom Details',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      width: width * 1,
+                      color: color3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.008,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: o1i != null
+                                        ? printData[o1i]['bedroom_length']
+                                        : '',
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          other1Length =
+                                              int.parse(value.toString());
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: o1i != null
+                                        ? printData[o1i]['bedroom_width']
+                                        : '',
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        other1Width =
+                                            int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                    padding: const EdgeInsets.all(5),
+                                    constraints: const BoxConstraints(),
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.help,
+                                      size: height * 0.03,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * .01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Floor"),
+                              Material(
+                                elevation: 5,
+                                borderRadius: BorderRadius.circular(5),
+                                child: Container(
+                                  height: height * 0.03,
+                                  width: width * 0.5,
+                                  margin: const EdgeInsets.all(
+                                    3,
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      icon: const Visibility(
+                                          visible: false,
+                                          child: Icon(Icons.arrow_downward)),
+                                      hint: Text(selectedFloorOther1!),
+                                      elevation: 16,
+                                      items: floorItemsGuest
+                                          .asMap()
+                                          .entries
+                                          .map((it) {
+                                        String value = it.value;
+                                        int idx = it.key;
+                                        return DropdownMenuItem<String>(
+                                            value: it.value,
+                                            onTap: () {
+                                              other1Location = it.key;
+                                            },
+                                            child: Text(
+                                              it.value,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ));
+                                      }).toList(),
+                                      onChanged: (it) {
+                                        setState(
+                                          () {
+                                            selectedFloorOther1 = it;
+
+                                            // if (selectedFloorOther1 ==
+                                            //     G_FLOOR_TEXT) {
+                                            //   other1Location = INT_ZERO;
+                                            // }
+                                            // if (selectedFloorOther1 ==
+                                            //     G_1_FLOOR_TEXT) {
+                                            //   other1Location = INT_ONE;
+                                            // }
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: width * 0.01,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.008,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: o1i != null
+                                        ? printData[o1i]
+                                            ['bedroom_toilet_length']
+                                        : '',
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        other1ToiletLength =
+                                            int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: o1i != null
+                                        ? printData[o1i]['bedroom_toilet_width']
+                                        : '',
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                      hintText: "width",
+                                      hintStyle: TextStyle(fontSize: 14),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(8),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          other1ToiletWidth =
+                                              int.parse(value.toString());
+                                        },
+                                      );
+                                    },
+                                    onFieldSubmitted: (value) {},
+                                  ),
+                                ),
+                              ),
+                              valueContainer(
+                                height,
+                                width,
+                                size,
+                                0.04,
+                                0.05,
+                              ),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ))
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet Facility"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: o1i != null
+                                    ? printData[o1i]['bedroom_toilet_req_text']
+                                    : '',
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                    hintText: "Other Toilet Facility",
+                                    hintStyle: TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(8)),
+                                onChanged: (value) {
+                                  other1ToiletFacility = value;
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Dress Details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                                activeColor: checkColor,
+                                                checkColor: Colors.white,
+                                                value: o1i != null
+                                                    ? printData[o1i][
+                                                                'bedroom_dress_req'] ==
+                                                            INT_ONE
+                                                        ? true
+                                                        : other1RequiredDress
+                                                    : other1RequiredDress,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    if (o1i != null) {
+                                                      printData[o1i][
+                                                              'bedroom_dress_req'] =
+                                                          INT_FOUR;
+                                                    }
+                                                    other1RequiredDress = value;
+                                                    other1NotRequiredDress =
+                                                        false;
+
+                                                    if (other1RequiredDress ==
+                                                        true) {
+                                                      other1DressInt = INT_ONE;
+                                                    } else {
+                                                      other1DressInt = INT_ZERO;
+                                                    }
+                                                  });
+                                                }),
+                                          ),
+                                          requirementText("Required")
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height * 0.01,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.05,
+                                  ),
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                              activeColor: checkColor,
+                                              checkColor: Colors.white,
+                                              value: o1i != null
+                                                  ? printData[o1i][
+                                                              'bedroom_dress_req'] ==
+                                                          INT_ZERO
+                                                      ? true
+                                                      : other1NotRequiredDress
+                                                  : other1NotRequiredDress,
+                                              onChanged: (value) {
+                                                setState(
+                                                  () {
+                                                    other1NotRequiredDress =
+                                                        value;
+                                                    other1RequiredDress = false;
+                                                    if (o1i != null) {
+                                                      printData[o1i][
+                                                              'bedroom_dress_req'] =
+                                                          INT_FOUR;
+                                                    }
+                                                    if (other1RequiredDress ==
+                                                        true) {
+                                                      other1DressInt = INT_ONE;
+                                                    } else {
+                                                      other1DressInt = INT_ZERO;
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          requirementText("Not Required"),
+                                          SizedBox(
+                                            height: height * 0.01,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          if (other1RequiredDress == true) ...[
+                            Row(
+                              children: [
+                                requirementText("Length"),
+                                SizedBox(
+                                  width: width * 0.015,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      initialValue: o1i != null
+                                          ? printData[o1i]
+                                              ['bedroom_dress_length']
+                                          : '',
+                                      style: const TextStyle(fontSize: 14),
+                                      decoration: const InputDecoration(
+                                        hintText: "length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(
+                                          () {
+                                            other1DressLength =
+                                                int.parse(value.toString());
+                                          },
+                                        );
+                                      },
+                                      onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(
+                                  height,
+                                  width,
+                                  size,
+                                  0.04,
+                                  0.05,
+                                ),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                requirementText("Width"),
+                                SizedBox(
+                                  width: width * 0.015,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      style: const TextStyle(fontSize: 14),
+                                      initialValue: o1i != null
+                                          ? printData[o1i]
+                                              ['bedroom_dress_width']
+                                          : '',
+
+                                      decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(
+                                          () {
+                                            other1DressWidth = int.parse(value);
+                                          },
+                                        );
+                                      },
+                                      // onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(
+                                  height,
+                                  width,
+                                  size,
+                                  0.04,
+                                  0.05,
+                                ),
+                                SizedBox(
+                                  width: width * 0.08,
+                                ),
+                                Row(
+                                  children: [
+                                    requirementText("help"),
+                                    IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: requirementText("Dress Facility"),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Material(
+                                  borderRadius: BorderRadius.circular(5),
+                                  elevation: 5,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () async {
+                                            final List<String> otherIt = [
+                                              "Walk in Cupboard",
+                                              "Vanity",
+                                              "Cupboard",
+                                            ];
+                                            final List<String> ab =
+                                                await showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return MultiSelect(
+                                                    items: otherIt);
+                                              },
+                                            );
+
+                                            setState(() {
+                                              other1DressFacility = ab;
+                                              if (o1i != null) {
+                                                printData[o1i][
+                                                        'bedroom_dress_facility'] =
+                                                    null;
+                                              }
+                                            });
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                            child:
+                                                const Text("Office Facility"),
+                                          ),
+                                        ),
+                                        if (other1DFac != null) ...[
+                                          for (int i = 0;
+                                              i < other1DFac!.length;
+                                              i++)
+                                            Wrap(children: [
+                                              Chip(
+                                                label: Text(
+                                                    other1DFac![i].toString()),
+                                              )
+                                            ])
+                                        ],
+                                        if (other1DFac == null) ...[
+                                          Wrap(
+                                            children: other1DressFacility
+                                                .map(
+                                                  (e) => Chip(
+                                                    label: Text(e),
+                                                  ),
+                                                )
+                                                .toList(),
+                                          ),
+                                        ]
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Material(
+                                    elevation: 5,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5)),
+                                    child: SizedBox(
+                                      height: height * 0.04,
+                                      width: width,
+                                      child: TextFormField(
+                                        initialValue: o1i != null
+                                            ? printData[o1i]
+                                                ['bedroom_dress_req_text']
+                                            : '',
+                                        style: const TextStyle(fontSize: 14),
+                                        decoration: const InputDecoration(
+                                            hintText: "dress facility",
+                                            hintStyle: TextStyle(fontSize: 14),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                            ),
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.all(8)
+                                            //fillColor: Colors.green
+                                            ),
+                                        onChanged: (value) {
+                                          other1Dresstext = value;
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          SizedBox(height: height * 0.01),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                  future: getRecent(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Container(
+                                        child: const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      );
+                                    } else {
+                                      return CarouselSlider.builder(
+                                        itemCount: bunglowPageRecentList.length,
+                                        itemBuilder: (context, i, id) {
+                                          return Container(
+                                            height: height * 0.4,
+                                            width: width * 0.9,
+                                            child: Image.network(
+                                              imageUrl +
+                                                  bunglowPageRecentList[i]
+                                                      ["img_path"],
+                                              fit: BoxFit.fill,
+                                            ),
+                                          );
+                                        },
+                                        options: CarouselOptions(
+                                          autoPlay: true,
+                                          enableInfiniteScroll: true,
+                                          autoPlayAnimationDuration:
+                                              const Duration(milliseconds: 800),
+                                          viewportFraction: 1,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Material(
+                                    elevation: 3,
+                                    child: Container(
+                                      margin: const EdgeInsets.all(5),
+                                      child: Row(
+                                        children: const [
+                                          Icon(Icons.cloud_upload),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text("Upload a stair image"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.2,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    color: buttonColor,
+                                    child: const Text(
+                                      "Preview",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: o1i != null
+                                    ? printData[o1i]
+                                        ['bedroom_facility_req_text']
+                                    : "",
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                  hintText: "other requirement",
+                                  hintStyle: TextStyle(fontSize: 14),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(8),
+                                ),
+                                onChanged: (value) {
+                                  setState(
+                                    () {
+                                      other1OtherRequirement = value;
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                    future: getRecent(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Container(
+                                          child: const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                      } else {
+                                        return CarouselSlider.builder(
+                                          itemCount:
+                                              bunglowPageRecentList.length,
+                                          itemBuilder: (context, i, id) {
+                                            return Container(
+                                              height: height * 0.4,
+                                              width: width * 0.9,
+                                              child: Image.network(
+                                                imageUrl +
+                                                    bunglowPageRecentList[i]
+                                                        ["img_path"],
+                                                fit: BoxFit.fill,
+                                              ),
+                                            );
+                                          },
+                                          options: CarouselOptions(
+                                            autoPlay: true,
+                                            enableInfiniteScroll: true,
+                                            autoPlayAnimationDuration:
+                                                const Duration(
+                                                    milliseconds: 800),
+                                            viewportFraction: 1,
+                                          ),
+                                        );
+                                      }
+                                    }),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
+
+        // ------------------------------other2BedRoom  ---------------------------------------//
+
+        Column(
+          children: [
+            if (other2BedRoom == true) ...{
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Container(
+                color: Colors.grey,
+                child: ExpansionTile(
+                  maintainState: true,
+                  title: const Text(
+                    'Other2\'s BedRoom Details',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      width: width * 1,
+                      color: color3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.008,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: o2i != null
+                                        ? printData[o2i]['bedroom_length']
+                                        : '',
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          other2Length =
+                                              int.parse(value.toString());
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: o2i != null
+                                        ? printData[o2i]['bedroom_width']
+                                        : '',
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        other2Width =
+                                            int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                    padding: const EdgeInsets.all(5),
+                                    constraints: const BoxConstraints(),
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.help,
+                                      size: height * 0.03,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * .01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Floor"),
+                              Material(
+                                elevation: 5,
+                                borderRadius: BorderRadius.circular(5),
+                                child: Container(
+                                  height: height * 0.03,
+                                  width: width * 0.5,
+                                  margin: const EdgeInsets.all(
+                                    3,
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      icon: const Visibility(
+                                          visible: false,
+                                          child: Icon(Icons.arrow_downward)),
+                                      hint: Text(selectedFloorOther2!),
+                                      elevation: 16,
+                                      items: floorItemsOther2
+                                          .asMap()
+                                          .entries
+                                          .map((it) {
+                                        int idx = it.key;
+                                        String value = it.value;
+                                        return DropdownMenuItem<String>(
+                                          value: it.value,
+                                          onTap: () {
+                                            other2Location = it.key;
+                                            print(other2Location);
+                                          },
+                                          child: Text(
+                                            it.value,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (it) {
+                                        setState(
+                                          () {
+                                            selectedFloorOther2 = it;
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: width * 0.01,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.008,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: o2i != null
+                                        ? printData[o2i]
+                                            ['bedroom_toilet_length']
+                                        : '',
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        other2ToiletLength =
+                                            int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: o2i != null
+                                        ? printData[o2i]['bedroom_toilet_width']
+                                        : '',
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                      hintText: "width",
+                                      hintStyle: TextStyle(fontSize: 14),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(8),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          other2ToiletWidth =
+                                              int.parse(value.toString());
+                                        },
+                                      );
+                                    },
+                                    onFieldSubmitted: (value) {},
+                                  ),
+                                ),
+                              ),
+                              valueContainer(
+                                height,
+                                width,
+                                size,
+                                0.04,
+                                0.05,
+                              ),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ))
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet Facility"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: o2i != null
+                                    ? printData[o2i]['bedroom_toilet_req_text']
+                                    : '',
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                    hintText: "Other Toilet Facility",
+                                    hintStyle: TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(8)),
+                                onChanged: (value) {
+                                  other2ToiletFacility = value;
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Dress Details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                                activeColor: checkColor,
+                                                checkColor: Colors.white,
+                                                value: o2i != null
+                                                    ? printData[o2i][
+                                                                'bedroom_dress_req'] ==
+                                                            INT_ONE
+                                                        ? true
+                                                        : other2RequiredDress
+                                                    : other2RequiredDress,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    if (o2i != null) {
+                                                      printData[o2i][
+                                                              'bedroom_dress_req'] =
+                                                          INT_FOUR;
+                                                    }
+                                                    other2RequiredDress = value;
+                                                    other2NotRequiredDress =
+                                                        false;
+
+                                                    if (other2RequiredDress ==
+                                                        true) {
+                                                      other2DressInt = INT_ONE;
+                                                    } else {
+                                                      other2DressInt = INT_ZERO;
+                                                    }
+                                                  });
+                                                }),
+                                          ),
+                                          requirementText("Required")
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height * 0.01,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.05,
+                                  ),
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                              activeColor: checkColor,
+                                              checkColor: Colors.white,
+                                              value: o2i != null
+                                                  ? printData[o2i][
+                                                              'bedroom_dress_req'] ==
+                                                          INT_ZERO
+                                                      ? true
+                                                      : other2NotRequiredDress
+                                                  : other2NotRequiredDress,
+                                              onChanged: (value) {
+                                                setState(
+                                                  () {
+                                                    other2NotRequiredDress =
+                                                        value;
+                                                    other2RequiredDress = false;
+                                                    if (o2i != null) {
+                                                      printData[o2i][
+                                                              'bedroom_dress_req'] =
+                                                          INT_FOUR;
+                                                    }
+                                                    if (other2RequiredDress ==
+                                                        true) {
+                                                      other2DressInt = INT_ONE;
+                                                    } else {
+                                                      other2DressInt = INT_ZERO;
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          requirementText("Not Required"),
+                                          SizedBox(
+                                            height: height * 0.01,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          if (other2RequiredDress == true) ...[
+                            Row(
+                              children: [
+                                requirementText("Length"),
+                                SizedBox(
+                                  width: width * 0.015,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      initialValue: o2i != null
+                                          ? printData[o2i]
+                                              ['bedroom_dress_length']
+                                          : '',
+                                      style: const TextStyle(fontSize: 14),
+                                      decoration: const InputDecoration(
+                                        hintText: "length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(
+                                          () {
+                                            other2DressLength =
+                                                int.parse(value.toString());
+                                          },
+                                        );
+                                      },
+                                      onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(
+                                  height,
+                                  width,
+                                  size,
+                                  0.04,
+                                  0.05,
+                                ),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                requirementText("Width"),
+                                SizedBox(
+                                  width: width * 0.015,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      style: const TextStyle(fontSize: 14),
+                                      initialValue: o2i != null
+                                          ? printData[o2i]
+                                              ['bedroom_dress_width']
+                                          : '',
+
+                                      decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(
+                                          () {
+                                            other2DressWidth = int.parse(value);
+                                          },
+                                        );
+                                      },
+                                      // onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(
+                                  height,
+                                  width,
+                                  size,
+                                  0.04,
+                                  0.05,
+                                ),
+                                SizedBox(
+                                  width: width * 0.08,
+                                ),
+                                Row(
+                                  children: [
+                                    requirementText("help"),
+                                    IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: requirementText("Dress Facility"),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Material(
+                                  borderRadius: BorderRadius.circular(5),
+                                  elevation: 5,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () async {
+                                            final List<String> otherIt = [
+                                              "Walk in Cupboard",
+                                              "Vanity",
+                                              "Cupboard",
+                                            ];
+                                            final List<String> ab =
+                                                await showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return MultiSelect(
+                                                    items: otherIt);
+                                              },
+                                            );
+
+                                            setState(() {
+                                              other2DressFacility = ab;
+                                              if (o2i != null) {
+                                                printData[o2i][
+                                                        'bedroom_dress_facility'] =
+                                                    null;
+                                              }
+                                            });
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                            child:
+                                                const Text("Office Facility"),
+                                          ),
+                                        ),
+                                        if (other2DFac != null) ...[
+                                          for (int i = 0;
+                                              i < other2DFac!.length;
+                                              i++)
+                                            Wrap(children: [
+                                              Chip(
+                                                label: Text(
+                                                    other2DFac![i].toString()),
+                                              )
+                                            ])
+                                        ],
+                                        if (other2DFac == null) ...[
+                                          Wrap(
+                                            children: other2DressFacility
+                                                .map(
+                                                  (e) => Chip(
+                                                    label: Text(e),
+                                                  ),
+                                                )
+                                                .toList(),
+                                          ),
+                                        ]
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Material(
+                                    elevation: 5,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5)),
+                                    child: SizedBox(
+                                      height: height * 0.04,
+                                      width: width,
+                                      child: TextFormField(
+                                        initialValue: o2i != null
+                                            ? printData[o2i]
+                                                ['bedroom_dress_req_text']
+                                            : '',
+                                        style: const TextStyle(fontSize: 14),
+                                        decoration: const InputDecoration(
+                                            hintText: "dress facility",
+                                            hintStyle: TextStyle(fontSize: 14),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                            ),
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.all(8)
+                                            //fillColor: Colors.green
+                                            ),
+                                        onChanged: (value) {
+                                          other2Dresstext = value;
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          SizedBox(height: height * 0.01),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                  future: getRecent(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Container(
+                                        child: const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      );
+                                    } else {
+                                      return CarouselSlider.builder(
+                                        itemCount: bunglowPageRecentList.length,
+                                        itemBuilder: (context, i, id) {
+                                          return Container(
+                                            height: height * 0.4,
+                                            width: width * 0.9,
+                                            child: Image.network(
+                                              imageUrl +
+                                                  bunglowPageRecentList[i]
+                                                      ["img_path"],
+                                              fit: BoxFit.fill,
+                                            ),
+                                          );
+                                        },
+                                        options: CarouselOptions(
+                                          autoPlay: true,
+                                          enableInfiniteScroll: true,
+                                          autoPlayAnimationDuration:
+                                              const Duration(milliseconds: 800),
+                                          viewportFraction: 1,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Material(
+                                    elevation: 3,
+                                    child: Container(
+                                      margin: const EdgeInsets.all(5),
+                                      child: Row(
+                                        children: const [
+                                          Icon(Icons.cloud_upload),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text("Upload a stair image"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.2,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    color: buttonColor,
+                                    child: const Text(
+                                      "Preview",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: o2i != null
+                                    ? printData[o2i]
+                                        ['bedroom_facility_req_text']
+                                    : '',
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                  hintText: "other requirement",
+                                  hintStyle: TextStyle(fontSize: 14),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(8),
+                                ),
+                                onChanged: (value) {
+                                  setState(
+                                    () {
+                                      other2OtherRequirement = value;
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                    future: getRecent(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Container(
+                                          child: const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                      } else {
+                                        return CarouselSlider.builder(
+                                          itemCount:
+                                              bunglowPageRecentList.length,
+                                          itemBuilder: (context, i, id) {
+                                            return Container(
+                                              height: height * 0.4,
+                                              width: width * 0.9,
+                                              child: Image.network(
+                                                imageUrl +
+                                                    bunglowPageRecentList[i]
+                                                        ["img_path"],
+                                                fit: BoxFit.fill,
+                                              ),
+                                            );
+                                          },
+                                          options: CarouselOptions(
+                                            autoPlay: true,
+                                            enableInfiniteScroll: true,
+                                            autoPlayAnimationDuration:
+                                                const Duration(
+                                                    milliseconds: 800),
+                                            viewportFraction: 1,
+                                          ),
+                                        );
+                                      }
+                                    }),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            },
+          ],
+        ),
+
+        // ------------------------------other3bedroom   -----------------------------//
+
+        Column(
+          children: [
+            if (other3BedRoom == true) ...{
+              SizedBox(
+                height: height * 0.01,
+              ),
+
+              // String masterDressReq = '0';
+              // List<String> masterLength = <String>[];
+              // List<String> masterWidth = <String>[];
+              // String masterLocation = '';
+              // String masterToiletLength = '';
+              // String masterToiletWidth = '';
+              // String masterToiletFacility = '';
+              // String masterDressLength = '';
+              // String masterDressWidth = '';
+              // String masterDressFacility = '';
+              // String masterRoomFacility = '';
+              // String masterOtherRequirement = '';
+
+              Container(
+                color: Colors.grey,
+                child: ExpansionTile(
+                  maintainState: true,
+                  title: const Text(
+                    'Other 3\'s BedRoom Details',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      width: width * 1,
+                      color: color3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.008,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: o3i != null
+                                        ? printData[o3i]['bedroom_length']
+                                        : '',
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          other3Length =
+                                              int.parse(value.toString());
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: o3i != null
+                                        ? printData[o3i]['bedroom_width']
+                                        : '',
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        other3Width =
+                                            int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                    padding: const EdgeInsets.all(5),
+                                    constraints: const BoxConstraints(),
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.help,
+                                      size: height * 0.03,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * .01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Floor"),
+                              Material(
+                                elevation: 5,
+                                borderRadius: BorderRadius.circular(5),
+                                child: Container(
+                                  height: height * 0.03,
+                                  width: width * 0.5,
+                                  margin: const EdgeInsets.all(
+                                    3,
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      icon: const Visibility(
+                                          visible: false,
+                                          child: Icon(Icons.arrow_downward)),
+                                      hint: Text(selectedFloorOther3!),
+                                      elevation: 16,
+                                      items: floorItemsOther3
+                                          .asMap()
+                                          .entries
+                                          .map((it) {
+                                        int idx = it.key;
+                                        String value = it.value;
+                                        return DropdownMenuItem<String>(
+                                          value: it.value,
+                                          onTap: () {
+                                            other3Location = it.key;
+                                            print(other3Location);
+                                          },
+                                          child: Text(
+                                            it.value,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (it) {
+                                        setState(
+                                          () {
+                                            selectedFloorOther3 = it;
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: width * 0.01,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              requirementText("Length"),
+                              SizedBox(
+                                width: width * 0.008,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    style: const TextStyle(fontSize: 14),
+                                    initialValue: o3i != null
+                                        ? printData[o3i]
+                                            ['bedroom_toilet_length']
+                                        : '',
+                                    decoration: const InputDecoration(
+                                        hintText: "Length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8)
+                                        //fillColor: Colors.green
+                                        ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        other3ToiletLength =
+                                            int.parse(value.toString());
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              valueContainer(height, width, size, 0.04, 0.05),
+                              SizedBox(
+                                width: width * 0.02,
+                              ),
+                              requirementText("Width"),
+                              SizedBox(
+                                width: width * 0.015,
+                              ),
+                              Material(
+                                elevation: 5,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5)),
+                                child: SizedBox(
+                                  height: height * 0.04,
+                                  width: width * 0.15,
+                                  child: TextFormField(
+                                    initialValue: o3i != null
+                                        ? printData[o3i]['bedroom_toilet_width']
+                                        : '',
+                                    style: const TextStyle(fontSize: 14),
+                                    decoration: const InputDecoration(
+                                      hintText: "width",
+                                      hintStyle: TextStyle(fontSize: 14),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(8),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(
+                                        () {
+                                          other3ToiletWidth =
+                                              int.parse(value.toString());
+                                        },
+                                      );
+                                    },
+                                    onFieldSubmitted: (value) {},
+                                  ),
+                                ),
+                              ),
+                              valueContainer(
+                                height,
+                                width,
+                                size,
+                                0.04,
+                                0.05,
+                              ),
+                              SizedBox(
+                                width: width * 0.08,
+                              ),
+                              Row(
+                                children: [
+                                  requirementText("help"),
+                                  IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ))
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Toilet Facility"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: o3i != null
+                                    ? printData[o3i]['bedroom_toilet_req_text']
+                                    : '',
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                    hintText: "Other Toilet Facility",
+                                    hintStyle: TextStyle(fontSize: 14),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.all(8)),
+                                onChanged: (value) {
+                                  other3ToiletFacility = value;
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          requirementText("Dress Details"),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                                activeColor: checkColor,
+                                                checkColor: Colors.white,
+                                                value: o3i != null
+                                                    ? printData[o3i][
+                                                                'bedroom_dress_req'] ==
+                                                            INT_ONE
+                                                        ? true
+                                                        : other3RequiredDress
+                                                    : other3RequiredDress,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    if (o3i != null) {
+                                                      printData[o3i][
+                                                              'bedroom_dress_req'] =
+                                                          INT_FOUR;
+                                                    }
+                                                    other3RequiredDress = value;
+                                                    other3NotRequiredDress =
+                                                        false;
+
+                                                    if (other3RequiredDress ==
+                                                        true) {
+                                                      other3DressInt = INT_ONE;
+                                                    } else {
+                                                      other3DressInt = INT_ZERO;
+                                                    }
+                                                  });
+                                                }),
+                                          ),
+                                          requirementText("Required")
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: height * 0.01,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: width * 0.05,
+                                  ),
+                                  Material(
+                                    borderRadius: BorderRadius.circular(5),
+                                    elevation: 5,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            height: height * 0.04,
+                                            child: Checkbox(
+                                              activeColor: checkColor,
+                                              checkColor: Colors.white,
+                                              value: o3i != null
+                                                  ? printData[o3i][
+                                                              'bedroom_dress_req'] ==
+                                                          INT_ZERO
+                                                      ? true
+                                                      : other3NotRequiredDress
+                                                  : other3NotRequiredDress,
+                                              onChanged: (value) {
+                                                setState(
+                                                  () {
+                                                    other3NotRequiredDress =
+                                                        value;
+                                                    other3RequiredDress = false;
+                                                    if (o3i != null) {
+                                                      printData[o3i][
+                                                              'bedroom_dress_req'] =
+                                                          INT_FOUR;
+                                                    }
+                                                    if (other3RequiredDress ==
+                                                        true) {
+                                                      other3DressInt = INT_ONE;
+                                                    } else {
+                                                      other3DressInt = INT_ZERO;
+                                                    }
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          requirementText("Not Required"),
+                                          SizedBox(
+                                            height: height * 0.01,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          if (other3RequiredDress == true) ...[
+                            Row(
+                              children: [
+                                requirementText("Length"),
+                                SizedBox(
+                                  width: width * 0.015,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      initialValue: o3i != null
+                                          ? printData[o3i]
+                                              ['bedroom_dress_length']
+                                          : '',
+                                      style: const TextStyle(fontSize: 14),
+                                      decoration: const InputDecoration(
+                                        hintText: "length",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(
+                                          () {
+                                            other3DressLength =
+                                                int.parse(value.toString());
+                                          },
+                                        );
+                                      },
+                                      onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(
+                                  height,
+                                  width,
+                                  size,
+                                  0.04,
+                                  0.05,
+                                ),
+                                SizedBox(
+                                  width: width * 0.02,
+                                ),
+                                requirementText("Width"),
+                                SizedBox(
+                                  width: width * 0.015,
+                                ),
+                                Material(
+                                  elevation: 5,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  child: SizedBox(
+                                    height: height * 0.04,
+                                    width: width * 0.15,
+                                    child: TextFormField(
+                                      style: const TextStyle(fontSize: 14),
+                                      initialValue: o3i != null
+                                          ? printData[o3i]
+                                              ['bedroom_dress_width']
+                                          : "",
+
+                                      decoration: const InputDecoration(
+                                        hintText: "width",
+                                        hintStyle: TextStyle(fontSize: 14),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.all(8),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(
+                                          () {
+                                            other3DressWidth = int.parse(value);
+                                          },
+                                        );
+                                      },
+                                      // onFieldSubmitted: (value) {},
+                                    ),
+                                  ),
+                                ),
+                                valueContainer(
+                                  height,
+                                  width,
+                                  size,
+                                  0.04,
+                                  0.05,
+                                ),
+                                SizedBox(
+                                  width: width * 0.08,
+                                ),
+                                Row(
+                                  children: [
+                                    requirementText("help"),
+                                    IconButton(
+                                      padding: const EdgeInsets.all(5),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.help,
+                                        size: height * 0.03,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: height * 0.01,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: requirementText("Dress Facility"),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Material(
+                                  borderRadius: BorderRadius.circular(5),
+                                  elevation: 5,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () async {
+                                            final List<String> otherIt = [
+                                              "Walk in Cupboard",
+                                              "Vanity",
+                                              "Cupboard",
+                                            ];
+                                            final List<String> ab =
+                                                await showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return MultiSelect(
+                                                    items: otherIt);
+                                              },
+                                            );
+
+                                            setState(() {
+                                              other3DressFacility = ab;
+                                              if (o3i != null) {
+                                                printData[o3i][
+                                                        'bedroom_dress_facility'] =
+                                                    null;
+                                              }
+                                            });
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                            child:
+                                                const Text("Office Facility"),
+                                          ),
+                                        ),
+                                        if (other3DFac != null) ...[
+                                          for (int i = 0;
+                                              i < other3DFac!.length;
+                                              i++)
+                                            Wrap(children: [
+                                              Chip(
+                                                label: Text(
+                                                    other3DFac![i].toString()),
+                                              )
+                                            ])
+                                        ],
+                                        if (other3DressFacility != null) ...[
+                                          Wrap(
+                                            children: other3DressFacility
+                                                .map(
+                                                  (e) => Chip(
+                                                    label: Text(e),
+                                                  ),
+                                                )
+                                                .toList(),
+                                          ),
+                                        ]
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Material(
+                                    elevation: 5,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5)),
+                                    child: SizedBox(
+                                      height: height * 0.04,
+                                      width: width,
+                                      child: TextFormField(
+                                        initialValue: o3i != null
+                                            ? printData[o3i]
+                                                ['bedroom_dress_req_text']
+                                            : "",
+                                        style: const TextStyle(fontSize: 14),
+                                        decoration: const InputDecoration(
+                                            hintText: "dress facility",
+                                            hintStyle: TextStyle(fontSize: 14),
+                                            border: OutlineInputBorder(
+                                              borderSide: BorderSide.none,
+                                            ),
+                                            isDense: true,
+                                            contentPadding: EdgeInsets.all(8)
+                                            //fillColor: Colors.green
+                                            ),
+                                        onChanged: (value) {
+                                          other3Dresstext = value;
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          SizedBox(height: height * 0.01),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                  future: getRecent(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Container(
+                                        child: const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      );
+                                    } else {
+                                      return CarouselSlider.builder(
+                                        itemCount: bunglowPageRecentList.length,
+                                        itemBuilder: (context, i, id) {
+                                          return Container(
+                                            height: height * 0.4,
+                                            width: width * 0.9,
+                                            child: Image.network(
+                                              imageUrl +
+                                                  bunglowPageRecentList[i]
+                                                      ["img_path"],
+                                              fit: BoxFit.fill,
+                                            ),
+                                          );
+                                        },
+                                        options: CarouselOptions(
+                                          autoPlay: true,
+                                          enableInfiniteScroll: true,
+                                          autoPlayAnimationDuration:
+                                              const Duration(milliseconds: 800),
+                                          viewportFraction: 1,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Material(
+                                    elevation: 3,
+                                    child: Container(
+                                      margin: const EdgeInsets.all(5),
+                                      child: Row(
+                                        children: const [
+                                          Icon(Icons.cloud_upload),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text("Upload a stair image"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.2,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    color: buttonColor,
+                                    child: const Text(
+                                      "Preview",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 5,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(5)),
+                            child: SizedBox(
+                              height: height * 0.04,
+                              width: width,
+                              child: TextFormField(
+                                initialValue: o3i != null
+                                    ? printData[o3i]
+                                        ['bedroom_facility_req_text']
+                                    : '',
+                                style: const TextStyle(fontSize: 14),
+                                decoration: const InputDecoration(
+                                  hintText: "other requirement",
+                                  hintStyle: TextStyle(fontSize: 14),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(8),
+                                ),
+                                onChanged: (value) {
+                                  setState(
+                                    () {
+                                      other3OtherRequirement = value;
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.01,
+                          ),
+                          Material(
+                            elevation: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              color: Colors.white,
+                              child: SizedBox(
+                                width: width * 9,
+                                height: height * 0.3,
+                                child: FutureBuilder(
+                                    future: getRecent(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Container(
+                                          child: const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        );
+                                      } else {
+                                        return CarouselSlider.builder(
+                                          itemCount:
+                                              bunglowPageRecentList.length,
+                                          itemBuilder: (context, i, id) {
+                                            return Container(
+                                              height: height * 0.4,
+                                              width: width * 0.9,
+                                              child: Image.network(
+                                                imageUrl +
+                                                    bunglowPageRecentList[i]
+                                                        ["img_path"],
+                                                fit: BoxFit.fill,
+                                              ),
+                                            );
+                                          },
+                                          options: CarouselOptions(
+                                            autoPlay: true,
+                                            enableInfiniteScroll: true,
+                                            autoPlayAnimationDuration:
+                                                const Duration(
+                                                    milliseconds: 800),
+                                            viewportFraction: 1,
+                                          ),
+                                        );
+                                      }
+                                    }),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            },
+          ],
+        ),
+
+        SizedBox(
+          height: height * 0.01,
+        ),
+        Align(
+          alignment: Alignment.bottomLeft,
+          child: InkWell(
+            onTap: () async {
+              JsonFront json = JsonFront(dimension: 1, projectId: 65);
+              var ab = jsonEncode(json);
+
+              Map<dynamic, dynamic> _value = {};
+              _value["dimension"] = INT_ONE;
+              _value["project_id"] = project_id;
+
+              List<Bedtypes> bedData = [
+                if (masterBedroom == true)
+                  Bedtypes(
+                    bedroomLength: masterLength,
+                    bedRoomFloor: masterLocation,
+                    bedRoomWidth: masterWidth,
+                    bedRoomToiletLength: masterToiletLength,
+                    bedRoomToiletWidth: masterToiletWidth,
+                    bedRoomToiletFacility: masterToiletFacility,
+                    bedroomDressLength: masterDressLength,
+                    bedroomDressWidth: masterDressWidth,
+                    bedroomDressFacility: masterDressFacility,
+                    bedroomImg: "",
+                    bedroomFacility: masterRoomFacility,
+                    bedroomName: STR_ONE,
+                    bedroomDressReq: masterDressInt,
+                    bedroomDressText: masterDresstext,
+                    bedroomText: masterOtherRequirement,
+                  ),
+                if (sonBedRoom == true)
+                  Bedtypes(
+                    bedroomLength: sonLength,
+                    bedRoomFloor: sonLocation,
+                    bedRoomWidth: sonWidth,
+                    bedRoomToiletLength: sonToiletLength,
+                    bedRoomToiletWidth: sonToiletWidth,
+                    bedRoomToiletFacility: sonToiletFacility,
+                    bedroomDressLength: sonDressLength,
+                    bedroomDressWidth: sonDressWidth,
+                    bedroomDressFacility: sonDFac,
+                    bedroomImg: "",
+                    bedroomFacility: sonRoomFacility,
+                    bedroomName: STR_TWO,
+                    bedroomDressReq: sonDressInt,
+                    bedroomDressText: sonDresstext,
+                    bedroomText: sonOtherRequirement,
+                  ),
+                if (daughterBedRoom == true)
+                  Bedtypes(
+                    bedroomLength: daughterLength,
+                    bedRoomFloor: daughterLocation,
+                    bedRoomWidth: daughterWidth,
+                    bedRoomToiletLength: daughterToiletLength,
+                    bedRoomToiletWidth: daughterToiletWidth,
+                    bedRoomToiletFacility: daughterToiletFacility,
+                    bedroomDressLength: daughterDressLength,
+                    bedroomDressWidth: daughterDressWidth,
+                    bedroomDressFacility: daughterDressFacility,
+                    bedroomImg: "",
+                    bedroomFacility: daughterRoomFacility,
+                    bedroomName: STR_THREE,
+                    bedroomDressReq: daughterDressInt,
+                    bedroomDressText: daughterDresstext,
+                    bedroomText: daughterOtherRequirement,
+                  ),
+                if (parentBedRoom == true)
+                  Bedtypes(
+                    bedroomLength: parentLength,
+                    bedRoomFloor: parentLocation,
+                    bedRoomWidth: parentWidth,
+                    bedRoomToiletLength: parentToiletLength,
+                    bedRoomToiletWidth: parentToiletWidth,
+                    bedRoomToiletFacility: parentToiletFacility,
+                    bedroomDressLength: parentDressLength,
+                    bedroomDressWidth: parentDressWidth,
+                    bedroomDressFacility: parentDressFacility,
+                    bedroomImg: "",
+                    bedroomFacility: parentRoomFacility,
+                    bedroomName: STR_FOUR,
+                    bedroomDressReq: parentDressInt,
+                    bedroomDressText: parentDresstext,
+                    bedroomText: parentOtherRequirement,
+                  ),
+                if (guestBedRoom == true)
+                  Bedtypes(
+                    bedroomLength: guestLength,
+                    bedRoomFloor: guestLocation,
+                    bedRoomWidth: guestWidth,
+                    bedRoomToiletLength: guestToiletLength,
+                    bedRoomToiletWidth: guestToiletWidth,
+                    bedRoomToiletFacility: guestToiletFacility,
+                    bedroomDressLength: guestDressLength,
+                    bedroomDressWidth: guestDressWidth,
+                    bedroomDressFacility: guestDressFacility,
+                    bedroomImg: "",
+                    bedroomFacility: guestRoomFacility,
+                    bedroomName: STR_FIVE,
+                    bedroomDressReq: guestDressInt,
+                    bedroomDressText: guestDresstext,
+                    bedroomText: guestOtherRequirement,
+                  ),
+                if (other1BedRoom == true)
+                  Bedtypes(
+                    bedroomLength: other1Length,
+                    bedRoomFloor: other1Location,
+                    bedRoomWidth: other1Width,
+                    bedRoomToiletLength: other1ToiletLength,
+                    bedRoomToiletWidth: other1ToiletWidth,
+                    bedRoomToiletFacility: other1ToiletFacility,
+                    bedroomDressLength: other1DressLength,
+                    bedroomDressWidth: other1DressWidth,
+                    bedroomDressFacility: other1DressFacility,
+                    bedroomImg: "",
+                    bedroomFacility: other1RoomFacility,
+                    bedroomName: STR_SIX,
+                    bedroomDressReq: other1DressInt,
+                    bedroomDressText: other1Dresstext,
+                    bedroomText: other1OtherRequirement,
+                  ),
+                if (other2BedRoom == true)
+                  Bedtypes(
+                    bedroomLength: other2Length,
+                    bedRoomFloor: other2Location,
+                    bedRoomWidth: other2Width,
+                    bedRoomToiletLength: other2ToiletLength,
+                    bedRoomToiletWidth: other2ToiletWidth,
+                    bedRoomToiletFacility: other2ToiletFacility,
+                    bedroomDressLength: other2DressLength,
+                    bedroomDressWidth: other2DressWidth,
+                    bedroomDressFacility: other2DressFacility,
+                    bedroomImg: "",
+                    bedroomFacility: other2RoomFacility,
+                    bedroomName: STR_SEVEN,
+                    bedroomDressReq: other2DressInt,
+                    bedroomDressText: other2Dresstext,
+                    bedroomText: other2OtherRequirement,
+                  ),
+                if (other3BedRoom == true)
+                  Bedtypes(
+                    bedroomLength: other3Length,
+                    bedRoomFloor: other3Location,
+                    bedRoomWidth: other3Width,
+                    bedRoomToiletLength: other3ToiletLength,
+                    bedRoomToiletWidth: other3ToiletWidth,
+                    bedRoomToiletFacility: other3ToiletFacility,
+                    bedroomDressLength: other3DressLength,
+                    bedroomDressWidth: other3DressWidth,
+                    bedroomDressFacility: other3DressFacility,
+                    bedroomImg: "",
+                    bedroomFacility: other3RoomFacility,
+                    bedroomName: STR_EIGHT,
+                    bedroomDressReq: other3DressInt,
+                    bedroomDressText: other3Dresstext,
+                    bedroomText: other3OtherRequirement,
+                  ),
+              ];
+
+              List jsonUser = [];
+              // String dim = "dimension";
+              // String id = "Project_id";
+
+              for (int i = 0; i < bedData.length; i++) {
+                jsonUser.add(bedData[i]);
+              }
+
+              _value["bedrooms"] = jsonUser;
+
+              // _value.putIfAbsent("bedrooms", () => jsonUser);
+              // print(jsonEncode(_value));
+              // print(_values[0]["bedroom_length"]);
+              // print(masterLength);
+              // print({'dimension': 1, "project_id": 567, "bedrooms": jsonUser});
+              print("jsonUser ====");
+              print(jsonEncode(_value));
+              if (project_id == null) {
+                final update = await http.post(
+                  Uri.parse("${dotenv.env['APP_URL']}flat-house-bedroom"),
+
+                  headers: <String, String>{
+                    'Content-Type': 'application/json; charset=UTF-8',
+                  },
+                  body: jsonEncode(_value),
+                  // body: _valu
+                );
+                // print(update.body);
+              } else {
+                final submit = await http.post(
+                  Uri.parse(
+                      "${dotenv.env['APP_URL']}update-flat-house-bedroom/$project_id"),
+                  headers: <String, String>{
+                    'Content-Type': 'application/json; charset=UTF-8',
+                  },
+                  body: jsonEncode(_value),
+                );
+                print(submit.body);
+              }
+            },
+            child: Container(
+              height: height * 0.04,
+              decoration: BoxDecoration(
+                  color: buttonColor, borderRadius: BorderRadius.circular(4)),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: const Text(
+                "save and continue",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
