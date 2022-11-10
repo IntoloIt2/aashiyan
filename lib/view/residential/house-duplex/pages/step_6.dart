@@ -14,7 +14,9 @@ import 'package:http/http.dart' as http;
 
 import '../../../../const.dart';
 import '../../../../controller/api_services.dart';
+import '../../../../controller/auth_controller.dart';
 import '../../bunglow/basement.dart';
+import '../../bunglow/entrance.dart';
 
 class Step_5 extends StatefulWidget {
   // static const namedRoute = "/Basement";
@@ -1052,7 +1054,13 @@ class _Step_5State extends State<Step_5> {
                         flex: 20,
                         child: Row(
                           children: [
-                            requirementText("help"),
+                            InkWell(
+                                onTap: () {
+                                  segment_id = SEGMENT_OFFICE;
+                                  getDuplexAreaData(
+                                      context, area_id, segment_id);
+                                },
+                                child: requirementText("help")),
                             IconButton(
                                 padding: const EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
@@ -1454,7 +1462,13 @@ class _Step_5State extends State<Step_5> {
                         flex: 20,
                         child: Row(
                           children: [
-                            requirementText("help"),
+                            InkWell(
+                                onTap: () {
+                                  segment_id = SEGMENT_ADDITIONAL_PARKING;
+                                  getDuplexAreaData(
+                                      context, area_id, segment_id);
+                                },
+                                child: requirementText("help")),
                             IconButton(
                                 padding: const EdgeInsets.all(5),
                                 constraints: const BoxConstraints(),
@@ -1757,7 +1771,7 @@ class _Step_5State extends State<Step_5> {
                         // print("bar  width requirement ${barWidthController}");
                         // print("bar  length controler ${barLengthController}");
                       });
-                       
+
                       print("serventFacility==");
                       print(serventFacility);
                       if (pageId != null) {

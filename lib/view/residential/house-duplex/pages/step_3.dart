@@ -12,6 +12,9 @@ import '../../../../controller/api_services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../../../../controller/auth_controller.dart';
+import '../../bunglow/entrance.dart';
+
 class Step_3 extends StatefulWidget {
   static const namedRoute = "/LivingHall";
 
@@ -724,7 +727,12 @@ class _Step_3State extends State<Step_3> {
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      requirementText("help ?"),
+                      InkWell(
+                          onTap: () {
+                            segment_id = SEGMENT_FAMILY_LOUGNE;
+                            getDuplexAreaData(context, area_id, segment_id);
+                          },
+                          child: requirementText("help ?")),
                     ],
                   ),
                   SizedBox(
@@ -1201,7 +1209,12 @@ class _Step_3State extends State<Step_3> {
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      requirementText("help ?"),
+                      InkWell(
+                          onTap: () {
+                            segment_id = SEGMENT_EXCLUSIVE_DRAWING;
+                            getDuplexAreaData(context, area_id, segment_id);
+                          },
+                          child: requirementText("help ?")),
                     ],
                   ),
                   SizedBox(
@@ -1474,7 +1487,12 @@ class _Step_3State extends State<Step_3> {
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    requirementText("help ?"),
+                    InkWell(
+                        onTap: () {
+                          segment_id = SEGMENT_KITCHEN;
+                          getDuplexAreaData(context, area_id, segment_id);
+                        },
+                        child: requirementText("help ?")),
                   ],
                 ),
                 SizedBox(
@@ -2151,7 +2169,12 @@ class _Step_3State extends State<Step_3> {
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    requirementText("help ?"),
+                    InkWell(
+                        onTap: () {
+                          segment_id = SEGMENT_DINING;
+                          getDuplexAreaData(context, area_id, segment_id);
+                        },
+                        child: requirementText("help ?")),
                   ],
                 ),
                 SizedBox(

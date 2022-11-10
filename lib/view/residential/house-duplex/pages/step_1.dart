@@ -1,5 +1,6 @@
 // ignore_for_file: library_prefixes, camel_case_types, use_key_in_widget_constructors, non_constant_identifier_names, prefer_typing_uninitialized_variables, unused_local_variable, empty_catches, body_might_complete_normally_nullable, sized_box_for_whitespace, prefer_if_null_operators, unrelated_type_equality_checks, avoid_unnecessary_containers, unnecessary_string_interpolations
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'dart:ffi';
@@ -16,6 +17,8 @@ import '../../../../const.dart';
 import 'package:http/http.dart' as http;
 import '../../../../utils/helpers.dart';
 import '../providers/residential_provider.dart';
+
+var duplexPlotValue = TextEditingController();
 
 class Step_1 extends StatefulWidget {
   static const namedRoute = "/intrestedNext";
@@ -40,7 +43,7 @@ class _Step_1State extends State<Step_1> {
   String? widthController = '';
   String? lengthController = '';
   var project_id;
-  var plotValue = TextEditingController();
+  var plotValue = TextEditingController(text: "0");
   var projectGroupId;
   var projectTypeId;
 
@@ -90,7 +93,7 @@ class _Step_1State extends State<Step_1> {
 
   int plotSize = 0;
   String plotSizeStr = '';
-  String selectedState = "";
+  String selectedState = "select";
   // String selectedState = "";
 
   List cityData = [];
@@ -108,17 +111,17 @@ class _Step_1State extends State<Step_1> {
   String totalCalculated() {
     lengthText = lengthController;
     widthText = widthController;
-    finalString = plotValue.text;
+    finalString = duplexPlotValue.text;
 
     if (lengthText != '' && widthText != '') {
       calculation = (plotLenght * plotWidth).toString();
-      plotValue.value = plotValue.value.copyWith(
+      duplexPlotValue.value = duplexPlotValue.value.copyWith(
         text: calculation.toString(),
       );
     }
 
-    plotValue.text = calculation;
-    print(plotValue.text);
+    duplexPlotValue.text = calculation;
+    print(duplexPlotValue.text);
     print(calculation);
     return calculation;
   }
@@ -131,16 +134,16 @@ class _Step_1State extends State<Step_1> {
       widthText = printData["project"]["plot_width"] != null
           ? printData["project"]["plot_width"].toString()
           : "";
-      finalString = plotValue.text;
+      finalString = duplexPlotValue.text;
 
       if (lengthText != '' && widthText != '') {
         calculation = (plotLenght * plotWidth).toString();
-        plotValue.value = plotValue.value.copyWith(
+        duplexPlotValue.value = duplexPlotValue.value.copyWith(
           text: calculation.toString(),
         );
       }
-      plotValue.text = calculation;
-      // print(plotValue.text);
+      duplexPlotValue.text = calculation;
+      // print(duplexPlotValue.text);
       // print(calculation);
     }
 
@@ -150,11 +153,11 @@ class _Step_1State extends State<Step_1> {
   String apiIregularCalcuation() {
     diagonal1Text = diagonal1Controller;
     diagonal2Text = diagonal2Controller;
-    finalDiagonal = plotValue.text;
+    finalDiagonal = duplexPlotValue.text;
 
     if (diagonal1Text != '' && diagonal2Text != '') {
       diagonalCalculation = (((diagonal1! * diagonal2!) / 2)).toString();
-      plotValue.value = plotValue.value.copyWith(
+      duplexPlotValue.value = duplexPlotValue.value.copyWith(
         text: diagonalCalculation.toString(),
       );
     }
@@ -170,11 +173,11 @@ class _Step_1State extends State<Step_1> {
   String diagonalCalculations() {
     diagonal1Text = diagonal1Controller;
     diagonal2Text = diagonal2Controller;
-    finalDiagonal = plotValue.text;
+    finalDiagonal = duplexPlotValue.text;
 
     if (diagonal1Text != '' && diagonal2Text != '') {
       diagonalCalculation = (((diagonal1! * diagonal2!) / 2)).toString();
-      plotValue.value = plotValue.value.copyWith(
+      duplexPlotValue.value = duplexPlotValue.value.copyWith(
         text: diagonalCalculation.toString(),
       );
     }
@@ -235,27 +238,32 @@ class _Step_1State extends State<Step_1> {
         setState(() {
           printData = jsonResponse;
           if (printData != null && printData['project_id'] != null) {
-            // print("plotype -----");
-            // print(printData["project"]["plot_type"]);
+            selectedItems = printData['project']['prefix'] != null
+                ? items[int.parse(printData['project']['prefix'].toString())]
+                : selectedItems;
+
+            selectedItemInt = printData['project']['prefix'] != null
+                ? int.parse(printData['project']['prefix'].toString())
+                : selectedItemInt;
             pageId = printData['project']['id'] != null
                 ? int.parse(printData['project']['id'].toString())
                 : pageId;
             print(pageId);
             nameController = printData["project"]['first_name'] != null
                 ? printData["project"]['first_name'].toString()
-                : '';
+                : nameController;
             lastNameController = printData["project"]["last_name"] != null
                 ? printData["project"]["last_name"].toString()
-                : "";
+                : lastNameController;
             emailController = printData["project"]["email"] != null
                 ? printData["project"]["email"].toString()
-                : "";
+                : emailController;
             addressController = printData["project"]["address"] != null
                 ? printData["project"]["address"].toString()
-                : "";
-            selectedState = printData["project"]["state_name"] != null
-                ? printData["project"]["state_name"].toString()
-                : "";
+                : addressController;
+            // selectedState = printData["project"]["state_name"] != null
+            //     ? printData["project"]["state_name"].toString()
+            //     : selectedState;
             lengthController = printData["project"]["plot_length"] != null
                 ? printData["project"]["plot_length"].toString()
                 : "";
@@ -297,7 +305,7 @@ class _Step_1State extends State<Step_1> {
                 ? printData["project"]["level_value"].toString()
                 : "";
 
-            plotValue.text = printData["project"]["plot_size"] != null
+            duplexPlotValue.text = printData["project"]["plot_size"] != null
                 ? printData["project"]["plot_size"].toString()
                 : "";
 
@@ -307,6 +315,72 @@ class _Step_1State extends State<Step_1> {
             cityId = printData["project"]["city"] != null
                 ? printData["project"]["city"]
                 : "";
+            otherEast = printData["project"]["east_property"] != null
+                ? int.parse(printData["project"]["east_property"].toString()) ==
+                    INT_TWO
+                : otherEast;
+            otherwest = printData["project"]["west_property"] != null
+                ? int.parse(printData["project"]["west_property"].toString()) ==
+                    INT_TWO
+                : otherwest;
+            otherNortn = printData["project"]["north_property"] != null
+                ? int.parse(
+                        printData["project"]["north_property"].toString()) ==
+                    INT_TWO
+                : otherNortn;
+            otherSouth = printData["project"]["south_property"] != null
+                ? int.parse(
+                        printData["project"]["south_property"].toString()) ==
+                    INT_TWO
+                : otherSouth;
+            eastRoad = printData["project"]["east_property"] != null
+                ? int.parse(printData["project"]["east_property"].toString()) ==
+                    INT_ONE
+                : eastRoad;
+            westRoad = printData["project"]["west_property"] != null
+                ? int.parse(printData["project"]["west_property"].toString()) ==
+                    INT_ONE
+                : westRoad;
+            nortRoad = printData["project"]["north_property"] != null
+                ? int.parse(
+                        printData["project"]["north_property"].toString()) ==
+                    INT_ONE
+                : nortRoad;
+            southRoad = printData["project"]["south_property"] != null
+                ? int.parse(
+                        printData["project"]["south_property"].toString()) ==
+                    INT_ONE
+                : southRoad;
+            selectedLevel = printData["project"]["level"] != null
+                ? levels[int.parse(printData["project"]["level"].toString())]
+                : selectedLevel;
+            levelController = printData["project"]["level_value"] != null
+                ? printData["project"]["level_value"].toString()
+                : levelController;
+            southController = printData["project"]["south_road_width"] != null
+                ? printData["project"]["south_road_width"].toString()
+                : southController;
+            westController = printData["project"]["west_road_width"] != null
+                ? printData["project"]["west_road_width"].toString()
+                : westController;
+            northController = printData["project"]["north_road_width"] != null
+                ? printData["project"]["north_road_width"].toString()
+                : northController;
+            eastController = printData["project"]["east_road_width"] != null
+                ? printData["project"]["east_road_width"].toString()
+                : eastController;
+            irregularPlotValue = printData["project"]["plot_type"] != null
+                ? int.parse(printData["project"]["plot_type"].toString()) ==
+                    INT_TWO
+                : irregularPlotValue;
+
+            regularPlotValue = printData["project"]["plot_type"] != null
+                ? int.parse(printData["project"]["plot_type"].toString()) ==
+                    INT_ONE
+                : regularPlotValue;
+            selectedLevelInt = printData["project"]["level"] != null
+                ? int.parse(printData["project"]["level"].toString())
+                : selectedLevelInt;
           }
         });
       }
@@ -327,7 +401,7 @@ class _Step_1State extends State<Step_1> {
   Future<dynamic> getUserId() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('userData');
-    project_id = prefs.getInt('projectId');
+    project_id = prefs.getInt('projectHouseId');
     projectTypeId = prefs.getInt('projectHouseTypeId');
     projectGroupId = prefs.getInt('projectGroupId');
     print(projectTypeId);
@@ -347,6 +421,7 @@ class _Step_1State extends State<Step_1> {
   }
 
   String? plotType;
+  late var timer;
 
   @override
   void initState() {
@@ -357,36 +432,23 @@ class _Step_1State extends State<Step_1> {
     var residentProvider =
         Provider.of<ResidentialProvider>(context, listen: false);
 
-    // var group_temp = residentProvider.getProjectGroupData();
-
-    // group_temp.then(
-    //   (value) {
-    //     projectGroupId = value;
-    //   },
-    // );
-
-    // var type_temp = residentProvider.getProjectType();
-    // type_temp.then(
-    //   (value) {
-    //     projectTypeId = value;
-    //   },
-    // );
     getCities();
     getState();
     apiRegularCalcuation();
 
-    plotValue.addListener(
+    duplexPlotValue.addListener(
       () => setState(
         () {
           if (printData != null) {
             plotType = printData["project"]["plot_type"].toString();
             if (plotType == '1') {
-              plotValue.text = (int.parse(printData["project"]["plot_length"]) *
+              duplexPlotValue
+                  .text = (int.parse(printData["project"]["plot_length"]) *
                       int.parse(printData["project"]["plot_width"].toString()))
                   .toString();
             }
             if (plotType == '2') {
-              plotValue
+              duplexPlotValue
                   .text = ((int.parse(printData["project"]["plot_length"]) *
                           int.parse(
                               printData["project"]["plot_width"].toString())) /
@@ -397,6 +459,12 @@ class _Step_1State extends State<Step_1> {
         },
       ),
     );
+
+    timer = Timer.periodic(
+        Duration(seconds: 1),
+        (Timer t) => setState(() {
+              isloading = true;
+            }));
   }
 
   @override
@@ -406,11 +474,6 @@ class _Step_1State extends State<Step_1> {
 
     var provider = Provider.of<PageNavProvider>(context, listen: true);
 
-    if (printData != null) {
-      setState(() {
-        isloading = true;
-      });
-    }
     return isloading == false
         ? Center(
             child: CircularProgressIndicator(),
@@ -435,11 +498,7 @@ class _Step_1State extends State<Step_1> {
                         height: height * 0.04,
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            hint: printData != null
-                                ? printData['project'] != null
-                                    ? Text(printData['project']['prefix'])
-                                    : Text(selectedItems)
-                                : Text(selectedItems),
+                            hint: Text(selectedItems),
                             icon: const Icon(Icons.keyboard_arrow_down_sharp),
                             elevation: 16,
                             items: items
@@ -447,6 +506,9 @@ class _Step_1State extends State<Step_1> {
                                 .entries
                                 .map((it) => DropdownMenuItem<String>(
                                       value: it.value,
+                                      onTap: () {
+                                        selectedItemInt = it.key;
+                                      },
                                       child: Text(it.value,
                                           style: TextStyle(
                                               fontSize: height * 0.02)),
@@ -487,12 +549,7 @@ class _Step_1State extends State<Step_1> {
                         width: width * 0.25,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue: printData != null
-                              ? printData["project"]['first_name'] != null
-                                  ? printData["project"]['first_name']
-                                      .toString()
-                                  : nameController
-                              : nameController,
+                          initialValue: nameController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "First name",
@@ -519,11 +576,7 @@ class _Step_1State extends State<Step_1> {
                         width: width * 0.19,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue: printData != null
-                              ? printData["project"]['last_name'] != null
-                                  ? printData["project"]['last_name'].toString()
-                                  : lastNameController
-                              : lastNameController,
+                          initialValue: lastNameController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "last name",
@@ -558,11 +611,7 @@ class _Step_1State extends State<Step_1> {
                         width: width * 0.6,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue: printData["project"] != null
-                              ? printData["project"]['email'] != null
-                                  ? printData["project"]['email'].toString()
-                                  : emailController
-                              : emailController,
+                          initialValue: emailController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "Email",
@@ -600,11 +649,7 @@ class _Step_1State extends State<Step_1> {
                         width: width * 0.6,
                         child: TextFormField(
                           // controller: nameController,
-                          initialValue: printData['project'] != null
-                              ? printData["project"]['address'] != null
-                                  ? printData["project"]['address'].toString()
-                                  : addressController
-                              : addressController,
+                          initialValue: addressController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "address",
@@ -879,12 +924,12 @@ class _Step_1State extends State<Step_1> {
                           Key(totalCalculated());
 
                           // if (lengthController != null && widthController != null) {
-                          //   plotValue.text = (int.parse(lengthController!) *
+                          //   duplexPlotValue.text = (int.parse(lengthController!) *
                           //           int.parse(widthController!))
                           //       .toString();
 
                           //   print(" ======");
-                          //   print(plotValue.text);
+                          //   print(duplexPlotValue.text);
                           // }
 
                           if (printData != null &&
@@ -904,13 +949,7 @@ class _Step_1State extends State<Step_1> {
                     Checkbox(
                       activeColor: checkColor,
                       checkColor: Colors.white,
-                      value: printData != null
-                          ? printData['project'] != null
-                              ? printData['project']['plot_type'] == 2
-                                  ? true
-                                  : irregularPlotValue
-                              : irregularPlotValue
-                          : irregularPlotValue,
+                      value: irregularPlotValue,
                       onChanged: (val) {
                         setState(
                           () {
@@ -950,12 +989,7 @@ class _Step_1State extends State<Step_1> {
                               ),
                               isDense: true,
                               contentPadding: EdgeInsets.all(8)),
-                          initialValue: printData['project'] != null
-                              ? printData['project']['plot_length'] != null
-                                  ? printData['project']['plot_length']
-                                      .toString()
-                                  : lengthController
-                              : lengthController,
+                          initialValue: lengthController,
                           onChanged: (val) {
                             setState(() {
                               if (val != '') {
@@ -970,7 +1004,7 @@ class _Step_1State extends State<Step_1> {
                                 }
                               } else {
                                 plotLenght = 0;
-                                plotValue.text = '0';
+                                duplexPlotValue.text = '0';
                                 lengthController = '0';
                               }
                             });
@@ -1020,11 +1054,7 @@ class _Step_1State extends State<Step_1> {
                                 contentPadding: EdgeInsets.all(8)
                                 //fillColor: Colors.green
                                 ),
-                            initialValue: printData['project'] != null
-                                ? printData['project']['diagonal_1'] != null
-                                    ? printData['project']['diagonal_1']
-                                    : diagonal1Controller
-                                : diagonal1Controller,
+                            initialValue: diagonal1Controller,
                             onChanged: (value) {
                               setState(() {
                                 if (value != '') {
@@ -1038,7 +1068,7 @@ class _Step_1State extends State<Step_1> {
                                   diagonalCalculations();
                                 } else {
                                   diagonal1 = 0;
-                                  plotValue.text = '0';
+                                  duplexPlotValue.text = '0';
                                   diagonal1Controller = '0';
                                 }
                               });
@@ -1080,11 +1110,7 @@ class _Step_1State extends State<Step_1> {
                               contentPadding: EdgeInsets.all(8)
                               //fillColor: Colors.green
                               ),
-                          initialValue: printData['project'] != null
-                              ? printData['project']['plot_width'] != null
-                                  ? printData['project']['plot_width']
-                                  : widthController
-                              : widthController,
+                          initialValue: widthController,
                           onChanged: (val) {
                             setState(() {
                               if (val != '') {
@@ -1099,7 +1125,7 @@ class _Step_1State extends State<Step_1> {
                                 totalCalculated();
                               } else {
                                 plotWidth = 0;
-                                plotValue.text = '0';
+                                duplexPlotValue.text = '0';
                                 widthController = '0';
                               }
                             });
@@ -1123,13 +1149,7 @@ class _Step_1State extends State<Step_1> {
                     SizedBox(
                       width: width * 0.02,
                     ),
-                    if (printData != null
-                        ? printData['project'] != null
-                            ? printData['project']['plot_type'] == 2
-                                ? true
-                                : irregularPlotValue == true
-                            : irregularPlotValue == true
-                        : irregularPlotValue == true)
+                    if (irregularPlotValue == true)
                       // if (irregularPlotValue == true)
                       ...[
                       requirementText("Diagona2"),
@@ -1152,11 +1172,7 @@ class _Step_1State extends State<Step_1> {
                                 contentPadding: EdgeInsets.all(8)
                                 // fillColor: Colors.green
                                 ),
-                            initialValue: printData['project'] != null
-                                ? printData['project']['diagonal_2'] != null
-                                    ? printData['project']['diagonal_2']
-                                    : diagonal2Controller.toString()
-                                : diagonal2Controller.toString(),
+                            initialValue: diagonal2Controller.toString(),
                             onChanged: (value) {
                               setState(() {
                                 if (value != '') {
@@ -1171,7 +1187,7 @@ class _Step_1State extends State<Step_1> {
                                 } else {
                                   diagonal2 = 0;
                                   diagonal2Controller = '0';
-                                  plotValue.text = '0';
+                                  duplexPlotValue.text = '0';
                                 }
                               });
                             },
@@ -1224,17 +1240,17 @@ class _Step_1State extends State<Step_1> {
                             //     ? printData['project'] != null
                             //         // ? printData['project']['plot_size'] != null
                             //         ? printData['project']['plot_size']
-                            //         // : plotValue
-                            //         : plotValue.value.text
-                            //     : plotValue.value.text,
+                            //         // : duplexPlotValue
+                            //         : duplexPlotValue.value.text
+                            //     : duplexPlotValue.value.text,
                             // initialValue: printData != null
                             //     ? printData['project'] != null
                             //         ? printData['project']['plot_size'] != null
                             //             ? printData['project']['plot_size'].toString()
-                            //             : plotValue.text
-                            //         : plotValue.text
-                            //     : plotValue.text,
-                            controller: plotValue,
+                            //             : duplexPlotValue.text
+                            //         : duplexPlotValue.text
+                            //     : duplexPlotValue.text,
+                            controller: duplexPlotValue,
                             onChanged: (value) {
                               setState(() {
                                 if (plotLenght == 0 || plotWidth == 0) {
@@ -1243,18 +1259,20 @@ class _Step_1State extends State<Step_1> {
                                     widthController == '') {
                                   value = "0";
                                 } else {
-                                  plotValue.value = plotValue.value.copyWith(
+                                  duplexPlotValue.value =
+                                      duplexPlotValue.value.copyWith(
                                     text: value.toString(),
                                   );
                                   // printData['project']['plot_size'] =
-                                  // plotValue.text;
+                                  // duplexPlotValue.text;
                                 }
                               });
                             },
                             onTap: () {
                               setState(() {
-                                plotValue.clear();
-                                plotValue.value = plotValue.value.copyWith(
+                                duplexPlotValue.clear();
+                                duplexPlotValue.value =
+                                    duplexPlotValue.value.copyWith(
                                   text: '',
                                 );
                               });
@@ -1284,20 +1302,22 @@ class _Step_1State extends State<Step_1> {
                             // initialValue: printData != null
                             //     ? printData['project'] != null
                             //         ? printData['project']['plot_size'].toString()
-                            //         : plotValue.value.text
-                            //     : plotValue.value.text,
-                            controller: plotValue,
+                            //         : duplexPlotValue.value.text
+                            //     : duplexPlotValue.value.text,
+                            controller: duplexPlotValue,
                             onChanged: (value) {
                               setState(() {
-                                plotValue.value = plotValue.value.copyWith(
+                                duplexPlotValue.value =
+                                    duplexPlotValue.value.copyWith(
                                   text: value.toString(),
                                 );
                               });
                             },
                             onTap: () {
                               setState(() {
-                                plotValue.clear();
-                                plotValue.value = plotValue.value.copyWith(
+                                duplexPlotValue.clear();
+                                duplexPlotValue.value =
+                                    duplexPlotValue.value.copyWith(
                                   text: '',
                                 );
                               });
@@ -1420,14 +1440,7 @@ class _Step_1State extends State<Step_1> {
                         activeColor: checkColor,
                         checkColor: Colors.white,
                         // value: otherEast,
-                        value: printData != null
-                            ? printData['project'] != null
-                                ? printData["project"]["east_property"] ==
-                                        EAST_PROPERTY
-                                    ? true
-                                    : eastRoad
-                                : eastRoad
-                            : eastRoad,
+                        value: eastRoad,
                         onChanged: (value) {
                           setState(() {
                             eastRoad = value!;
@@ -1448,12 +1461,7 @@ class _Step_1State extends State<Step_1> {
                       checkColor: Colors.white,
                       // value: false,
                       // value: printData != null ? otherEast : otherEast,
-                      value: printData['project'] != null
-                          ? printData["project"]["east_property"] ==
-                                  EAST_OTHER_PROPERTY
-                              ? true
-                              : otherEast
-                          : otherEast,
+                      value: otherEast,
                       onChanged: (value) {
                         // print?(printData["project"]["east_property"]);
                         setState(() {
@@ -1473,14 +1481,7 @@ class _Step_1State extends State<Step_1> {
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    if (otherEast == true || printData != null
-                        ? printData['project'] != null
-                            ? printData["project"]["east_property"] ==
-                                    EAST_OTHER_PROPERTY
-                                ? true
-                                : otherEast!
-                            : otherEast!
-                        : otherEast!) ...[
+                    if (otherEast!) ...[
                       Material(
                         elevation: 5,
                         borderRadius:
@@ -1490,9 +1491,7 @@ class _Step_1State extends State<Step_1> {
                           width: width * 0.2,
                           child: TextFormField(
                             // controller: nameController,
-                            initialValue: printData['project'] != null
-                                ? printData["project"]['east_road_width']
-                                : eastController,
+                            initialValue: eastController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Road width",
@@ -1549,12 +1548,7 @@ class _Step_1State extends State<Step_1> {
                       activeColor: checkColor,
                       checkColor: Colors.white,
                       // value: otherwest,
-                      value: printData['project'] != null
-                          ? printData["project"]["west_property"] ==
-                                  WEST_OTHER_PROPERTY
-                              ? true
-                              : otherwest
-                          : otherwest,
+                      value: otherwest,
                       onChanged: (value) {
                         setState(() {
                           otherwest = value!;
@@ -1573,14 +1567,7 @@ class _Step_1State extends State<Step_1> {
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    if (otherwest == true || printData != null
-                        ? printData['project'] != null
-                            ? printData["project"]["west_property"] ==
-                                    WEST_OTHER_PROPERTY
-                                ? true
-                                : otherwest!
-                            : otherwest!
-                        : otherwest!) ...[
+                    if (otherwest!) ...[
                       // if (printData['project'] != null
                       //     ? printData["project"]["west_road_width"] != null
                       //         ? printData["project"]["west_road_width"]
@@ -1595,9 +1582,7 @@ class _Step_1State extends State<Step_1> {
                           width: width * 0.18,
                           child: TextFormField(
                             // controller: nameController,
-                            initialValue: printData['project'] != null
-                                ? printData["project"]['west_road_width']
-                                : westController,
+                            initialValue: westController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Road width",
@@ -1630,14 +1615,7 @@ class _Step_1State extends State<Step_1> {
                         activeColor: checkColor,
                         checkColor: Colors.white,
                         // value: otherNortn,
-                        value: printData != null
-                            ? printData['project'] != null
-                                ? printData["project"]["north_property"] ==
-                                        NORTH_PROPERTY
-                                    ? true
-                                    : nortRoad
-                                : nortRoad
-                            : nortRoad,
+                        value: nortRoad,
                         onChanged: (value) {
                           setState(() {
                             nortRoad = value!;
@@ -1656,12 +1634,7 @@ class _Step_1State extends State<Step_1> {
                         activeColor: checkColor,
                         checkColor: Colors.white,
                         // value: otherNortn,
-                        value: printData['project'] != null
-                            ? printData["project"]["north_property"] ==
-                                    EAST_OTHER_PROPERTY
-                                ? true
-                                : otherNortn
-                            : otherNortn,
+                        value: otherNortn,
                         // value: printData['project'] != null
                         //     ? printData["project"]["east_property"] == 1
                         //         ? true
@@ -1684,14 +1657,7 @@ class _Step_1State extends State<Step_1> {
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    if (otherNortn == true || printData != null
-                        ? printData['project'] != null
-                            ? printData["project"]["north_property"] ==
-                                    NORTH_OTHER_PROPERTY
-                                ? true
-                                : otherNortn!
-                            : otherNortn!
-                        : otherNortn!) ...[
+                    if (otherNortn!) ...[
                       // if (
                       //   printData['project'] != null
                       //     ? printData["project"]["north_road_width"] != null
@@ -1707,9 +1673,7 @@ class _Step_1State extends State<Step_1> {
                           width: width * 0.18,
                           child: TextFormField(
                             // controller: nameController,
-                            initialValue: printData['project'] != null
-                                ? printData["project"]['north_road_width']
-                                : northController,
+                            initialValue: northController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Road width",
@@ -1770,12 +1734,7 @@ class _Step_1State extends State<Step_1> {
                         activeColor: checkColor,
                         checkColor: Colors.white,
                         // value: otherSouth,
-                        value: printData['project'] != null
-                            ? printData["project"]["south_property"] ==
-                                    SOUTH_OTHER_PROPERTY
-                                ? true
-                                : otherSouth
-                            : otherSouth,
+                        value: otherSouth,
                         onChanged: (value) {
                           setState(() {
                             otherSouth = value!;
@@ -1794,14 +1753,7 @@ class _Step_1State extends State<Step_1> {
                     SizedBox(
                       width: width * 0.01,
                     ),
-                    if (otherSouth == true || printData != null
-                        ? printData['project'] != null
-                            ? printData["project"]["south_property"] ==
-                                    SOUTH_OTHER_PROPERTY
-                                ? true
-                                : otherSouth!
-                            : otherSouth!
-                        : otherSouth!) ...[
+                    if (otherSouth!) ...[
                       Material(
                         elevation: 5,
                         borderRadius:
@@ -1811,9 +1763,7 @@ class _Step_1State extends State<Step_1> {
                           width: width * 0.18,
                           child: TextFormField(
                             // controller: nameController,
-                            initialValue: printData['project'] != null
-                                ? printData["project"]['south_road_width']
-                                : southController,
+                            initialValue: southController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Road width",
@@ -1917,41 +1867,25 @@ class _Step_1State extends State<Step_1> {
                           padding: const EdgeInsets.all(5),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
-                              hint: printData['project'] != null
-                                  // ? printData['project']['level'] != null
-                                  ? Text(
-                                      "${levels[printData['project']['level']]}")
-                                  // : Text(selectedLevel)
-                                  : Text(selectedLevel),
+                              hint: Text(selectedLevel),
                               // value: selectedLevel,
                               icon: const Icon(Icons.keyboard_arrow_down_sharp),
                               elevation: 16,
-                              items: levels
-                                  .map((it) => DropdownMenuItem<String>(
-                                        value: it,
-                                        child: Text(it,
-                                            style: TextStyle(
-                                                fontSize: height * 0.02)),
-                                      ))
-                                  .toList(),
+                              items: levels.asMap().entries.map((it) {
+                                int idx = it.key;
+                                String value = it.value;
+                                return DropdownMenuItem<String>(
+                                  value: it.value,
+                                  onTap: () {
+                                    selectedLevelInt = it.key;
+                                  },
+                                  child: Text(it.value,
+                                      style:
+                                          TextStyle(fontSize: height * 0.02)),
+                                );
+                              }).toList(),
                               onChanged: (it) => setState(() {
                                 selectedLevel = it!;
-                                if (it == "Up") {
-                                  if (printData['project'] != null) {
-                                    printData['project']['level'] = 2;
-                                  }
-                                  selectedLevelInt = 2;
-                                } else if (it == "Down") {
-                                  if (printData['project'] != null) {
-                                    printData['project']['level'] = 3;
-                                  }
-                                  selectedLevelInt = 3;
-                                } else if (it == "Almost same level") {
-                                  if (printData['project'] != null) {
-                                    printData['project']['level'] = 1;
-                                  }
-                                  selectedLevelInt = 1;
-                                }
                               }),
                             ),
                           ),
@@ -1968,9 +1902,7 @@ class _Step_1State extends State<Step_1> {
                           width: width * 0.22,
                           child: TextFormField(
                             // controller: nameController,
-                            initialValue: printData['project'] != null
-                                ? printData["project"]['level_value_feet']
-                                : lengthController,
+                            initialValue: levelController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Road width",
@@ -1992,17 +1924,44 @@ class _Step_1State extends State<Step_1> {
                       SizedBox(
                         width: width * 0.01,
                       ),
-
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      // valueContainer(
-                      //   height,
-                      //   width,
-                      //   size,
-                      //   0.039,
-                      //   0.05,
-                      // ),
+                    ],
+                    if (selectedLevel == "Down") ...[
+                      Material(
+                        elevation: 5,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        child: SizedBox(
+                          height: height * 0.04,
+                          width: width * 0.22,
+                          child: TextFormField(
+                            // controller: nameController,
+                            initialValue: levelController,
+                            style: const TextStyle(fontSize: 14),
+                            decoration: const InputDecoration(
+                                hintText: "Road width",
+                                hintStyle: TextStyle(fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                                isDense: true,
+                                contentPadding: EdgeInsets.all(8)
+                                //fillColor: Colors.green
+                                ),
+                            onChanged: (value) {
+                              levelController = value;
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: width * 0.01,
+                      ),
+                      SizedBox(
+                        width: width * 0.01,
+                      ),
                     ]
                   ],
                 ),
@@ -2013,11 +1972,16 @@ class _Step_1State extends State<Step_1> {
                   onTap: () async {
                     setState(
                       () {
+                        print("projectTypeId is running");
+                        print(projectTypeId);
+
                         if (irregularPlotValue == true) {
                           isRegular = 2;
                           plot_orientaion = 1;
+                        } else {
+                          isRegular = 1;
                         }
-                        setProjectTypeIdHouse(FLAT_HOUSE);
+                        // setProjectTypeIdHouse(FLAT_HOUSE);
 
                         if (size == "m") {
                           dimenInt = 2;
@@ -2025,10 +1989,6 @@ class _Step_1State extends State<Step_1> {
                         } else {
                           dimenInt = 1;
                           setDimension(1);
-                        }
-                        if (regularPlotValue == true) {
-                          // isNotRegular = 1;
-                          isRegular = 1;
                         }
 
                         if (isNorthOrientaion == true) {
@@ -2049,43 +2009,34 @@ class _Step_1State extends State<Step_1> {
                           isEast = EAST_OTHER_PROPERTY;
                         }
 
-                        // if (otherEast == true) {
-                        //   isEast = EAST_OTHER_PROPERTY;
-                        // }
                         if (nortRoad == true) {
                           isNorth = NORTH_PROPERTY;
                         } else if (otherNortn == true) {
                           isNorth = NORTH_OTHER_PROPERTY;
                         }
-                        // if (otherNortn == true) {
-                        //   isNorth = "1";
-                        // }
+
                         if (southRoad == true) {
                           isSouth = SOUTH_PROPERTY;
                         } else if (otherSouth == true) {
                           isSouth = SOUTH_OTHER_PROPERTY;
                         }
-                        // if (otherSouth == true) {
-                        //   isSouth = "1";
-                        // }
+
                         if (notReqired == true) {
                           notReqiredInt = 1;
                         }
                       },
                     );
-                    // print("upadte is running");
-                    // print(project_id);
                     var status;
 
                     if (pageId != null) {
                       print("upadte is running");
                       print(project_id);
-                      provider.requirementUpdate(
+                      provider.requirementHouseUpdate(
                         project_id,
                         user_id,
                         projectGroupId,
                         projectTypeId,
-                        selectedItems,
+                        selectedItemInt,
                         nameController,
                         lastNameController,
                         emailController,
@@ -2100,9 +2051,9 @@ class _Step_1State extends State<Step_1> {
                         diagonal1Controller!,
                         diagonal2Controller!,
                         plotValue.text,
-                        " ",
+                        "",
                         plot_orientaion,
-                        " ",
+                        "",
                         isEast,
                         eastController,
                         isWest,
@@ -2116,11 +2067,11 @@ class _Step_1State extends State<Step_1> {
                         notReqiredInt,
                       );
                     } else {
-                      provider.requirementPost(
+                      provider.requirementHousePost(
                         user_id,
                         projectGroupId,
                         projectTypeId,
-                        selectedItems,
+                        selectedItemInt,
                         nameController,
                         lastNameController,
                         emailController,
@@ -2135,9 +2086,9 @@ class _Step_1State extends State<Step_1> {
                         diagonal1Controller!,
                         diagonal2Controller!,
                         plotValue.text,
-                        " ",
+                        "",
                         plot_orientaion,
-                        " ",
+                        "",
                         isEast,
                         eastController,
                         isWest,

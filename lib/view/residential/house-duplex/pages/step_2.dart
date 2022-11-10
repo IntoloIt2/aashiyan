@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../../components/constant.dart';
 import '../../../../controller/api_services.dart';
+import '../../../../controller/auth_controller.dart';
 import '../../../../utils/helpers.dart';
 import '../../bunglow/entrance.dart';
 
@@ -41,17 +42,19 @@ class _Step_2State extends State<Step_2> {
   var project_id;
 
   void floor() {
-    setState(() {
-      if (selectedFloor == ENT_FIRST_FLOOR) {
-        floorInt = FIRST_FLOOR;
-      }
-      if (selectedFloor == ENT_SECOND_FLOOR) {
-        floorInt = SECOND_FLOOR;
-      }
-      if (selectedFloor == ENT_THIRD_FLOOR) {
-        floorInt = THIRD_FLOOR;
-      }
-    });
+    setState(
+      () {
+        if (selectedFloor == ENT_FIRST_FLOOR) {
+          floorInt = FIRST_FLOOR;
+        }
+        if (selectedFloor == ENT_SECOND_FLOOR) {
+          floorInt = SECOND_FLOOR;
+        }
+        if (selectedFloor == ENT_THIRD_FLOOR) {
+          floorInt = THIRD_FLOOR;
+        }
+      },
+    );
   }
 
   bool? adjascent = false;
@@ -170,14 +173,6 @@ class _Step_2State extends State<Step_2> {
     getUserId();
 
     final store = Provider.of<PageNavProvider>(context, listen: false);
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   if (store.getId() == 0) {
-    //     printData = {"project": null};
-    //   } else {
-    //     getData(store.getId());
-    //   }
-    // });
 
     Future.delayed(Duration(seconds: 1), () {
       setState(() {
@@ -574,7 +569,12 @@ class _Step_2State extends State<Step_2> {
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      requirementText("help ?")
+                      InkWell(
+                          onTap: () {
+                            segment_id = SEGMENT_PORCH;
+                            getDuplexAreaData(context, area_id, segment_id);
+                          },
+                          child: requirementText("help ?"))
                     ],
                   ),
                 ],

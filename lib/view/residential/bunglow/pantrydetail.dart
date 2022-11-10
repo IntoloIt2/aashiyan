@@ -276,19 +276,13 @@ class _PantryDetailState extends State<PantryDetail> {
   @override
   void initState() {
     super.initState();
-    // getData();
     getUserId();
+    
     timer = Timer.periodic(
-        Duration(seconds: 5),
+        Duration(seconds: 1),
         (Timer t) => setState(() {
               isloading = true;
             }));
-
-    // Future.delayed(Duration(seconds: 1), () {
-    //   setState(() {
-    //     isloading = true;
-    //   });
-    // });
   }
 
   @override

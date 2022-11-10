@@ -17,6 +17,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import '../view/residential/bunglow/entrance.dart';
 import '../view/residential/bunglow/requirement.dart';
+import '../view/residential/house-duplex/pages/index.dart';
 
 TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
@@ -44,9 +45,10 @@ var loginres;
 
 Future<void> registeration(String Email, String Password, context) async {
   var map = new Map<String, dynamic>();
+  print("object");
   map['email'] = Email;
   map['password'] = Password;
-  // print(map);
+  print(map);
 
   final response = await http.post(
     Uri.parse("${dotenv.env['APP_URL']}registration"),
@@ -59,6 +61,8 @@ Future<void> registeration(String Email, String Password, context) async {
   );
 
   res = jsonDecode(response.body);
+  print('res===');
+  print(res);
 
   if (res['status'] == 200) {
     user_id = res['user_id'];
@@ -406,19 +410,90 @@ void getAreaData(BuildContext context, area_id, segment_id) async {
               },
             ),
             content: Container(
-              padding: EdgeInsets.only(top: 15),
-              height: MediaQuery.of(context).size.height * 0.3,
-              width: MediaQuery.of(context).size.width * 0.2,
+              // padding: EdgeInsets.only( top: 5),
+              height: MediaQuery.of(context).size.height * 0.2,
+              width: MediaQuery.of(context).size.width * 0.1,
               child: Column(
                 children: [
                   if (data != null) ...[
                     for (var i = 0; i < data.length; i++)
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: requirementText(
-                          "${data[i]['suggest_length_ft']} X ${data[i]['suggest_width_ft']} ft",
+                      if (size == "m") ...[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: requirementText(
+                            "${data[i]['suggest_length_mtr']} X ${data[i]['suggest_width_mtr']} m",
+                          ),
                         ),
-                      ),
+                      ] else ...[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: requirementText(
+                            "${data[i]['suggest_length_ft']} X ${data[i]['suggest_width_ft']} ft",
+                          ),
+                        ),
+                      ]
+                  ]
+                ],
+              ),
+            ),
+          ));
+}
+
+void getDuplexAreaData(BuildContext context, area_id, segment_id) async {
+  var duplexPlotArea = duplexPlotValue.text;
+  area_id;
+  if ((int.parse(duplexPlotArea) >= 800) &&
+      (int.parse(duplexPlotArea) <= 1200)) {
+    area_id = AREA_800_1200;
+  } else if ((int.parse(duplexPlotArea) >= 1201) &&
+      (int.parse(duplexPlotArea) <= 2000)) {
+    area_id = AREA_1200_2000;
+  } else if ((int.parse(duplexPlotArea) >= 2001) &&
+      (int.parse(duplexPlotArea) <= 5000)) {
+    area_id = AREA_2000_5000;
+  } else if ((int.parse(duplexPlotArea) >= 5001) &&
+      (int.parse(duplexPlotArea) <= 10000)) {
+    area_id = AREA_5000_10000;
+  } else if ((int.parse(duplexPlotArea) >= 10001) &&
+      (int.parse(duplexPlotArea) <= 50000)) {
+    area_id = AREA_10000_50000;
+  }
+  print("$area_id++++");
+  print("$segment_id****");
+
+  data = await getAreaSuggest(area_id, segment_id);
+  showDialog(
+      context: (context),
+      builder: (builder) => AlertDialog(
+            icon: IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            content: Container(
+              // padding: EdgeInsets.only(top: 5),
+              height: MediaQuery.of(context).size.height * 0.2,
+              width: MediaQuery.of(context).size.width * 0.1,
+              child: Column(
+                children: [
+                  if (data != null) ...[
+                    for (var i = 0; i < data.length; i++)
+                      if (size == "m") ...[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: requirementText(
+                            "${data[i]['suggest_length_mtr']} X ${data[i]['suggest_width_mtr']} m",
+                          ),
+                        ),
+                      ] else ...[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: requirementText(
+                            "${data[i]['suggest_length_ft']} X ${data[i]['suggest_width_ft']} ft",
+                          ),
+                        ),
+                      ]
                   ]
                 ],
               ),

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/controller/auth_controller.dart';
@@ -485,6 +486,7 @@ class _EntranceState extends State<Entrance> {
         textColor: Colors.white);
   }
 
+  late var timer;
   @override
   void initState() {
     // TODO: implement initState
@@ -501,12 +503,17 @@ class _EntranceState extends State<Entrance> {
     //     getData(store.getId());
     //   }
     // });
+    timer = Timer.periodic(
+        Duration(seconds: 1),
+        (Timer t) => setState(() {
+              isloading = true;
+            }));
+  }
 
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        isloading = true;
-      });
-    });
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -565,7 +572,6 @@ class _EntranceState extends State<Entrance> {
                                   style: const TextStyle(
                                     color: Colors.black,
                                   ),
-
                                 ),
                               );
                             }).toList(),
