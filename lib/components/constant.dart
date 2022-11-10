@@ -18,6 +18,7 @@
 // ignore_for_file: constant_identifier_names, duplicate_ignore, non_constant_identifier_names, prefer_typing_uninitialized_variables
 
 // ignore: non_constant_identifier_names
+String VERIFY_EMAIL_FIRST="Please email verify first";
 String SUCCESS_MESSAGE = " You will be contacted by us very soon.";
 const SUCCESS = 200;
 // ignore: non_constant_identifier_names

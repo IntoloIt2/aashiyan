@@ -42,13 +42,13 @@ var password;
 var res;
 var verification_res;
 var loginres;
+var userId;
 
 Future<void> registeration(String Email, String Password, context) async {
   var map = new Map<String, dynamic>();
-  print("object");
+
   map['email'] = Email;
   map['password'] = Password;
-  print(map);
 
   final response = await http.post(
     Uri.parse("${dotenv.env['APP_URL']}registration"),
@@ -61,11 +61,11 @@ Future<void> registeration(String Email, String Password, context) async {
   );
 
   res = jsonDecode(response.body);
-  print('res===');
-  print(res);
 
   if (res['status'] == 200) {
-    user_id = res['user_id'];
+    // user_id = res['user_id'];
+    userId = res['user_id'];
+    verify_codeController.clear();
 
     showDialog(context: context, builder: verificationDialog);
   } else {
@@ -80,8 +80,9 @@ Future<void> verification(String Verify_code, context, int id) async {
 
   map['verify_code'] = Verify_code;
   map['user_id'] = id;
+
   final response = await http.post(
-    Uri.parse("${dotenv.env['APP_URL']}verify-email/${user_id}"),
+    Uri.parse("${dotenv.env['APP_URL']}verify-email/${userId}"),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -110,11 +111,14 @@ Future<void> login(String Email, String Password, context) async {
 
   final response = await http.post(
     Uri.parse('${dotenv.env['APP_URL']}login'),
+    // Uri.parse('http://192.168.0.99:8080/sdplserver/api/login'),
+
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(map),
   );
+
   loginres = jsonDecode(response.body);
 
   if (loginres['status'] == 200 && loginres['data'] != null
@@ -134,7 +138,13 @@ Future<void> login(String Email, String Password, context) async {
         MaterialPageRoute(
           builder: (context) => const HomePage(),
         ));
-  } else if (loginres['errors'] != null
+  }
+  //  else if (loginres['errors'] != null
+  //     ? loginres['msg'] == "Please email verify first"
+  //     : false) {
+  //   showDialog(context: context, builder: verificationDialog);
+  // }
+  else if (loginres['errors'] != null
       ? loginres['errors']['email'] != null
       : false) {
     showDialog(
@@ -149,6 +159,10 @@ Future<void> login(String Email, String Password, context) async {
         builder: (context) =>
             acknoledgmentDialog(context, "${loginres['errors']['password']}"));
   } else {
+    if (loginres['msg'] == VERIFY_EMAIL_FIRST) {
+      showDialog(context: context, builder: verificationDialog);
+      return;
+    }
     showDialog(
         context: context,
         builder: (context) =>
@@ -293,6 +307,7 @@ AlertDialog loginDialog(BuildContext context) {
               ),
               onPressed: () {
                 login(emailController.text, passwordController.text, context);
+                print("log");
                 // emailController.clear();
                 // passwordController.clear();
               },
@@ -316,6 +331,10 @@ AlertDialog loginDialog(BuildContext context) {
 }
 
 AlertDialog verificationDialog(BuildContext context) {
+  print('user_id--');
+  print(userId);
+  print('verify_codeController.text--');
+  print(verify_codeController.text);
   return AlertDialog(
     title: Center(
         child: Text(
@@ -344,7 +363,7 @@ AlertDialog verificationDialog(BuildContext context) {
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
               onPressed: () {
-                verification(verify_codeController.text, context, user_id);
+                verification(verify_codeController.text, context, userId);
               },
             ),
           ),
@@ -502,30 +521,30 @@ void getDuplexAreaData(BuildContext context, area_id, segment_id) async {
 }
 
 // AlertDialog helpDialog(BuildContext context) {
-  // return AlertDialog(
-  //   icon: IconButton(
-  //     icon: Icon(Icons.close),
-  //     onPressed: () {
-  //       Navigator.of(context).pop();
-  //     },
-  //   ),
-  //   content: Container(
-  //     padding: EdgeInsets.only(top: 15),
-  //     height: MediaQuery.of(context).size.height * 0.3,
-  //     width: MediaQuery.of(context).size.width * 0.2,
-  //     child: Column(
-  //       children: [
-  //         if (data != null) ...[
-  //           for (var i = 0; i < data.length; i++)
-  //             Padding(
-  //               padding: const EdgeInsets.all(8.0),
-  //               child: requirementText(
-  //                 "${data[i]['suggest_length_ft']} X ${data[i]['suggest_width_ft']} ft",
-  //               ),
-  //             ),
-  //         ]
-  //       ],
-  //     ),
-  //   ),
-  // );
+// return AlertDialog(
+//   icon: IconButton(
+//     icon: Icon(Icons.close),
+//     onPressed: () {
+//       Navigator.of(context).pop();
+//     },
+//   ),
+//   content: Container(
+//     padding: EdgeInsets.only(top: 15),
+//     height: MediaQuery.of(context).size.height * 0.3,
+//     width: MediaQuery.of(context).size.width * 0.2,
+//     child: Column(
+//       children: [
+//         if (data != null) ...[
+//           for (var i = 0; i < data.length; i++)
+//             Padding(
+//               padding: const EdgeInsets.all(8.0),
+//               child: requirementText(
+//                 "${data[i]['suggest_length_ft']} X ${data[i]['suggest_width_ft']} ft",
+//               ),
+//             ),
+//         ]
+//       ],
+//     ),
+//   ),
+// );
 // }

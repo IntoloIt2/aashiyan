@@ -256,21 +256,21 @@ class _RequirementState extends State<Requirement> {
           print(printData);
 
           if (printData != null) {
-            // selectedItems = printData['project']['prefix'] != null
-            //     ? items[int.parse(printData['project']['prefix'].toString())]
-            //     : selectedItems;
-            // selectedItemInt = printData['project']['prefix'] != null
-            //     ? int.parse(printData['project']['prefix'].toString())
-            //     : selectedItemInt;
-            // pageId = printData['project']['id'] != null
-            //     ? int.parse(printData['project']['id'].toString())
-            //     : pageId;
+            selectedItems = printData['project']['prefix'] != null
+                ? items[int.parse(printData['project']['prefix'].toString())]
+                : selectedItems;
+            selectedItemInt = printData['project']['prefix'] != null
+                ? int.parse(printData['project']['prefix'].toString())
+                : selectedItemInt;
+            pageId = printData['project']['id'] != null
+                ? int.parse(printData['project']['id'].toString())
+                : pageId;
 
             nameController = printData["project"]['first_name'] != null
                 ? printData["project"]['first_name'].toString()
                 : nameController;
-            print("nameController");
-            print(nameController);
+            // print("nameController");
+            // print(nameController);
             lastNameController = printData["project"]["last_name"] != null
                 ? printData["project"]["last_name"].toString()
                 : "";
@@ -455,8 +455,8 @@ class _RequirementState extends State<Requirement> {
     project_id = prefs.getInt('projectId');
     projectTypeId = prefs.getInt('projectTypeId');
     projectGroupId = prefs.getInt('projectGroupId');
-    print("project_id == ");
-    print(project_id);
+    // print("project_id == ");
+    // print(project_id);
     getData(project_id);
     var decJson;
     if (userData != null) {
@@ -1580,86 +1580,89 @@ class _RequirementState extends State<Requirement> {
                   alignment: Alignment.topLeft,
                   child: requirementText("Plot values"),
                 ),
-                Row(
-                  children: [
-                    requirementText("East"),
-                    Checkbox(
+                FractionallySizedBox(
+                  child: Row(
+                    children: [
+                      requirementText("East"),
+                      Checkbox(
+                          activeColor: checkColor,
+                          checkColor: Colors.white,
+                          // value: otherEast,
+                          value: eastRoad,
+                          onChanged: (value) {
+                            setState(() {
+                              eastRoad = value!;
+                              otherEast = false;
+                              // if (eastRoad == true) {
+                              //   eastRoad = false;
+                              // }
+                              if (printData != null &&
+                                  printData['project'] != null) {
+                                printData["project"]["east_property"] =
+                                    eastRoad;
+                              }
+                            });
+                          }),
+                      Forms.requirementText("Other property"),
+                      // CheckboxListTile(value: value, onChanged: (value)),
+                      Checkbox(
                         activeColor: checkColor,
                         checkColor: Colors.white,
-                        // value: otherEast,
-                        value: eastRoad,
+                        // value: false,
+                        // value: printData != null ? otherEast : otherEast,
+                        value: otherEast,
                         onChanged: (value) {
+                          // print?(printData["project"]["east_property"]);
                           setState(() {
-                            eastRoad = value!;
-                            otherEast = false;
-                            // if (eastRoad == true) {
-                            //   eastRoad = false;
-                            // }
+                            otherEast = value!;
+                            eastRoad = false;
                             if (printData != null &&
                                 printData['project'] != null) {
-                              printData["project"]["east_property"] = eastRoad;
+                              printData["project"]["east_property"] = otherEast;
                             }
+                            // if (otherEast = true) {
+                            //   otherEast = false;
+                            // }
                           });
-                        }),
-                    Forms.requirementText("Other property"),
-                    // CheckboxListTile(value: value, onChanged: (value)),
-                    Checkbox(
-                      activeColor: checkColor,
-                      checkColor: Colors.white,
-                      // value: false,
-                      // value: printData != null ? otherEast : otherEast,
-                      value: otherEast,
-                      onChanged: (value) {
-                        // print?(printData["project"]["east_property"]);
-                        setState(() {
-                          otherEast = value!;
-                          eastRoad = false;
-                          if (printData != null &&
-                              printData['project'] != null) {
-                            printData["project"]["east_property"] = otherEast;
-                          }
-                          // if (otherEast = true) {
-                          //   otherEast = false;
-                          // }
-                        });
-                      },
-                    ),
-                    requirementText("Road"),
-                    SizedBox(
-                      width: width * 0.01,
-                    ),
-                    if (otherEast!) ...[
-                      Material(
-                        elevation: 5,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                        child: SizedBox(
-                          height: height * 0.04,
-                          width: width * 0.2,
-                          child: TextFormField(
-                            // controller: nameController,
-                            initialValue: eastController,
-                            style: const TextStyle(fontSize: 14),
-                            decoration: const InputDecoration(
-                                hintText: "Road width",
-                                hintStyle: TextStyle(fontSize: 14),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                                isDense: true,
-                                contentPadding: EdgeInsets.all(8)),
-                            onChanged: (value) {
-                              eastController = value;
-                            },
-                          ),
-                        ),
+                        },
                       ),
+                      requirementText("Road"),
                       SizedBox(
                         width: width * 0.01,
                       ),
-                      Forms.valueContainer(height, width, size, 0.039, 0.05)
-                    ]
-                  ],
+                      if (otherEast!) ...[
+                        Material(
+                          elevation: 5,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(5)),
+                          child: SizedBox(
+                            height: height * 0.04,
+                            width: width * 0.2,
+                            child: TextFormField(
+                              // controller: nameController,
+                              initialValue: eastController,
+                              style: const TextStyle(fontSize: 14),
+                              decoration: const InputDecoration(
+                                  hintText: "Road width",
+                                  hintStyle: TextStyle(fontSize: 14),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(8)),
+                              onChanged: (value) {
+                                eastController = value;
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: width * 0.01,
+                        ),
+                        Forms.valueContainer(height, width, size, 0.039, 0.05)
+                      ]
+                    ],
+                  ),
                 ),
                 Row(
                   children: [
