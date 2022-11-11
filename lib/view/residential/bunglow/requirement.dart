@@ -31,18 +31,15 @@ class _RequirementState extends State<Requirement> {
   String lastNameController = "";
   String emailController = "";
   String addressController = "";
-  // String? diagonal1Controller = '';
-  // String? diagonal2Controller = '';
-
-  TextEditingController diagonal1Controller = TextEditingController();
-  TextEditingController diagonal2Controller = TextEditingController();
-
+  String? diagonal1Controller = '';
+  String? diagonal2Controller = '';
   String eastController = "";
   String westController = "";
   String northController = "";
   String southController = "";
   String levelController = "";
   TextEditingController widthController = TextEditingController();
+  // String? lengthController = '';
   TextEditingController lengthController = TextEditingController();
   var project_id;
 
@@ -59,12 +56,6 @@ class _RequirementState extends State<Requirement> {
 
   bool widthFeetbool = false;
   bool widthMeterbool = false;
-
-  bool diagonalOneFeetbool = false;
-  bool diagonalOneMeterbool = false;
-
-  bool diagonalTwoFeetbool = false;
-  bool diagonalTwoMeterbool = false;
 
   bool isMount = true;
   int isWest = 1;
@@ -162,11 +153,11 @@ class _RequirementState extends State<Requirement> {
 
   String apiRegularCalcuation() {
     if (printData != null) {
-      lengthText = printData["project"]["plot_length_feet"] != null
-          ? printData["project"]["plot_length_feet"].toString()
+      lengthText = printData["project"]["plot_length"] != null
+          ? printData["project"]["plot_length"].toString()
           : "";
-      widthText = printData["project"]["plot_width_feet"] != null
-          ? printData["project"]["plot_width_feet"].toString()
+      widthText = printData["project"]["plot_width"] != null
+          ? printData["project"]["plot_width"].toString()
           : "";
       finalString = plotValue.text;
 
@@ -184,8 +175,8 @@ class _RequirementState extends State<Requirement> {
   }
 
   String apiIregularCalcuation() {
-    diagonal1Text = diagonal1Controller.text;
-    diagonal2Text = diagonal2Controller.text;
+    diagonal1Text = diagonal1Controller;
+    diagonal2Text = diagonal2Controller;
     finalDiagonal = plotValue.text;
 
     if (diagonal1Text != '' && diagonal2Text != '') {
@@ -197,15 +188,15 @@ class _RequirementState extends State<Requirement> {
     return diagonalCalculation;
   }
 
-  double? diagonal1 = 1.0;
-  double? diagonal2 = 1.0;
+  int? diagonal1 = 0;
+  int? diagonal2 = 0;
   int? diagonalValue = 0;
   String? diagonal1Text, diagonal2Text, finalDiagonal;
   String diagonalCalculation = "";
 
   String diagonalCalculations() {
-    diagonal1Text = diagonal1Controller.text;
-    diagonal2Text = diagonal2Controller.text;
+    diagonal1Text = diagonal1Controller;
+    diagonal2Text = diagonal2Controller;
     finalDiagonal = plotValue.text;
 
     if (diagonal1Text != '' && diagonal2Text != '') {
@@ -312,34 +303,30 @@ class _RequirementState extends State<Requirement> {
             selectedState = printData["project"]["state_name"] != null
                 ? printData["project"]["state_name"].toString()
                 : "";
-            lengthController.text =
-                printData["project"]["plot_length_feet"] != null
-                    ? printData["project"]["plot_length_feet"].toString()
-                    : "";
-            widthController.text =
-                printData["project"]["plot_width_feet"] != null
-                    ? printData["project"]["plot_width_feet"].toString()
-                    : "";
-            plotLenght = printData["project"]["plot_length_feet"] != null
-                ? double.parse(printData["project"]["plot_length_feet"])
+            lengthController.text = printData["project"]["plot_length"] != null
+                ? printData["project"]["plot_length"].toString()
+                : "";
+            widthController.text = printData["project"]["plot_width"] != null
+                ? printData["project"]["plot_width"].toString()
+                : "";
+            plotLenght = printData["project"]["plot_length"] != null
+                ? double.parse(printData["project"]["plot_length"])
                 : plotLenght;
-            plotWidth = printData["project"]["plot_width_feet"] != null
-                ? double.parse(printData["project"]["plot_width_feet"])
+            plotWidth = printData["project"]["plot_width"] != null
+                ? double.parse(printData["project"]["plot_width"])
                 : plotWidth;
-            diagonal1Controller.text =
-                printData["project"]["diagonal_1"] != null
-                    ? printData["project"]["diagonal_1"].toString()
-                    : '';
-            diagonal2Controller.text =
-                printData["project"]["diagonal_2"] != null
-                    ? printData["project"]["diagonal_2"].toString()
-                    : '';
+            diagonal1Controller = printData["project"]["diagonal_1"] != null
+                ? printData["project"]["diagonal_1"].toString()
+                : '';
+            diagonal2Controller = printData["project"]["diagonal_2"] != null
+                ? printData["project"]["diagonal_2"].toString()
+                : '';
             diagonal1 = printData["project"]["diagonal_1"] != null
-                ? double.parse(printData["project"]["diagonal_1"].toString())
-                : diagonal1;
-            diagonal2 = (printData["project"]["diagonal_2"] != null
-                ? double.parse(printData["project"]["diagonal_2"].toString())
-                : diagonal1);
+                ? int.parse(printData["project"]["diagonal_1"].toString())
+                : INT_ZERO;
+            diagonal2 = printData["project"]["diagonal_2"] != null
+                ? int.parse(printData["project"]["diagonal_2"].toString())
+                : INT_ZERO;
 
             eastController = printData["project"]["east_road_width"] != null
                 ? printData["project"]["east_road_width"].toString()
@@ -469,24 +456,21 @@ class _RequirementState extends State<Requirement> {
                 ? printData["project"]["plot_type"].toString()
                 : plotType;
             if (plotType == STR_ONE &&
-                printData["project"]["plot_length_feet"] != null &&
-                printData["project"]["plot_width_feet"] != null) {
-              plotValue.text =
-                  (num.parse(printData["project"]["plot_length_feet"]) *
-                          num.parse(printData["project"]["plot_width_feet"]))
-                      .toString();
+                printData["project"]["plot_length"] != null &&
+                printData["project"]["plot_width"] != null) {
+              plotValue.text = (num.parse(printData["project"]["plot_length"]) *
+                      num.parse(printData["project"]["plot_width"]))
+                  .toString();
             }
             if (plotType == STR_TWO &&
-                printData["project"]["plot_length_feet"] != null &&
-                printData["project"]["plot_width_feet"] != null) {
-              // plotValue.text = (printData["project"]["plot_length_feet"] *
-              //     printData["project"]["plot_width_feet"] ~/
+                printData["project"]["plot_length"] != null &&
+                printData["project"]["plot_width"] != null) {
+              // plotValue.text = (printData["project"]["plot_length"] *
+              //     printData["project"]["plot_width"] ~/
               //     2);
-              plotValue.text = (num.parse(printData["project"]
-                              ["plot_length_feet"]
-                          .toString()) ~/
-                      num.parse(
-                          printData["project"]["plot_width_feet"].toString()))
+              plotValue.text = (num.parse(
+                          printData["project"]["plot_length"].toString()) ~/
+                      num.parse(printData["project"]["plot_width"].toString()))
                   .toStringAsFixed(2);
             }
             // }
@@ -1029,162 +1013,77 @@ class _RequirementState extends State<Requirement> {
                             }).toList(),
                             onChanged: (it) => setState(() {
                               if (it != "ft" && count == 2) {
-                                if (regularPlotValue == true) {
-                                  double one =
-                                      double.parse(lengthController.text);
+                                if (lengthConversionM != null) {}
+                                if (widthConversionM != null) {}
+                                double one =
+                                    double.parse(lengthController.text);
 
-                                  if (lengthFeetbool ||
-                                      printData["project"]
-                                              ["plot_length_feet"] !=
-                                          null) {
-                                    lengthController.text =
-                                        (one * 3.28084).toStringAsFixed(2);
-                                    // print("lengthController.text");
-                                    // print(lengthController.text);
-                                    // // (one * M_TO_F).toString();
-                                    printData["project"]["plot_length_feet"] =
-                                        null;
-                                    lengthFeetbool = false;
-                                    lengthMeterbool = true;
-                                    totalCalculated();
-                                  }
-
-                                  double width_one =
-                                      double.parse(widthController.text);
-
-                                  if (widthFeetbool ||
-                                      printData["project"]["plot_width_feet"] !=
-                                          null) {
-                                    widthController.text = (width_one * 3.28084)
-                                        .toStringAsFixed(2);
-                                    // print("widthController.text");
-                                    // print(widthController.text);
-                                    printData["project"]["plot_width_feet"] =
-                                        null;
-                                    widthFeetbool = false;
-                                    widthMeterbool = true;
-                                    totalCalculated();
-                                  }
+                                if (lengthFeetbool) {
+                                  lengthController.text =
+                                      (one * 3.28084).toStringAsFixed(2);
+                                  // print("lengthController.text");
+                                  // print(lengthController.text);
+                                  // // (one * M_TO_F).toString();
+                                  // printData["project"]["plot_length"] = null;
+                                  lengthFeetbool = false;
+                                  lengthMeterbool = true;
+                                  totalCalculated();
                                 }
-                                if (irregularPlotValue == true) {
-                                  double diag_one =
-                                      double.parse(diagonal1Controller.text);
 
-                                  if (diagonalOneFeetbool ||
-                                      printData["project"]["diagonal_1_feet"] !=
-                                          null) {
-                                    diagonal1Controller.text =
-                                        (diag_one * 3.28084).toStringAsFixed(2);
-                                    // print("widthController.text");
-                                    // print(widthController.text);
-                                    printData["project"]["diagonal_1_feet"] =
-                                        null;
-                                    diagonalOneFeetbool = false;
-                                    diagonalOneMeterbool = true;
-                                    diagonalCalculations();
-                                  }
+                                double width_one =
+                                    double.parse(widthController.text);
 
-                                  double diag_two =
-                                      double.parse(diagonal2Controller.text);
-
-                                  if (diagonalTwoFeetbool ||
-                                      printData["project"]["diagonal_2_feet"] !=
-                                          null) {
-                                    diagonal2Controller.text =
-                                        (diag_two * 3.28084).toStringAsFixed(2);
-                                    // print("widthController.text");
-                                    // print(widthController.text);
-                                    printData["project"]["diagonal_2_feet"] =
-                                        null;
-                                    diagonalTwoFeetbool = false;
-                                    diagonalTwoMeterbool = true;
-                                    diagonalCalculations();
-                                  }
+                                if (widthFeetbool) {
+                                  widthController.text =
+                                      (width_one * 3.28084).toStringAsFixed(2);
+                                  // print("widthController.text");
+                                  // print(widthController.text);
+                                  // printData["project"]["plot_width"] = null;
+                                  widthFeetbool = false;
+                                  widthMeterbool = true;
+                                  totalCalculated();
                                 }
 
                                 // print('if widthController---');
                                 // print(widthController.text);
                               }
                               if (it != "m" && count == 2) {
-                                if (regularPlotValue == true) {
-                                  double two =
-                                      double.parse(lengthController.text);
-                                  // print('two--');
-                                  // print(two);
-                                  if (lengthMeterbool ||
-                                      printData["project"]
-                                              ["plot_length_feet"] !=
-                                          null) {
-                                    lengthController.text =
-                                        (two * 0.3048).toStringAsFixed(2);
-                                    // print('lengthController.text===');
-                                    // print(lengthController.text);
-                                    // (two ~/ M_TO_F).toString();
-                                    // print("M_TO_F lengthController.text");
-                                    // print(lengthController.text);
-                                    printData["project"]["plot_length_feet"] =
-                                        null;
-                                    lengthMeterbool = false;
-                                    lengthFeetbool = true;
-                                    totalCalculated();
-                                  }
-
-                                  double width_two =
-                                      double.parse(widthController.text);
-                                  if (widthMeterbool ||
-                                      printData["project"]["plot_width_feet"] !=
-                                          null) {
-                                    widthController.text =
-                                        (width_two * 0.3048).toStringAsFixed(2);
-                                    // print("M_TO_F widthController.text");
-                                    // print(widthController.text);
-                                    printData["project"]["plot_width_feet"] =
-                                        null;
-                                    widthMeterbool = false;
-                                    widthFeetbool = true;
-                                  }
-                                  // print('else widthController---');
-
-                                  // print(widthController.text);
+                                double two =
+                                    double.parse(lengthController.text);
+                                print('two--');
+                                print(two);
+                                if (lengthMeterbool) {
+                                  lengthController.text =
+                                      (two * 0.3048).toStringAsFixed(2);
+                                  // print('lengthController.text===');
+                                  // print(lengthController.text);
+                                  // (two ~/ M_TO_F).toString();
+                                  // print("M_TO_F lengthController.text");
+                                  // print(lengthController.text);
+                                  // printData["project"]["plot_length"] = null;
+                                  lengthMeterbool = false;
+                                  lengthFeetbool = true;
                                   totalCalculated();
                                 }
 
-                                if (irregularPlotValue == true) {
-                                  double diag_one =
-                                      double.parse(diagonal1Controller.text);
-
-                                  if (diagonalOneFeetbool ||
-                                      printData["project"]["diagonal_1_feet"] !=
-                                          null) {
-                                    diagonal1Controller.text =
-                                        (diag_one * 0.3048).toStringAsFixed(2);
-                                    // print("widthController.text");
-                                    // print(widthController.text);
-                                    printData["project"]["diagonal_1_feet"] =
-                                        null;
-                                    diagonalOneFeetbool = false;
-                                    diagonalOneMeterbool = true;
-                                    diagonalCalculations();
-                                  }
-
-                                  double diag_two =
-                                      double.parse(diagonal2Controller.text);
-
-                                  if (diagonalTwoFeetbool ||
-                                      printData["project"]["diagonal_2_feet"] !=
-                                          null) {
-                                    diagonal2Controller.text =
-                                        (diag_two * 0.3048).toStringAsFixed(2);
-                                    // print("widthController.text");
-                                    // print(widthController.text);
-                                    printData["project"]["diagonal_2_feet"] =
-                                        null;
-                                    diagonalTwoFeetbool = false;
-                                    diagonalTwoMeterbool = true;
-                                    diagonalCalculations();
-                                  }
+                                double width_two =
+                                    double.parse(widthController.text);
+                                if (widthMeterbool) {
+                                  widthController.text =
+                                      (width_two * 0.3048).toStringAsFixed(2);
+                                  // print("M_TO_F widthController.text");
+                                  // print(widthController.text);
+                                  // printData["project"]["plot_width"] = null;
+                                  widthMeterbool = false;
+                                  widthFeetbool = true;
                                 }
+                                print('else widthController---');
+
+                                // print(widthController.text);
+
+                                totalCalculated();
                               }
+
                               size = it!;
                             }),
                           ),
@@ -1285,10 +1184,9 @@ class _RequirementState extends State<Requirement> {
 
                                 totalCalculated();
                                 if (printData != null &&
-                                    printData['project']['plot_length_feet'] !=
+                                    printData['project']['plot_length'] !=
                                         null) {
-                                  printData['project']['plot_length_feet'] =
-                                      val;
+                                  printData['project']['plot_length'] = val;
                                 }
                               } else {
                                 plotLenght = double.parse(INT_ZERO.toString());
@@ -1342,24 +1240,22 @@ class _RequirementState extends State<Requirement> {
                                 contentPadding: EdgeInsets.all(2)
                                 //fillColor: Colors.green
                                 ),
-                            controller: diagonal1Controller,
+                            initialValue: diagonal1Controller,
                             onChanged: (value) {
                               setState(() {
-                                if (diagonal1Controller.text != '') {
-                                  diagonal1 = double.parse(value.toString());
-                                  // diagonal1Controller = value;
-                                  diagonalOneFeetbool = true;
-                                  diagonalOneMeterbool = true;
-                                  diagonalCalculations();
+                                if (diagonal1Controller != '') {
+                                  diagonal1 = int.parse(value.toString());
+                                  diagonal1Controller = value;
                                   if (printData != null &&
                                       printData['project']['diagonal_1'] !=
                                           null) {
                                     printData['project']['diagonal_1'] = value;
                                   }
+                                  diagonalCalculations();
                                 } else {
-                                  diagonal1 = 1.0;
+                                  diagonal1 = 0;
                                   plotValue.text = '0';
-                                  // diagonal1Controller = '0';
+                                  diagonal1Controller = '0';
                                 }
                               });
                             },
@@ -1410,9 +1306,9 @@ class _RequirementState extends State<Requirement> {
                                 widthMeterbool = true;
                                 // widthController = val;
                                 // if (printData != null &&
-                                //     printData['project']['plot_width_feet'] !=
+                                //     printData['project']['plot_width'] !=
                                 //         null) {
-                                //   printData['project']['plot_width_feet'] = val;
+                                //   printData['project']['plot_width'] = val;
                                 // }
                                 totalCalculated();
                               } else {
@@ -1455,8 +1351,7 @@ class _RequirementState extends State<Requirement> {
                           height: height * 0.04,
                           width: width * 0.2,
                           child: TextFormField(
-                            // initialValue: diagonal2Controller.toString(),
-                            controller: diagonal2Controller,
+                            initialValue: diagonal2Controller.toString(),
                             decoration: const InputDecoration(
                                 hintText: "Diagonal 2",
                                 hintStyle: TextStyle(fontSize: 14),
@@ -1469,20 +1364,19 @@ class _RequirementState extends State<Requirement> {
 
                             onChanged: (value) {
                               setState(() {
-                                if (diagonal2Controller.text != '') {
-                                  diagonal2 = double.parse(value.toString());
-                                  diagonalTwoFeetbool = true;
-                                  diagonalTwoMeterbool = true;
-                                  // diagonal2Controller = value;
-                                  if (printData != null &&
-                                      printData['project']['diagonal_2'] !=
-                                          null) {
-                                    printData['project']['diagonal_2'] = value;
-                                  }
+                                if (diagonal2Controller == null) {}
+                                if (diagonal2Controller != '') {
+                                  diagonal2 = int.parse(value.toString());
+                                  diagonal2Controller = value;
+                                  // if (printData != null &&
+                                  //     printData['project']['diagonal_2'] !=
+                                  //         null) {
+                                  //   printData['project']['diagonal_2'] = value;
+                                  // }
                                   diagonalCalculations();
                                 } else {
                                   diagonal2 = 0;
-                                  // diagonal2Controller = '0';
+                                  diagonal2Controller = '0';
                                   plotValue.text = '0';
                                 }
                               });
@@ -2313,8 +2207,8 @@ class _RequirementState extends State<Requirement> {
                         dimenInt,
                         lengthController.text,
                         widthController.text,
-                        diagonal1Controller.text,
-                        diagonal2Controller.text,
+                        diagonal1Controller!,
+                        diagonal2Controller!,
                         plotValue.text,
                         " ",
                         plot_orientaion,
@@ -2350,8 +2244,8 @@ class _RequirementState extends State<Requirement> {
                         dimenInt,
                         lengthController.text,
                         widthController.text,
-                        diagonal1Controller.text,
-                        diagonal2Controller.text,
+                        diagonal1Controller!,
+                        diagonal2Controller!,
                         plotValue.text,
                         "",
                         plot_orientaion,
