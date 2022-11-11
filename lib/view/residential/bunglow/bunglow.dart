@@ -331,7 +331,7 @@ class _BunglowState extends State<Bunglow> {
           ],
         ),
       ),
-      bottomNavigationBar: buildBottomNav(),
+      // bottomNavigationBar: buildBottomNav(),
     );
   }
 }
