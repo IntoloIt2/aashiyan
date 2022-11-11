@@ -139,9 +139,7 @@ class _BunglowState extends State<Bunglow> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){
-                    
-                  },
+                  onTap: () {},
                   child: Card(
                     child: ListTile(
                       leading: Image.asset("assets/images/pdf_icon.png"),
@@ -336,7 +334,6 @@ class _BunglowState extends State<Bunglow> {
           ],
         ),
       ),
-      bottomNavigationBar: buildBottomNav(),
     );
   }
 }
