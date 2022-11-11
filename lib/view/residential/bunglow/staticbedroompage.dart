@@ -343,9 +343,8 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                           .split(',')
                       : [];
               masterRoomFacility = printData[mi]['bedroom_facility'] != null
-                  ? printData[mi]['bedroom_facility'].toString().split(',')
-                  : [];
-            }
+                  ? printData[mi]['bedroom_facility'].toString().split(',') : [];
+                  }
             if (printData.asMap().containsKey(si)) {
               sonBedRoom = true;
               sonRequiredDress = printData[si]['bedroom_dress_req'] != null
@@ -7069,7 +7068,7 @@ class _StaticBedroomPageState extends State<StaticBedroomPage> {
                                             icon: Icon(
                                               Icons.help,
                                               size: height * 0.03,
-                                            ),
+                                             ),
                                           ),
                                         ],
                                       ),

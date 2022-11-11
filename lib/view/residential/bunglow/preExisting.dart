@@ -77,7 +77,8 @@ class _PreExistingState extends State<PreExisting> {
                           for (var i = 0; i < projects.length; i++)
                             InkWell(
                               onTap: () {
-                                if (projects[i]['project_type_id'] ==
+                                if (int.parse(projects[i]['project_type_id']
+                                        .toString()) ==
                                     BUNGALOW) {
                                   setProjectId(projects[i]["id"]);
                                   Get.to(() => const StepPages());

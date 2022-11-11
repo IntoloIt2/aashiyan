@@ -459,7 +459,6 @@ class _Step_1State extends State<Step_1> {
         },
       ),
     );
-
     timer = Timer.periodic(
         Duration(seconds: 1),
         (Timer t) => setState(() {

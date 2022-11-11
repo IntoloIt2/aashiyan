@@ -138,14 +138,17 @@ class _BunglowState extends State<Bunglow> {
                     ),
                   ),
                 ),
-                Card(
-                  child: ListTile(
-                    leading: Image.asset("assets/images/pdf_icon.png"),
-                    title: Text(
-                      "sample Drawing book",
-                      style: TextStyle(
-                        fontSize: height * 0.025,
-                        fontWeight: FontWeight.w500,
+                GestureDetector(
+                  onTap: () {},
+                  child: Card(
+                    child: ListTile(
+                      leading: Image.asset("assets/images/pdf_icon.png"),
+                      title: Text(
+                        "sample Drawing book",
+                        style: TextStyle(
+                          fontSize: height * 0.025,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
@@ -331,7 +334,6 @@ class _BunglowState extends State<Bunglow> {
           ],
         ),
       ),
-      bottomNavigationBar: buildBottomNav(),
     );
   }
 }

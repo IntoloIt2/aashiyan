@@ -95,7 +95,7 @@ class _ResidentialState extends State<Residential> {
                       //     await SharedPreferences.getInstance();
                       // var flat_house_const =
                       //     prefs.setInt('projectHouseTypeId', FLAT_HOUSE);
-                          setProjectTypeIdHouse(FLAT_HOUSE);
+                      setProjectTypeIdHouse(FLAT_HOUSE);
                       // var getProjectTypeId = await provider.getProjectType();
                     },
                     child: Stack(
@@ -236,47 +236,6 @@ class _ResidentialState extends State<Residential> {
             )
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: iconColor,
-              ),
-              label: ""),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.add_circle_outline,
-                color: iconColor,
-              ),
-              label: ""),
-          BottomNavigationBarItem(
-              icon: IconButton(
-                icon: Icon(
-                  Icons.person,
-                  color: iconColor,
-                ),
-                onPressed: () {
-                  isLogged
-                      // ? const Profile()
-                      ? Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Profile(),
-                          ))
-                      : showDialog(
-                          builder: (context) => loginDialog(context),
-                          context: (context));
-
-                  // showDialog(
-                  //   builder: (context) => loginDialog(context),
-                  //   context: context,
-                  // );
-                },
-              ),
-              label: ""),
-        ],
       ),
     );
   }

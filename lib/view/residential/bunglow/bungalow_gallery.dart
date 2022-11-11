@@ -33,9 +33,12 @@ class _BungalowGalleryState extends State<BungalowGallery> {
   Future fetchData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     categoryId = prefs.getInt('projectTypeId');
+
     var finalArt = await getGalleryAPI(categoryId!);
     setState(() {
       gallery = finalArt;
+      print('gallery--');
+      print(gallery);
     });
   }
 
