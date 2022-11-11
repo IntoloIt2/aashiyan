@@ -137,15 +137,24 @@ class _EntranceState extends State<Entrance> {
   TextEditingController selectedCarGateController = TextEditingController();
   TextEditingController selectedSidePadestController = TextEditingController();
   String diffrentCustomizedLocationController = " ";
-  String securityKioskLengthController = " ";
-  String securityKioskWidthController = " ";
-  String porchLengthController = " ";
-  String porchWidthController = ' ';
+  // String securityKioskLengthController = " ";
+  TextEditingController securityKioskLengthController = TextEditingController();
+  TextEditingController securityKioskWidthController = TextEditingController();
+  // String securityKioskWidthController = " ";
+  // String porchLengthController = " ";
+  // String porchWidthController = ' ';
+  TextEditingController porchLengthController = TextEditingController();
+  TextEditingController porchWidthController = TextEditingController();
   String noOfCar = ' ';
-  String foyerWidthController = ' ';
-  String foyerLengthController = ' ';
-  String verandaWidthController = ' ';
-  String verandaLengthController = '';
+  // String foyerWidthController = ' ';
+  // String foyerLengthController = ' ';
+  TextEditingController foyerWidthController = TextEditingController();
+  TextEditingController foyerLengthController = TextEditingController();
+  // String verandaWidthController = '';
+  // String verandaLengthController = '';
+  TextEditingController verandaWidthController = TextEditingController();
+  TextEditingController verandaLengthController = TextEditingController();
+
   List porchRequiredFaci = [];
 
   var project_id;
@@ -250,7 +259,7 @@ class _EntranceState extends State<Entrance> {
   bool isloading = false;
   var pageId;
 
-  Future<void> getData(int id) async {
+  Future<void> getData(int? id) async {
     try {
       // print(id);
       var response = await http.get(
@@ -265,7 +274,7 @@ class _EntranceState extends State<Entrance> {
             printData = jsonResponse;
             print('printData===');
             print(printData);
-            if (printData != null) {
+            if (printData != null && printData["status"] != 400) {
               pageId = printData['bungalow_entrance']['id'] != null
                   ? int.parse(printData['bungalow_entrance']['id'].toString())
                   : pageId;
@@ -274,13 +283,16 @@ class _EntranceState extends State<Entrance> {
                   ? floors[int.parse(
                       printData['bungalow_entrance']['floor'].toString())]
                   : entranceSelectedGates;
+
               entranceSelectedGates =
                   printData['bungalow_entrance']['id'] != null
                       ? printData['bungalow_entrance']['one_gate'].toString()
                       : entranceSelectedGates;
+
               floorController = printData['bungalow_entrance']['floor'] != null
                   ? printData['bungalow_entrance']['floor'].toString()
                   : '';
+
               moderate = printData['bungalow_entrance']['vastu'] != null
                   ? printData['bungalow_entrance']['vastu'] == "1"
                   : false;
@@ -377,28 +389,30 @@ class _EntranceState extends State<Entrance> {
                   ? printData["bungalow_entrance"]["verandah"] == OutSideClosed
                   : false;
               // ignore: prefer_if_null_operators
-              securityKioskLengthController = printData["bungalow_entrance"]
-                          ["security_kiosq_length"] !=
-                      null
-                  ? printData["bungalow_entrance"]["security_kiosq_length"]
-                  : '';
-              securityKioskWidthController =
-                  printData["bungalow_entrance"]["security_kiosq_width"] ?? '';
-              porchLengthController =
+              securityKioskLengthController.text =
+                  printData["bungalow_entrance"]["security_kiosq_length"] !=
+                          null
+                      ? printData["bungalow_entrance"]["security_kiosq_length"]
+                      : '';
+              securityKioskWidthController.text =
+                  printData["bungalow_entrance"]["security_kiosq_width"] != null
+                      ? printData["bungalow_entrance"]["security_kiosq_width"]
+                      : '';
+              porchLengthController.text =
                   printData['bungalow_entrance']['porch_length'] ?? '';
-              porchWidthController =
+              porchWidthController.text =
                   printData['bungalow_entrance']['porch_width'] ?? '';
-              foyerLengthController =
+              foyerLengthController.text =
                   printData['bungalow_entrance']['foyer_length'] ?? '';
-              foyerWidthController =
+              foyerWidthController.text =
                   printData['bungalow_entrance']['foyer_width'] ?? '';
 
-              verandaLengthController =
+              verandaLengthController.text =
                   printData['bungalow_entrance']['verandah_length'] != null
                       ? printData['bungalow_entrance']['verandah_length']
                       : '';
 
-              verandaWidthController =
+              verandaWidthController.text =
                   printData['bungalow_entrance']['verandah_width'] != null
                       ? printData['bungalow_entrance']['verandah_width']
                       : '';
@@ -486,6 +500,19 @@ class _EntranceState extends State<Entrance> {
         textColor: Colors.white);
   }
 
+  void scaleConversion(textControler) {
+    if (textControler != '') {
+      if (INT_ONE == dimenInt) {
+        textControler =
+            (double.parse(textControler) * 3.28084).toStringAsFixed(2);
+      }
+      if (INT_TWO == dimenInt) {
+        textControler =
+            (double.parse(textControler) * 0.3048).toStringAsFixed(2);
+      }
+    }
+  }
+
   late var timer;
   @override
   void initState() {
@@ -495,6 +522,44 @@ class _EntranceState extends State<Entrance> {
     getUserId();
 
     final store = Provider.of<PageNavProvider>(context, listen: false);
+    scaleConversion(securityKioskLengthController.text);
+    scaleConversion(securityKioskWidthController.text);
+
+    scaleConversion(porchLengthController.text);
+    scaleConversion(porchWidthController.text);
+
+    scaleConversion(foyerLengthController.text);
+    scaleConversion(foyerWidthController.text);
+
+    scaleConversion(verandaLengthController.text);
+    scaleConversion(verandaWidthController.text);
+
+    // if (securityKioskLengthController.text != '') {
+    //   if (INT_ONE == dimenInt) {
+    //     securityKioskLengthController.text =
+    //         (double.parse(securityKioskLengthController.text) * 3.28084)
+    //             .toStringAsFixed(2);
+    //   }
+    //   if (INT_TWO == dimenInt) {
+    //     securityKioskLengthController.text =
+    //         (double.parse(securityKioskLengthController.text) * 0.3048)
+    //             .toStringAsFixed(2);
+    //   }
+    // }
+
+    // if (securityKioskWidthController.text != '') {
+    //   if (INT_ONE == dimenInt) {
+    //     securityKioskWidthController.text =
+    //         (double.parse(securityKioskWidthController.text) * 3.28084)
+    //             .toStringAsFixed(2);
+    //   }
+
+    //   if (INT_TWO == dimenInt) {
+    //     securityKioskWidthController.text =
+    //         (double.parse(securityKioskWidthController.text) * 0.3048)
+    //             .toStringAsFixed(2);
+    //   }
+    // }
 
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   if (store.getId() == 0) {
@@ -580,32 +645,37 @@ class _EntranceState extends State<Entrance> {
                                 () {
                                   selectedFloor = it!;
                                   if (selectedFloor == ENT_GROUND_FLOOR) {
-                                    if (printData != null &&
-                                        printData['bungalow_entrance'] != null)
+                                    if (printData != null
+                                        ? printData['bungalow_entrance'] != null
+                                        : false)
                                       printData["bungalow_entrance"]["floor"] =
                                           G_FLOOR;
                                   }
                                   if (selectedFloor == ENT_SELECT) {
-                                    if (printData != null &&
-                                        printData['bungalow_entrance'] != null)
+                                    if (printData != null
+                                        ? printData['bungalow_entrance'] != null
+                                        : false)
                                       printData["bungalow_entrance"]["floor"] =
                                           S_ELECT;
                                   }
                                   if (selectedFloor == ENT_FIRST_FLOOR) {
-                                    if (printData != null &&
-                                        printData['bungalow_entrance'] != null)
+                                    if (printData != null
+                                        ? printData['bungalow_entrance'] != null
+                                        : false)
                                       printData["bungalow_entrance"]["floor"] =
                                           FIRST_FLOOR;
                                   }
                                   if (selectedFloor == ENT_SECOND_FLOOR) {
-                                    if (printData != null &&
-                                        printData['bungalow_entrance'] != null)
+                                    if (printData != null
+                                        ? printData['bungalow_entrance'] != null
+                                        : false)
                                       printData["bungalow_entrance"]["floor"] =
                                           SECOND_FLOOR;
                                   }
                                   if (selectedFloor == ENT_THIRD_FLOOR) {
-                                    if (printData != null &&
-                                        printData['bungalow_entrance'] != null)
+                                    if (printData != null
+                                        ? printData['bungalow_entrance'] != null
+                                        : false)
                                       printData["bungalow_entrance"]["floor"] =
                                           THIRD_FLOOR;
                                   }
@@ -796,14 +866,24 @@ class _EntranceState extends State<Entrance> {
                                   value: oneGate,
                                   onChanged: (value) {
                                     setState(() {
-                                      if (printData['bungalow_entrance'] !=
-                                              null &&
-                                          printData['bungalow_entrance']
-                                                  ['entrance_gate'] !=
-                                              null) {
-                                        printData['bungalow_entrance']
-                                            ['entrance_gate'] = "";
-                                      }
+                                      // if (printData['bungalow_entrance'] != null
+                                      //     ? printData['bungalow_entrance']
+                                      //                 ['entrance_gate'] !=
+                                      //             null
+                                      //         ? true
+                                      //         : false
+                                      //     : false) {
+                                      //   printData['bungalow_entrance']
+                                      //       ['entrance_gate'] = "";
+                                      // }
+                                      // if (printData['bungalow_entrance'] !=
+                                      //         null &&
+                                      //     printData['bungalow_entrance']
+                                      //             ['entrance_gate'] !=
+                                      //         null) {
+                                      //   printData['bungalow_entrance']
+                                      //       ['entrance_gate'] = "";
+                                      // }
                                       oneGate = !oneGate!;
                                       twoGate = false;
                                       adjascent = false;
@@ -834,26 +914,27 @@ class _EntranceState extends State<Entrance> {
                                 Checkbox(
                                     activeColor: checkColor,
                                     checkColor: Colors.white,
-                                    value: printData != null &&
-                                            printData['bungalow_entrance'] !=
-                                                null
-                                        ? printData['bungalow_entrance']
-                                                    ['entrance_gate'] ==
-                                                TWO_GATE
-                                            ? true
-                                            : twoGate
-                                        : twoGate,
+                                    // value: printData != null &&
+                                    //         printData['bungalow_entrance'] !=
+                                    //             null
+                                    //     ? printData['bungalow_entrance']
+                                    //                 ['entrance_gate'] ==
+                                    //             TWO_GATE
+                                    //         ? true
+                                    //         : twoGate
+                                    //     : twoGate,
+                                    value: twoGate,
                                     onChanged: (value) {
                                       setState(() {
-                                        if (printData != null &&
-                                            printData['bungalow_entrance'] !=
-                                                null &&
-                                            printData['bungalow_entrance']
-                                                    ['entrance_gate'] !=
-                                                null) {
-                                          printData['bungalow_entrance']
-                                              ['entrance_gate'] = "";
-                                        }
+                                        // if (printData != null &&
+                                        //     printData['bungalow_entrance'] !=
+                                        //         null &&
+                                        //     printData['bungalow_entrance']
+                                        //             ['entrance_gate'] !=
+                                        //         null) {
+                                        //   printData['bungalow_entrance']
+                                        //       ['entrance_gate'] = "";
+                                        // }
                                         twoGate = value;
                                         oneGate = false;
                                       });
@@ -888,15 +969,16 @@ class _EntranceState extends State<Entrance> {
                                 icon: const Visibility(
                                     visible: false,
                                     child: Icon(Icons.arrow_downward)),
-                                hint: printData != null &&
-                                        printData['bungalow_entrance'] !=
-                                            null &&
-                                        printData['bungalow_entrance']
-                                                ['one_gate'] !=
-                                            null
-                                    ? Text(printData['bungalow_entrance']
-                                        ["one_gate"])
-                                    : Text(entranceSelectedGates),
+                                // hint: printData != null &&
+                                //         printData['bungalow_entrance'] !=
+                                //             null &&
+                                //         printData['bungalow_entrance']
+                                //                 ['one_gate'] !=
+                                //             null
+                                //     ? Text(printData['bungalow_entrance']
+                                //         ["one_gate"])
+                                //     : Text(entranceSelectedGates),
+                                hint: Text(entranceSelectedGates),
                                 items: entranceGates
                                     .map((e) => DropdownMenuItem<String>(
                                           value: e,
@@ -1283,7 +1365,8 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: securityKioskLengthController,
+                            controller: securityKioskLengthController,
+                            // initialValue: securityKioskLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "lenght",
@@ -1296,7 +1379,7 @@ class _EntranceState extends State<Entrance> {
                                 //fillColor: Colors.green
                                 ),
                             onChanged: (value) {
-                              securityKioskLengthController = value;
+                              // securityKioskLengthController.text = value;
                             },
                           ),
                         ),
@@ -1318,7 +1401,8 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: securityKioskWidthController,
+                            // initialValue: securityKioskWidthController,
+                            controller: securityKioskWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "width",
@@ -1331,7 +1415,7 @@ class _EntranceState extends State<Entrance> {
                                 //fillColor: Colors.green
                                 ),
                             onChanged: (value) {
-                              securityKioskWidthController = value;
+                              // securityKioskWidthController.text = value;
                             },
                           ),
                         ),
@@ -1494,7 +1578,8 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: porchLengthController,
+                            // initialValue: porchLengthController,
+                            controller: porchLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                               hintText: "length",
@@ -1507,7 +1592,7 @@ class _EntranceState extends State<Entrance> {
                               //fillColor: Colors.green
                             ),
                             onChanged: ((value) {
-                              porchLengthController = value;
+                              // porchLengthController.text = value;
                             }),
                           ),
                         ),
@@ -1534,7 +1619,8 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: porchWidthController,
+                            // initialValue: porchWidthController,
+                            controller: porchWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                               hintText: "width",
@@ -1547,7 +1633,7 @@ class _EntranceState extends State<Entrance> {
                               //fillColor: Colors.green
                             ),
                             onChanged: ((value) {
-                              porchWidthController = value;
+                              // porchWidthController.text = value;
                             }),
                           ),
                         ),
@@ -1938,7 +2024,8 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: foyerLengthController,
+                            controller: foyerLengthController,
+                            // initialValue: foyerLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",
@@ -1951,7 +2038,7 @@ class _EntranceState extends State<Entrance> {
                                 //fillColor: Colors.green
                                 ),
                             onChanged: (value) {
-                              foyerLengthController = value;
+                              // foyerLengthController.text = value;
                             },
                           ),
                         ),
@@ -1972,7 +2059,8 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: foyerWidthController,
+                            controller: foyerWidthController,
+                            // initialValue: foyerWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Width",
@@ -1985,7 +2073,7 @@ class _EntranceState extends State<Entrance> {
                                 //fillColor: Colors.green
                                 ),
                             onChanged: (value) {
-                              foyerWidthController = value;
+                              // foyerWidthController.text = value;
                             },
                           ),
                         ),
@@ -2192,7 +2280,8 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: verandaLengthController,
+                            controller: verandaLengthController,
+                            // initialValue: verandaLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Length",
@@ -2205,7 +2294,7 @@ class _EntranceState extends State<Entrance> {
                                 //fillColor: Colors.green
                                 ),
                             onChanged: (value) {
-                              verandaLengthController = value;
+                              // verandaLengthController.text = value;
                             },
                           ),
                         ),
@@ -2226,7 +2315,8 @@ class _EntranceState extends State<Entrance> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: verandaWidthController,
+                            controller: verandaWidthController,
+                            // initialValue: verandaWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "width",
@@ -2239,7 +2329,7 @@ class _EntranceState extends State<Entrance> {
                                 //fillColor: Colors.green
                                 ),
                             onChanged: (value) {
-                              verandaWidthController = value;
+                              // verandaWidthController.text = value;
                             },
                           ),
                         ),
@@ -2402,14 +2492,14 @@ class _EntranceState extends State<Entrance> {
                         if (securityRequired == true) {
                           securityReqInt = INT_ONE;
                           int securityArea =
-                              int.parse(securityKioskLengthController) *
-                                  int.parse(securityKioskWidthController);
+                              int.parse(securityKioskLengthController.text) *
+                                  int.parse(securityKioskWidthController.text);
                           securityKiosqArea = securityArea.toString();
                         }
                         if (porchRequired == true) {
                           porchReqInt = INT_ONE;
-                          int pArea = int.parse(porchLengthController) *
-                              int.parse(porchWidthController);
+                          int pArea = int.parse(porchLengthController.text) *
+                              int.parse(porchWidthController.text);
                           porchArea = pArea.toString();
                         }
                         if (visualNature == true &&
@@ -2436,16 +2526,16 @@ class _EntranceState extends State<Entrance> {
 
                         if (requiredWelcomeLobyy == true) {
                           requiredWelcomeLobyyInt = INT_ONE;
-                          int fArea = int.parse(foyerLengthController) *
-                              int.parse(foyerWidthController);
+                          int fArea = int.parse(foyerLengthController.text) *
+                              int.parse(foyerWidthController.text);
                           porchArea = fArea.toString();
                         }
                         if (requiredVeranda == true) {
                           requiredVerandaInt = INT_ONE;
                           int vArea = INT_ZERO;
 
-                          vArea = int.parse(verandaLengthController) *
-                              int.parse(verandaWidthController);
+                          vArea = int.parse(verandaLengthController.text) *
+                              int.parse(verandaWidthController.text);
                           verandaArea = vArea.toString();
 
                           if (outSideOpen == true) {
@@ -2469,25 +2559,25 @@ class _EntranceState extends State<Entrance> {
                         selectedSidePadest,
                         diffrentCustomizedLocationController,
                         securityReqInt,
-                        securityKioskLengthController,
-                        securityKioskWidthController,
+                        securityKioskLengthController.text,
+                        securityKioskWidthController.text,
                         securityKiosqArea,
                         INT_ZERO,
                         porchReqInt,
-                        porchLengthController,
-                        porchWidthController,
+                        porchLengthController.text,
+                        porchWidthController.text,
                         porchArea,
                         porchRequiredFaci,
                         visualNaturString,
                         carParkingString,
                         requiredWelcomeLobyy!,
-                        foyerLengthController,
-                        foyerWidthController,
+                        foyerLengthController.text,
+                        foyerWidthController.text,
                         foyerArea,
                         SelectedLobbyDesign,
                         requiredVerandaInt,
-                        verandaLengthController,
-                        verandaWidthController,
+                        verandaLengthController.text,
+                        verandaWidthController.text,
                         verandaArea,
                         veranda,
                       );
@@ -2496,7 +2586,7 @@ class _EntranceState extends State<Entrance> {
                             Colors.lightGreen, ToastGravity.TOP);
                       }
                     } else {
-                      var status = await entrancePost(
+                      var status = entrancePost(
                         project_id,
                         moderateString,
                         floorInt,
@@ -2507,25 +2597,25 @@ class _EntranceState extends State<Entrance> {
                         selectedSidePadest,
                         diffrentCustomizedLocationController,
                         securityReqInt,
-                        securityKioskLengthController,
-                        securityKioskWidthController,
+                        securityKioskLengthController.text,
+                        securityKioskWidthController.text,
                         securityKiosqArea,
                         INT_ZERO,
                         porchReqInt,
-                        porchLengthController,
-                        porchWidthController,
+                        porchLengthController.text,
+                        porchWidthController.text,
                         porchArea,
                         porchRequiredFaci,
                         visualNaturString,
                         carParkingString,
                         requiredWelcomeLobyy!,
-                        foyerLengthController,
-                        foyerWidthController,
+                        foyerLengthController.text,
+                        foyerWidthController.text,
                         foyerArea,
                         SelectedLobbyDesign,
                         requiredVerandaInt,
-                        verandaLengthController,
-                        verandaWidthController,
+                        verandaLengthController.text,
+                        verandaWidthController.text,
                         verandaArea,
                         veranda,
                       );
