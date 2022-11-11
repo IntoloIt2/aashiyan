@@ -503,18 +503,18 @@ class _EntranceState extends State<Entrance> {
     //     getData(store.getId());
     //   }
     // });
-    // timer = Timer.periodic(
-    //     Duration(seconds: 1),
-    //     (Timer t) => setState(() {
-    //           isloading = true;
-    //         }));
+    timer = Timer.periodic(
+        Duration(seconds: 1),
+        (Timer t) => setState(() {
+              isloading = true;
+            }));
   }
 
-  // @override
-  // void dispose() {
-  //   timer.cancel();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
