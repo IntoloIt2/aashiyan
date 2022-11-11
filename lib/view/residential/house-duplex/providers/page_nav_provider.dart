@@ -93,6 +93,8 @@ class PageNavProvider with ChangeNotifier {
       body: jsonEncode(projectData),
     );
     temp = jsonDecode(response.body);
+
+    print(response.body);
     if (temp != null) {
       setProjectId(temp['project_id']);
     }
@@ -275,6 +277,7 @@ class PageNavProvider with ChangeNotifier {
     }
     return temp['status'];
   }
+
   Future<dynamic> requirementHouseUpdate(
     int projectId,
     int userId,

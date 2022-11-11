@@ -42,18 +42,18 @@ class _LivingHallState extends State<LivingHall> {
   String selectedFloor = "Select";
   int livingHallLocation = 1;
   String livingHallArea = "";
-  String drawingHallLengthController = "";
-  String drawingHallWidthController = "";
+  TextEditingController drawingHallLengthController = TextEditingController();
+  TextEditingController drawingHallWidthController  = TextEditingController();
   String drawingSpecialFeaturesController = "";
   String livingSpecialFeaturesController = "";
-  String LivingHallWidthController = "";
-  String LivingHallLengthController = "";
-  String KitchenLengthController = "";
-  String attachedLengthController = "";
-  String kitchenWidthController = "";
-  String attachedWidthController = "";
-  String utilityLengthController = "";
-  String utilityWidthController = "";
+  TextEditingController LivingHallWidthController  = TextEditingController();
+  TextEditingController LivingHallLengthController = TextEditingController();
+  TextEditingController KitchenLengthController    = TextEditingController();
+  TextEditingController attachedLengthController   = TextEditingController();
+  TextEditingController kitchenWidthController  = TextEditingController();
+  TextEditingController attachedWidthController = TextEditingController();
+  TextEditingController utilityLengthController = TextEditingController();
+  TextEditingController utilityWidthController  = TextEditingController();
   String specificReq = "";
   String otherDrawingHallLocationController = "";
   String ohterLivingHallController = "";
@@ -287,12 +287,12 @@ class _LivingHallState extends State<LivingHall> {
                       ? printData['bungalow_drawing_hall']['living_hall_text']
                       : '';
 
-              KitchenLengthController =
+              KitchenLengthController.text =
                   printData['bungalow_drawing_hall']['kitchen_length'] != null
                       ? printData['bungalow_drawing_hall']['kitchen_length']
                           .toString()
                       : '';
-              kitchenWidthController =
+              kitchenWidthController.text =
                   printData['bungalow_drawing_hall']['kitchen_width'] != null
                       ? printData['bungalow_drawing_hall']['kitchen_width']
                           .toString()
@@ -303,13 +303,13 @@ class _LivingHallState extends State<LivingHall> {
                           .toString()
                           .split(",")
                       : [];
-              attachedLengthController = printData['bungalow_drawing_hall']
+              attachedLengthController.text = printData['bungalow_drawing_hall']
                           ['attach_store_length'] !=
                       null
                   ? printData['bungalow_drawing_hall']['attach_store_length']
                       .toString()
                   : '';
-              attachedWidthController = printData['bungalow_drawing_hall']
+              attachedWidthController.text = printData['bungalow_drawing_hall']
                           ['attach_store_length'] !=
                       null
                   ? printData['bungalow_drawing_hall']['attach_store_length']
@@ -339,20 +339,20 @@ class _LivingHallState extends State<LivingHall> {
               //     ? printData['bungalow_drawing_hall']['attach_store_length']
               //         .toString()
               //     : '';
-              attachedWidthController = printData['bungalow_drawing_hall']
+              attachedWidthController.text = printData['bungalow_drawing_hall']
                           ['attach_store_width'] !=
                       null
                   ? printData['bungalow_drawing_hall']['attach_store_width']
                       .toString()
                   : '';
 
-              utilityLengthController = printData['bungalow_drawing_hall']
+              utilityLengthController.text = printData['bungalow_drawing_hall']
                           ['utility_wash_length'] !=
                       null
                   ? printData['bungalow_drawing_hall']['utility_wash_length']
                       .toString()
                   : '';
-              utilityWidthController = printData['bungalow_drawing_hall']
+              utilityWidthController.text = printData['bungalow_drawing_hall']
                           ['utility_wash_width'] !=
                       null
                   ? printData['bungalow_drawing_hall']['utility_wash_width']
@@ -444,14 +444,18 @@ class _LivingHallState extends State<LivingHall> {
     super.initState();
     getFloorId();
     final store = Provider.of<PageNavProvider>(context, listen: false);
-
     getUserId();
 
+    //if(dimenInt){}
+
     timer = Timer.periodic(
-        Duration(seconds: 2),
-        (Timer t) => setState(() {
-              isloading = true;
-            }));
+      Duration(seconds: 2),
+      (Timer t) => setState(
+        () {
+          isloading = true;
+        },
+      ),
+    );
   }
 
   @override
@@ -662,7 +666,8 @@ class _LivingHallState extends State<LivingHall> {
                             //     ? printData['bungalow_drawing_hall']
                             //         ['living_hall_length']
                             //     : LivingHallLengthController,
-                            initialValue: LivingHallLengthController,
+                            // initialValue: LivingHallLengthController,
+                            controller: LivingHallLengthController,
 
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
@@ -676,7 +681,7 @@ class _LivingHallState extends State<LivingHall> {
                                 //fillColor: Colors.green
                                 ),
                             onChanged: (value) {
-                              LivingHallLengthController = value;
+                              // LivingHallLengthController = value;
                               print(LivingHallLengthController);
                             },
                           ),
@@ -704,9 +709,8 @@ class _LivingHallState extends State<LivingHall> {
                             //     ? printData['bungalow_drawing_hall']
                             //         ['living_hall_width']
                             //     : "",
-
-                            initialValue: LivingHallWidthController,
-
+                            // initialValue: LivingHallWidthController,
+                            controller: LivingHallWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "width",
@@ -719,7 +723,7 @@ class _LivingHallState extends State<LivingHall> {
                                 //fillColor: Colors.green
                                 ),
                             onChanged: (value) {
-                              LivingHallWidthController = value;
+                              // LivingHallWidthController = value;
                             },
                           ),
                         ),
@@ -1089,7 +1093,7 @@ class _LivingHallState extends State<LivingHall> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: drawingHallLengthController,
+                            controller : drawingHallLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",
@@ -1102,7 +1106,7 @@ class _LivingHallState extends State<LivingHall> {
                                 //fillColor: Colors.green
                                 ),
                             onChanged: (value) {
-                              drawingHallLengthController = value;
+                              // drawingHallLengthController = value;
                               // print(drawingHallLengthController);
                             },
                           ),
@@ -1126,7 +1130,7 @@ class _LivingHallState extends State<LivingHall> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: drawingHallWidthController,
+                            controller: drawingHallWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "width",
@@ -1139,7 +1143,7 @@ class _LivingHallState extends State<LivingHall> {
                                 //fillColor: Colors.green
                                 ),
                             onChanged: (value) {
-                              drawingHallWidthController = value;
+                              // drawingHallWidthController = value;
                               // print(drawingHallWidthController);
                             },
                           ),
@@ -1351,7 +1355,7 @@ class _LivingHallState extends State<LivingHall> {
                           //     ? printData['bungalow_drawing_hall']
                           //         ['kitchen_length']
                           //     : '',
-                          initialValue: KitchenLengthController,
+                          controller : KitchenLengthController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "length",
@@ -1364,7 +1368,7 @@ class _LivingHallState extends State<LivingHall> {
                               //fillColor: Colors.green
                               ),
                           onChanged: (value) {
-                            KitchenLengthController = value;
+                            // KitchenLengthController = value;
                           },
                         ),
                       ),
@@ -1395,7 +1399,7 @@ class _LivingHallState extends State<LivingHall> {
                           //             .toString()
                           //         : ''
                           //     : '',
-                          initialValue: kitchenWidthController,
+                          controller: kitchenWidthController,
                           style: const TextStyle(fontSize: 14),
                           decoration: const InputDecoration(
                               hintText: "Width",
@@ -1408,7 +1412,7 @@ class _LivingHallState extends State<LivingHall> {
                               //fillColor: Colors.green
                               ),
                           onChanged: (value) {
-                            kitchenWidthController = value;
+                            kitchenWidthController.text = value;
                           },
                         ),
                       ),
@@ -1687,7 +1691,8 @@ class _LivingHallState extends State<LivingHall> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: attachedLengthController,
+                            controller: attachedLengthController,
+                            // initialValue: attachedLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",
@@ -1700,7 +1705,7 @@ class _LivingHallState extends State<LivingHall> {
                                 //fillColor: Colors.green
                                 ),
                             onChanged: (value) {
-                              attachedLengthController = value;
+                              // attachedLengthController = value;
                             },
                           ),
                         ),
@@ -1723,7 +1728,7 @@ class _LivingHallState extends State<LivingHall> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: attachedWidthController,
+                            controller: attachedWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "Width",
@@ -1736,7 +1741,7 @@ class _LivingHallState extends State<LivingHall> {
                                 //fillColor: Colors.green
                                 ),
                             onChanged: (value) {
-                              attachedWidthController = value;
+                              // attachedWidthController = value;
                             },
                           ),
                         ),
@@ -1793,7 +1798,7 @@ class _LivingHallState extends State<LivingHall> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: utilityLengthController,
+                            controller: utilityLengthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "length",
@@ -1806,7 +1811,7 @@ class _LivingHallState extends State<LivingHall> {
                                 //fillColor: Colors.green
                                 ),
                             onChanged: (value) {
-                              utilityLengthController = value;
+                              // utilityLengthController = value;
                             },
                           ),
                         ),
@@ -1831,7 +1836,7 @@ class _LivingHallState extends State<LivingHall> {
                           height: height * 0.04,
                           width: width * 0.15,
                           child: TextFormField(
-                            initialValue: utilityWidthController,
+                            controller: utilityWidthController,
                             style: const TextStyle(fontSize: 14),
                             decoration: const InputDecoration(
                                 hintText: "width",
@@ -1844,7 +1849,7 @@ class _LivingHallState extends State<LivingHall> {
                                 //fillColor: Colors.green
                                 ),
                             onChanged: (value) {
-                              utilityWidthController = value;
+                              // utilityWidthController = value;
                             },
                           ),
                         ),
@@ -2122,25 +2127,25 @@ class _LivingHallState extends State<LivingHall> {
                         project_id,
                         drawingInt,
                         drawingHallLocation,
-                        drawingHallLengthController,
-                        drawingHallWidthController,
+                        drawingHallLengthController.text,
+                        drawingHallWidthController.text,
                         drawingSpecialFeaturesController,
                         drawingSpecialFeaturesController,
                         livingHallInt,
                         livingHallLocation,
-                        LivingHallLengthController,
-                        LivingHallWidthController,
+                        LivingHallLengthController.text,
+                        LivingHallWidthController.text,
                         livingHall,
                         livingSpecialFeaturesController,
                         kitchenFeatures,
                         KitchenFloor,
-                        KitchenLengthController,
-                        kitchenWidthController,
+                        KitchenLengthController.text,
+                        kitchenWidthController.text,
                         kitchenDiningFunction,
-                        attachedLengthController,
-                        attachedWidthController,
-                        utilityWidthController,
-                        utilityLengthController,
+                        attachedLengthController.text,
+                        attachedWidthController.text,
+                        utilityWidthController.text,
+                        utilityLengthController.text,
                         refrigeratorSize,
                         specificReq,
                       );
@@ -2155,25 +2160,25 @@ class _LivingHallState extends State<LivingHall> {
                         project_id,
                         drawingInt,
                         drawingHallLocation,
-                        drawingHallLengthController,
-                        drawingHallWidthController,
+                        drawingHallLengthController.text,
+                        drawingHallWidthController.text,
                         drawingSpecialFeaturesController,
                         drawingSpecialFeaturesController,
                         livingHallInt,
                         livingHallLocation,
-                        LivingHallLengthController,
-                        LivingHallWidthController,
+                        LivingHallLengthController.text,
+                        LivingHallWidthController.text,
                         livingHall,
                         livingSpecialFeaturesController,
                         kitchenFeatures,
                         KitchenFloor,
-                        KitchenLengthController,
-                        kitchenWidthController,
+                        KitchenLengthController.text,
+                        kitchenWidthController.text,
                         kitchenDiningFunction,
-                        attachedLengthController,
-                        attachedWidthController,
-                        utilityWidthController,
-                        utilityLengthController,
+                        attachedLengthController.text,
+                        attachedWidthController.text,
+                        utilityWidthController.text,
+                        utilityLengthController.text,
                         refrigeratorSize,
                         specificReq,
                       );

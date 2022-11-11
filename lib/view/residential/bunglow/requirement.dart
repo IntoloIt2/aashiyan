@@ -409,39 +409,40 @@ class _RequirementState extends State<Requirement> {
                 : "";
 
             plotValue.text = printData["project"]["plot_size"] != null
-                ? printData["project"]["plot_size"]
+                ? printData["project"]["plot_size"].toString()
                 : plotValue.text;
 
             stateId = printData["project"]["state"] != null
-                ? printData["project"]["state"]
-                : "";
+                ? int.parse(printData["project"]["state"].toString())
+                : stateId;
             cityId = printData["project"]["city"] != null
-                ? printData["project"]["city"]
-                : "";
-            otherEast = printData["project"]["west_property"] != null
-                ? printData["project"]["east_property"] == 2
-                : otherEast;
-            otherNorth = printData["project"]["west_property"] != null
-                ? printData["project"]["north_property"] == 2
-                : otherNorth;
-            otherwest = printData["project"]["west_property"] != null
-                ? printData["project"]["west_property"] == 2
-                : otherwest;
-            otherSouth = printData["project"]["west_property"] != null
-                ? printData["project"]["south_property"] == 2
-                : otherSouth;
-            eastRoad = printData["project"]["west_property"] != null
-                ? printData["project"]["east_property"] == 1
-                : eastRoad;
-            westRoad = printData["project"]["west_property"] != null
-                ? printData["project"]["north_property"] == 1
-                : westRoad;
-            northRoad = printData["project"]["west_property"] != null
-                ? printData["project"]["west_property"] == 1
-                : northRoad;
-            southRoad = printData["project"]["west_property"] != null
-                ? printData["project"]["south_property"] == 1
-                : southRoad;
+                ? int.parse(printData["project"]["city"].toString())
+                : cityId;
+            // otherEast = printData["project"]["east_property"] != null
+            //     ? printData["project"]["east_property"] == "2"
+            //     : otherEast;
+            // otherNorth = printData["project"]["west_property"] != null
+            //     ? printData["project"]["north_property"] == "2"
+            //     : otherNorth;
+            // otherwest = printData["project"]["west_property"] != null
+            //     ? printData["project"]["west_property"] == "2"
+            //     : otherwest;
+            // otherSouth = printData["project"]["west_property"] != null
+            //     ? printData["project"]["south_property"] == "2"
+            //     : otherSouth;
+            // eastRoad = printData["project"]["west_property"] != null
+            //     ? printData["project"]["east_property"] == "1"
+            //     : eastRoad;
+            // westRoad = printData["project"]["west_property"] != null
+            //     ? printData["project"]["north_property"] == "1"
+            //     : westRoad;
+            // northRoad = printData["project"]["west_property"] != null
+            //     ? printData["project"]["west_property"] == "1"
+            //     : northRoad;
+            // southRoad = printData["project"]["south_property"] != null
+            //     ? printData["project"]["south_property"].toString() == "1"
+            //     : southRoad;
+
             selectedLevel = printData["project"]["level"] != null
                 ? levels[int.parse(printData["project"]["level"].toString())]
                 : selectedLevel;
@@ -475,6 +476,10 @@ class _RequirementState extends State<Requirement> {
                 ? int.parse(printData["project"]["west_property"].toString()) ==
                     INT_ONE
                 : westRoad;
+            northRoad = printData["project"]["west_property"] != null
+                ? int.parse(printData["project"]["west_property"].toString()) ==
+                    INT_ONE
+                : northRoad;
             northOriented = printData["project"]["north_property"] != null
                 ? int.parse(
                         printData["project"]["north_property"].toString()) ==
@@ -1264,7 +1269,7 @@ class _RequirementState extends State<Requirement> {
                             }
 
                             if (printData != null &&
-                            printData['project'] != null) {
+                                printData['project'] != null) {
                               printData['project']['plot_type'] = val;
                             }
                           },

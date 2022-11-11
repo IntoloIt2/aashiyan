@@ -265,7 +265,7 @@ class _EntranceState extends State<Entrance> {
             printData = jsonResponse;
             print('printData===');
             print(printData);
-            if (printData != null) {
+            if (printData != null && printData["status"] != 400) {
               pageId = printData['bungalow_entrance']['id'] != null
                   ? int.parse(printData['bungalow_entrance']['id'].toString())
                   : pageId;
@@ -2458,6 +2458,9 @@ class _EntranceState extends State<Entrance> {
                       },
                     );
                     if (pageId != null) {
+
+                      print("data is updating");
+
                       var status = await entrancePut(
                         project_id,
                         moderateString,
@@ -2495,7 +2498,10 @@ class _EntranceState extends State<Entrance> {
                         showToast('Entrance Requirement Updated !',
                             Colors.lightGreen, ToastGravity.TOP);
                       }
-                    } else {
+                    }else {
+
+                      print("data is posting");
+                      
                       var status = await entrancePost(
                         project_id,
                         moderateString,

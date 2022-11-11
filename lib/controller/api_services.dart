@@ -326,9 +326,13 @@ Future<dynamic> entrancePost(
   print('entrance projectData===');
   print(projectData);
 
+  print('entrance projectid===');
+  print(projectid);
+
   final response = await http.post(
-    Uri.parse("${dotenv.env['APP_URL']}bungalow-entrance"),
-    // Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-entrance'),
+    // Uri.parse(
+    //     "${dotenv.env['APP_URL']}bungalow-drawing-hall"),
+    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-entrance'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -386,23 +390,19 @@ Future<dynamic> entrancePut(
     "security_kiosq_req": securityKisoqReq,
     "security_kiosq_length": securityKisoqLength,
     "security_kiosq_width": securityKisoqWidth,
-    "security_kiosq_area": securityKisoqArea,
     "security_kiosq": securityKisoq,
     "porch_req": porchReq,
     "porch_length": porchLength,
     "porch_width": porchWidth,
-    "porch_area": porchArea,
     "porch": porch,
     "visual_nature": visualNature,
     "car_parking_space": carPrkingSpace,
     "foyer_req": foyerReq,
     "foyer_length": foyerLength,
     "foyer_width": foyerWidth,
-    "foyer_area": foyerArea,
     "foyer_lobby": foyerlobby,
     "verandah_length": verandahLength,
     "verandah_width": verandahWidth,
-    "verandah_area": verandahArea,
     "verandah": verandah,
     "dimension": dimenInt,
     "verandah_req": verandahReq,
@@ -483,10 +483,11 @@ Future<dynamic> livingHallPost(
   };
 
   // print(projectData);
-  final response = await http.post(
     // Uri.parse(baseUrlLocal + "project"),
-    Uri.parse("${dotenv.env['APP_URL']}bungalow-drawing-hall"),
-    // Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-drawing-hall'),
+    // Uri.parse("${dotenv.env['APP_URL']}bungalow-drawing-hall"),
+  final response = await http.post(
+  
+    Uri.parse('http://192.168.0.99:8080/sdplserver/api/bungalow-drawing-hall'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -978,7 +979,7 @@ Future<dynamic> BasementPost(
 
 Future<dynamic> getGalleryAPI(int category) async {
   // print(category);
-  
+
   var response = await http.get(Uri.parse(baseUrl + "get-gallery/$category"));
   final jsonResponse = jsonDecode(response.body);
 
