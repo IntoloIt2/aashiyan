@@ -120,6 +120,7 @@ Future<void> login(String Email, String Password, context) async {
   );
 
   loginres = jsonDecode(response.body);
+  print(loginres);
 
   if (loginres['status'] == 200 && loginres['data'] != null
       ? loginres['data']['id'] != null
