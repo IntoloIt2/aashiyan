@@ -22,8 +22,7 @@ class _ProfileState extends State<Profile> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? resultData = prefs.getString('userData');
     decodedJson = jsonDecode(resultData!);
-    print('decodedJson==');
-    print(decodedJson);
+
   }
 
   Future<String?> showLogoutDialogue(context) {

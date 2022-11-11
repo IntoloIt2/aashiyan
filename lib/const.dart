@@ -2,10 +2,12 @@
 
 import 'package:aashiyan/components/forms.dart';
 import 'package:aashiyan/view/profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 
 BottomNavigationBar customBottomNav(BuildContext context) {
+  bool? isLogg = false;
   // final store = Provider.of<Auth_Provider>(context, listen: true);
   return BottomNavigationBar(
     items: <BottomNavigationBarItem>[
@@ -39,8 +41,10 @@ BottomNavigationBar customBottomNav(BuildContext context) {
               Icons.person,
               color: iconColor,
             ),
-            onPressed: () {
-              isLogged
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              isLogg = prefs.getBool('isLogged');
+              isLogg == true
                   // ? const Profile()
                   ? Navigator.push(
                       context,

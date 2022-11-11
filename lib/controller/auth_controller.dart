@@ -127,12 +127,13 @@ Future<void> login(String Email, String Password, context) async {
           ? true
           : false
       : false) {
-    isLogged = true;
     showToast('Successfully logged in!', Colors.lightGreen);
     emailController.clear();
     passwordController.clear();
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     var temp = await prefs.setString('userData', jsonEncode(loginres));
+    var temp2 = await prefs.setBool('isLogged', true);
 
     Navigator.push(
         context,
@@ -180,11 +181,11 @@ Future<Null> logout() async {
   prefs.clear();
   email = emailController.text;
   password = passwordController.text;
-  isLogged = false;
-  if (!isLogged) {
-    showToast('Successfully logged Out!', Colors.lightBlueAccent);
-    Get.to(() => const HomePage());
-  }
+  // var isLogg = await prefs.setBool('isLogged', false);
+  // if (pr) {
+  showToast('Successfully logged Out!', Colors.lightBlueAccent);
+  Get.to(() => const HomePage());
+  // }
 }
 
 void showToast(msg, toastColor) {
