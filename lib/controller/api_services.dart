@@ -977,7 +977,8 @@ Future<dynamic> BasementPost(
 }
 
 Future<dynamic> getGalleryAPI(int category) async {
-  print(category);
+  // print(category);
+  
   var response = await http.get(Uri.parse(baseUrl + "get-gallery/$category"));
   final jsonResponse = jsonDecode(response.body);
 
