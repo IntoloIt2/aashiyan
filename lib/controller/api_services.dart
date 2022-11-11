@@ -5,6 +5,7 @@ import 'dart:core';
 import 'dart:ffi';
 
 // import 'dart:html';
+import 'package:aashiyan/components/constant.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:aashiyan/components/forms.dart';
 import 'package:http/http.dart' as http;
@@ -38,8 +39,7 @@ Future<void> getRecent() async {
   try {
     var url = Uri.parse(bunglowPage);
     var response = await http.get(url);
-    // print(response.body.toString());
-    if (response.statusCode == 200) {
+    if (response.statusCode == SUCCESS) {
       bunglowPageRecentList = jsonDecode(response.body)["recent_project_image"];
     }
   } catch (e) {
@@ -256,7 +256,7 @@ Future<dynamic> requirementPost(
 }
 
 Future<dynamic> entrancePost(
-  int projectid,
+  int? projectid,
   String vastu,
   int floor,
   String entranceGate,
@@ -335,8 +335,12 @@ Future<dynamic> entrancePost(
     body: jsonEncode(projectData),
   );
   var resp = jsonDecode(response.body);
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setInt('floorCount', resp['floor']);
+  print('resp---');
+  print(resp);
+  if (resp["status"] == SUCCESS) {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('floorCount', resp['floor']);
+  }
   return resp["status"];
 }
 
@@ -369,7 +373,7 @@ Future<dynamic> entrancePut(
   String foyerlobby,
   int verandahReq,
   String verandahLength,
-  String verandahWidth,
+  String? verandahWidth,
   String verandahArea,
   String verandah,
 ) async {
@@ -420,6 +424,8 @@ Future<dynamic> entrancePut(
     body: jsonEncode(projectData),
   );
   var resp = jsonDecode(response.body);
+  print('resp--');
+  print(resp);
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setInt('floorCount', resp['floor']);
   return resp["status"];
@@ -978,7 +984,7 @@ Future<dynamic> BasementPost(
 
 Future<dynamic> getGalleryAPI(int category) async {
   // print(category);
-  
+
   var response = await http.get(Uri.parse(baseUrl + "get-gallery/$category"));
   final jsonResponse = jsonDecode(response.body);
 
