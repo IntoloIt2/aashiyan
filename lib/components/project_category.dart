@@ -50,9 +50,7 @@ SingleChildScrollView projectCategory() {
               Get.to(const InteriorDesign());
             },
             child: stepsContainer("Interior Design")),
-        const SizedBox(
-          width: 5,
-        ),
+        const SizedBox(width: 5),
         InkWell(
             onTap: () {
               getGalleryAPI(HOSPITAL);
